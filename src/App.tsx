@@ -19,22 +19,24 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false}></ReactQueryDevtools>
-      <GlobalStyles />
-      <GlobalContextProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/dashboard" element={<Dashboard />}>
-              <Route path="board/:id" element={<Board />} />
-            </Route>
+    <div data-testid="app">
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false}></ReactQueryDevtools>
+        <GlobalStyles />
+        <GlobalContextProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/dashboard" element={<Dashboard />}>
+                <Route path="board/:id" element={<Board />} />
+              </Route>
 
-            <Route path="/" index element={<Landing />} />
-            <Route path="*" element={<div>Page not found</div>} />
-          </Routes>
-        </BrowserRouter>
-      </GlobalContextProvider>
-    </QueryClientProvider>
+              <Route path="/" index element={<Landing />} />
+              <Route path="*" element={<div>Page not found</div>} />
+            </Routes>
+          </BrowserRouter>
+        </GlobalContextProvider>
+      </QueryClientProvider>
+    </div>
   );
 }
 

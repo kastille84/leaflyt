@@ -14,8 +14,8 @@ const StyledBoardListingContainer = styled.ul`
 
 export default function BoardListing({ places }: BoardListingProps) {
   return (
-    <StyledBoardListingContainer>
-      {places &&
+    <StyledBoardListingContainer data-testid="board-listing-container">
+      {places?.length &&
         places.map((place) => <BoardListItem place={place} key={place.id} />)}
     </StyledBoardListingContainer>
   );

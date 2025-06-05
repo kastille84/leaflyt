@@ -61,6 +61,7 @@ export default function LocationSelection({ coords }: { coords: LatLng }) {
     <StyledOverlay>
       <div className="close">
         <HiOutlineXMark
+          data-testid="location-selection-close-icon"
           onClick={() => {
             setIsGettingLocation(false);
             setCoords(null);
@@ -78,9 +79,14 @@ export default function LocationSelection({ coords }: { coords: LatLng }) {
         <Heading as="h2">
           Based on your location, we found the following boards at:
         </Heading>
-        {places && <BoardListing places={places} />}
-        {/* {!places && <p>There are no places here</p>} */}
-        {error && <p>{error}</p>}
+        {places?.length && <BoardListing places={places} />}
+        {!places?.length && !error && (
+          <p data-testid="no-boards-found-message">
+            Oops! Sorry, there are no boards showing up near you. Try a
+            different location.
+          </p>
+        )}
+        {error && <p data-testid="error-message">{error}</p>}
       </div>
     </StyledOverlay>
   );

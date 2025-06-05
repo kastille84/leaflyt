@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { NearbySearchPlaceResult } from "../../interfaces";
 import Heading from "../../ui/Heading";
 import Button from "../../ui/Button";
-import { shortenTitle } from "../../utils/generalUtils";
+import { shortentitle } from "../../utils/GeneralUtils";
 import { useGlobalContext } from "../../context/GlobalContext";
 
 type BoardListingItemProps = {
@@ -47,9 +47,11 @@ export default function BoardListItem({ place }: BoardListingItemProps) {
   }
 
   return (
-    <StyledBoardListItem>
+    <StyledBoardListItem data-testid="board-list-item">
       <Heading as={"h3"}>{shortenTitle(place.displayName.text, 20)}</Heading>
-      <StyledAddress>{place.formattedAddress}</StyledAddress>
+      <StyledAddress data-testid="board-list-item-address">
+        {place.formattedAddress}
+      </StyledAddress>
       <ButtonContainer>
         {/* <Button size="small" as={Link} to={`/board/${place.placeId}`}> */}
         <Button size="small" onClick={onSelectBoard}>

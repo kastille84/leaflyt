@@ -5,7 +5,7 @@ import { excludedTypeList } from "../constants";
 
 export default (coords: LatLng) => {
   const apiKey = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
-  const [places, setPlaces] = useState<NearbySearchPlaceResult[]>([]);
+  const [places, setPlaces] = useState<NearbySearchPlaceResult[] | null>([]);
   const [error, setError] = useState<string | null>(null);
   const [isGettingPlaces, setIsGettingPlaces] = useState(true);
 
@@ -14,8 +14,8 @@ export default (coords: LatLng) => {
       .then((places) => {
         setPlaces(places);
       })
-      .catch((error) => {
-        setError(error.message);
+      .catch((error2) => {
+        setError(error2.message);
       })
       .finally(() => {
         setIsGettingPlaces(false);
@@ -62,8 +62,9 @@ export default (coords: LatLng) => {
 
       const data = await response.json();
       console.log("places", data.places);
-      if (!data || !data.places) {
-        throw new Error("No places found");
+      if (!data.places || data.places.length === 0) {
+        // throw new Error("No places found");
+        return [];
       }
 
       return data.places;

@@ -3,7 +3,7 @@ import Heading from "../ui/Heading";
 import Button from "../ui/Button";
 import OverlaySpinner from "../ui/OverlaySpinner";
 import { useGlobalContext } from "../context/GlobalContext";
-import LocationSelection from "../features/Location/LocationSelection";
+import LocationSelection from "../features/location/LocationSelection";
 
 const StyledHeroSection = styled.section`
   color: var(--color-blue-200);
