@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { NearbySearchPlaceResult } from "../../interfaces";
 import Heading from "../../ui/Heading";
 import Button from "../../ui/Button";
-import { shortentitle } from "../../utils/GeneralUtils";
+import { shortenTitle } from "../../utils/GeneralUtils";
 import { useGlobalContext } from "../../context/GlobalContext";
 
 type BoardListingItemProps = {
