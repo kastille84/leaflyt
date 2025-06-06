@@ -7,7 +7,7 @@ import GlobalStyles from "./styles/GlobalStyles";
 import Landing from "./pages/Landing";
 import { GlobalContextProvider } from "./context/GlobalContext";
 import Board from "./features/board/Board";
-import Dashboard from "./pages/Dashboard";
+import MainLayout from "./pages/MainLayout";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,7 +27,7 @@ function App() {
         <GlobalContextProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/dashboard" element={<Dashboard />}>
+              <Route path="/dashboard" element={<MainLayout />}>
                 <Route path="board/:id" element={<Board />} />
               </Route>
 
@@ -44,7 +44,7 @@ function App() {
                 duration: 3000,
               },
               error: {
-                duration: 60000,
+                duration: 6000,
               },
               style: {
                 fontSize: "16px",

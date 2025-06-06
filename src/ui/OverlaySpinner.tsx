@@ -2,11 +2,11 @@ import styled from "styled-components";
 import Spinner from "./Spinner";
 
 const StyledOverlaySpinner = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: 1000;
   background-color: rgba(233, 250, 233, 0.808);
   display: flex;
