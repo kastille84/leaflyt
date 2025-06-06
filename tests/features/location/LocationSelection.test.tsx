@@ -47,7 +47,7 @@ describe("Location Selection", () => {
     render(<LocationSelection coords={{ latitude: 1, longitude: 1 }} />);
 
     // assert
-    const spinner = screen.getByTestId("location-selection-spinner");
+    const spinner = screen.getByTestId("overlay-spinner");
     expect(spinner).toBeTruthy();
   });
 

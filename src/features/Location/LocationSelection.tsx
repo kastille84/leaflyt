@@ -7,6 +7,7 @@ import useGetPlacesByCoords from "../../hooks/useGetPlacesByCoords";
 import Spinner from "../../ui/Spinner";
 import BoardListing from "./BoardListing";
 import { useGlobalContext } from "../../context/GlobalContext";
+import OverlaySpinner from "../../ui/OverlaySpinner";
 
 const StyledOverlay = styled.div`
   position: fixed;
@@ -49,6 +50,11 @@ const StyledOverlay = styled.div`
     font-weight: 700;
     cursor: pointer;
   }
+
+  & .error {
+    color: var(--color-red-700);
+    font-weight: 600;
+  }
 `;
 
 export default function LocationSelection({ coords }: { coords: LatLng }) {
@@ -56,7 +62,12 @@ export default function LocationSelection({ coords }: { coords: LatLng }) {
   const { setIsGettingLocation, setCoords } = useGlobalContext();
 
   if (isGettingPlaces)
-    return <Spinner data-testid="location-selection-spinner" />;
+    return (
+      <OverlaySpinner
+        data-testid="location-selection-spinner"
+        message="We have your location. Searching for Nearest Community Board"
+      />
+    );
   return (
     <StyledOverlay>
       <div className="close">
@@ -79,14 +90,18 @@ export default function LocationSelection({ coords }: { coords: LatLng }) {
         <Heading as="h2">
           Based on your location, we found the following boards at:
         </Heading>
-        {places?.length && <BoardListing places={places} />}
-        {!places?.length && !error && (
+        {places && places?.length > 0 && <BoardListing places={places} />}
+        {places && places?.length === 0 && !error && (
           <p data-testid="no-boards-found-message">
             Oops! Sorry, there are no boards showing up near you. Try a
             different location.
           </p>
         )}
-        {error && <p data-testid="error-message">{error}</p>}
+        {error && (
+          <p className="error" data-testid="error-message">
+            {error}
+          </p>
+        )}
       </div>
     </StyledOverlay>
   );

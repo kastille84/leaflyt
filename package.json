@@ -19,6 +19,7 @@
     "@tanstack/react-query-devtools": "^5.76.1",
     "@types/googlemaps": "^3.43.3",
     "@vis.gl/react-google-maps": "^1.5.2",
+    "@vitejs/plugin-basic-ssl": "^2.0.0",
     "date-fns": "^4.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

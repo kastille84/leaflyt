@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { LatLng } from "../interfaces";
+import toast from "react-hot-toast";
 
 export default () => {
+  const [watchId, setWatchId] = useState<number | null>(null);
   const [isGettingLocation, setIsGettingLocation] = useState<boolean | null>(
     null
   );
@@ -15,22 +17,50 @@ export default () => {
     };
     setIsGettingLocation(false);
     setCoords(latLng);
+
+    // var timeout = setTimeout(function () {
+    navigator.geolocation.clearWatch(watchId!);
+    // }, 5000);
   };
 
-  const onReject = () => {
+  const onReject = (error: GeolocationPositionError) => {
     setIsGettingLocation(false);
     setCoords(null);
+    console.log("onReject error", error);
+    // set a toast, letting user know that location is not available and to enable location sharing
+    switch (error.code) {
+      case 1: // PERMISSION_DENIED
+        toast.error(
+          "We weren't able to get your location. Make sure to select 'Allow' on the pop-up to enable location sharing."
+        );
+        break;
+      case 2: // POSITION_UNAVAILABLE
+        toast.error(
+          "We weren't able to get your location. It seems to be unavailable. Please check your internet connection or move to another location."
+        );
+        break;
+      case 3: // TIMEOUT
+        toast.error(
+          "We weren't able to get your location. The request timed out. Please check your internet connection or move to another location."
+        );
+    }
   };
 
   // return { isGettingLocation, coords };
   const getUserGeo = () => {
+    // if (watchId) {
+    //   navigator.geolocation.clearWatch(watchId);
+    // }
     // return new Promise((resolve, reject) => {
     setIsGettingLocation(true);
-    navigator.geolocation.getCurrentPosition(onSuccess, onReject, {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0,
-    });
+    setWatchId(
+      // https://www.reddit.com/r/AndroidQuestions/comments/1epu2m6/why_do_android_phones_give_incorrect_location/#:~:text=With%20the%20location%20permission%20granted,exactly%20the%20location%20of%20you.
+      navigator.geolocation.watchPosition(onSuccess, onReject, {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+      })
+    );
     // });
   };
 

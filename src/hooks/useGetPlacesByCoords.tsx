@@ -33,10 +33,13 @@ export default (coords: LatLng) => {
       locationRestriction: {
         circle: {
           center: {
-            // latitude: coords.latitude,
-            // longitude: coords.longitude,
-            latitude: 41.5012819,
-            longitude: -74.0266355,
+            latitude: coords.latitude,
+            longitude: coords.longitude,
+            // latitude: 41.5012819,
+            // longitude: -74.0266355,
+            // 40.7529969 | -73.9997624 - work
+            //  40.7568384 | -73.9803136
+            // 40.7732224 | -73.9147776
           },
           radius: 125,
           // radius: 250,
@@ -63,13 +66,16 @@ export default (coords: LatLng) => {
       const data = await response.json();
       console.log("places", data.places);
       if (!data.places || data.places.length === 0) {
-        // throw new Error("No places found");
+        // no places within your search radius
         return [];
       }
 
       return data.places;
     } catch (error: any) {
-      throw new Error("Error fetching nearby places: " + error.message);
+      throw new Error(
+        "Error fetching nearby boards. Please try again. - Reason: " +
+          error.message
+      );
       // return "Error fetching nearby places: " + error2.message;
     }
   };

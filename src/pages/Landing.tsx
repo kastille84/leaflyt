@@ -82,7 +82,7 @@ export default function Landing() {
         </StyledFigure>
       </StyledHeroSection>
       {isGettingLocation && (
-        <OverlaySpinner message="Getting Your Location and Searching for Nearest Community Board" />
+        <OverlaySpinner message="Getting Your Location based on your device's GPS, mobile or wifi signal" />
       )}
       {coords && <LocationSelection coords={coords} />}
     </main>

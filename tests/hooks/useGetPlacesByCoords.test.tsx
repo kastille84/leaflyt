@@ -82,7 +82,7 @@ describe("useGetPlacesByCoords", () => {
     });
     await waitFor(() => {
       expect(result.current.error).toEqual(
-        "Error fetching nearby places: HTTP error! Status: 500"
+        "Error fetching nearby boards. Please try again. - Reason: HTTP error! Status: 500"
       );
     });
   });

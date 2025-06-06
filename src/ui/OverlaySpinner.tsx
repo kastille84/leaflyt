@@ -18,7 +18,7 @@ const StyledOverlaySpinner = styled.div`
 `;
 export default function OverlaySpinner({ message }: { message: string }) {
   return (
-    <StyledOverlaySpinner>
+    <StyledOverlaySpinner data-testid="overlay-spinner">
       <div className="overlay-content">
         <Spinner />
         <span>{message}</span>

@@ -60,7 +60,7 @@ describe("Landing Page", () => {
     }));
     render(<Landing />);
     const overlayMessage = screen.getByText(
-      "Getting Your Location and Searching for Nearest Community Board"
+      "Getting Your Location based on your device's GPS, mobile or wifi signal"
     );
     expect(overlayMessage).toBeTruthy();
   });
@@ -74,9 +74,7 @@ describe("Landing Page", () => {
       },
     }));
     render(<Landing />);
-    const locationSelectionSpinner = screen.getByTestId(
-      "location-selection-spinner"
-    );
+    const locationSelectionSpinner = screen.getByTestId("overlay-spinner");
     expect(locationSelectionSpinner).toBeTruthy();
   });
 });
