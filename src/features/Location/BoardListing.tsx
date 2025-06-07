@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { NearbySearchPlaceResult } from "../../interfaces";
+import { NearbySearchPlaceResult } from "../../interfaces/Geo";
 import BoardListItem from "./BoardListItem";
 
 type BoardListingProps = {

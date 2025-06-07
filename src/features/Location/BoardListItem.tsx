@@ -1,7 +1,7 @@
 import styled from "styled-components";
 // import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { NearbySearchPlaceResult } from "../../interfaces";
+import { NearbySearchPlaceResult } from "../../interfaces/Geo";
 import Heading from "../../ui/Heading";
 import Button from "../../ui/Button";
 import { shortenTitle } from "../../utils/GeneralUtils";
@@ -18,9 +18,9 @@ const StyledBoardListItem = styled.li`
   justify-content: space-between;
   gap: 1.2rem;
   border: 1px solid var(--color-grey-200);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-lg);
   border-top: 5px solid var(--color-brand-600);
-  border-radius: var(--border-radius-md);
+  /* border-radius: var(--border-radius-md); */
   background-color: var(--color-grey-50);
 
   & h3 {

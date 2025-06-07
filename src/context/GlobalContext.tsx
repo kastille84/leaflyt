@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import useGetUserGeo from "../hooks/useGetUserGeo";
-import { LatLng, NearbySearchPlaceResult } from "../interfaces";
+import { LatLng, NearbySearchPlaceResult } from "../interfaces/Geo";
 
 export type ContextType = {
   getUserGeo: () => void;

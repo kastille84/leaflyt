@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import { HiOutlineXMark } from "react-icons/hi2";
 
-import { LatLng } from "../../interfaces";
+import { LatLng } from "../../interfaces/Geo";
 import Heading from "../../ui/Heading";
 import useGetPlacesByCoords from "../../hooks/useGetPlacesByCoords";
-import Spinner from "../../ui/Spinner";
 import BoardListing from "./BoardListing";
 import { useGlobalContext } from "../../context/GlobalContext";
 import OverlaySpinner from "../../ui/OverlaySpinner";

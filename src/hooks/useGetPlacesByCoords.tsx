@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LatLng, NearbySearchPlaceResult } from "../interfaces";
+import { LatLng, NearbySearchPlaceResult } from "../interfaces/Geo";
 import { excludedTypeList } from "../constants";
 // import { setKey, fromLatLng, setBounds, setResultType } from "react-geocode";
 
@@ -33,10 +33,10 @@ export default (coords: LatLng) => {
       locationRestriction: {
         circle: {
           center: {
-            latitude: coords.latitude,
-            longitude: coords.longitude,
-            // latitude: 41.5012819,
-            // longitude: -74.0266355,
+            // latitude: coords.latitude,
+            // longitude: coords.longitude,
+            latitude: 41.5012819,
+            longitude: -74.0266355,
             // 40.7529969 | -73.9997624 - work
             //  40.7568384 | -73.9803136
             // 40.7732224 | -73.9147776

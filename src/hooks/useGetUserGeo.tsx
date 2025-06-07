@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LatLng } from "../interfaces";
+import { LatLng } from "../interfaces/Geo";
 import toast from "react-hot-toast";
 
 export default () => {
