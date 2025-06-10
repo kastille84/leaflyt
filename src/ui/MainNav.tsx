@@ -9,6 +9,7 @@ import {
   HiOutlineNewspaper,
   HiBellAlert,
   HiCreditCard,
+  HiOutlineMapPin,
 } from "react-icons/hi2";
 
 const NavList = styled.ul`
@@ -59,6 +60,11 @@ export default function MainNav() {
         <li>
           <StyledNavLink to="/dashboard/my-flyers">
             <HiOutlinePaperAirplane /> <span>My Flyers</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/dashboard/post-from-home">
+            <HiOutlineMapPin /> <span>Post At Home</span>
           </StyledNavLink>
         </li>
         <li>

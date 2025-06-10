@@ -70,7 +70,7 @@ export default function Landing() {
             See what others are Discussing & Doing in your{" "}
             <span>Local Digital Community Board</span>
           </Heading>
-          <Button onClick={getUserGeo}>Open This Community Board</Button>
+          <Button onClick={getUserGeo}>Open Board Near You</Button>
         </StyledHeroArticle>
         <StyledFigure>
           <img

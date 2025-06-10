@@ -6,4 +6,8 @@ export const mockUseGlobalContextReturnObj = {
   selectedPlace: null,
   setCoords: () => {},
   setSelectedPlace: () => {},
+  setIsOpenFlyerDrawer: () => {},
+  isOpenFlyerDrawer: false,
+  drawerAction: null,
+  setDrawerAction: () => {},
 };

@@ -5,9 +5,13 @@ import { Toaster } from "react-hot-toast";
 
 import GlobalStyles from "./styles/GlobalStyles";
 import Landing from "./pages/Landing";
-import { GlobalContextProvider } from "./context/GlobalContext";
+import {
+  GlobalContextProvider,
+  useGlobalContext,
+} from "./context/GlobalContext";
 import Board from "./features/board/Board";
 import MainLayout from "./pages/MainLayout";
+import FlyerSlideIn from "./ui/FlyerSlideIn";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -60,6 +64,7 @@ function App() {
               },
             }}
           />
+          <FlyerSlideIn />
         </GlobalContextProvider>
       </QueryClientProvider>
     </div>

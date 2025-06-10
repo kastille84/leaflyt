@@ -2,11 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import Button from "../../ui/Button";
 import { HiOutlinePaperAirplane } from "react-icons/hi2";
-// import component 👇
-import Drawer from "react-modern-drawer";
 
-//import styles 👇
-import "react-modern-drawer/dist/index.css";
+import { useGlobalContext } from "../../context/GlobalContext";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -24,7 +21,12 @@ const StyledButtonContainer = styled.div`
   text-align: center;
 `;
 export default function NoFlyers() {
-  const [openPanel, setOpenPanel] = useState(false);
+  const { setIsOpenFlyerDrawer, setDrawerAction } = useGlobalContext();
+
+  function handleCreateFlyer() {
+    setIsOpenFlyerDrawer(true);
+    setDrawerAction("create");
+  }
   return (
     <>
       <StyledContainer>
@@ -35,22 +37,12 @@ export default function NoFlyers() {
           <p>There are no flyers at this location.</p>
           <p> Be the first to create one!</p>
           <StyledButtonContainer>
-            <Button onClick={() => setOpenPanel(true)} size="large">
+            <Button onClick={handleCreateFlyer} size="large">
               Create Flyer
             </Button>
           </StyledButtonContainer>
         </div>
       </StyledContainer>
-      {/* https://www.npmjs.com/package/react-modern-drawer */}
-      <Drawer
-        open={openPanel}
-        onClose={() => setOpenPanel(false)}
-        direction="right"
-        size={"50vw"}
-      >
-        <div>Hello</div>
-        <Button onClick={() => setOpenPanel(false)}>Close</Button>
-      </Drawer>
     </>
   );
 }

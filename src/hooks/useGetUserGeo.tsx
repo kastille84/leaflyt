@@ -44,6 +44,7 @@ export default () => {
           "We weren't able to get your location. The request timed out. Please check your internet connection or move to another location."
         );
     }
+    navigator.geolocation.clearWatch(watchId!);
   };
 
   // return { isGettingLocation, coords };
