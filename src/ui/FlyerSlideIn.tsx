@@ -23,6 +23,7 @@ export default function FlyerSlideIn() {
     return <CreateFlyer />;
   };
 
+  if (!selectedPlace) return null;
   return (
     <>
       {/* https://www.npmjs.com/package/react-modern-drawer */}

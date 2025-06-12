@@ -26,7 +26,10 @@ function App() {
   return (
     <div data-testid="app">
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false}></ReactQueryDevtools>
+        <ReactQueryDevtools
+          initialIsOpen={false}
+          buttonPosition="bottom-left"
+        ></ReactQueryDevtools>
         <GlobalStyles />
         <GlobalContextProvider>
           <BrowserRouter>

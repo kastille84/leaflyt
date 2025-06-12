@@ -5,6 +5,7 @@ import Heading from "./Heading";
 
 const StyledFlyerFormContainer = styled.div`
   height: 100vh;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 
@@ -23,6 +24,8 @@ const StyledFlyerFormContainer = styled.div`
 
 const StyledTopSection = styled.div`
   background-color: var(--color-blue-200);
+  /* background-color: var(--color-grey-50); */
+  color: var(--color-grey-600);
   display: flex;
   justify-content: space-between;
   align-items: center;
