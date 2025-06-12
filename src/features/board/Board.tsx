@@ -19,7 +19,7 @@ export default function Board() {
   if (!isLoadingBoard && board?.error) {
     return <NoFlyers />;
   }
-  // <NoFlyers />
+
   // if flyers, then show a list of flyers
   return <div>Board: {id}</div>;
 }
