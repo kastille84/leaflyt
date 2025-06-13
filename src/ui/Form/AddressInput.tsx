@@ -5,6 +5,7 @@ import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocomplet
 
 import Input from "../Input";
 import styled from "styled-components";
+import FormControl from "./FormControl";
 
 const key = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
 
@@ -53,7 +54,7 @@ export default function AddressInput({
   });
 
   return (
-    <>
+    <FormControl>
       <label htmlFor="address">Address</label>
       <Input
         type="text"
@@ -81,6 +82,6 @@ export default function AddressInput({
           ))}
         </StyledAddressResultContainer>
       )}
-    </>
+    </FormControl>
   );
 }

@@ -20,6 +20,11 @@ import AddressInput from "../../ui/Form/AddressInput";
 import TitleInput from "../../ui/Form/TitleInput";
 import CategoryInput from "../../ui/Form/CategoryInput";
 import FirstNameInput from "../../ui/Form/FirstNameInput";
+import LastNameInput from "../../ui/Form/LastNameInput";
+import EmailInput from "../../ui/Form/EmailInput";
+import PhoneInput from "../../ui/Form/PhoneInput";
+import WebsiteInput from "../../ui/Form/WebsiteInput";
+import FullNameInput from "../../ui/Form/FullNameInput";
 
 const StyledAnonymousContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
@@ -206,52 +211,28 @@ export default function Anonymous() {
                     registerName="individual.name.firstName"
                   />
                   {/* Personal Info / lastName */}
-                  <FormControl>
-                    <label htmlFor="last-name">Last Name</label>
-                    <Input
-                      type="text"
-                      id="last-name"
-                      {...register("individual.name.lastName", {
-                        required: true,
-                      })}
-                    />
-                  </FormControl>
+                  <LastNameInput
+                    register={register}
+                    registerName="individual.name.lastName"
+                  />
                 </FormControlRow>
                 <FormControlRow>
-                  {/* Personal Info / email */}
-                  <FormControl>
-                    <label htmlFor="email">Email</label>
-                    <Input
-                      type="email"
-                      id="email"
-                      {...register("individual.contact.email", {
-                        required: true,
-                      })}
-                    />
-                  </FormControl>
+                  <EmailInput
+                    register={register}
+                    registerName="individual.contact.email"
+                  />
+
                   {/* Personal Info / Phone */}
-                  <FormControl>
-                    <label htmlFor="phone">Phone</label>
-                    <Input
-                      type="tel"
-                      id="phone"
-                      {...register("individual.contact.phone", {
-                        required: true,
-                      })}
-                    />
-                  </FormControl>
+                  <PhoneInput
+                    register={register}
+                    registerName="individual.contact.phone"
+                  />
                 </FormControlRow>
                 <FormControlRow>
-                  <FormControl>
-                    <label htmlFor="website">Website</label>
-                    <Input
-                      type="url"
-                      id="website"
-                      {...register("individual.contact.website", {
-                        required: true,
-                      })}
-                    />
-                  </FormControl>
+                  <WebsiteInput
+                    register={register}
+                    registerName="individual.contact.website"
+                  />
                   <FormControl>{/* empty */}</FormControl>
                 </FormControlRow>
               </>
@@ -260,60 +241,33 @@ export default function Anonymous() {
               <>
                 <FormControlRow>
                   {/*Business / name */}
-                  <FormControl>
-                    <label htmlFor="name">Business Name</label>
-                    <Input
-                      type="text"
-                      id="name"
-                      {...register("business.name", {
-                        required: true,
-                      })}
-                    />
-                  </FormControl>
-                  <FormControl>
-                    {/*Business / address */}
-                    <AddressInput
-                      register={register}
-                      setValue={setValue}
-                      registerName="business.contact.address"
-                    />
-                  </FormControl>
+                  <FullNameInput
+                    register={register}
+                    registerName="business.name"
+                  />
+                  {/*Business / address */}
+                  <AddressInput
+                    register={register}
+                    setValue={setValue}
+                    registerName="business.contact.address"
+                  />
                 </FormControlRow>
                 <FormControlRow>
-                  {/*Business / email */}
-                  <FormControl>
-                    <label htmlFor="email">Email</label>
-                    <Input
-                      type="email"
-                      id="email"
-                      {...register("business.contact.email", {
-                        required: true,
-                      })}
-                    />
-                  </FormControl>
+                  <EmailInput
+                    register={register}
+                    registerName="business.contact.email"
+                  />
                   {/*Business / Phone */}
-                  <FormControl>
-                    <label htmlFor="phone">Phone</label>
-                    <Input
-                      type="tel"
-                      id="phone"
-                      {...register("business.contact.phone", {
-                        required: true,
-                      })}
-                    />
-                  </FormControl>
+                  <PhoneInput
+                    register={register}
+                    registerName="business.contact.phone"
+                  />
                 </FormControlRow>
                 <FormControlRow>
-                  <FormControl>
-                    <label htmlFor="website">Website</label>
-                    <Input
-                      type="url"
-                      id="website"
-                      {...register("business.contact.website", {
-                        required: true,
-                      })}
-                    />
-                  </FormControl>
+                  <WebsiteInput
+                    register={register}
+                    registerName="business.contact.website"
+                  />
                   <FormControl>{/* empty */}</FormControl>
                 </FormControlRow>
               </>
@@ -322,60 +276,33 @@ export default function Anonymous() {
               <>
                 <FormControlRow>
                   {/*Org / name */}
-                  <FormControl>
-                    <label htmlFor="name">Organization Name</label>
-                    <Input
-                      type="text"
-                      id="name"
-                      {...register("organization.name", {
-                        required: true,
-                      })}
-                    />
-                  </FormControl>
-                  <FormControl>
-                    {/*Org / address */}
-                    <AddressInput
-                      register={register}
-                      setValue={setValue}
-                      registerName="organization.contact.address"
-                    />
-                  </FormControl>
+                  <FullNameInput
+                    register={register}
+                    registerName="organization.name"
+                  />
+                  {/*Org / address */}
+                  <AddressInput
+                    register={register}
+                    setValue={setValue}
+                    registerName="organization.contact.address"
+                  />
                 </FormControlRow>
                 <FormControlRow>
                   {/*Org / email */}
-                  <FormControl>
-                    <label htmlFor="email">Email</label>
-                    <Input
-                      type="email"
-                      id="email"
-                      {...register("organization.contact.email", {
-                        required: true,
-                      })}
-                    />
-                  </FormControl>
-                  <FormControl>
-                    {/*Org / Phone */}
-                    <label htmlFor="phone">Phone</label>
-                    <Input
-                      type="tel"
-                      id="phone"
-                      {...register("organization.contact.phone", {
-                        required: true,
-                      })}
-                    />
-                  </FormControl>
+                  <EmailInput
+                    register={register}
+                    registerName="organization.contact.email"
+                  />
+                  <PhoneInput
+                    register={register}
+                    registerName="organization.contact.phone"
+                  />
                 </FormControlRow>
                 <FormControlRow>
-                  <FormControl>
-                    <label htmlFor="website">Website</label>
-                    <Input
-                      type="url"
-                      id="website"
-                      {...register("organization.contact.website", {
-                        required: true,
-                      })}
-                    />
-                  </FormControl>
+                  <WebsiteInput
+                    register={register}
+                    registerName="organization.contact.website"
+                  />
                   <FormControl>{/* empty */}</FormControl>
                 </FormControlRow>
               </>
