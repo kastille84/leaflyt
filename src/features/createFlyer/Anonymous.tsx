@@ -90,6 +90,7 @@ export default function Anonymous() {
   const typeOfUser = getValues("typeOfUser");
 
   console.log("getValues", getValues());
+  console.log("errors", errors);
 
   useEffect(() => {
     if (typeOfUser) {
@@ -244,12 +245,14 @@ export default function Anonymous() {
                   <FullNameInput
                     register={register}
                     registerName="business.name"
+                    name="Business"
                   />
                   {/*Business / address */}
                   <AddressInput
                     register={register}
                     setValue={setValue}
                     registerName="business.contact.address"
+                    errors={errors}
                   />
                 </FormControlRow>
                 <FormControlRow>
@@ -279,12 +282,14 @@ export default function Anonymous() {
                   <FullNameInput
                     register={register}
                     registerName="organization.name"
+                    name="Organization"
                   />
                   {/*Org / address */}
                   <AddressInput
                     register={register}
                     setValue={setValue}
                     registerName="organization.contact.address"
+                    errors={errors}
                   />
                 </FormControlRow>
                 <FormControlRow>

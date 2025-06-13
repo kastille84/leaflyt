@@ -13,7 +13,9 @@ export default function TitleInput({
       <Input
         type="text"
         id="title"
-        {...register("title", { required: true })}
+        {...register("title", {
+          required: { value: true, message: "Title is required" },
+        })}
       />
     </FormControl>
   );

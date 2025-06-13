@@ -15,7 +15,7 @@ export default function LastNameInput({
         type="text"
         id="last-name"
         {...register(registerName, {
-          required: true,
+          required: { value: true, message: "Last Name is required" },
         })}
       />
     </FormControl>

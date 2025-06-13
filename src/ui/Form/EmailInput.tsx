@@ -16,7 +16,7 @@ export default function EmailInput({
         type="email"
         id="email"
         {...register(registerName, {
-          required: true,
+          required: { value: true, message: "Email is required" },
         })}
       />
     </FormControl>

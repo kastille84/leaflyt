@@ -16,8 +16,9 @@ export default function WebsiteInput({
         type="url"
         id="website"
         {...register(registerName, {
-          required: true,
+          required: { value: true, message: "Website is required" },
         })}
+        placeholder="https://example.com"
       />
     </FormControl>
   );

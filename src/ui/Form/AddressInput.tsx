@@ -1,14 +1,27 @@
 import { useState } from "react";
 
-import { UseFormRegister, UseFormSetValue } from "react-hook-form";
+import {
+  FieldErrors,
+  FieldValues,
+  UseFormRegister,
+  UseFormSetError,
+  UseFormSetValue,
+} from "react-hook-form";
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 
 import Input from "../Input";
 import styled from "styled-components";
 import FormControl from "./FormControl";
+import FieldInputError from "./FieldInputError";
+import { accessNestedProperty } from "../../utils/GeneralUtils";
 
 const key = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
 
+const StyledLabel = styled.label`
+  &.error {
+    color: var(--color-orange-600);
+  }
+`;
 const StyledAddressResultContainer = styled.ul`
   position: absolute;
   top: 100%;
@@ -35,10 +48,13 @@ export default function AddressInput({
   register,
   setValue,
   registerName,
+  errors,
 }: {
   register: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
   registerName: string;
+  // error: { [key: string]: { message: string; type: string } };
+  errors: FieldErrors<FieldValues>;
 }) {
   const [addressSelected, setAddressSelected] = useState<boolean>(false);
   // google autocomplete
@@ -53,20 +69,32 @@ export default function AddressInput({
     debounce: 800,
   });
 
+  function getErrorValue(errors: FieldErrors<FieldValues>) {
+    return accessNestedProperty(errors, registerName);
+  }
+
+  const errorObj = getErrorValue(errors);
   return (
     <FormControl>
-      <label htmlFor="address">Address</label>
+      <StyledLabel htmlFor="address" className={`${errorObj && "error"}`}>
+        Address
+      </StyledLabel>
       <Input
         type="text"
         id="address"
         {...register(registerName, {
-          required: true,
+          required: {
+            value: true,
+            message: "Address is required",
+          },
           onChange: (evt) => {
             setAddressSelected(false);
             getPlacePredictions({ input: evt.target.value });
           },
         })}
+        hasError={Boolean(errorObj)}
       />
+      {errorObj && <FieldInputError message={errorObj?.message as string} />}
       {placePredictions.length > 0 && addressSelected === false && (
         <StyledAddressResultContainer>
           {placePredictions.map((placePrediction) => (

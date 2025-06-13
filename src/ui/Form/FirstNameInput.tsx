@@ -16,7 +16,7 @@ export default function FirstNameInput({
         type="text"
         id="first-name"
         {...register(registerName, {
-          required: true,
+          required: { value: true, message: "First Name is required" },
         })}
       />
     </FormControl>

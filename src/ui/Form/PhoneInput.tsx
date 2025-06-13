@@ -16,7 +16,7 @@ export default function PhoneInput({
         type="tel"
         id="phone"
         {...register(registerName, {
-          required: true,
+          required: { value: true, message: "Phone is required" },
         })}
       />
     </FormControl>

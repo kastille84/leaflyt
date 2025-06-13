@@ -15,7 +15,9 @@ export default function CategoryInput({
       <Select
         options={options}
         value=""
-        {...register("category", { required: true })}
+        {...register("category", {
+          required: { value: true, message: "Category is required" },
+        })}
       />
     </FormControl>
   );
