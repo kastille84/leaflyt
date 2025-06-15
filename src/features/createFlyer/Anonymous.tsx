@@ -26,6 +26,14 @@ import PhoneInput from "../../ui/Form/PhoneInput";
 import WebsiteInput from "../../ui/Form/WebsiteInput";
 import FullNameInput from "../../ui/Form/FullNameInput";
 
+import categoriesObj from "../../data/categories";
+import {
+  getCategoriesForSelect,
+  getSubcategories,
+  getSubcategoriesForSelect,
+} from "../../utils/GeneralUtils";
+import SubcategoryInput from "../../ui/Form/SubcategoryInput";
+
 const StyledAnonymousContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
   background-color: var(--color-orange-200);
@@ -84,10 +92,23 @@ export default function Anonymous() {
     getValues,
     setValue,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    // defaultValues: {
+    //   typeOfUser: "",
+    //   category: "",
+    //   subcategory: "",
+    //   anonymous: "",
+    //   attestation: "",
+    //   individual: "",
+    //   business: "",
+    //   organization: "",
+    // },
+  });
 
   const typeOfUserWatch = watch("typeOfUser");
   const typeOfUser = getValues("typeOfUser");
+  const categoryWatch = watch("category");
+  const subcategoryWatch = watch("subcategory");
 
   console.log("getValues", getValues());
   console.log("errors", errors);
@@ -134,10 +155,23 @@ export default function Anonymous() {
             {/* Title / Category */}
             <FormControlRow>
               <TitleInput register={register} />
-              <CategoryInput
-                register={register}
-                options={[{ label: "hey", value: "hey" }]}
-              />
+              <FormControl>
+                <CategoryInput
+                  register={register}
+                  options={getCategoriesForSelect(categoriesObj)}
+                  value={categoryWatch}
+                />
+                {categoryWatch && (
+                  <SubcategoryInput
+                    register={register}
+                    options={getSubcategoriesForSelect(
+                      categoriesObj,
+                      categoryWatch
+                    )}
+                    value={subcategoryWatch}
+                  />
+                )}
+              </FormControl>
             </FormControlRow>
             {/* Description / Image*/}
             <FormControlRow>

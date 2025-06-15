@@ -2,7 +2,7 @@ import { UseFormRegister } from "react-hook-form";
 import Select from "../Select";
 import FormControl from "./FormControl";
 
-export default function CategoryInput({
+export default function SubcategoryInput({
   register,
   options,
   value,
@@ -12,14 +12,14 @@ export default function CategoryInput({
   value: string;
 }) {
   return (
-    <FormControl className="category">
-      <label htmlFor="category">Category</label>
+    <FormControl className="subcategory">
+      <label htmlFor="subcategory">Subcategory</label>
       <Select
         options={options}
         value={value}
         defaultValue={""}
-        {...register("category", {
-          required: { value: true, message: "Category is required" },
+        {...register("subcategory", {
+          required: { value: true, message: "Subcategory is required" },
         })}
       />
     </FormControl>
