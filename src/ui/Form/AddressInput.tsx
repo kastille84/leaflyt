@@ -4,7 +4,6 @@ import {
   FieldErrors,
   FieldValues,
   UseFormRegister,
-  UseFormSetError,
   UseFormSetValue,
 } from "react-hook-form";
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";

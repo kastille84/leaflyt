@@ -8,6 +8,10 @@ const StyledSelect = styled.select<SelectProps>`
       props.type === "white"
         ? "var(--color-grey-100)"
         : "var(--color-brand-500)"};
+  ${(props) =>
+    props.hasError
+      ? "border: 1px solid var(--color-orange-600);"
+      : "border: 1px solid var(--color-brand-500);"}
   border-radius: var(--border-radius-sm);
   background-color: var(--color-grey-0);
 
@@ -25,11 +29,17 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   // children: React.ReactNode;
+  hasError: boolean;
 }
 
-function Select({ options, value, onChange, ...props }: SelectProps) {
+function Select({ options, value, onChange, hasError, ...props }: SelectProps) {
   return (
-    <StyledSelect value={value} onChange={onChange} {...props}>
+    <StyledSelect
+      value={value}
+      onChange={onChange}
+      hasError={hasError}
+      {...props}
+    >
       {options?.map((option) => (
         <option key={option.value} value={option.value}>
           {option.label}

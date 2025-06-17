@@ -11,7 +11,6 @@ import {
   HiOutlineExclamationCircle,
 } from "react-icons/hi2";
 import Input from "../../ui/Input";
-import Select from "../../ui/Select";
 import Button from "../../ui/Button";
 import FormControlRow from "../../ui/Form/FormControlRow";
 import FormControl from "../../ui/Form/FormControl";
@@ -33,6 +32,7 @@ import {
   getSubcategoriesForSelect,
 } from "../../utils/GeneralUtils";
 import SubcategoryInput from "../../ui/Form/SubcategoryInput";
+import TypeOfUserInput from "../../ui/Form/TypeOfUserInput";
 
 const StyledAnonymousContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
@@ -154,12 +154,13 @@ export default function Anonymous() {
           <StyledFormContent>
             {/* Title / Category */}
             <FormControlRow>
-              <TitleInput register={register} />
+              <TitleInput register={register} errors={errors} />
               <FormControl>
                 <CategoryInput
                   register={register}
                   options={getCategoriesForSelect(categoriesObj)}
                   value={categoryWatch}
+                  errors={errors}
                 />
                 {categoryWatch && (
                   <SubcategoryInput
@@ -169,6 +170,7 @@ export default function Anonymous() {
                       categoryWatch
                     )}
                     value={subcategoryWatch}
+                    errors={errors}
                   />
                 )}
               </FormControl>
@@ -190,27 +192,12 @@ export default function Anonymous() {
             </FormControlRow>
 
             <FormControlRow>
-              <FormControl className="typeOfUser">
-                <label htmlFor="typeOfUser">How do you want to post as?</label>
-                <small>
-                  Unregistered users must provide info below everytime they
-                  post. <br /> Registered users do not need to provide this
-                  information.
-                </small>
-
-                <Select
-                  options={[
-                    { label: "Choose one", value: "" },
-                    { label: "Anonymous", value: "anonymous" },
-                    { label: "Individual", value: "individual" },
-                    { label: "Business", value: "business" },
-                    { label: "Organization", value: "organization" },
-                  ]}
-                  value={typeOfUser}
-                  // onChange={() => {}}
-                  {...register("typeOfUser", { required: true })}
-                />
-              </FormControl>
+              <TypeOfUserInput
+                title={"How do you want to post as?"}
+                register={register}
+                value={typeOfUserWatch}
+                errors={errors}
+              />
               <FormControl>{/* empty */}</FormControl>
             </FormControlRow>
 
@@ -244,29 +231,34 @@ export default function Anonymous() {
                   <FirstNameInput
                     register={register}
                     registerName="individual.name.firstName"
+                    errors={errors}
                   />
                   {/* Personal Info / lastName */}
                   <LastNameInput
                     register={register}
                     registerName="individual.name.lastName"
+                    errors={errors}
                   />
                 </FormControlRow>
                 <FormControlRow>
                   <EmailInput
                     register={register}
                     registerName="individual.contact.email"
+                    errors={errors}
                   />
 
                   {/* Personal Info / Phone */}
                   <PhoneInput
                     register={register}
                     registerName="individual.contact.phone"
+                    errors={errors}
                   />
                 </FormControlRow>
                 <FormControlRow>
                   <WebsiteInput
                     register={register}
                     registerName="individual.contact.website"
+                    errors={errors}
                   />
                   <FormControl>{/* empty */}</FormControl>
                 </FormControlRow>
@@ -280,6 +272,7 @@ export default function Anonymous() {
                     register={register}
                     registerName="business.name"
                     name="Business"
+                    errors={errors}
                   />
                   {/*Business / address */}
                   <AddressInput
@@ -293,17 +286,20 @@ export default function Anonymous() {
                   <EmailInput
                     register={register}
                     registerName="business.contact.email"
+                    errors={errors}
                   />
                   {/*Business / Phone */}
                   <PhoneInput
                     register={register}
                     registerName="business.contact.phone"
+                    errors={errors}
                   />
                 </FormControlRow>
                 <FormControlRow>
                   <WebsiteInput
                     register={register}
                     registerName="business.contact.website"
+                    errors={errors}
                   />
                   <FormControl>{/* empty */}</FormControl>
                 </FormControlRow>
@@ -317,6 +313,7 @@ export default function Anonymous() {
                     register={register}
                     registerName="organization.name"
                     name="Organization"
+                    errors={errors}
                   />
                   {/*Org / address */}
                   <AddressInput
@@ -331,16 +328,19 @@ export default function Anonymous() {
                   <EmailInput
                     register={register}
                     registerName="organization.contact.email"
+                    errors={errors}
                   />
                   <PhoneInput
                     register={register}
                     registerName="organization.contact.phone"
+                    errors={errors}
                   />
                 </FormControlRow>
                 <FormControlRow>
                   <WebsiteInput
                     register={register}
                     registerName="organization.contact.website"
+                    errors={errors}
                   />
                   <FormControl>{/* empty */}</FormControl>
                 </FormControlRow>
