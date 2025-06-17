@@ -9,9 +9,13 @@ const StyledFormControlRow = styled.div`
     color: var(--color-brand-600);
   }
 
-  & .ql-toolbar,
-  & .ql-container {
+  & .quill:not(.error) .ql-toolbar,
+  & .quill:not(.error) .ql-container {
     border: 1px solid var(--color-brand-500);
+  }
+  & .quill.error .ql-container,
+  & .quill.error .ql-toolbar {
+    border: 1px solid var(--color-orange-600);
   }
   & .ql-container {
     min-height: 150px;

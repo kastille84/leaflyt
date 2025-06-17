@@ -16,6 +16,10 @@ describe("Landing Page", () => {
     selectedPlace: null,
     setCoords: () => {},
     setSelectedPlace: () => {},
+    setIsOpenFlyerDrawer: () => {},
+    isOpenFlyerDrawer: false,
+    drawerAction: null,
+    setDrawerAction: () => {},
   };
 
   beforeEach(() => {
@@ -41,7 +45,7 @@ describe("Landing Page", () => {
     );
 
     const button = screen.getByRole("button");
-    expect(button.textContent).toBe("Open This Community Board");
+    expect(button.textContent).toBe("Open Board Near You");
   });
 
   it("should call getUserGeo when button is clicked", () => {

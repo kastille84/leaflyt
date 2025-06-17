@@ -28,6 +28,7 @@ export default function TitleInput({
         {...register("title", {
           required: { value: true, message: "Title is required" },
         })}
+        placeholder="Something Eye Catching..."
         hasError={Boolean(errors["title"])}
       />
       {errors["title"] && (

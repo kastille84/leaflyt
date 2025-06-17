@@ -3,7 +3,7 @@ import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import styled from "styled-components";
 
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 import Heading from "../../ui/Heading";
 import {
@@ -33,6 +33,7 @@ import {
 } from "../../utils/GeneralUtils";
 import SubcategoryInput from "../../ui/Form/SubcategoryInput";
 import TypeOfUserInput from "../../ui/Form/TypeOfUserInput";
+import ContentInput from "../../ui/Form/ContentInput";
 
 const StyledAnonymousContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
@@ -82,8 +83,6 @@ const StyledFormButtonContainer = styled.div`
 `;
 
 export default function Anonymous() {
-  const [content, setContent] = useState<string>("");
-
   const {
     register,
     unregister,
@@ -92,6 +91,7 @@ export default function Anonymous() {
     getValues,
     setValue,
     formState: { errors },
+    control,
   } = useForm({
     // defaultValues: {
     //   typeOfUser: "",
@@ -177,14 +177,7 @@ export default function Anonymous() {
             </FormControlRow>
             {/* Description / Image*/}
             <FormControlRow>
-              <FormControl>
-                <label htmlFor="description">Content</label>
-                <ReactQuill
-                  theme="snow"
-                  value={content}
-                  onChange={setContent}
-                />
-              </FormControl>
+              <ContentInput control={control} errors={errors} />
               <FormControl>
                 <label htmlFor="image">Image</label>
                 <Input type="file" id="image" />

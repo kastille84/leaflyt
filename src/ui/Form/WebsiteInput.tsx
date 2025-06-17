@@ -37,7 +37,7 @@ export default function WebsiteInput({
         {...register(registerName, {
           required: { value: true, message: "Website is required" },
         })}
-        placeholder="https://example.com"
+        placeholder="https://www.leaflyt.com"
         hasError={Boolean(errorObj)}
       />
       {errorObj && <FieldInputError message={errorObj?.message as string} />}

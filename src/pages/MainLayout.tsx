@@ -20,7 +20,7 @@ const StyledMainContentContainer = styled.div`
 
 export default function MainLayout() {
   return (
-    <StyledMainLayout>
+    <StyledMainLayout data-testid="main-layout">
       <ActionMenu></ActionMenu>
       <StyledMainContentContainer>
         <Outlet />
