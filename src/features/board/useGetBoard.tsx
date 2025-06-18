@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getBoard } from "../../services/apiBoards";
 
-export function useGetBoard() {
+export default function useGetBoard() {
   const { id } = useParams();
 
   const { isLoading: isLoadingBoard, data: board } = useQuery({

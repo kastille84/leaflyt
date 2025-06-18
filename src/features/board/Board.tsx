@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import OverlaySpinner from "../../ui/OverlaySpinner";
-import { useGetBoard } from "./useGetBoard";
+import useGetBoard from "./useGetBoard";
 import NoFlyers from "./NoFlyers";
 
 export default function Board() {
   const { id } = useParams();
-  const [flyers, setFlyers] = useState([]);
+  // const [flyers, setFlyers] = useState([]);
 
   const { isLoadingBoard, board } = useGetBoard();
 
@@ -21,5 +21,5 @@ export default function Board() {
   }
 
   // if flyers, then show a list of flyers
-  return <div>Board: {id}</div>;
+  return <div data-testid="board-container">Board: {id}</div>;
 }
