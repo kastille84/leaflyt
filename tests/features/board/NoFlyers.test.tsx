@@ -10,11 +10,14 @@ import { mockUseGlobalContextReturnObj } from "../../fixtures/globalContext";
 vi.mock("../../../src/context/GlobalContext");
 
 describe("NoFlyers", () => {
+  const setIsOpenFlyerDrawerMockFn = vi.fn();
+  const setDrawerActionMockFn = vi.fn();
   beforeEach(() => {
     vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
       ...mockUseGlobalContextReturnObj,
       // setIsOpenFlyerDrawer, setDrawerAction --> spy on these
-      // setSelectedPlace: setSelectedPlaceSpy,
+      setIsOpenFlyerDrawer: setIsOpenFlyerDrawerMockFn,
+      setDrawerAction: setDrawerActionMockFn,
     }));
   });
   afterEach(() => {

@@ -34,6 +34,7 @@ import {
 import SubcategoryInput from "../../ui/Form/SubcategoryInput";
 import TypeOfUserInput from "../../ui/Form/TypeOfUserInput";
 import ContentInput from "../../ui/Form/ContentInput";
+import ImageInput from "../../ui/Form/ImageInput";
 
 const StyledAnonymousContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
@@ -178,10 +179,15 @@ export default function Anonymous() {
             {/* Description / Image*/}
             <FormControlRow>
               <ContentInput control={control} errors={errors} />
-              <FormControl>
+              {/* <FormControl>
                 <label htmlFor="image">Image</label>
                 <Input type="file" id="image" />
-              </FormControl>
+              </FormControl> */}
+              <ImageInput
+                register={register}
+                setValue={setValue}
+                errors={errors}
+              />
             </FormControlRow>
 
             <FormControlRow>
