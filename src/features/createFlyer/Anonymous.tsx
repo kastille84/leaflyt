@@ -35,6 +35,7 @@ import SubcategoryInput from "../../ui/Form/SubcategoryInput";
 import TypeOfUserInput from "../../ui/Form/TypeOfUserInput";
 import ContentInput from "../../ui/Form/ContentInput";
 import ImageInput from "../../ui/Form/ImageInput";
+import ImagePreview from "../../ui/Form/ImagePreview";
 
 const StyledAnonymousContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
@@ -110,6 +111,7 @@ export default function Anonymous() {
   const typeOfUser = getValues("typeOfUser");
   const categoryWatch = watch("category");
   const subcategoryWatch = watch("subcategory");
+  const imageUrlArrWatch = watch("imageUrlArr");
 
   console.log("getValues", getValues());
   console.log("errors", errors);
@@ -183,11 +185,16 @@ export default function Anonymous() {
                 <label htmlFor="image">Image</label>
                 <Input type="file" id="image" />
               </FormControl> */}
-              <ImageInput
-                register={register}
-                setValue={setValue}
-                errors={errors}
-              />
+              <FormControl>
+                <ImageInput
+                  register={register}
+                  getValues={getValues}
+                  setValue={setValue}
+                  errors={errors}
+                  level={0}
+                />
+                <ImagePreview imageUrlArr={imageUrlArrWatch} />
+              </FormControl>
             </FormControlRow>
 
             <FormControlRow>

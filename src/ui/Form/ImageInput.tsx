@@ -1,13 +1,15 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   FieldErrors,
   FieldValues,
+  UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
 import FormControl from "./FormControl";
 import Button from "../Button";
 import styled from "styled-components";
+import { FILE_UPLOAD_OPTIONS } from "../../constants";
 
 const StyledLabel = styled.label`
   &.error {
@@ -17,14 +19,23 @@ const StyledLabel = styled.label`
 export default function ImageInput({
   register,
   setValue,
+  getValues,
   errors,
+  level,
 }: {
   register: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
+  getValues: UseFormGetValues<any>;
   errors: FieldErrors<FieldValues>;
+  level: number;
 }) {
   const uploadButtonRef = useRef(null);
   const cloudinaryWidgetRef = useRef(null);
+
+  useEffect(() => {
+    setValue("imageUrlArr", []);
+  }, []);
+  const imageUrlArr = getValues("imageUrlArr");
 
   const openCloudinaryWidget = () => {
     if (!cloudinaryWidgetRef?.current && uploadButtonRef?.current) {
@@ -32,11 +43,12 @@ export default function ImageInput({
         {
           cloudName: import.meta.env.VITE_CLOUDINARY_NAME,
           uploadPreset: import.meta.env.VITE_CLOUDINARY_PRESET,
+          ...FILE_UPLOAD_OPTIONS[level],
         },
         (error: any, result: any) => {
           if (!error && result && result.event === "success") {
             console.log("Done! Here is the image info: ", result.info);
-            setValue("imageUrl", result.info.secure_url); // Update form field
+            setValue("imageUrlArr", [...imageUrlArr, result.info]); // Update form field
           }
         }
       );
@@ -44,22 +56,35 @@ export default function ImageInput({
     (cloudinaryWidgetRef.current as any).open();
   };
   return (
-    <FormControl>
-      <StyledLabel
-        htmlFor="title"
-        className={`${errors["imageUrl"] && "error"}`}
-      >
-        File Upload
-      </StyledLabel>
-      <Button
-        ref={uploadButtonRef}
-        type="button"
-        onClick={openCloudinaryWidget}
-      >
-        Upload Image
-      </Button>
-      <input type="hidden" {...register("imageUrl")} />{" "}
-      {/* Hidden input to store URL */}
-    </FormControl>
+    <>
+      <FormControl>
+        <FormControl>
+          <StyledLabel
+            htmlFor="title"
+            className={`${errors["imageUrlArr"] && "error"}`}
+          >
+            File Upload
+          </StyledLabel>
+          <Button
+            ref={uploadButtonRef}
+            type="button"
+            onClick={openCloudinaryWidget}
+          >
+            Upload Image
+          </Button>
+          <input
+            type="hidden"
+            {...register("imageUrlArr", {
+              validate: (val: any) => {
+                if (val.length > FILE_UPLOAD_OPTIONS[level].maxFiles) {
+                  return `You can only upload a maximum of ${FILE_UPLOAD_OPTIONS[level].maxFiles} files. Consider upgrading your plan.`;
+                }
+              },
+            })}
+          />
+        </FormControl>
+        {/* Hidden input to store URL */}
+      </FormControl>
+    </>
   );
 }

@@ -8,3 +8,23 @@ export const excludedTypeList = [
   "public_bath",
   "bus_stop",
 ];
+
+export const FILE_UPLOAD_OPTIONS = [
+  {
+    // widgetParameters: { multiple: false, maxFiles: 1 },
+    multiple: false,
+    maxFiles: 1,
+    // cropping parameters
+    cropping: true,
+    croppingShowBackButton: true,
+    // upload parameters
+    tags: ["anonymous"],
+    resourceType: "image",
+    // customization parameters
+    theme: "minimal",
+    buttonCaption: "Upload File(s)",
+    // advanced parameters
+    showPoweredBy: false,
+    autoMinimize: true,
+  },
+];
