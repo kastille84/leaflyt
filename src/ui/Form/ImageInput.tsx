@@ -10,6 +10,7 @@ import FormControl from "./FormControl";
 import Button from "../Button";
 import styled from "styled-components";
 import { FILE_UPLOAD_OPTIONS } from "../../constants";
+import { UploadApiErrorResponse, UploadApiResponse } from "cloudinary";
 
 const StyledLabel = styled.label`
   &.error {
@@ -45,7 +46,7 @@ export default function ImageInput({
           uploadPreset: import.meta.env.VITE_CLOUDINARY_PRESET,
           ...FILE_UPLOAD_OPTIONS[level],
         },
-        (error: any, result: any) => {
+        (error: UploadApiErrorResponse, result: UploadApiResponse) => {
           if (!error && result && result.event === "success") {
             console.log("Done! Here is the image info: ", result.info);
             setValue("imageUrlArr", [...imageUrlArr, result.info]); // Update form field

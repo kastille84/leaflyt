@@ -193,7 +193,12 @@ export default function Anonymous() {
                   errors={errors}
                   level={0}
                 />
-                <ImagePreview imageUrlArr={imageUrlArrWatch} />
+                {imageUrlArrWatch && imageUrlArrWatch.length > 0 && (
+                  <ImagePreview
+                    imageUrlArr={imageUrlArrWatch}
+                    setValue={setValue}
+                  />
+                )}
               </FormControl>
             </FormControlRow>
 

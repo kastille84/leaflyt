@@ -20,10 +20,17 @@ const StyledFormControlRow = styled.div`
   & .ql-container {
     min-height: 150px;
     height: auto;
+    border-bottom-left-radius: var(--border-radius-sm);
+    border-bottom-right-radius: var(--border-radius-sm);
   }
   & .ql-editor {
     font-size: 1.6rem;
     color: var(--color-grey-600);
+  }
+
+  & .ql-toolbar {
+    border-top-left-radius: var(--border-radius-sm);
+    border-top-right-radius: var(--border-radius-sm);
   }
 `;
 

@@ -8,7 +8,7 @@ export const excludedTypeList = [
   "public_bath",
   "bus_stop",
 ];
-
+// https://cloudinary.com/documentation/upload_widget_reference#parameters
 export const FILE_UPLOAD_OPTIONS = [
   {
     // widgetParameters: { multiple: false, maxFiles: 1 },
@@ -26,5 +26,6 @@ export const FILE_UPLOAD_OPTIONS = [
     // advanced parameters
     showPoweredBy: false,
     autoMinimize: true,
+    return_delete_token: true,
   },
 ];
