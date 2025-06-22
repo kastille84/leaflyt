@@ -22,7 +22,7 @@ const StyledCross = styled.span`
   right: 5px;
   cursor: pointer;
   background-color: var(--color-red-600);
-  opacity: 0.8;
+
   border-radius: 50%;
   display: inline-block;
   width: 1.6rem;
@@ -37,11 +37,10 @@ const StyledCross = styled.span`
   }
 
   &:hover {
-    opacity: 1;
     background-color: var(--color-grey-50);
-    & svg {
-      color: var(--color-red-600);
-    }
+  }
+  &:hover svg {
+    color: var(--color-red-600);
   }
 `;
 
@@ -54,7 +53,7 @@ export default function ImagePreviewItem({
   idx: number;
   handleDeleteImage: (idx: number) => void;
 }) {
-  const [timeLeft, setTimeLeft] = useState<number>(2 * 60);
+  const [timeLeft, setTimeLeft] = useState<number>(8 * 60);
 
   useEffect(() => {
     // Set up an interval to decrement the timeLeft every second.
@@ -65,6 +64,7 @@ export default function ImagePreviewItem({
       } else {
         // If time is 0 or less, clear the interval to stop the timer.
         clearInterval(timer);
+        handleDeleteImage(idx);
       }
     }, 1000); // Update every 1000 milliseconds (1 second).
 

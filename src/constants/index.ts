@@ -12,6 +12,15 @@ export const excludedTypeList = [
 export const FILE_UPLOAD_OPTIONS = [
   {
     // widgetParameters: { multiple: false, maxFiles: 1 },
+    sources: [
+      "local",
+      "url",
+      "camera",
+      "image_search",
+      "unsplash",
+      "google_drive",
+      "shutterstock",
+    ],
     multiple: false,
     maxFiles: 1,
     // cropping parameters
@@ -25,7 +34,7 @@ export const FILE_UPLOAD_OPTIONS = [
     buttonCaption: "Upload File(s)",
     // advanced parameters
     showPoweredBy: false,
-    autoMinimize: true,
+    // autoMinimize: true,
     return_delete_token: true,
   },
 ];

@@ -34,17 +34,21 @@ export async function deleteFileOverTime(
   // const result = await cloudinary.uploader.destroy(
   //   imgToRemoveFromCloudinary.public_id
   // );
-  const result = await fetch(
-    `https://api.cloudinary.com/v1_1/${
-      import.meta.env.VITE_CLOUDINARY_NAME
-    }/image/destroy`,
-    {
-      method: "DELETE",
-      body: JSON.stringify({
-        public_ids: [imgToRemoveFromCloudinary.public_id],
-        api_key: import.meta.env.VITE_CLOUDINARY_API_KEY,
-      }),
-    }
-  );
-  return result;
+  try {
+    await fetch(
+      `https://api.cloudinary.com/v1_1/${
+        import.meta.env.VITE_CLOUDINARY_NAME
+      }/delete_by_token`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `token=${imgToRemoveFromCloudinary.delete_token}`,
+      }
+    );
+  } catch (error: any) {
+    console.log("error deleting file", error);
+    throw new Error(error.message);
+  }
 }

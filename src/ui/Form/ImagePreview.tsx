@@ -44,7 +44,7 @@ export default function ImagePreview({
         ))}
 
       <small>
-        To save resources, each file will be deleted after 10 minutes of being
+        To save resources, each file will be deleted after 8 minutes of being
         uploaded if post has not been finalized.
       </small>
     </StyledImagePreview>

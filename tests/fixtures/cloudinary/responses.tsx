@@ -1,3 +1,4 @@
+// image upload widget response
 export const resultInfo = {
   id: "uw-file3",
   batchId: "uw-batch2",
@@ -28,4 +29,9 @@ export const resultInfo = {
   path: "v1750357407/pd05omwkpe907awdgrz1.jpg",
   thumbnail_url:
     "https://res.cloudinary.com/something/image/upload/c_limit,h_60,w_90/v1750357407/pd05omwkpe907awdgrz1.jpg",
+};
+
+// delete_by_token
+const delete_by_token_success = {
+  result: "ok",
 };
