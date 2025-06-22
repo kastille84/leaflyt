@@ -70,6 +70,12 @@ export default function ImageInput({
             ref={uploadButtonRef}
             type="button"
             onClick={openCloudinaryWidget}
+            disabled={imageUrlArr.length >= FILE_UPLOAD_OPTIONS[level].maxFiles}
+            variation={
+              imageUrlArr.length >= FILE_UPLOAD_OPTIONS[level].maxFiles
+                ? "disabled"
+                : "primary"
+            }
           >
             Upload Image
           </Button>

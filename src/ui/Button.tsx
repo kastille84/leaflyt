@@ -45,11 +45,16 @@ const variations = {
       background-color: var(--color-red-800);
     }
   `,
+  disabled: css`
+    cursor: not-allowed;
+    background-color: var(--color-grey-200);
+    color: var(--color-grey-400);
+  `,
 };
 
 const Button = styled.button<{
   size?: "small" | "medium" | "large";
-  variation?: "primary" | "secondary" | "danger";
+  variation?: "primary" | "secondary" | "danger" | "disabled";
 }>`
   border: none;
   border-radius: var(--border-radius-sm);
