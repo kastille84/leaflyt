@@ -59,7 +59,7 @@ export default function AddressInput({
   // google autocomplete
   // https://www.npmjs.com/package/react-google-autocomplete
   const {
-    // placesService,
+    placesService,
     placePredictions,
     getPlacePredictions,
     // isPlacePredictionsLoading,
@@ -100,6 +100,18 @@ export default function AddressInput({
             <StyledAddressResult
               key={placePrediction.place_id}
               onClick={() => {
+                // placesService?.getDetails(
+                //   {
+                //     placeId: placePrediction.place_id,
+                //     fields: [
+                //       "name",
+                //       "formatted_address",
+                //       "geometry.location",
+                //       "place_id",
+                //     ],
+                //   },
+                //   (placeDetails) => setValue(registerName, placeDetails)
+                // );
                 setValue(registerName, placePrediction.description);
                 setAddressSelected(true);
               }}

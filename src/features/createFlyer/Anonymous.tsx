@@ -36,6 +36,7 @@ import TypeOfUserInput from "../../ui/Form/TypeOfUserInput";
 import ContentInput from "../../ui/Form/ContentInput";
 import ImageInput from "../../ui/Form/ImageInput";
 import ImagePreview from "../../ui/Form/ImagePreview";
+import { useGlobalContext } from "../../context/GlobalContext";
 
 const StyledAnonymousContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
@@ -94,19 +95,9 @@ export default function Anonymous() {
     setValue,
     formState: { errors },
     control,
-  } = useForm({
-    // defaultValues: {
-    //   typeOfUser: "",
-    //   category: "",
-    //   subcategory: "",
-    //   anonymous: "",
-    //   attestation: "",
-    //   individual: "",
-    //   business: "",
-    //   organization: "",
-    // },
-  });
+  } = useForm();
 
+  const { setShowCloseSlideInModal } = useGlobalContext();
   const typeOfUserWatch = watch("typeOfUser");
   const typeOfUser = getValues("typeOfUser");
   const categoryWatch = watch("category");
@@ -133,6 +124,10 @@ export default function Anonymous() {
   useEffect(() => {});
 
   const onSubmit = (data: any) => console.log(data);
+
+  function handleCancel() {
+    setShowCloseSlideInModal(true);
+  }
 
   return (
     <StyledAnonymousContainer>
@@ -208,6 +203,7 @@ export default function Anonymous() {
                 register={register}
                 value={typeOfUserWatch}
                 errors={errors}
+                showUnregisteredMessaging
               />
               <FormControl>{/* empty */}</FormControl>
             </FormControlRow>
@@ -360,7 +356,7 @@ export default function Anonymous() {
           </StyledFormContent>
           <StyledFormButtonContainer>
             <Button type="submit">Create</Button>
-            <Button type="button" variation="secondary">
+            <Button type="button" variation="secondary" onClick={handleCancel}>
               Cancel
             </Button>
           </StyledFormButtonContainer>

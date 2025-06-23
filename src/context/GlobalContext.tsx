@@ -18,6 +18,8 @@ export type ContextType = {
   setDrawerAction: React.Dispatch<
     React.SetStateAction<"edit" | "create" | null>
   >;
+  showCloseSlideInModal: boolean;
+  setShowCloseSlideInModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -32,6 +34,8 @@ const GlobalContext = createContext<ContextType>({
   isOpenFlyerDrawer: false,
   drawerAction: null,
   setDrawerAction: () => {},
+  showCloseSlideInModal: false,
+  setShowCloseSlideInModal: () => {},
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -41,6 +45,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [drawerAction, setDrawerAction] = useState<"edit" | "create" | null>(
     null
   );
+  const [showCloseSlideInModal, setShowCloseSlideInModal] =
+    useState<boolean>(false);
 
   const {
     getUserGeo,
@@ -64,6 +70,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         isOpenFlyerDrawer,
         drawerAction,
         setDrawerAction,
+        showCloseSlideInModal,
+        setShowCloseSlideInModal,
       }}
     >
       {children}

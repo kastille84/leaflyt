@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 
 import ActionMenu from "../ui/ActionMenu";
 import Sidebar from "../ui/Sidebar";
+import CloseSlideInModal from "../ui/Modals/CloseSlideInModal";
 
 const StyledMainLayout = styled.main`
   height: 100vh;
@@ -26,6 +27,7 @@ export default function MainLayout() {
         <Outlet />
       </StyledMainContentContainer>
       <Sidebar></Sidebar>
+      <CloseSlideInModal />
     </StyledMainLayout>
   );
 }

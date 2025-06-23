@@ -11,7 +11,7 @@ import {
 } from "./context/GlobalContext";
 import Board from "./features/board/Board";
 import MainLayout from "./pages/MainLayout";
-import FlyerSlideIn from "./ui/FlyerSlideIn";
+import FlyerSlideIn from "./ui/Flyer/FlyerSlideIn";
 
 const queryClient = new QueryClient({
   defaultOptions: {

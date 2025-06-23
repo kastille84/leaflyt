@@ -1,7 +1,8 @@
 import React from "react";
 import { HiOutlineXMark } from "react-icons/hi2";
 import styled from "styled-components";
-import Heading from "./Heading";
+import Heading from "../Heading";
+import { useGlobalContext } from "../../context/GlobalContext";
 
 const StyledFlyerFormContainer = styled.div`
   height: 100vh;
@@ -16,9 +17,12 @@ const StyledFlyerFormContainer = styled.div`
   }
 
   & svg {
-    color: var(--color-red-600);
+    color: var(--color-brand-600);
     font-size: 2.4rem;
     cursor: pointer;
+  }
+  & svg:hover {
+    color: var(--color-red-600);
   }
 `;
 
@@ -46,13 +50,18 @@ export default function FlyerFormContainer({
   action: string;
   children: React.ReactNode;
 }) {
+  const { setShowCloseSlideInModal } = useGlobalContext();
+  function handleClose() {
+    setShowCloseSlideInModal(true);
+  }
+
   return (
     <StyledFlyerFormContainer>
       <StyledTopSection>
         <Heading as="h2">
           <span>{action}</span> Flyer @ {name}
         </Heading>
-        <HiOutlineXMark />
+        <HiOutlineXMark onClick={handleClose} />
       </StyledTopSection>
       <StyledChildrenSection>{children}</StyledChildrenSection>
     </StyledFlyerFormContainer>

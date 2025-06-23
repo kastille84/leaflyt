@@ -10,4 +10,6 @@ export const mockUseGlobalContextReturnObj = {
   isOpenFlyerDrawer: false,
   drawerAction: null,
   setDrawerAction: () => {},
+  showCloseSlideInModal: false,
+  setShowCloseSlideInModal: () => {},
 };
