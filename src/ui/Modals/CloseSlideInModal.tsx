@@ -49,6 +49,7 @@ export default function CloseSlideInModal() {
   return (
     // https://www.npmjs.com/package/react-modal
     <Modal
+      testId="close-slide-in-modal"
       isOpen={showCloseSlideInModal}
       onRequestClose={() => {
         console.log("close");

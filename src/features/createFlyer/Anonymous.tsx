@@ -24,6 +24,7 @@ import EmailInput from "../../ui/Form/EmailInput";
 import PhoneInput from "../../ui/Form/PhoneInput";
 import WebsiteInput from "../../ui/Form/WebsiteInput";
 import FullNameInput from "../../ui/Form/FullNameInput";
+import TagsInput from "../../ui/Form/tagsInput";
 
 import categoriesObj from "../../data/categories";
 import {
@@ -86,6 +87,7 @@ const StyledFormButtonContainer = styled.div`
 `;
 
 export default function Anonymous() {
+  // TODO: Add tags
   const {
     register,
     unregister,
@@ -196,7 +198,13 @@ export default function Anonymous() {
                 )}
               </FormControl>
             </FormControlRow>
-
+            <FormControlRow>
+              <TagsInput
+                control={control}
+                errors={errors}
+                getValues={getValues}
+              />
+            </FormControlRow>
             <FormControlRow>
               <TypeOfUserInput
                 title={"How do you want to post as?"}

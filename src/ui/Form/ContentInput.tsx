@@ -1,6 +1,6 @@
 import { Control, Controller } from "react-hook-form";
 import ReactQuill from "react-quill-new";
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
+import { FieldErrors, FieldValues } from "react-hook-form";
 import FormControl from "./FormControl";
 import FieldInputError from "./FieldInputError";
 import styled from "styled-components";
