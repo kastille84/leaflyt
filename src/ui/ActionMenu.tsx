@@ -19,7 +19,8 @@ const StyledActionContainer = styled.div`
 `;
 
 export default function ActionMenu() {
-  const { selectedPlace } = useGlobalContext();
+  const { selectedPlace, setIsOpenFlyerDrawer, setDrawerAction } =
+    useGlobalContext();
   return (
     <StyledActionMenu>
       <div>
@@ -28,7 +29,15 @@ export default function ActionMenu() {
       </div>
       {selectedPlace?.id && (
         <div>
-          <Button size="small">Create Flyer</Button>
+          <Button
+            size="small"
+            onClick={() => {
+              setDrawerAction("create");
+              setIsOpenFlyerDrawer(true);
+            }}
+          >
+            Create Flyer
+          </Button>
         </div>
       )}
       <StyledActionContainer>

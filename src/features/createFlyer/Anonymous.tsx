@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import styled from "styled-components";
@@ -29,7 +29,6 @@ import TagsInput from "../../ui/Form/tagsInput";
 import categoriesObj from "../../data/categories";
 import {
   getCategoriesForSelect,
-  getSubcategories,
   getSubcategoriesForSelect,
 } from "../../utils/GeneralUtils";
 import SubcategoryInput from "../../ui/Form/SubcategoryInput";
@@ -38,8 +37,10 @@ import ContentInput from "../../ui/Form/ContentInput";
 import ImageInput from "../../ui/Form/ImageInput";
 import ImagePreview from "../../ui/Form/ImagePreview";
 import { useGlobalContext } from "../../context/GlobalContext";
-import { useParams } from "react-router-dom";
-import { createUnregisteredFlyer } from "../../services/apiFlyers";
+
+import useCreateUnregisteredFlyer from "./useCreateUnregisteredFlyer";
+import toast from "react-hot-toast";
+import OverlaySpinner from "../../ui/OverlaySpinner";
 
 const StyledAnonymousContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
@@ -89,7 +90,7 @@ const StyledFormButtonContainer = styled.div`
 `;
 
 export default function Anonymous() {
-  // TODO: Add tags
+  const [showSpinner, setShowSpinner] = useState(false);
   const {
     register,
     unregister,
@@ -101,10 +102,9 @@ export default function Anonymous() {
     control,
   } = useForm();
 
-  const { id: placeIdFromUrl } = useParams();
-  const { selectedPlace } = useGlobalContext();
-
-  const { setShowCloseSlideInModal } = useGlobalContext();
+  const { setIsOpenFlyerDrawer, setDrawerAction, setShowCloseSlideInModal } =
+    useGlobalContext();
+  const { createFlyer } = useCreateUnregisteredFlyer();
   const typeOfUserWatch = watch("typeOfUser");
   const typeOfUser = getValues("typeOfUser");
   const categoryWatch = watch("category");
@@ -132,11 +132,25 @@ export default function Anonymous() {
 
   const onSubmit = async (data: any) => {
     console.log("data", data);
-    // prep data
     const prepData = {
       ...data,
     };
-    await createUnregisteredFlyer(prepData, selectedPlace!);
+    try {
+      setShowSpinner(true);
+      createFlyer(prepData, {
+        onSuccess: () => {
+          toast.success("Flyer created!");
+        },
+      });
+      // TODO: close slidein
+      setIsOpenFlyerDrawer(false);
+      setDrawerAction(null);
+    } catch (error: any) {
+      console.log("error", error.message);
+      toast.error(error.message);
+    } finally {
+      setShowSpinner(false);
+    }
   };
 
   function handleCancel() {
@@ -382,6 +396,7 @@ export default function Anonymous() {
           </StyledFormButtonContainer>
         </Form>
       </StyledFormContainer>
+      {showSpinner && <OverlaySpinner message="Creating Flyer" />}
     </StyledAnonymousContainer>
   );
 }

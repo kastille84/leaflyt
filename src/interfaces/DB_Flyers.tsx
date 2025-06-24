@@ -58,3 +58,11 @@ export interface DB_Flyer_Create_Unregistered_Organization
     };
   };
 }
+
+export type DB_Flyers_Create_Unregistered =
+  | DB_Flyer_Create_Unregistered_Anonymous
+  | DB_Flyer_Create_Unregistered_Individual
+  | DB_Flyer_Create_Unregistered_Business
+  | DB_Flyer_Create_Unregistered_Organization;
+
+export type DB_Flyers_Response = DB_Flyers_Create_Unregistered;

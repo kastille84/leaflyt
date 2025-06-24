@@ -1,20 +1,11 @@
 import { supabase } from "./supabase";
 import { createBoard, getBoard } from "./apiBoards";
-import {
-  DB_Flyer_Create_Unregistered_Anonymous,
-  DB_Flyer_Create_Unregistered_Business,
-  DB_Flyer_Create_Unregistered_Individual,
-  DB_Flyer_Create_Unregistered_Organization,
-} from "../interfaces/DB_Flyers";
+import { DB_Flyers_Create_Unregistered } from "../interfaces/DB_Flyers";
 import { NearbySearchPlaceResult } from "../interfaces/Geo";
 import { DB_Board } from "../interfaces/DB_Board";
 
 export const createUnregisteredFlyer = async (
-  flyerData:
-    | DB_Flyer_Create_Unregistered_Anonymous
-    | DB_Flyer_Create_Unregistered_Individual
-    | DB_Flyer_Create_Unregistered_Business
-    | DB_Flyer_Create_Unregistered_Organization,
+  flyerData: DB_Flyers_Create_Unregistered,
   selectedPlace: NearbySearchPlaceResult
 ) => {
   // make a call to get the latest board data
@@ -50,13 +41,14 @@ export const createUnregisteredFlyer = async (
     // add the flyer to the board
     await supabase
       .from("boards")
-      .update({ flyers: [...(board.data! as DB_Board).flyers, newFlyer] })
-      .eq("id", (board.data! as DB_Board).id);
+      .update({ flyers: [...board.data!.flyers, newFlyer] })
+      .eq("id", board.data!.id);
 
-    // if (error) {
-    //   console.error(error);
-    //   throw new Error("Error creating a flyer: " + error.message);
-    // }
+    if (error) {
+      console.error(error);
+      throw new Error("Error creating a flyer: " + error.message);
+    }
+    return newFlyer;
   } catch (error: any) {
     console.error(error);
     throw new Error("Error creating a flyer: " + error.message);
