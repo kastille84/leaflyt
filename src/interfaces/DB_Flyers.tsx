@@ -1,6 +1,9 @@
 import { UploadApiResponse } from "cloudinary";
 
 interface DB_Flyer_Create {
+  // userId?: string;
+  // boardId?: string;
+  placeId?: string;
   title: string;
   category: string;
   subcategory: string;

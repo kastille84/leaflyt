@@ -8,15 +8,29 @@ export const getBoards = async () => {
 };
 
 export const getBoard = async (
-  id: string
+  placeId: string
 ): Promise<{
-  data: DB_Board | null;
+  data: DB_Board | any[] | null;
   error: PostgrestError | null;
 }> => {
   const { data, error } = await supabase
     .from("boards")
     .select("*")
-    .eq("placeId", id)
+    .eq("placeId", placeId)
+    .single();
+  return { data, error };
+};
+
+export const createBoard = async (
+  selectedPlace: DB_Board
+): Promise<{
+  data: DB_Board | any[] | null;
+  error: PostgrestError | null;
+}> => {
+  const { data, error } = await supabase
+    .from("boards")
+    .insert([selectedPlace])
+    .select()
     .single();
   return { data, error };
 };

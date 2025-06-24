@@ -24,4 +24,5 @@ export interface NearbySearchPlaceResult {
     compoundCode: string;
     globalCode: string;
   };
+  types: string[];
 }

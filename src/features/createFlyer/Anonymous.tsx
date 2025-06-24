@@ -38,6 +38,8 @@ import ContentInput from "../../ui/Form/ContentInput";
 import ImageInput from "../../ui/Form/ImageInput";
 import ImagePreview from "../../ui/Form/ImagePreview";
 import { useGlobalContext } from "../../context/GlobalContext";
+import { useParams } from "react-router-dom";
+import { createUnregisteredFlyer } from "../../services/apiFlyers";
 
 const StyledAnonymousContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
@@ -99,6 +101,9 @@ export default function Anonymous() {
     control,
   } = useForm();
 
+  const { id: placeIdFromUrl } = useParams();
+  const { selectedPlace } = useGlobalContext();
+
   const { setShowCloseSlideInModal } = useGlobalContext();
   const typeOfUserWatch = watch("typeOfUser");
   const typeOfUser = getValues("typeOfUser");
@@ -125,7 +130,14 @@ export default function Anonymous() {
 
   useEffect(() => {});
 
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = async (data: any) => {
+    console.log("data", data);
+    // prep data
+    const prepData = {
+      ...data,
+    };
+    await createUnregisteredFlyer(prepData, selectedPlace!);
+  };
 
   function handleCancel() {
     setShowCloseSlideInModal(true);
