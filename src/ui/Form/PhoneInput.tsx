@@ -27,7 +27,7 @@ export default function PhoneInput({
   const errorObj = getErrorValue(errors);
 
   return (
-    <FormControl>
+    <FormControl testId="phone-container">
       <StyledLabel htmlFor="phone" className={`${errorObj && "error"}`}>
         Phone
       </StyledLabel>

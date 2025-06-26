@@ -6,10 +6,10 @@ import { createUnregisteredFlyer } from "../../services/apiFlyers";
 export default function useCreateUnregisteredFlyer() {
   const { selectedPlace } = useGlobalContext();
 
-  const { mutate: createFlyer } = useMutation({
+  const { mutate: createFlyer, error: createFlyerError } = useMutation({
     mutationFn: (prepData: DB_Flyers_Create_Unregistered) =>
       createUnregisteredFlyer(prepData, selectedPlace!),
   });
 
-  return { createFlyer };
+  return { createFlyer, createFlyerError };
 }

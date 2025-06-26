@@ -3,7 +3,7 @@ export const anonymous = {
   category: "Events & Activities",
   content:
     "<p>From july 3-10, we will be having try outs for the softball league in newburgh recreation center.</p><p><br></p><p>please come and tryout.</p>",
-  imageUrlArr: [
+  fileUrlArr: [
     {
       id: "uw-file21",
       batchId: "uw-batch20",
@@ -45,7 +45,7 @@ export const individual = {
   category: "Events & Activities",
   content:
     "<p>From july 3-10, we will be having try outs for the softball league in newburgh recreation center.</p><p><br></p><p>please come and tryout.</p>",
-  imageUrlArr: [
+  fileUrlArr: [
     {
       id: "uw-file21",
       batchId: "uw-batch20",
@@ -97,7 +97,7 @@ export const business = {
   category: "Events & Activities",
   content:
     "<p>From july 3-10, we will be having try outs for the softball league in newburgh recreation center.</p><p><br></p><p>please come and tryout.</p>",
-  imageUrlArr: [
+  fileUrlArr: [
     {
       id: "uw-file21",
       batchId: "uw-batch20",
@@ -147,7 +147,7 @@ export const organization = {
   category: "Events & Activities",
   content:
     "<p>From july 3-10, we will be having try outs for the softball league in newburgh recreation center.</p><p><br></p><p>please come and tryout.</p>",
-  imageUrlArr: [
+  fileUrlArr: [
     {
       id: "uw-file21",
       batchId: "uw-batch20",

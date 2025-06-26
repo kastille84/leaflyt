@@ -26,7 +26,7 @@ export default function LastNameInput({
   const errorObj = getErrorValue(errors);
 
   return (
-    <FormControl>
+    <FormControl testId="lastName-container">
       <StyledLabel htmlFor="last-name" className={`${errorObj && "error"}`}>
         Last Name
       </StyledLabel>

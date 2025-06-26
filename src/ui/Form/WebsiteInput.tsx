@@ -27,20 +27,17 @@ export default function WebsiteInput({
   const errorObj = getErrorValue(errors);
 
   return (
-    <FormControl>
+    <FormControl testId="website-container">
       <StyledLabel htmlFor="website" className={`${errorObj && "error"}`}>
-        Website
+        Website (optional)
       </StyledLabel>
       <Input
         type="url"
         id="website"
-        {...register(registerName, {
-          required: { value: true, message: "Website is required" },
-        })}
+        {...register(registerName)}
         placeholder="https://www.leaflyt.com"
         hasError={Boolean(errorObj)}
       />
-      {errorObj && <FieldInputError message={errorObj?.message as string} />}
     </FormControl>
   );
 }

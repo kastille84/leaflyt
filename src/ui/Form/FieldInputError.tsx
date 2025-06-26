@@ -14,5 +14,5 @@ export default function FieldInputError({
   // | Merge<FieldError, FieldErrorsImpl<any>>
   // | undefined;
 }) {
-  return <StyledError>{message}</StyledError>;
+  return <StyledError data-testid="field-error">{message}</StyledError>;
 }

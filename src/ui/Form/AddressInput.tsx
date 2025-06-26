@@ -74,7 +74,7 @@ export default function AddressInput({
 
   const errorObj = getErrorValue(errors);
   return (
-    <FormControl>
+    <FormControl testId="address-container">
       <StyledLabel htmlFor="address" className={`${errorObj && "error"}`}>
         Address
       </StyledLabel>

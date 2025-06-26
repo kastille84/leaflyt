@@ -24,7 +24,7 @@ export default function TypeOfUserInput({
   showUnregisteredMessaging?: boolean;
 }) {
   return (
-    <FormControl className="typeOfUser">
+    <FormControl className="typeOfUser" testId="typeOfUser-container">
       <StyledLabel
         htmlFor="typeOfUser"
         className={`${errors["typeOfUser"] && "error"}`}

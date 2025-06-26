@@ -18,7 +18,7 @@ export default function TitleInput({
   errors: FieldErrors<FieldValues>;
 }) {
   return (
-    <FormControl className="title">
+    <FormControl className="title" testId="title-container">
       <StyledLabel htmlFor="title" className={`${errors["title"] && "error"}`}>
         Title
       </StyledLabel>

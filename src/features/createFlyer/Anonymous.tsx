@@ -1,16 +1,16 @@
-import { use, useEffect, useState } from "react";
-import ReactQuill from "react-quill-new";
+import { useEffect, useState } from "react";
 import "react-quill-new/dist/quill.snow.css";
 import styled from "styled-components";
 
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { useQueryClient } from "@tanstack/react-query";
 
 import Heading from "../../ui/Heading";
 import {
   HiOutlineArrowRight,
   HiOutlineExclamationCircle,
 } from "react-icons/hi2";
-import Input from "../../ui/Input";
+
 import Button from "../../ui/Button";
 import FormControlRow from "../../ui/Form/FormControlRow";
 import FormControl from "../../ui/Form/FormControl";
@@ -24,7 +24,7 @@ import EmailInput from "../../ui/Form/EmailInput";
 import PhoneInput from "../../ui/Form/PhoneInput";
 import WebsiteInput from "../../ui/Form/WebsiteInput";
 import FullNameInput from "../../ui/Form/FullNameInput";
-import TagsInput from "../../ui/Form/tagsInput";
+import TagsInput from "../../ui/Form/TagsInput";
 
 import categoriesObj from "../../data/categories";
 import {
@@ -41,6 +41,8 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import useCreateUnregisteredFlyer from "./useCreateUnregisteredFlyer";
 import toast from "react-hot-toast";
 import OverlaySpinner from "../../ui/OverlaySpinner";
+import AttestationInput from "../../ui/Form/AttestationInput";
+import { useParams } from "react-router-dom";
 
 const StyledAnonymousContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
@@ -100,7 +102,12 @@ export default function Anonymous() {
     setValue,
     formState: { errors },
     control,
-  } = useForm();
+  } = useForm({
+    mode: "onBlur",
+  });
+
+  const queryClient = useQueryClient();
+  const { id: boardId } = useParams();
 
   const { setIsOpenFlyerDrawer, setDrawerAction, setShowCloseSlideInModal } =
     useGlobalContext();
@@ -109,7 +116,7 @@ export default function Anonymous() {
   const typeOfUser = getValues("typeOfUser");
   const categoryWatch = watch("category");
   const subcategoryWatch = watch("subcategory");
-  const imageUrlArrWatch = watch("imageUrlArr");
+  const fileUrlArrWatch = watch("fileUrlArr");
 
   console.log("getValues", getValues());
   console.log("errors", errors);
@@ -135,22 +142,19 @@ export default function Anonymous() {
     const prepData = {
       ...data,
     };
-    try {
-      setShowSpinner(true);
-      createFlyer(prepData, {
-        onSuccess: () => {
-          toast.success("Flyer created!");
-        },
-      });
-      // TODO: close slidein
-      setIsOpenFlyerDrawer(false);
-      setDrawerAction(null);
-    } catch (error: any) {
-      console.log("error", error.message);
-      toast.error(error.message);
-    } finally {
-      setShowSpinner(false);
-    }
+    setShowSpinner(true);
+    createFlyer(prepData, {
+      onSuccess: () => {
+        toast.success("Flyer created!");
+        setIsOpenFlyerDrawer(false);
+        setDrawerAction(null);
+        queryClient.invalidateQueries({ queryKey: ["board", boardId] });
+      },
+      onError: (error: any) => {
+        toast.error(error.message);
+      },
+    });
+    setShowSpinner(false);
   };
 
   function handleCancel() {
@@ -158,7 +162,7 @@ export default function Anonymous() {
   }
 
   return (
-    <StyledAnonymousContainer>
+    <StyledAnonymousContainer data-testid="anonymous-container">
       <StyledInfoAlertContainer>
         <Heading as={"h4"}>
           <span>
@@ -216,9 +220,9 @@ export default function Anonymous() {
                   errors={errors}
                   level={0}
                 />
-                {imageUrlArrWatch && imageUrlArrWatch.length > 0 && (
+                {fileUrlArrWatch && fileUrlArrWatch.length > 0 && (
                   <ImagePreview
-                    imageUrlArr={imageUrlArrWatch}
+                    fileUrlArr={fileUrlArrWatch}
                     setValue={setValue}
                   />
                 )}
@@ -244,25 +248,7 @@ export default function Anonymous() {
 
             {typeOfUserWatch === "anonymous" && (
               <FormControlRow>
-                <FormControl className="attestation-container">
-                  <div className="attestation">
-                    <Input
-                      type="checkbox"
-                      id="attestation"
-                      checked
-                      {...register("attestation", { required: true })}
-                    />
-                    <p>
-                      Anonymous posting has a higher chance of getting flagged
-                      due to their uncontrolled nature.
-                      <br />
-                      Leaflyt relies on the community to help flag inappropiate
-                      content.
-                      <br />
-                      You agree to "Post Responsibly".
-                    </p>
-                  </div>
-                </FormControl>
+                <AttestationInput register={register} />
               </FormControlRow>
             )}
             {typeOfUserWatch === "individual" && (
@@ -388,7 +374,7 @@ export default function Anonymous() {
               </>
             )}
           </StyledFormContent>
-          <StyledFormButtonContainer>
+          <StyledFormButtonContainer data-testid="form-button-container">
             <Button type="submit">Create</Button>
             <Button type="button" variation="secondary" onClick={handleCancel}>
               Cancel

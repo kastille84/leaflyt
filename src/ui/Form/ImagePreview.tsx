@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { UploadApiResponse } from "cloudinary";
 import { deleteFileOverTime } from "../../services/cloudinary";
 import ImagePreviewItem from "./ImagePreviewItem";
+import toast from "react-hot-toast";
 
 const StyledImagePreview = styled.div`
   display: flex;
@@ -13,28 +14,28 @@ const StyledImagePreview = styled.div`
 `;
 
 export default function ImagePreview({
-  imageUrlArr,
+  fileUrlArr,
   setValue,
 }: {
-  imageUrlArr: UploadApiResponse[];
+  fileUrlArr: UploadApiResponse[];
   setValue: UseFormSetValue<any>;
 }) {
   async function handleDeleteImage(idx: number) {
-    const imgToRemoveFromCloudinary = imageUrlArr.splice(idx, 1);
+    const imgToRemoveFromCloudinary = fileUrlArr.splice(idx, 1);
     try {
       // Delete image from cloudinary
       const result = await deleteFileOverTime(imgToRemoveFromCloudinary[0]);
       // remove image from state
-      setValue("imageUrlArr", imageUrlArr);
+      setValue("fileUrlArr", fileUrlArr);
     } catch (error) {
       console.log("error deleting file", error);
-      // #TODO: toast to handle error
+      toast.error("Error deleting image");
     }
   }
   return (
-    <StyledImagePreview>
-      {imageUrlArr.length &&
-        imageUrlArr.map((imageUrl, idx: number) => (
+    <StyledImagePreview data-testid="image-preview">
+      {fileUrlArr.length &&
+        fileUrlArr.map((imageUrl, idx: number) => (
           <ImagePreviewItem
             imageUrl={imageUrl}
             idx={idx}

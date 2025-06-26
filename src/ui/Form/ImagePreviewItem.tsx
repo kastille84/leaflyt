@@ -87,7 +87,10 @@ export default function ImagePreviewItem({
   };
 
   return (
-    <StyledFigure key={imageUrl.public_id}>
+    <StyledFigure
+      key={imageUrl.public_id}
+      data-testid={`image-preview-item-${idx}`}
+    >
       <img
         src={imageUrl.thumbnail_url}
         alt={imageUrl.public_id}
@@ -101,7 +104,7 @@ export default function ImagePreviewItem({
           in {formatTime(timeLeft)}
         </small>
       )}
-      <StyledCross onClick={() => handleDeleteImage(idx)}>
+      <StyledCross onClick={() => handleDeleteImage(idx)} data-testid="delete">
         <HiOutlineXMark />
       </StyledCross>
     </StyledFigure>

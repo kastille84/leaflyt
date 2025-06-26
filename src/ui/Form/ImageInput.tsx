@@ -11,6 +11,7 @@ import Button from "../Button";
 import styled from "styled-components";
 import { FILE_UPLOAD_OPTIONS } from "../../constants";
 import { UploadApiErrorResponse, UploadApiResponse } from "cloudinary";
+import toast from "react-hot-toast";
 
 const StyledLabel = styled.label`
   &.error {
@@ -34,9 +35,9 @@ export default function ImageInput({
   const cloudinaryWidgetRef = useRef(null);
 
   useEffect(() => {
-    setValue("imageUrlArr", []);
+    setValue("fileUrlArr", []);
   }, []);
-  const imageUrlArr = getValues("imageUrlArr");
+  const fileUrlArr = getValues("fileUrlArr");
 
   const openCloudinaryWidget = () => {
     if (!cloudinaryWidgetRef?.current && uploadButtonRef?.current) {
@@ -48,8 +49,13 @@ export default function ImageInput({
         },
         (error: UploadApiErrorResponse, result: UploadApiResponse) => {
           if (!error && result && result.event === "success") {
+            // TODO: remove this console.log
             console.log("Done! Here is the image info: ", result.info);
-            setValue("imageUrlArr", [...imageUrlArr, result.info]); // Update form field
+            setValue("fileUrlArr", [...fileUrlArr, result.info]); // Update form field
+          }
+          if (error) {
+            console.log(error);
+            toast.error(error.message);
           }
         }
       );
@@ -58,11 +64,11 @@ export default function ImageInput({
   };
   return (
     <>
-      <FormControl>
+      <FormControl testId="file-container">
         <FormControl>
           <StyledLabel
             htmlFor="title"
-            className={`${errors["imageUrlArr"] && "error"}`}
+            className={`${errors["fileUrlArr"] && "error"}`}
           >
             File Upload
           </StyledLabel>
@@ -71,12 +77,12 @@ export default function ImageInput({
             type="button"
             onClick={openCloudinaryWidget}
             disabled={
-              imageUrlArr &&
-              imageUrlArr?.length >= FILE_UPLOAD_OPTIONS[level].maxFiles
+              fileUrlArr &&
+              fileUrlArr?.length >= FILE_UPLOAD_OPTIONS[level].maxFiles
             }
             variation={
-              imageUrlArr &&
-              imageUrlArr?.length >= FILE_UPLOAD_OPTIONS[level].maxFiles
+              fileUrlArr &&
+              fileUrlArr?.length >= FILE_UPLOAD_OPTIONS[level].maxFiles
                 ? "disabled"
                 : "primary"
             }
@@ -85,7 +91,7 @@ export default function ImageInput({
           </Button>
           <input
             type="hidden"
-            {...register("imageUrlArr", {
+            {...register("fileUrlArr", {
               validate: (val: any) => {
                 if (val.length > FILE_UPLOAD_OPTIONS[level].maxFiles) {
                   return `You can only upload a maximum of ${FILE_UPLOAD_OPTIONS[level].maxFiles} files. Consider upgrading your plan.`;

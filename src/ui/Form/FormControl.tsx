@@ -58,11 +58,15 @@ const StyledFormControl = styled.div`
 export default function FormControl({
   children,
   className,
+  testId,
 }: {
   children?: React.ReactNode;
   className?: string;
+  testId?: string;
 }) {
   return (
-    <StyledFormControl className={className}>{children}</StyledFormControl>
+    <StyledFormControl className={className} data-testid={testId}>
+      {children}
+    </StyledFormControl>
   );
 }

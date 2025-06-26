@@ -26,7 +26,7 @@ export default function EmailInput({
 
   const errorObj = getErrorValue(errors);
   return (
-    <FormControl>
+    <FormControl testId="email-container">
       <StyledLabel htmlFor="email" className={`${errorObj && "error"}`}>
         Email
       </StyledLabel>

@@ -2,7 +2,6 @@ import { supabase } from "./supabase";
 import { createBoard, getBoard } from "./apiBoards";
 import { DB_Flyers_Create_Unregistered } from "../interfaces/DB_Flyers";
 import { NearbySearchPlaceResult } from "../interfaces/Geo";
-import { DB_Board } from "../interfaces/DB_Board";
 
 export const createUnregisteredFlyer = async (
   flyerData: DB_Flyers_Create_Unregistered,

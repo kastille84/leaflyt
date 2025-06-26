@@ -9,7 +9,7 @@ interface DB_Flyer_Create {
   subcategory: string;
   content: string;
   tags?: string[];
-  imageUrlArr?: UploadApiResponse[];
+  fileUrlArr?: UploadApiResponse[];
 }
 
 interface DB_Flyer_Create_Unregistered extends DB_Flyer_Create {

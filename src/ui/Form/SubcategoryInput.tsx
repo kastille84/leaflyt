@@ -22,7 +22,7 @@ export default function SubcategoryInput({
   errors: FieldErrors<FieldValues>;
 }) {
   return (
-    <FormControl className="subcategory">
+    <FormControl className="subcategory" testId="subcategory-container">
       <StyledLabel
         htmlFor="subcategory"
         className={`${errors["subcategory"] && "error"}`}

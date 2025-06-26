@@ -22,7 +22,7 @@ export default function CategoryInput({
   errors: FieldErrors<FieldValues>;
 }) {
   return (
-    <FormControl className="category">
+    <FormControl className="category" testId="category-container">
       <StyledLabel
         htmlFor="category"
         className={`${errors["category"] && "error"}`}

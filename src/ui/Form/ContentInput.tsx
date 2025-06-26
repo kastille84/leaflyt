@@ -19,7 +19,7 @@ export default function ContentInput({
   errors: FieldErrors;
 }) {
   return (
-    <FormControl>
+    <FormControl testId="content-container">
       <StyledLabel
         htmlFor="description"
         className={`${errors["content"] && "error"}`}

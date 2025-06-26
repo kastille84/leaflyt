@@ -3,29 +3,19 @@ import { vi } from "vitest";
 import Landing from "../../src/pages/Landing";
 import * as GlobalContext from "../../src/context/GlobalContext";
 
+// fixtures
+import { mockUseGlobalContextReturnObj } from "../fixtures/globalContext";
+import { get } from "react-hook-form";
+
 describe("Landing Page", () => {
   let mockGetUserGeo = vi.fn();
 
   vi.mock("../../src/context/GlobalContext");
 
-  const mockUseGlobalContextReturnObj = {
-    getUserGeo: mockGetUserGeo,
-    isGettingLocation: false,
-    setIsGettingLocation: () => {},
-    coords: null,
-    selectedPlace: null,
-    setCoords: () => {},
-    setSelectedPlace: () => {},
-    setIsOpenFlyerDrawer: () => {},
-    isOpenFlyerDrawer: false,
-    drawerAction: null,
-    setDrawerAction: () => {},
-  };
-
   beforeEach(() => {
-    vi.mocked(GlobalContext.useGlobalContext).mockImplementation(
-      () => mockUseGlobalContextReturnObj
-    );
+    vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => {
+      return { ...mockUseGlobalContextReturnObj, getUserGeo: mockGetUserGeo };
+    });
   });
   afterEach(() => {
     vi.restoreAllMocks();
@@ -52,7 +42,6 @@ describe("Landing Page", () => {
     render(<Landing />);
     const button = screen.getByRole("button");
     fireEvent.click(button);
-    console.log(mockGetUserGeo.mock.calls.length);
     // await waitFor(() => expect(mockGetUserGeo).toHaveBeenCalledTimes(1));
     expect(mockGetUserGeo).toHaveBeenCalled();
   });

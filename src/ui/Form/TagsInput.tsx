@@ -21,7 +21,7 @@ export default function TagsInput({
 }) {
   // https://www.npmjs.com/package/react-autocomplete-tagbox
   return (
-    <FormControl>
+    <FormControl testId="tags-container">
       <StyledLabel htmlFor="tags" className={`${errors["tags"] && "error"}`}>
         Tags
       </StyledLabel>
