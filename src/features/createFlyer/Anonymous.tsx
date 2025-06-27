@@ -149,7 +149,8 @@ export default function Anonymous() {
         toast.success("Flyer created!");
         setIsOpenFlyerDrawer(false);
         setDrawerAction(null);
-        queryClient.invalidateQueries({ queryKey: ["board", boardId] });
+        // queryClient.invalidateQueries({ queryKey: ["board", boardId] });
+        queryClient.refetchQueries({ queryKey: ["board", boardId] });
       },
       onError: (error: any) => {
         setShowSpinner(false);
