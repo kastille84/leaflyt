@@ -51,9 +51,6 @@ export default function CloseSlideInModal() {
     <Modal
       testId="close-slide-in-modal"
       isOpen={showCloseSlideInModal}
-      onRequestClose={() => {
-        console.log("close");
-      }}
       style={customStyles}
     >
       <Heading as="h2">Don't lose your message!</Heading>

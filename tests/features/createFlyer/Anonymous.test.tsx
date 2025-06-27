@@ -95,7 +95,7 @@ vi.stubGlobal("cloudinary", {
 
 describe("Anonymous", () => {
   describe("Display", () => {
-    it("should render all fields for Anonymous on initial load", () => {
+    it("should render all fields for Anonymous on initial load", async () => {
       render(<Anonymous />, { wrapper: QueryClientProviderWrapper() });
       const anonymous = screen.getByTestId("anonymous-container");
       expect(anonymous).toBeTruthy();
@@ -125,6 +125,12 @@ describe("Anonymous", () => {
         getSelect("typeOfUser");
       expect(typeOfUserLabel.textContent).toBe("How do you want to post as?");
       expect(typeOfUserSelect).toBeTruthy();
+      // cancel
+      const { cancel } = getActionButtons();
+      expect(cancel.textContent).toBe("Cancel");
+      await act(async () => {
+        await user.click(cancel);
+      });
     });
   });
   describe("Input Functionality", () => {

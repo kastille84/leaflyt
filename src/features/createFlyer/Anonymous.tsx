@@ -145,16 +145,17 @@ export default function Anonymous() {
     setShowSpinner(true);
     createFlyer(prepData, {
       onSuccess: () => {
+        setShowSpinner(false);
         toast.success("Flyer created!");
         setIsOpenFlyerDrawer(false);
         setDrawerAction(null);
         queryClient.invalidateQueries({ queryKey: ["board", boardId] });
       },
       onError: (error: any) => {
+        setShowSpinner(false);
         toast.error(error.message);
       },
     });
-    setShowSpinner(false);
   };
 
   function handleCancel() {
