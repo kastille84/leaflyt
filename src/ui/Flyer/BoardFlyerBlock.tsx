@@ -86,7 +86,7 @@ const StyledTopTextContainer = styled.div`
 `;
 
 const StyledMainContentContainer = styled.div`
-  padding: 2.4rem;
+  padding: 2.4rem 2.4rem 1rem 2.4rem;
   font-size: 1.4rem;
 `;
 
@@ -109,6 +109,20 @@ const StyledReadMore = styled.p`
   cursor: pointer;
   text-align: right;
   letter-spacing: 0.4px;
+`;
+
+const StyledTagContainer = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+`;
+
+const StyledTag = styled.small`
+  text-transform: capitalize;
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-size: 1rem;
+  color: var(--color-blue-400);
 `;
 
 const StyledActionContainer = styled.section`
@@ -237,6 +251,11 @@ export default function BoardFlyerBlock({
             {isReadMore ? "Read less" : "Read more"}
           </StyledReadMore>
         )}
+        <StyledTagContainer>
+          <StyledTag>#</StyledTag>
+          {flyer.tags &&
+            flyer.tags.map((tag) => <StyledTag key={tag}>{tag}</StyledTag>)}
+        </StyledTagContainer>
       </StyledMainContentContainer>
       <StyledActionContainer>
         <div>
