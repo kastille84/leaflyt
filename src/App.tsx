@@ -5,10 +5,7 @@ import { Toaster } from "react-hot-toast";
 
 import GlobalStyles from "./styles/GlobalStyles";
 import Landing from "./pages/Landing";
-import {
-  GlobalContextProvider,
-  useGlobalContext,
-} from "./context/GlobalContext";
+import { GlobalContextProvider } from "./context/GlobalContext";
 import Board from "./features/board/Board";
 import MainLayout from "./pages/MainLayout";
 import FlyerSlideIn from "./ui/Flyer/FlyerSlideIn";
