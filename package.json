@@ -38,6 +38,7 @@
     "react-modal": "^3.16.3",
     "react-modern-drawer": "^1.4.0",
     "react-quill-new": "^3.4.6",
+    "react-responsive-masonry": "^2.7.1",
     "react-router-dom": "^7.6.0",
     "recharts": "^2.15.3",
     "styled-components": "^6.1.18"

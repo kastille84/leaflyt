@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useGlobalContext } from "../context/GlobalContext";
 import Button from "./Button";
+import { useEffect } from "react";
 
 const StyledActionMenu = styled.div`
   grid-column: 1 / -1;
@@ -21,6 +22,7 @@ const StyledActionContainer = styled.div`
 export default function ActionMenu() {
   const { selectedPlace, setIsOpenFlyerDrawer, setDrawerAction } =
     useGlobalContext();
+  useEffect(() => {}, [selectedPlace]);
   return (
     <StyledActionMenu>
       <div>
