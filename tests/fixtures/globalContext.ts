@@ -16,4 +16,8 @@ export const mockUseGlobalContextReturnObj = {
   setIsLoggedIn: () => {},
   showLoginModal: false,
   setShowLoginModal: () => {},
+  isOpenBottomSlideIn: false,
+  setIsOpenBottomSlideIn: () => {},
+  bottomSlideInType: null,
+  setBottomSlideInType: () => {},
 };

@@ -9,7 +9,8 @@ import { GlobalContextProvider } from "./context/GlobalContext";
 import Board from "./features/board/Board";
 import MainLayout from "./pages/MainLayout";
 import FlyerSlideIn from "./ui/Flyer/FlyerSlideIn";
-import LoginModal from "./ui/Modals/LoginModal";
+import LoginModal from "./features/authentication/LoginModal";
+import SlideInBottom from "./ui/SlideIn/SlideInBottom";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -67,6 +68,7 @@ function App() {
           />
           <FlyerSlideIn />
           <LoginModal />
+          <SlideInBottom />
         </GlobalContextProvider>
       </QueryClientProvider>
     </div>

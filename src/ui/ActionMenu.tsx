@@ -38,8 +38,15 @@ export default function ActionMenu() {
     setIsOpenFlyerDrawer,
     setDrawerAction,
     setShowLoginModal,
+    setIsOpenBottomSlideIn,
+    setBottomSlideInType,
   } = useGlobalContext();
   useEffect(() => {}, [selectedPlace]);
+
+  function handleSignUpClick() {
+    setIsOpenBottomSlideIn(true);
+    setBottomSlideInType("signup");
+  }
 
   return (
     <StyledActionMenu>
@@ -75,7 +82,9 @@ export default function ActionMenu() {
             },
           }}
         /> */}
-        <Button size="small">Sign Up</Button>
+        <Button size="small" onClick={handleSignUpClick}>
+          Sign Up
+        </Button>
         <Button
           size="small"
           variation="secondary"

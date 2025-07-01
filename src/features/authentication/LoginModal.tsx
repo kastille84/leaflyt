@@ -1,13 +1,13 @@
 import React from "react";
 import Modal from "react-modal";
 import { useForm } from "react-hook-form";
-import Heading from "../Heading";
-import Button from "../Button";
+import Heading from "../../ui/Heading";
+import Button from "../../ui/Button";
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/GlobalContext";
-import Form from "../Form/Form";
-import EmailInput from "../Form/EmailInput";
-import PasswordInput from "../Form/PasswordInput";
+import Form from "../../ui/Form/Form";
+import EmailInput from "../../ui/Form/EmailInput";
+import PasswordInput from "../../ui/Form/PasswordInput";
 
 const StyledButtonContainer = styled.div`
   margin-top: 2.4rem;

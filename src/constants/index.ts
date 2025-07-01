@@ -38,3 +38,5 @@ export const FILE_UPLOAD_OPTIONS = [
     return_delete_token: true,
   },
 ];
+
+export const SIGNUP = "signup";

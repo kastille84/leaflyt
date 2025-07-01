@@ -13,6 +13,7 @@ export default function FlyerSlideIn() {
     isOpenFlyerDrawer,
     setShowCloseSlideInModal,
     drawerAction,
+    setDrawerAction,
     selectedPlace,
   } = useGlobalContext();
 
@@ -26,6 +27,7 @@ export default function FlyerSlideIn() {
 
   function handleDrawerClose() {
     setShowCloseSlideInModal(true);
+    setDrawerAction(null);
   }
 
   if (!selectedPlace) return null;

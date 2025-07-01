@@ -24,6 +24,12 @@ export type ContextType = {
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   showLoginModal: boolean;
   setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
+  isOpenBottomSlideIn: boolean;
+  setIsOpenBottomSlideIn: React.Dispatch<React.SetStateAction<boolean>>;
+  bottomSlideInType: "signup" | "upsell" | null;
+  setBottomSlideInType: React.Dispatch<
+    React.SetStateAction<"signup" | "upsell" | null>
+  >;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -44,6 +50,10 @@ const GlobalContext = createContext<ContextType>({
   setIsLoggedIn: () => {},
   showLoginModal: false,
   setShowLoginModal: () => {},
+  isOpenBottomSlideIn: false,
+  setIsOpenBottomSlideIn: () => {},
+  bottomSlideInType: null,
+  setBottomSlideInType: () => {},
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -57,6 +67,11 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
     useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
+  const [isOpenBottomSlideIn, setIsOpenBottomSlideIn] =
+    useState<boolean>(false);
+  const [bottomSlideInType, setBottomSlideInType] = useState<
+    "signup" | "upsell" | null
+  >(null);
 
   const {
     getUserGeo,
@@ -86,6 +101,10 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         setIsLoggedIn,
         showLoginModal,
         setShowLoginModal,
+        isOpenBottomSlideIn,
+        setIsOpenBottomSlideIn,
+        bottomSlideInType,
+        setBottomSlideInType,
       }}
     >
       {children}
