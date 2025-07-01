@@ -4,10 +4,10 @@ const StyledFormControlRow = styled.div`
   display: flex;
   gap: 2.4rem;
 
-  & label {
+  /* & label {
     font-weight: 600;
     color: var(--color-brand-600);
-  }
+  } */
 
   & .quill:not(.error) .ql-toolbar,
   & .quill:not(.error) .ql-container {

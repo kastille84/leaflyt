@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { accessNestedProperty } from "../../utils/GeneralUtils";
 
 const StyledLabel = styled.label`
+  font-weight: 600;
+  color: var(--color-brand-600);
   &.error {
     color: var(--color-orange-600);
   }
@@ -35,6 +37,10 @@ export default function EmailInput({
         id="email"
         {...register(registerName, {
           required: { value: true, message: "Email is required" },
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, // Regex for email format
+            message: "Invalid email address", // Error message if pattern doesn't match
+          },
         })}
         hasError={Boolean(errorObj)}
       />

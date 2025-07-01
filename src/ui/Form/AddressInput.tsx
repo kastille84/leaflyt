@@ -17,6 +17,8 @@ import { accessNestedProperty } from "../../utils/GeneralUtils";
 const key = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
 
 const StyledLabel = styled.label`
+  font-weight: 600;
+  color: var(--color-brand-600);
   &.error {
     color: var(--color-orange-600);
   }

@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { accessNestedProperty } from "../../utils/GeneralUtils";
 
 const StyledLabel = styled.label`
+  font-weight: 600;
+  color: var(--color-brand-600);
   &.error {
     color: var(--color-orange-600);
   }

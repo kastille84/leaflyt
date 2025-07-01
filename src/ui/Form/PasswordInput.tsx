@@ -13,7 +13,7 @@ const StyledLabel = styled.label`
   }
 `;
 
-export default function WebsiteInput({
+export default function PasswordInput({
   register,
   registerName,
   errors,
@@ -27,19 +27,24 @@ export default function WebsiteInput({
   }
 
   const errorObj = getErrorValue(errors);
-
   return (
-    <FormControl testId="website-container">
-      <StyledLabel htmlFor="website" className={`${errorObj && "error"}`}>
-        Website (optional)
+    <FormControl testId="password-container">
+      <StyledLabel htmlFor="password" className={`${errorObj && "error"}`}>
+        Password
       </StyledLabel>
       <Input
-        type="url"
-        id="website"
-        {...register(registerName)}
-        placeholder="https://www.leaflyt.com"
+        type="password"
+        id="password"
+        {...register(registerName, {
+          required: { value: true, message: "Password is required" },
+          minLength: {
+            value: 8,
+            message: "Password must be at least 8 characters",
+          },
+        })}
         hasError={Boolean(errorObj)}
       />
+      {errorObj && <FieldInputError message={errorObj?.message as string} />}
     </FormControl>
   );
 }

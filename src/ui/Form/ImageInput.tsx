@@ -14,6 +14,8 @@ import { UploadApiErrorResponse, UploadApiResponse } from "cloudinary";
 import toast from "react-hot-toast";
 
 const StyledLabel = styled.label`
+  font-weight: 600;
+  color: var(--color-brand-600);
   &.error {
     color: var(--color-orange-600);
   }

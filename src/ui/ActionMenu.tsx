@@ -2,6 +2,13 @@ import styled from "styled-components";
 import { useGlobalContext } from "../context/GlobalContext";
 import Button from "./Button";
 import { useEffect } from "react";
+import {
+  SignedIn,
+  SignedOut,
+  SignIn,
+  SignInButton,
+  UserButton,
+} from "@clerk/clerk-react";
 
 const StyledActionMenu = styled.div`
   grid-column: 1 / -1;
@@ -19,10 +26,21 @@ const StyledActionContainer = styled.div`
   gap: 2.4rem;
 `;
 
+const StyledLoginContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 2.4rem;
+`;
+
 export default function ActionMenu() {
-  const { selectedPlace, setIsOpenFlyerDrawer, setDrawerAction } =
-    useGlobalContext();
+  const {
+    selectedPlace,
+    setIsOpenFlyerDrawer,
+    setDrawerAction,
+    setShowLoginModal,
+  } = useGlobalContext();
   useEffect(() => {}, [selectedPlace]);
+
   return (
     <StyledActionMenu>
       <div>
@@ -47,6 +65,27 @@ export default function ActionMenu() {
         <p>search</p>
         <p>grid</p>
       </StyledActionContainer>
+      <StyledLoginContainer>
+        {/* <SignInButton
+          mode="modal"
+          appearance={{
+            variables: {
+              fontSize: "1.4rem",
+              spacingUnit: "0.8rem",
+            },
+          }}
+        /> */}
+        <Button size="small">Sign Up</Button>
+        <Button
+          size="small"
+          variation="secondary"
+          onClick={() => {
+            setShowLoginModal(true);
+          }}
+        >
+          Login
+        </Button>
+      </StyledLoginContainer>
     </StyledActionMenu>
   );
 }

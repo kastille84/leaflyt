@@ -20,6 +20,10 @@ export type ContextType = {
   >;
   showCloseSlideInModal: boolean;
   setShowCloseSlideInModal: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoggedIn: boolean;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  showLoginModal: boolean;
+  setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -36,6 +40,10 @@ const GlobalContext = createContext<ContextType>({
   setDrawerAction: () => {},
   showCloseSlideInModal: false,
   setShowCloseSlideInModal: () => {},
+  isLoggedIn: false,
+  setIsLoggedIn: () => {},
+  showLoginModal: false,
+  setShowLoginModal: () => {},
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -47,6 +55,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   );
   const [showCloseSlideInModal, setShowCloseSlideInModal] =
     useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
 
   const {
     getUserGeo,
@@ -66,12 +76,16 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         setIsGettingLocation,
         selectedPlace,
         setSelectedPlace,
-        setIsOpenFlyerDrawer,
         isOpenFlyerDrawer,
+        setIsOpenFlyerDrawer,
         drawerAction,
         setDrawerAction,
         showCloseSlideInModal,
         setShowCloseSlideInModal,
+        isLoggedIn,
+        setIsLoggedIn,
+        showLoginModal,
+        setShowLoginModal,
       }}
     >
       {children}
