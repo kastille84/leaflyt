@@ -16,7 +16,6 @@ const StyledCloseContainer = styled.div`
 `;
 
 const StyledContentContainer = styled.div`
-  padding: 2.4rem;
   height: 80rem;
 `;
 

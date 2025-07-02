@@ -34,12 +34,9 @@ const StyledForm = styled.form`
   overflow-y: auto;
 `;
 
-const StyledContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2.4rem;
+const StyledHeading = styled(Heading)`
+  color: var(--color-brand-600);
 `;
-
 const StyledFormButtonContainer = styled.div`
   /* position: fixed; */
   /* bottom: 2.4rem; */
@@ -89,10 +86,10 @@ export default function SignupForm() {
 
   return (
     <StyledFormContainer>
-      <Heading as="h2">Let's Get You Signed Up</Heading>
+      <StyledHeading as="h2">Let's Get You Signed Up.</StyledHeading>
       <StyledForm>
         {/* <StyledContentContainer> */}
-        <Heading as="h3">Tell us a bit about yourself</Heading>
+        <Heading as="h3">Tell us a bit about yourself.</Heading>
         <FormControlRow>
           <TypeOfUserInput
             title="How do you want to post as?"

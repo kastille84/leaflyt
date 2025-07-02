@@ -23,6 +23,13 @@ const StyledLabel = styled.label`
     color: var(--color-orange-600);
   }
 `;
+
+const StyledInputContainer = styled.div`
+  position: relative;
+  & input {
+    width: 100%;
+  }
+`;
 const StyledAddressResultContainer = styled.ul`
   position: absolute;
   top: 100%;
@@ -63,7 +70,7 @@ export default function AddressInput({
   // google autocomplete
   // https://www.npmjs.com/package/react-google-autocomplete
   const {
-    placesService,
+    // placesService,
     placePredictions,
     getPlacePredictions,
     // isPlacePredictionsLoading,
@@ -82,54 +89,56 @@ export default function AddressInput({
       <StyledLabel htmlFor="address" className={`${errorObj && "error"}`}>
         Address
       </StyledLabel>
-      <Input
-        type="text"
-        id="address"
-        {...register(registerName, {
-          required: {
-            value: true,
-            message: "Address is required",
-          },
-          onChange: (evt) => {
-            setAddressSelected(false);
-            getPlacePredictions({ input: evt.target.value });
-          },
-        })}
-        hasError={Boolean(errorObj)}
-      />
+      <StyledInputContainer>
+        <Input
+          type="text"
+          id="address"
+          {...register(registerName, {
+            required: {
+              value: true,
+              message: "Address is required",
+            },
+            onChange: (evt) => {
+              setAddressSelected(false);
+              getPlacePredictions({ input: evt.target.value });
+            },
+          })}
+          hasError={Boolean(errorObj)}
+        />
+        {placePredictions.length > 0 && addressSelected === false && (
+          <StyledAddressResultContainer>
+            {placePredictions.map((placePrediction) => (
+              <StyledAddressResult
+                key={placePrediction.place_id}
+                onClick={() => {
+                  // placesService?.getDetails(
+                  //   {
+                  //     placeId: placePrediction.place_id,
+                  //     fields: [
+                  //       "name",
+                  //       "formatted_address",
+                  //       "geometry.location",
+                  //       "place_id",
+                  //     ],
+                  //   },
+                  //   (placeDetails) => setValue(registerName, placeDetails)
+                  // );
+                  setValue(registerName, placePrediction.description);
+                  setAddressSelected(true);
+                }}
+              >
+                {placePrediction.description}
+              </StyledAddressResult>
+            ))}
+          </StyledAddressResultContainer>
+        )}
+      </StyledInputContainer>
+      {errorObj && <FieldInputError message={errorObj?.message as string} />}
       {locationAdvisory && (
         <small>
           The address will be used as the center point to determine your
           community and the boards in your area
         </small>
-      )}
-      {errorObj && <FieldInputError message={errorObj?.message as string} />}
-      {placePredictions.length > 0 && addressSelected === false && (
-        <StyledAddressResultContainer>
-          {placePredictions.map((placePrediction) => (
-            <StyledAddressResult
-              key={placePrediction.place_id}
-              onClick={() => {
-                // placesService?.getDetails(
-                //   {
-                //     placeId: placePrediction.place_id,
-                //     fields: [
-                //       "name",
-                //       "formatted_address",
-                //       "geometry.location",
-                //       "place_id",
-                //     ],
-                //   },
-                //   (placeDetails) => setValue(registerName, placeDetails)
-                // );
-                setValue(registerName, placePrediction.description);
-                setAddressSelected(true);
-              }}
-            >
-              {placePrediction.description}
-            </StyledAddressResult>
-          ))}
-        </StyledAddressResultContainer>
       )}
     </FormControl>
   );
