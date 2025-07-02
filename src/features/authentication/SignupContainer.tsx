@@ -4,6 +4,7 @@ import SignupForm from "./SignupForm";
 
 const StyledRegistrationContainer = styled.div`
   width: 70%;
+  height: 100%;
   margin: auto;
   /* background: red; */
   display: grid;

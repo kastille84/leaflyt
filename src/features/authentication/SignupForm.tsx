@@ -17,12 +17,27 @@ import FirstNameInput from "../../ui/Form/FirstNameInput";
 import Button from "../../ui/Button";
 import { useGlobalContext } from "../../context/GlobalContext";
 
+const StyledFormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-brand-100);
+  padding: 2.4rem 0 2.4rem 2.4rem;
+`;
+
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
-  padding: 2.4rem;
-  border: 1px solid var(--color-brand-100);
+  height: 70rem;
+  padding-top: 2.4rem;
+  padding-right: 2.4rem;
+  overflow-y: auto;
+`;
+
+const StyledContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
 `;
 
 const StyledFormButtonContainer = styled.div`
@@ -73,150 +88,158 @@ export default function SignupForm() {
   }
 
   return (
-    <StyledForm>
+    <StyledFormContainer>
       <Heading as="h2">Let's Get You Signed Up</Heading>
-      <Heading as="h3">Tell us a bit about yourself</Heading>
-      <FormControlRow>
-        <TypeOfUserInput
-          title="How do you want to post as?"
-          register={register}
-          value={typeOfUserWatch}
-          errors={errors}
-          includeAnonymous={false}
-        />
-        <FormControl>{/*Empty*/}</FormControl>
-      </FormControlRow>
-      {typeOfUserWatch === "individual" && (
-        <>
-          <FormControlRow>
-            {/* Personal Info / firstName */}
-            <FirstNameInput
-              register={register}
-              registerName="individual.name.firstName"
-              errors={errors}
-            />
-            {/* Personal Info / lastName */}
-            <LastNameInput
-              register={register}
-              registerName="individual.name.lastName"
-              errors={errors}
-            />
-          </FormControlRow>
-          <FormControlRow>
-            {/* Personal Info / Phone */}
-            <PhoneInput
-              register={register}
-              registerName="individual.contact.phone"
-              errors={errors}
-            />
-            <AddressInput
-              register={register}
-              setValue={setValue}
-              registerName="individual.contact.address"
-              errors={errors}
-              locationAdvisory
-            />
-          </FormControlRow>
-          <FormControlRow>
-            <WebsiteInput
-              register={register}
-              registerName="individual.contact.website"
-              errors={errors}
-            />
-            <FormControl>{/* empty */}</FormControl>
-          </FormControlRow>
-        </>
-      )}
-      {typeOfUserWatch === "business" && (
-        <>
-          <FormControlRow>
-            {/*Business / name */}
-            <FullNameInput
-              register={register}
-              registerName="business.name"
-              name="Business"
-              errors={errors}
-            />
-            {/*Business / address */}
-            <AddressInput
-              register={register}
-              setValue={setValue}
-              registerName="business.contact.address"
-              errors={errors}
-              locationAdvisory
-            />
-          </FormControlRow>
-          <FormControlRow>
-            <PhoneInput
-              register={register}
-              registerName="business.contact.phone"
-              errors={errors}
-            />
-            <WebsiteInput
-              register={register}
-              registerName="business.contact.website"
-              errors={errors}
-            />
-          </FormControlRow>
-        </>
-      )}
-      {typeOfUserWatch === "organization" && (
-        <>
-          <FormControlRow>
-            {/*Org / name */}
-            <FullNameInput
-              register={register}
-              registerName="organization.name"
-              name="Organization"
-              errors={errors}
-            />
-            {/*Org / address */}
-            <AddressInput
-              register={register}
-              setValue={setValue}
-              registerName="organization.contact.address"
-              errors={errors}
-              locationAdvisory
-            />
-          </FormControlRow>
-          <FormControlRow>
-            <PhoneInput
-              register={register}
-              registerName="organization.contact.phone"
-              errors={errors}
-            />
-            <WebsiteInput
-              register={register}
-              registerName="organization.contact.website"
-              errors={errors}
-            />
-          </FormControlRow>
-        </>
-      )}
-      {typeOfUserWatch && (
-        <>
-          <Heading as="h3">Credentials</Heading>
-          <FormControlRow>
-            <EmailInput
-              register={register}
-              registerName={`${typeOfUser}.contact.email`}
-              errors={errors}
-            />
-            <PasswordInput
-              register={register}
-              registerName="password"
-              errors={errors}
-              shouldShow
-            />
-          </FormControlRow>
-          <StyledFormButtonContainer data-testid="form-button-container">
-            <Button type="submit">Create</Button>
-            <Button type="button" variation="secondary" onClick={handleCancel}>
-              Cancel
-            </Button>
-          </StyledFormButtonContainer>
-        </>
-      )}
-    </StyledForm>
+      <StyledForm>
+        {/* <StyledContentContainer> */}
+        <Heading as="h3">Tell us a bit about yourself</Heading>
+        <FormControlRow>
+          <TypeOfUserInput
+            title="How do you want to post as?"
+            register={register}
+            value={typeOfUserWatch}
+            errors={errors}
+            includeAnonymous={false}
+          />
+          <FormControl>{/*Empty*/}</FormControl>
+        </FormControlRow>
+        {typeOfUserWatch === "individual" && (
+          <>
+            <FormControlRow>
+              {/* Personal Info / firstName */}
+              <FirstNameInput
+                register={register}
+                registerName="individual.name.firstName"
+                errors={errors}
+              />
+              {/* Personal Info / lastName */}
+              <LastNameInput
+                register={register}
+                registerName="individual.name.lastName"
+                errors={errors}
+              />
+            </FormControlRow>
+            <FormControlRow>
+              {/* Personal Info / Phone */}
+              <PhoneInput
+                register={register}
+                registerName="individual.contact.phone"
+                errors={errors}
+              />
+              <AddressInput
+                register={register}
+                setValue={setValue}
+                registerName="individual.contact.address"
+                errors={errors}
+                locationAdvisory
+              />
+            </FormControlRow>
+            <FormControlRow>
+              <WebsiteInput
+                register={register}
+                registerName="individual.contact.website"
+                errors={errors}
+              />
+              <FormControl>{/* empty */}</FormControl>
+            </FormControlRow>
+          </>
+        )}
+        {typeOfUserWatch === "business" && (
+          <>
+            <FormControlRow>
+              {/*Business / name */}
+              <FullNameInput
+                register={register}
+                registerName="business.name"
+                name="Business"
+                errors={errors}
+              />
+              {/*Business / address */}
+              <AddressInput
+                register={register}
+                setValue={setValue}
+                registerName="business.contact.address"
+                errors={errors}
+                locationAdvisory
+              />
+            </FormControlRow>
+            <FormControlRow>
+              <PhoneInput
+                register={register}
+                registerName="business.contact.phone"
+                errors={errors}
+              />
+              <WebsiteInput
+                register={register}
+                registerName="business.contact.website"
+                errors={errors}
+              />
+            </FormControlRow>
+          </>
+        )}
+        {typeOfUserWatch === "organization" && (
+          <>
+            <FormControlRow>
+              {/*Org / name */}
+              <FullNameInput
+                register={register}
+                registerName="organization.name"
+                name="Organization"
+                errors={errors}
+              />
+              {/*Org / address */}
+              <AddressInput
+                register={register}
+                setValue={setValue}
+                registerName="organization.contact.address"
+                errors={errors}
+                locationAdvisory
+              />
+            </FormControlRow>
+            <FormControlRow>
+              <PhoneInput
+                register={register}
+                registerName="organization.contact.phone"
+                errors={errors}
+              />
+              <WebsiteInput
+                register={register}
+                registerName="organization.contact.website"
+                errors={errors}
+              />
+            </FormControlRow>
+          </>
+        )}
+        {typeOfUserWatch && (
+          <>
+            <Heading as="h3">Credentials</Heading>
+            <FormControlRow>
+              <EmailInput
+                register={register}
+                registerName={`${typeOfUser}.contact.email`}
+                errors={errors}
+              />
+              <PasswordInput
+                register={register}
+                registerName="password"
+                errors={errors}
+                shouldShow
+              />
+            </FormControlRow>
+            <StyledFormButtonContainer data-testid="form-button-container">
+              <Button type="submit">Create</Button>
+              <Button
+                type="button"
+                variation="secondary"
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
+            </StyledFormButtonContainer>
+          </>
+        )}
+        {/* </StyledContentContainer> */}
+      </StyledForm>
+    </StyledFormContainer>
   );
 }

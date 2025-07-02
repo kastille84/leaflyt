@@ -17,8 +17,7 @@ const StyledCloseContainer = styled.div`
 
 const StyledContentContainer = styled.div`
   padding: 2.4rem;
-  height: 85%;
-  overflow-y: auto;
+  height: 80rem;
 `;
 
 export default function SlideInBottom() {
