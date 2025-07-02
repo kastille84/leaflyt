@@ -1,19 +1,20 @@
 import styled from "styled-components";
 import WhyRegister from "./WhyRegister";
+import SignupForm from "./SignupForm";
 
 const StyledRegistrationContainer = styled.div`
   width: 70%;
   margin: auto;
-  background: red;
+  /* background: red; */
   display: grid;
   grid-template-columns: 35% 1fr;
 `;
 
-export default function RegistrationContainer() {
+export default function SignupContainer() {
   return (
     <StyledRegistrationContainer>
       <WhyRegister />
-      <div>form</div>
+      <SignupForm />
     </StyledRegistrationContainer>
   );
 }

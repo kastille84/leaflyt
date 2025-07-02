@@ -50,12 +50,14 @@ export default function AddressInput({
   setValue,
   registerName,
   errors,
+  locationAdvisory = false,
 }: {
   register: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
   registerName: string;
   // error: { [key: string]: { message: string; type: string } };
   errors: FieldErrors<FieldValues>;
+  locationAdvisory?: boolean;
 }) {
   const [addressSelected, setAddressSelected] = useState<boolean>(false);
   // google autocomplete
@@ -95,6 +97,12 @@ export default function AddressInput({
         })}
         hasError={Boolean(errorObj)}
       />
+      {locationAdvisory && (
+        <small>
+          The address will be used as the center point to determine your
+          community and the boards in your area
+        </small>
+      )}
       {errorObj && <FieldInputError message={errorObj?.message as string} />}
       {placePredictions.length > 0 && addressSelected === false && (
         <StyledAddressResultContainer>

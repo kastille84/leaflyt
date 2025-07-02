@@ -4,7 +4,7 @@ import Drawer from "react-modern-drawer";
 //import styles 👇
 import "react-modern-drawer/dist/index.css";
 import { useGlobalContext } from "../../context/GlobalContext";
-import RegistrationSlideIn from "../../features/authentication/RegistrationContainer";
+import RegistrationSlideIn from "../../features/authentication/SignupContainer";
 import { SIGNUP } from "../../constants";
 import styled from "styled-components";
 import { HiOutlineXMark } from "react-icons/hi2";
@@ -17,6 +17,8 @@ const StyledCloseContainer = styled.div`
 
 const StyledContentContainer = styled.div`
   padding: 2.4rem;
+  height: 85%;
+  overflow-y: auto;
 `;
 
 export default function SlideInBottom() {
@@ -45,7 +47,7 @@ export default function SlideInBottom() {
       open={isOpenBottomSlideIn}
       onClose={handleDrawerClose}
       direction="bottom"
-      size={"95vh"}
+      size={"100vh"}
       // style={{ position: "fixed", top: "auto", bottom: 0, right: 0, left: 0 }}
     >
       <StyledCloseContainer>

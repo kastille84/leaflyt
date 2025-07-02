@@ -18,13 +18,25 @@ export default function TypeOfUserInput({
   value,
   errors,
   showUnregisteredMessaging = false,
+  includeAnonymous = true,
 }: {
   register: UseFormRegister<any>;
   title: string;
   value: string;
   errors: FieldErrors<FieldValues>;
   showUnregisteredMessaging?: boolean;
+  includeAnonymous?: boolean;
 }) {
+  const options = [
+    { label: "Choose one", value: "" },
+    { label: "Anonymous", value: "anonymous" },
+    { label: "Individual", value: "individual" },
+    { label: "Business", value: "business" },
+    { label: "Organization", value: "organization" },
+  ];
+  if (!includeAnonymous) {
+    delete options[1];
+  }
   return (
     <FormControl className="typeOfUser" testId="typeOfUser-container">
       <StyledLabel
@@ -40,13 +52,7 @@ export default function TypeOfUserInput({
         </small>
       )}
       <Select
-        options={[
-          { label: "Choose one", value: "" },
-          { label: "Anonymous", value: "anonymous" },
-          { label: "Individual", value: "individual" },
-          { label: "Business", value: "business" },
-          { label: "Organization", value: "organization" },
-        ]}
+        options={options}
         value={value}
         defaultValue={""}
         {...register("typeOfUser", {
