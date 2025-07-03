@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 
@@ -16,6 +16,8 @@ import LastNameInput from "../../ui/Form/LastNameInput";
 import FirstNameInput from "../../ui/Form/FirstNameInput";
 import Button from "../../ui/Button";
 import { useGlobalContext } from "../../context/GlobalContext";
+import { SignupSubmitData } from "../../interfaces/Auth_User";
+import useSignup from "./useSignup";
 
 const StyledFormContainer = styled.div`
   display: flex;
@@ -48,6 +50,8 @@ const StyledFormButtonContainer = styled.div`
 `;
 
 export default function SignupForm() {
+  const [showSpinner, setShowSpinner] = useState(false);
+  const { signup } = useSignup();
   const {
     register,
     unregister,
@@ -55,7 +59,7 @@ export default function SignupForm() {
     watch,
     getValues,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid },
     control,
   } = useForm({
     mode: "onBlur",
@@ -84,10 +88,20 @@ export default function SignupForm() {
     setBottomSlideInType(null);
   }
 
+  function onSubmit(data: any) {
+    console.log("data", data);
+    // set full addressObj to address field
+    data[typeOfUser].contact.address = data.addressObjToSave;
+    console.log("data after", data);
+    const result = signup(data as SignupSubmitData);
+    console.log("result", result);
+    setShowSpinner(true);
+  }
+
   return (
     <StyledFormContainer>
       <StyledHeading as="h2">Let's Get You Signed Up.</StyledHeading>
-      <StyledForm>
+      <StyledForm onSubmit={handleSubmit(onSubmit)}>
         {/* <StyledContentContainer> */}
         <Heading as="h3">Tell us a bit about yourself.</Heading>
         <FormControlRow>
@@ -129,6 +143,7 @@ export default function SignupForm() {
                 registerName="individual.contact.address"
                 errors={errors}
                 locationAdvisory
+                shouldSaveAddressObj
               />
             </FormControlRow>
             <FormControlRow>
@@ -158,6 +173,7 @@ export default function SignupForm() {
                 registerName="business.contact.address"
                 errors={errors}
                 locationAdvisory
+                shouldSaveAddressObj
               />
             </FormControlRow>
             <FormControlRow>
@@ -191,6 +207,7 @@ export default function SignupForm() {
                 registerName="organization.contact.address"
                 errors={errors}
                 locationAdvisory
+                shouldSaveAddressObj
               />
             </FormControlRow>
             <FormControlRow>
@@ -224,7 +241,9 @@ export default function SignupForm() {
               />
             </FormControlRow>
             <StyledFormButtonContainer data-testid="form-button-container">
-              <Button type="submit">Create</Button>
+              <Button type="submit" disabled={!isValid}>
+                Create
+              </Button>
               <Button
                 type="button"
                 variation="secondary"

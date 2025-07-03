@@ -77,7 +77,7 @@ const StyledTopImageContainer = styled.div`
 const StyledTopTextContainer = styled.div`
   width: 100%;
   padding: 1rem 2.4rem;
-  background-color: var(--color-brand-200);
+  background-color: var(--color-brand-500);
   color: var(--color-grey-50);
   display: flex;
   justify-content: space-between;

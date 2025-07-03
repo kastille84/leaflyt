@@ -13,6 +13,7 @@ import styled from "styled-components";
 import FormControl from "./FormControl";
 import FieldInputError from "./FieldInputError";
 import { accessNestedProperty } from "../../utils/GeneralUtils";
+import { should } from "vitest";
 
 const key = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
 
@@ -58,6 +59,7 @@ export default function AddressInput({
   registerName,
   errors,
   locationAdvisory = false,
+  shouldSaveAddressObj = false,
 }: {
   register: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
@@ -65,12 +67,18 @@ export default function AddressInput({
   // error: { [key: string]: { message: string; type: string } };
   errors: FieldErrors<FieldValues>;
   locationAdvisory?: boolean;
+  shouldSaveAddressObj?: boolean;
 }) {
   const [addressSelected, setAddressSelected] = useState<boolean>(false);
+  if (shouldSaveAddressObj) {
+    register("addressObjToSave", {
+      required: true,
+    });
+  }
   // google autocomplete
   // https://www.npmjs.com/package/react-google-autocomplete
   const {
-    // placesService,
+    placesService,
     placePredictions,
     getPlacePredictions,
     // isPlacePredictionsLoading,
@@ -111,19 +119,27 @@ export default function AddressInput({
               <StyledAddressResult
                 key={placePrediction.place_id}
                 onClick={() => {
-                  // placesService?.getDetails(
-                  //   {
-                  //     placeId: placePrediction.place_id,
-                  //     fields: [
-                  //       "name",
-                  //       "formatted_address",
-                  //       "geometry.location",
-                  //       "place_id",
-                  //     ],
-                  //   },
-                  //   (placeDetails) => setValue(registerName, placeDetails)
-                  // );
-                  setValue(registerName, placePrediction.description);
+                  if (shouldSaveAddressObj) {
+                    placesService?.getDetails(
+                      {
+                        placeId: placePrediction.place_id,
+                        fields: [
+                          "name",
+                          "formatted_address",
+                          "geometry.location",
+                          "place_id",
+                        ],
+                      },
+                      (placeDetails) => {
+                        setValue(registerName, placeDetails?.formatted_address);
+                        // also save full addr obj, needed for geo coords of new user
+                        if (shouldSaveAddressObj)
+                          setValue("addressObjToSave", placeDetails);
+                      }
+                    );
+                  } else {
+                    setValue(registerName, placePrediction.description);
+                  }
                   setAddressSelected(true);
                 }}
               >
