@@ -118,3 +118,31 @@ export const signupUserResponse = {
   updated_at: "2025-07-03T17:45:27.501182Z",
   is_anonymous: false,
 };
+
+const signupUserProfileResponse = {
+  id: 4,
+  created_at: "2025-07-10T22:25:45.103248+00:00",
+  user: "407749fa-fbac-4141-b8d0-6d8e62403d1b",
+  name: "Test Bizness",
+  firstName: null,
+  lastName: null,
+  email: "kastille84@gmail.com",
+  phone: "8454013350",
+  website: "http://www.cnn.com",
+  typeOfUser: "business",
+  plan: 1,
+  address: {
+    name: "754 Broadway",
+    geometry: {
+      location: {
+        lat: 41.5025289,
+        lng: -74.043393,
+      },
+    },
+    place_id: "ChIJkZL34OQt3YkRYuJIK-VWc4w",
+    adr_address:
+      '<span class="street-address">754 Broadway</span>, <span class="locality">Newburgh</span>, <span class="region">NY</span> <span class="postal-code">12550-6506</span>, <span class="country-name">USA</span>',
+    formatted_address: "754 Broadway, Newburgh, NY 12550, USA",
+    html_attributions: [],
+  },
+};

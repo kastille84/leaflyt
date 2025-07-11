@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import { useForm } from "react-hook-form";
 import Heading from "../../ui/Heading";
@@ -8,6 +8,8 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import Form from "../../ui/Form/Form";
 import EmailInput from "../../ui/Form/EmailInput";
 import PasswordInput from "../../ui/Form/PasswordInput";
+import useLogin from "./useLogin";
+import toast from "react-hot-toast";
 
 const StyledButtonContainer = styled.div`
   margin-top: 2.4rem;
@@ -59,8 +61,16 @@ const customModalStyles = {
   },
 };
 
+const StyledSubmitError = styled(Heading)`
+  color: var(--color-red-600);
+`;
+
 export default function LoginModal() {
+  const [showSpinner, setShowSpinner] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const { showLoginModal, setShowLoginModal } = useGlobalContext();
+
+  const { login } = useLogin();
 
   const {
     register,
@@ -81,11 +91,30 @@ export default function LoginModal() {
     reset();
   }
 
-  function handleLogin() {
-    setShowLoginModal(false);
-  }
-
-  const onSubmit = async (data: any) => {};
+  const onSubmit = async (data: any) => {
+    setSubmitError("");
+    setShowSpinner(true);
+    console.log("data", data);
+    // action
+    login(data, {
+      onSuccess: (response) => {
+        if (response.error) {
+          throw response.error;
+        }
+        handleCancel();
+        toast.success(`Login successful!`);
+        setShowSpinner(false);
+        // redirect user to dashboard
+      },
+      onError: (error) => {
+        console.log("onError", error.message);
+        setSubmitError(error.message);
+        // set focus on error
+        document.querySelector("#form-error")?.scrollIntoView();
+        setShowSpinner(false);
+      },
+    });
+  };
 
   return (
     // https://www.npmjs.com/package/react-modal
@@ -100,23 +129,31 @@ export default function LoginModal() {
       </StyledHeaderContainer>
       <StyledFormContainer>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <EmailInput register={register} registerName="User" errors={errors} />
-          <PasswordInput
+          {submitError && (
+            <StyledSubmitError as={"h4"} id="form-error">
+              Error: {submitError}
+            </StyledSubmitError>
+          )}
+          <EmailInput
             register={register}
-            registerName="Password"
+            registerName="email"
             errors={errors}
           />
+          <PasswordInput
+            register={register}
+            registerName="password"
+            errors={errors}
+          />
+          <StyledButtonContainer>
+            <Button size="small" variation="primary" type="submit">
+              Login
+            </Button>
+            <Button size="small" variation="secondary" onClick={handleCancel}>
+              Cancel
+            </Button>
+          </StyledButtonContainer>
         </Form>
       </StyledFormContainer>
-
-      <StyledButtonContainer>
-        <Button size="small" variation="primary" onClick={handleLogin}>
-          Login
-        </Button>
-        <Button size="small" variation="secondary" onClick={handleCancel}>
-          Cancel
-        </Button>
-      </StyledButtonContainer>
     </Modal>
   );
 }

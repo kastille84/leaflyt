@@ -13,7 +13,6 @@ import styled from "styled-components";
 import FormControl from "./FormControl";
 import FieldInputError from "./FieldInputError";
 import { accessNestedProperty } from "../../utils/GeneralUtils";
-import { should } from "vitest";
 
 const key = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
 
@@ -106,7 +105,7 @@ export default function AddressInput({
               value: true,
               message: "Address is required",
             },
-            onChange: (evt) => {
+            onChange: (evt: React.ChangeEvent<HTMLInputElement>) => {
               setAddressSelected(false);
               getPlacePredictions({ input: evt.target.value });
             },
@@ -124,7 +123,9 @@ export default function AddressInput({
                       {
                         placeId: placePrediction.place_id,
                         fields: [
+                          //https://developers.google.com/maps/documentation/javascript/reference/places-service#PlaceResult
                           "name",
+                          "adr_address",
                           "formatted_address",
                           "geometry.location",
                           "place_id",

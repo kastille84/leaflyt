@@ -1,10 +1,33 @@
 import { SignupSubmitData } from "../interfaces/Auth_User";
+import { getBaseUrl } from "../utils/ServiceUtils";
 import { supabase } from "./supabase";
 
-// export const login = async (email: string, password: string) => {
-//   const { data, error } = await supabase.auth.signIn({ email, password });
-//   return { data, error }
-// };
+export const loginUser = async (email: string, password: string) => {
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    // supabase.auth.getUser(data.session?.access_token).then((user) => {
+    //   console.log("user", user);
+    // });
+    // get userProfile from supabase
+    const userProfile = await supabase
+      .from("profiles")
+      .select(
+        `*,
+        flyers(*),
+        templates(*),
+        plan(*)`
+      )
+      .eq("email", email)
+      .single();
+    console.log("userProfile", userProfile);
+    return { data, error };
+  } catch (error) {
+    return { data: null, error };
+  }
+};
 
 export const signupUser = async (prepData: SignupSubmitData) => {
   prepData.type = prepData.typeOfUser;
@@ -37,12 +60,6 @@ export const signupUser = async (prepData: SignupSubmitData) => {
       name = prepData.organization.name;
       break;
   }
-  // if (prepData.individual) {
-  //   dataForAuthSignup = {
-  //     email: prepData.individual.contact.email,
-  //     password: prepData.password,
-  //   };
-  // }
 
   try {
     // create auth user in  supabase
@@ -52,32 +69,31 @@ export const signupUser = async (prepData: SignupSubmitData) => {
         emailRedirectTo: `${window.location.origin}/dashboard`,
       },
     });
+    console.log("auth.signup", data);
     if (error) throw error;
-
-    //  create user profile in supabase
+    // //  create user profile in supabase
     const newUser = {
-      name: typeof name === "string" && name,
-      first_name: typeof name === "object" && name.firstName,
-      last_name: typeof name === "object" && name.lastName,
+      name: typeof name === "string" ? name : null,
+      firstName: typeof name === "object" ? name.firstName : null,
+      lastName: typeof name === "object" ? name.lastName : null,
       email: contact.email,
       phone: contact.phone,
       website: contact.website,
       address: prepData.addressObjToSave,
       typeOfUser: prepData.typeOfUser,
-      userId: data.user?.id,
-      // planId: 1  default to low plan
-      // analyticsId: 1 default to low analytics
+      user: data.user?.id,
     };
 
-    const { data: userData, error: userError } = await supabase
-      .from("profiles")
-      .insert([newUser])
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    return { userData, userError };
+    const response = await fetch(`${getBaseUrl()}/api/auth/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newUser),
+    });
+    const result = await response.json();
+    console.log("result", result);
+    return result;
   } catch (error) {
     return { data: null, error };
   }

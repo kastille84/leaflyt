@@ -15,9 +15,12 @@ import FullNameInput from "../../ui/Form/FullNameInput";
 import LastNameInput from "../../ui/Form/LastNameInput";
 import FirstNameInput from "../../ui/Form/FirstNameInput";
 import Button from "../../ui/Button";
+import OverlaySpinner from "../../ui/OverlaySpinner";
+
 import { useGlobalContext } from "../../context/GlobalContext";
 import { SignupSubmitData } from "../../interfaces/Auth_User";
 import useSignup from "./useSignup";
+import toast from "react-hot-toast";
 
 const StyledFormContainer = styled.div`
   display: flex;
@@ -36,6 +39,9 @@ const StyledForm = styled.form`
   overflow-y: auto;
 `;
 
+const StyledSubmitError = styled(Heading)`
+  color: var(--color-red-600);
+`;
 const StyledHeading = styled(Heading)`
   color: var(--color-brand-600);
 `;
@@ -51,6 +57,8 @@ const StyledFormButtonContainer = styled.div`
 
 export default function SignupForm() {
   const [showSpinner, setShowSpinner] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
   const { signup } = useSignup();
   const {
     register,
@@ -89,19 +97,46 @@ export default function SignupForm() {
   }
 
   function onSubmit(data: any) {
+    setSubmitError("");
     console.log("data", data);
     // set full addressObj to address field
     data[typeOfUser].contact.address = data.addressObjToSave;
     console.log("data after", data);
-    const result = signup(data as SignupSubmitData);
-    console.log("result", result);
     setShowSpinner(true);
+    // action
+    signup(data as SignupSubmitData, {
+      onSuccess: (response) => {
+        if (response.error) {
+          throw response.error;
+        }
+        handleCancel();
+        toast.success(
+          `Signup successful! You must verify your email: ${response.data.email} before signing in.`,
+          {
+            duration: 6000,
+          }
+        );
+        setShowSpinner(false);
+      },
+      onError: (error) => {
+        console.log("onError", error.message);
+        setSubmitError(error.message);
+        // set focus on error
+        document.querySelector("#form-error")?.scrollIntoView();
+        setShowSpinner(false);
+      },
+    });
   }
 
   return (
     <StyledFormContainer>
       <StyledHeading as="h2">Let's Get You Signed Up.</StyledHeading>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
+        {submitError && (
+          <StyledSubmitError as={"h4"} id="form-error">
+            Error: {submitError}
+          </StyledSubmitError>
+        )}
         {/* <StyledContentContainer> */}
         <Heading as="h3">Tell us a bit about yourself.</Heading>
         <FormControlRow>
@@ -256,6 +291,7 @@ export default function SignupForm() {
         )}
         {/* </StyledContentContainer> */}
       </StyledForm>
+      {showSpinner && <OverlaySpinner message={"Creating your account..."} />}
     </StyledFormContainer>
   );
 }
