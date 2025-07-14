@@ -8,11 +8,17 @@ export const loginUser = async (email: string, password: string) => {
       email,
       password,
     });
+    if (error) {
+      throw error;
+    }
+
+    // store the access token in local storage
+    localStorage.setItem("access_token", data.session?.access_token);
     // supabase.auth.getUser(data.session?.access_token).then((user) => {
     //   console.log("user", user);
     // });
     // get userProfile from supabase
-    const userProfile = await supabase
+    const { data: userProfile, error: userProfileError } = await supabase
       .from("profiles")
       .select(
         `*,
@@ -23,7 +29,13 @@ export const loginUser = async (email: string, password: string) => {
       .eq("email", email)
       .single();
     console.log("userProfile", userProfile);
-    return { data, error };
+    if (userProfileError) {
+      throw userProfileError;
+    }
+    return {
+      data: userProfile,
+      error: null,
+    };
   } catch (error) {
     return { data: null, error };
   }

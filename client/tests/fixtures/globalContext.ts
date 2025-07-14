@@ -20,4 +20,6 @@ export const mockUseGlobalContextReturnObj = {
   setIsOpenBottomSlideIn: () => {},
   bottomSlideInType: null,
   setBottomSlideInType: () => {},
+  user: null,
+  setUser: () => {},
 };

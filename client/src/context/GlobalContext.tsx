@@ -1,6 +1,7 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import useGetUserGeo from "../hooks/useGetUserGeo";
 import { LatLng, NearbySearchPlaceResult } from "../interfaces/Geo";
+import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
 
 export type ContextType = {
   getUserGeo: () => void;
@@ -30,6 +31,10 @@ export type ContextType = {
   setBottomSlideInType: React.Dispatch<
     React.SetStateAction<"signup" | "upsell" | null>
   >;
+  user: Auth_User_Profile_Response | null;
+  setUser: React.Dispatch<
+    React.SetStateAction<Auth_User_Profile_Response | null>
+  >;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -54,6 +59,8 @@ const GlobalContext = createContext<ContextType>({
   setIsOpenBottomSlideIn: () => {},
   bottomSlideInType: null,
   setBottomSlideInType: () => {},
+  user: null,
+  setUser: () => {},
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -72,6 +79,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [bottomSlideInType, setBottomSlideInType] = useState<
     "signup" | "upsell" | null
   >(null);
+  const [user, setUser] = useState<Auth_User_Profile_Response | null>(null);
 
   const {
     getUserGeo,
@@ -105,6 +113,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         setIsOpenBottomSlideIn,
         bottomSlideInType,
         setBottomSlideInType,
+        user,
+        setUser,
       }}
     >
       {children}

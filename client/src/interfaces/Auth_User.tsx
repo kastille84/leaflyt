@@ -1,3 +1,5 @@
+import { Plan } from "./Plan";
+
 interface Individual {
   type: "individual";
   individual: {
@@ -115,7 +117,7 @@ export interface Auth_User_Profile_Response {
   phone: string;
   website: string;
   typeOfUser: string;
-  plan: number;
+  plan: Plan;
   address: {
     name: string;
     geometry: {
@@ -129,6 +131,9 @@ export interface Auth_User_Profile_Response {
     formatted_address: string;
     html_attributions: [];
   };
+  avatar?: string;
+  flyers: any[]; // TODO: add flyer type
+  templates: any[]; // TODO: add template type
 }
 
 export interface LoginSubmitData {

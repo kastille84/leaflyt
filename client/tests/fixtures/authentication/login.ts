@@ -92,3 +92,50 @@ export const authLoginWithPassword = {
     },
   },
 };
+
+export const authUserProfileResponse = {
+  id: 3,
+  created_at: "2025-07-11T20:11:51.810683+00:00",
+  user: "89aae94e-6729-41be-9b04-b74411f6fd94",
+  name: "Test Bizness",
+  firstName: null,
+  lastName: null,
+  email: "kastille84@gmail.com",
+  phone: "8454013350",
+  website: "http://www.cnn.com",
+  typeOfUser: "business",
+  plan: {
+    id: 1,
+    name: "Seed",
+    level: 1,
+    price: 0,
+    lifespan: 1,
+    subtitle: "Get to know Leaflyt and post flyers with our generous free plan",
+    created_at: "2025-07-10T21:23:11.034689+00:00",
+    numOfMedia: 2,
+    hasAnalytics: null,
+    templateLimit: 1,
+    hasBulkPosting: false,
+    priceDescription: "Can't beat it",
+    remotePostingLimit: 4,
+    onLocationPostingLimit: 10,
+    virtualPostingDistance: 0.05,
+  },
+  address: {
+    name: "754 Broadway",
+    geometry: {
+      location: {
+        lat: 41.5025289,
+        lng: -74.043393,
+      },
+    },
+    place_id: "ChIJkZL34OQt3YkRYuJIK-VWc4w",
+    adr_address:
+      '<span class="street-address">754 Broadway</span>, <span class="locality">Newburgh</span>, <span class="region">NY</span> <span class="postal-code">12550-6506</span>, <span class="country-name">USA</span>',
+    formatted_address: "754 Broadway, Newburgh, NY 12550, USA",
+    html_attributions: [],
+  },
+  avatar: null,
+  flyers: [],
+  templates: [],
+};

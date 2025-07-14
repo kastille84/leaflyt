@@ -68,7 +68,7 @@ const StyledSubmitError = styled(Heading)`
 export default function LoginModal() {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const { showLoginModal, setShowLoginModal } = useGlobalContext();
+  const { showLoginModal, setShowLoginModal, setUser } = useGlobalContext();
 
   const { login } = useLogin();
 
@@ -86,7 +86,7 @@ export default function LoginModal() {
     mode: "onBlur",
   });
 
-  function handleCancel() {
+  function handleClose() {
     setShowLoginModal(false);
     reset();
   }
@@ -101,7 +101,9 @@ export default function LoginModal() {
         if (response.error) {
           throw response.error;
         }
-        handleCancel();
+        // set user in global context
+        setUser(response.data);
+        handleClose();
         toast.success(`Login successful!`);
         setShowSpinner(false);
         // redirect user to dashboard
@@ -148,7 +150,7 @@ export default function LoginModal() {
             <Button size="small" variation="primary" type="submit">
               Login
             </Button>
-            <Button size="small" variation="secondary" onClick={handleCancel}>
+            <Button size="small" variation="secondary" onClick={handleClose}>
               Cancel
             </Button>
           </StyledButtonContainer>

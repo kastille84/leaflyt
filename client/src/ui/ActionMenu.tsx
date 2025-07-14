@@ -2,13 +2,6 @@ import styled from "styled-components";
 import { useGlobalContext } from "../context/GlobalContext";
 import Button from "./Button";
 import { useEffect } from "react";
-import {
-  SignedIn,
-  SignedOut,
-  SignIn,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
 
 const StyledActionMenu = styled.div`
   grid-column: 1 / -1;
@@ -32,6 +25,19 @@ const StyledLoginContainer = styled.div`
   gap: 2.4rem;
 `;
 
+const StyledAvatar = styled.div`
+  background-color: var(--color-grey-50);
+  /* opacity: 0.65; */
+  color: var(--color-brand-700);
+  width: 35px;
+  height: 35px;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+`;
+
 export default function ActionMenu() {
   const {
     selectedPlace,
@@ -40,7 +46,9 @@ export default function ActionMenu() {
     setShowLoginModal,
     setIsOpenBottomSlideIn,
     setBottomSlideInType,
+    user,
   } = useGlobalContext();
+
   useEffect(() => {}, [selectedPlace]);
 
   function handleSignUpClick() {
@@ -72,29 +80,27 @@ export default function ActionMenu() {
         <p>search</p>
         <p>grid</p>
       </StyledActionContainer>
-      <StyledLoginContainer>
-        {/* <SignInButton
-          mode="modal"
-          appearance={{
-            variables: {
-              fontSize: "1.4rem",
-              spacingUnit: "0.8rem",
-            },
-          }}
-        /> */}
-        <Button size="small" onClick={handleSignUpClick}>
-          Sign Up
-        </Button>
-        <Button
-          size="small"
-          variation="secondary"
-          onClick={() => {
-            setShowLoginModal(true);
-          }}
-        >
-          Login
-        </Button>
-      </StyledLoginContainer>
+      {user ? (
+        <StyledLoginContainer>
+          <StyledAvatar>
+            {user.name
+              ? user.name[0]
+              : `${user.firstName![0]} ${user.lastName![0]}`}
+          </StyledAvatar>
+          <Button size="small" onClick={() => setShowLoginModal(true)}>
+            Logout
+          </Button>
+        </StyledLoginContainer>
+      ) : (
+        <StyledLoginContainer>
+          <Button size="small" onClick={handleSignUpClick}>
+            Sign Up
+          </Button>
+          <Button size="small" onClick={() => setShowLoginModal(true)}>
+            Login
+          </Button>
+        </StyledLoginContainer>
+      )}
     </StyledActionMenu>
   );
 }
