@@ -1,9 +1,13 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 import Heading from "../ui/Heading";
 import Button from "../ui/Button";
 import OverlaySpinner from "../ui/OverlaySpinner";
 import { useGlobalContext } from "../context/GlobalContext";
 import LocationSelection from "../features/location/LocationSelection";
+import { useLocalStorageState } from "../hooks/useLocalStorageState";
+import { useNavigate } from "react-router-dom";
+import useLoginWithAccessToken from "../features/authentication/useLoginWithAccessToken";
 
 const StyledHeroSection = styled.section`
   color: var(--color-blue-200);
@@ -56,7 +60,27 @@ const StyledHeroH1 = styled.h1`
 `;
 
 export default function Landing() {
-  const { getUserGeo, isGettingLocation, coords } = useGlobalContext();
+  const { getUserGeo, isGettingLocation, coords, setUser } = useGlobalContext();
+  const navigate = useNavigate();
+  const { autoLogin } = useLoginWithAccessToken();
+  const [token, setToken] = useLocalStorageState(null, "access_token");
+
+  useEffect(() => {
+    if (token) {
+      // log user in
+      autoLogin(token, {
+        onSuccess: (response) => {
+          console.log("response", response);
+          // set user in global context
+          setUser(response.data);
+          navigate("/dashboard");
+        },
+        onError: (error) => {
+          console.log("error", error);
+        },
+      });
+    }
+  }, []);
 
   return (
     <main>

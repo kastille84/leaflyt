@@ -13,7 +13,10 @@ export const loginUser = async (email: string, password: string) => {
     }
 
     // store the access token in local storage
-    localStorage.setItem("access_token", data.session?.access_token);
+    // localStorage.setItem(
+    //   "access_token",
+    //   JSON.stringify(data.session?.access_token)
+    // );
     // supabase.auth.getUser(data.session?.access_token).then((user) => {
     //   console.log("user", user);
     // });
@@ -41,6 +44,34 @@ export const loginUser = async (email: string, password: string) => {
   }
 };
 
+export const loginUserWithAccessToken = async () => {
+  try {
+    const { data, error } = await supabase.auth.getUser();
+    if (error) {
+      throw error;
+    }
+    const { data: userProfile, error: userProfileError } = await supabase
+      .from("profiles")
+      .select(
+        `*,
+        flyers(*),
+        templates(*),
+        plan(*)`
+      )
+      .eq("email", data.user.email)
+      .single();
+    console.log("userProfile", userProfile);
+    if (userProfileError) {
+      throw userProfileError;
+    }
+    return {
+      data: userProfile,
+      error: null,
+    };
+  } catch (error) {
+    return { data: null, error };
+  }
+};
 export const signupUser = async (prepData: SignupSubmitData) => {
   prepData.type = prepData.typeOfUser;
   let dataForAuthSignup;

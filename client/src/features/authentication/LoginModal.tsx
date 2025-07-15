@@ -106,7 +106,7 @@ export default function LoginModal() {
         handleClose();
         toast.success(`Login successful!`);
         setShowSpinner(false);
-        // redirect user to dashboard
+        // TODO: redirect user to dashboard
       },
       onError: (error) => {
         console.log("onError", error.message);
