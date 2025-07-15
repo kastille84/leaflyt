@@ -3,7 +3,7 @@ import { useState } from "react";
 import {
   FieldErrors,
   FieldValues,
-  UseFormRegister,
+  RegisterREturn,
   UseFormSetValue,
 } from "react-hook-form";
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
@@ -60,7 +60,7 @@ export default function AddressInput({
   locationAdvisory = false,
   shouldSaveAddressObj = false,
 }: {
-  register: UseFormRegister<any>;
+  register: RegisterREturn<any>;
   setValue: UseFormSetValue<any>;
   registerName: string;
   // error: { [key: string]: { message: string; type: string } };

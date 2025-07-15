@@ -3,7 +3,7 @@ import {
   FieldErrors,
   FieldValues,
   UseFormGetValues,
-  UseFormRegister,
+  RegisterREturn,
   UseFormSetValue,
 } from "react-hook-form";
 import FormControl from "./FormControl";
@@ -27,7 +27,7 @@ export default function ImageInput({
   errors,
   level,
 }: {
-  register: UseFormRegister<any>;
+  register: RegisterREturn<any>;
   setValue: UseFormSetValue<any>;
   getValues: UseFormGetValues<any>;
   errors: FieldErrors<FieldValues>;

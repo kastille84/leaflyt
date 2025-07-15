@@ -1,11 +1,11 @@
 import FormControl from "./FormControl";
 import Input from "../Input";
-import { UseFormRegister } from "react-hook-form";
+import type { RegisterReturn } from "react-hook-form";
 
 export default function AttestationInput({
   register,
 }: {
-  register: UseFormRegister<any>;
+  register: RegisterReturn<any>;
 }) {
   return (
     <FormControl

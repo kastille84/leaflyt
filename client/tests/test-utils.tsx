@@ -1,6 +1,6 @@
 // test-utils.jsx (or similar)
 import React from "react";
-import { renderHook } from "@testing-library/react";
+import { renderHook, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const QueryClientProviderWrapper = () => {
@@ -17,5 +17,15 @@ const QueryClientProviderWrapper = () => {
     );
   };
 };
+
+export function getFieldError(name: string) {
+  const Container = screen.getByTestId(`${name}-container`);
+  return {
+    container: Container,
+    error: Container.querySelector(
+      "[data-testid='field-error']"
+    ) as HTMLDivElement,
+  };
+}
 
 export { renderHook, QueryClientProviderWrapper };

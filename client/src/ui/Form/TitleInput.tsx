@@ -1,5 +1,5 @@
 import Input from "../Input";
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
+import { FieldErrors, FieldValues, RegisterREturn } from "react-hook-form";
 import FormControl from "./FormControl";
 import FieldInputError from "./FieldInputError";
 import styled from "styled-components";
@@ -16,7 +16,7 @@ export default function TitleInput({
   register,
   errors,
 }: {
-  register: UseFormRegister<any>;
+  register: RegisterREturn<any>;
   errors: FieldErrors<FieldValues>;
 }) {
   return (

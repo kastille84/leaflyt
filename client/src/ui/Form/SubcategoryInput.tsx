@@ -1,4 +1,4 @@
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
+import { FieldErrors, FieldValues, RegisterREturn } from "react-hook-form";
 import Select from "../Select";
 import FormControl from "./FormControl";
 import FieldInputError from "./FieldInputError";
@@ -18,7 +18,7 @@ export default function SubcategoryInput({
   value,
   errors,
 }: {
-  register: UseFormRegister<any>;
+  register: RegisterREturn<any>;
   options: { value: string; label: string }[];
   value: string;
   errors: FieldErrors<FieldValues>;

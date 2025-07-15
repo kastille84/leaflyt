@@ -4,7 +4,7 @@ import { loginUserWithAccessToken } from "../../services/apiAuth";
 
 export default function useLoginWithAccessToken() {
   const { mutate: autoLogin, error: loginError } = useMutation({
-    mutationFn: (token: any) => loginUserWithAccessToken(token),
+    mutationFn: (token: any) => loginUserWithAccessToken(),
   });
 
   return { autoLogin, loginError };

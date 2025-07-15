@@ -121,9 +121,10 @@ export default function LoginModal() {
   return (
     // https://www.npmjs.com/package/react-modal
     <Modal
-      testId="close-slide-in-modal"
+      testId="login-modal"
       isOpen={showLoginModal}
       style={customModalStyles}
+      appElement={document.getElementById("root")!}
     >
       <StyledHeaderContainer>
         <StyledName>Login to Leaflyt</StyledName>
@@ -147,10 +148,20 @@ export default function LoginModal() {
             errors={errors}
           />
           <StyledButtonContainer>
-            <Button size="small" variation="primary" type="submit">
+            <Button
+              data-testid="login-button"
+              size="small"
+              variation="primary"
+              type="submit"
+            >
               Login
             </Button>
-            <Button size="small" variation="secondary" onClick={handleClose}>
+            <Button
+              data-testid="cancel-button"
+              size="small"
+              variation="secondary"
+              onClick={handleClose}
+            >
               Cancel
             </Button>
           </StyledButtonContainer>

@@ -1,18 +1,24 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { vi } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import * as routerDom from "react-router-dom";
+
 import Landing from "../../src/pages/Landing";
 import * as GlobalContext from "../../src/context/GlobalContext";
 
 // fixtures
 import { mockUseGlobalContextReturnObj } from "../fixtures/globalContext";
-import { get } from "react-hook-form";
+import { QueryClientProviderWrapper } from "../test-utils";
+
+// mocks
+vi.mock("react-router-dom");
+vi.mock("../../src/context/GlobalContext");
 
 describe("Landing Page", () => {
   let mockGetUserGeo = vi.fn();
-
-  vi.mock("../../src/context/GlobalContext");
+  const navigateSpy = vi.fn();
 
   beforeEach(() => {
+    vi.mocked(routerDom.useNavigate).mockImplementation(() => navigateSpy);
+
     vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => {
       return { ...mockUseGlobalContextReturnObj, getUserGeo: mockGetUserGeo };
     });
@@ -22,7 +28,7 @@ describe("Landing Page", () => {
   });
 
   it("should render Landing Page", () => {
-    render(<Landing />);
+    render(<Landing />, { wrapper: QueryClientProviderWrapper() });
 
     const h1 = screen.getByRole("heading", { level: 1 });
     expect(h1.textContent).toBe(
@@ -39,7 +45,7 @@ describe("Landing Page", () => {
   });
 
   it("should call getUserGeo when button is clicked", () => {
-    render(<Landing />);
+    render(<Landing />, { wrapper: QueryClientProviderWrapper() });
     const button = screen.getByRole("button");
     fireEvent.click(button);
     // await waitFor(() => expect(mockGetUserGeo).toHaveBeenCalledTimes(1));
@@ -51,7 +57,7 @@ describe("Landing Page", () => {
       ...mockUseGlobalContextReturnObj,
       isGettingLocation: true,
     }));
-    render(<Landing />);
+    render(<Landing />, { wrapper: QueryClientProviderWrapper() });
     const overlayMessage = screen.getByText(
       "Getting Your Location based on your device's GPS, mobile or wifi signal"
     );
@@ -66,7 +72,7 @@ describe("Landing Page", () => {
         longitude: 34,
       },
     }));
-    render(<Landing />);
+    render(<Landing />, { wrapper: QueryClientProviderWrapper() });
     const locationSelectionSpinner = screen.getByTestId("overlay-spinner");
     expect(locationSelectionSpinner).toBeTruthy();
   });

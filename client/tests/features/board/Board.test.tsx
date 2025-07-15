@@ -5,16 +5,21 @@ import useGetBoard from "../../../src/features/board/useGetBoard";
 import { noBoardFoundForPlaceError } from "../../fixtures/supabase/board/errors";
 import NoFlyers from "../../../src/features/board/NoFlyers";
 import { dummyBoardData } from "../../fixtures/supabase/board/data";
+import BoardFlyerBlock from "../../../src/ui/Flyer/BoardFlyerBlock";
 
 // mocks
 vi.mock("react-router-dom");
 vi.mock("../../../src/features/board/useGetBoard");
 vi.mock("../../../src/features/board/NoFlyers.tsx");
+vi.mock("../../../src/ui/Flyer/BoardFlyerBlock");
 
 describe("Board", () => {
   const useParamsSpy = vi.fn();
   beforeEach(() => {
     vi.mocked(routerDom.useParams).mockImplementation(useParamsSpy);
+    vi.mocked(BoardFlyerBlock).mockImplementation(() => {
+      return <div data-testid="board-flyer-block">Board Flyer Block</div>;
+    });
   });
   afterEach(() => {
     vi.restoreAllMocks();
@@ -51,7 +56,7 @@ describe("Board", () => {
     expect(noFlyers).toBeTruthy();
   });
 
-  it("should show the Board Container component when the board is found", () => {
+  it.only("should show the Board Container component when the board is found", () => {
     // assemble
     useParamsSpy.mockReturnValue({ id: "1" });
     vi.mocked(useGetBoard).mockImplementation(() => ({
@@ -63,5 +68,6 @@ describe("Board", () => {
     const board = screen.getByTestId("board-container");
     // assert
     expect(board).toBeTruthy();
+    expect(screen.getAllByTestId("board-flyer-block")).toBeTruthy();
   });
 });

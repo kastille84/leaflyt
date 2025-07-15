@@ -6,6 +6,7 @@ import { QueryClientProviderWrapper } from "../../test-utils";
 import { resultInfo } from "../../fixtures/cloudinary/responses";
 import useCreateUnregisteredFlyer from "../../../src/features/createFlyer/useCreateUnregisteredFlyer";
 import toast from "react-hot-toast";
+import { getFieldError } from "../../test-utils";
 
 const user = userEvent.setup();
 
@@ -49,16 +50,6 @@ function getActionButtons() {
     cancel: Container.querySelector(
       'button[type="button"]'
     ) as HTMLButtonElement,
-  };
-}
-
-function getFieldError(name: string) {
-  const Container = screen.getByTestId(`${name}-container`);
-  return {
-    container: Container,
-    error: Container.querySelector(
-      "[data-testid='field-error']"
-    ) as HTMLDivElement,
   };
 }
 

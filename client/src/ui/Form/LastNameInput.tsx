@@ -1,4 +1,4 @@
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
+import { FieldErrors, FieldValues, RegisterREturn } from "react-hook-form";
 import Input from "../Input";
 import FormControl from "./FormControl";
 import FieldInputError from "./FieldInputError";
@@ -17,7 +17,7 @@ export default function LastNameInput({
   registerName,
   errors,
 }: {
-  register: UseFormRegister<any>;
+  register: RegisterREturn<any>;
   registerName: string;
   errors: FieldErrors<FieldValues>;
 }) {
