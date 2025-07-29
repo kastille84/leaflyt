@@ -59,9 +59,9 @@ export default function WhyRegister() {
   return (
     <StyledWhyRegisterContainer>
       <div>
-        <StyledTopHeading as="h2">Why Register?</StyledTopHeading>
+        <StyledTopHeading as="h2">Why Signup?</StyledTopHeading>
         <StyledText>
-          When you register, you have a chance to access these features based on
+          When you signup, you have a chance to access these features based on
           your chosen tier:
         </StyledText>
       </div>

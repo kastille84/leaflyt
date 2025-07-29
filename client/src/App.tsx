@@ -40,6 +40,7 @@ function App() {
               <Route path="/" index element={<Landing />} />
               <Route path="*" element={<div>Page not found</div>} />
             </Routes>
+            <LoginModal />
           </BrowserRouter>
           <Toaster
             position="top-center"
@@ -67,7 +68,7 @@ function App() {
             }}
           />
           <FlyerSlideIn />
-          <LoginModal />
+
           <SlideInBottom />
         </GlobalContextProvider>
       </QueryClientProvider>

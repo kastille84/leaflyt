@@ -21,6 +21,7 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import { SignupSubmitData } from "../../interfaces/Auth_User";
 import useSignup from "./useSignup";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const StyledFormContainer = styled.div`
   display: flex;
@@ -113,7 +114,7 @@ export default function SignupForm() {
         /* v8 ignore end */
         handleClose();
         toast.success(
-          `Signup successful! You must verify your email: ${response.data.email} before signing in.`,
+          `Signup successful! You must verify your email: ${response.data.email} before logging in.`,
           {
             duration: 6000,
           }

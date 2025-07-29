@@ -8,6 +8,7 @@ import LocationSelection from "../features/location/LocationSelection";
 import { useLocalStorageState } from "../hooks/useLocalStorageState";
 import { useNavigate } from "react-router-dom";
 import useLoginWithAccessToken from "../features/authentication/useLoginWithAccessToken";
+import { supabase } from "../services/supabase";
 
 const StyledHeroSection = styled.section`
   color: var(--color-blue-200);
@@ -59,28 +60,55 @@ const StyledHeroH1 = styled.h1`
   line-height: 1;
 `;
 
+const StyledButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 3.2rem;
+`;
+
+const StyledAuthButtonsContainer = styled.div`
+  display: flex;
+  gap: 2.4rem;
+  padding-right: 3.2rem;
+`;
+
 export default function Landing() {
-  const { getUserGeo, isGettingLocation, coords, setUser } = useGlobalContext();
+  const {
+    getUserGeo,
+    isGettingLocation,
+    coords,
+    setUser,
+    setShowLoginModal,
+    setIsOpenBottomSlideIn,
+    setBottomSlideInType,
+  } = useGlobalContext();
   const navigate = useNavigate();
   const { autoLogin } = useLoginWithAccessToken();
-  const [token, setToken] = useLocalStorageState(null, "access_token");
+  // const [token, setToken] = useLocalStorageState(null, "access_token");
 
   useEffect(() => {
-    if (token) {
-      // log user in
-      autoLogin(token, {
-        onSuccess: (response) => {
-          console.log("response", response);
-          // set user in global context
-          setUser(response.data);
-          navigate("/dashboard");
-        },
-        onError: (error) => {
-          console.log("error", error);
-        },
-      });
-    }
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        autoLogin(session.access_token, {
+          onSuccess: (response) => {
+            console.log("response", response);
+            // set user in global context
+            setUser(response.data);
+            navigate("/dashboard");
+          },
+          onError: (error) => {
+            console.log("error", error);
+          },
+        });
+      }
+    });
   }, []);
+
+  function handleSignUpClick() {
+    setIsOpenBottomSlideIn(true);
+    setBottomSlideInType("signup");
+  }
 
   return (
     <main>
@@ -94,7 +122,23 @@ export default function Landing() {
             See what others are Discussing & Doing in your{" "}
             <span>Local Digital Community Board</span>
           </Heading>
-          <Button onClick={getUserGeo}>Open Board Near You</Button>
+          <StyledButtonContainer>
+            <Button onClick={getUserGeo}>Open Board Near You</Button>
+            <StyledAuthButtonsContainer>
+              <Button
+                variation="secondary-outlined"
+                onClick={() => setShowLoginModal(true)}
+              >
+                Login
+              </Button>
+              <Button
+                variation="secondary-outlined"
+                onClick={handleSignUpClick}
+              >
+                Signup
+              </Button>
+            </StyledAuthButtonsContainer>
+          </StyledButtonContainer>
         </StyledHeroArticle>
         <StyledFigure>
           <img
