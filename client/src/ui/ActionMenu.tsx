@@ -6,6 +6,7 @@ import { useLocalStorageState } from "../hooks/useLocalStorageState";
 import { useNavigate } from "react-router-dom";
 import OverlaySpinner from "./OverlaySpinner";
 import LocationSelection from "../features/location/LocationSelection";
+import { supabase } from "../services/supabase";
 
 const StyledActionMenu = styled.div`
   grid-column: 1 / -1;
@@ -61,7 +62,6 @@ export default function ActionMenu() {
 
   const navigate = useNavigate();
 
-  const [key, setKey] = useLocalStorageState(null, "access_token");
   useEffect(() => {}, [selectedPlace]);
 
   function handleSignUpClick() {
@@ -69,9 +69,9 @@ export default function ActionMenu() {
     setBottomSlideInType("signup");
   }
 
-  function handleLogout() {
+  async function handleLogout() {
     // remove from localStorage
-    setKey(null);
+    await supabase.auth.signOut();
     // clear data from globalcontext
     setUser(null);
     setSelectedPlace(null);

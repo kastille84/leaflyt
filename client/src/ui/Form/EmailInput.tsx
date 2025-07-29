@@ -1,4 +1,4 @@
-import { FieldErrors, FieldValues, RegisterREturn } from "react-hook-form";
+import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 import Input from "../Input";
 import FormControl from "./FormControl";
 import FieldInputError from "./FieldInputError";
@@ -18,7 +18,7 @@ export default function EmailInput({
   registerName,
   errors,
 }: {
-  register: RegisterREturn<any>;
+  register: UseFormRegister<any>;
   registerName: string;
   errors: FieldErrors<FieldValues>;
 }) {

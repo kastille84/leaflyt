@@ -127,7 +127,7 @@ const StyledTag = styled.small`
 
 const StyledActionContainer = styled.section`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 2.4rem;
   border-top: 1px solid var(--color-grey-200);
   padding: 1rem 2.4rem;

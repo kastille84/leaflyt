@@ -98,9 +98,11 @@ export default function LoginModal() {
     // action
     login(data, {
       onSuccess: (response) => {
+        /* v8 ignore start */
         if (response.error) {
-          throw response.error;
+          throw new Error((response.error as any).message);
         }
+        /* v8 ignore stop */
         // set user in global context
         setUser(response.data);
         handleClose();
@@ -147,7 +149,7 @@ export default function LoginModal() {
             registerName="password"
             errors={errors}
           />
-          <StyledButtonContainer>
+          <StyledButtonContainer data-testid="form-button-container">
             <Button
               data-testid="login-button"
               size="small"

@@ -62,7 +62,7 @@ export const loginUserWithAccessToken = async () => {
       .single();
     console.log("userProfile", userProfile);
     if (userProfileError) {
-      throw userProfileError;
+      throw new Error("Could not fetch user profile");
     }
     return {
       data: userProfile,

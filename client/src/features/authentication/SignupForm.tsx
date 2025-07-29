@@ -67,10 +67,10 @@ export default function SignupForm() {
     watch,
     getValues,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors },
     control,
   } = useForm({
-    mode: "onBlur",
+    mode: "all",
   });
 
   const { setBottomSlideInType, setIsOpenBottomSlideIn } = useGlobalContext();
@@ -91,7 +91,7 @@ export default function SignupForm() {
     }
   }, [typeOfUser]);
 
-  function handleCancel() {
+  function handleClose() {
     setIsOpenBottomSlideIn(false);
     setBottomSlideInType(null);
   }
@@ -106,10 +106,12 @@ export default function SignupForm() {
     // action
     signup(data as SignupSubmitData, {
       onSuccess: (response) => {
+        /* v8 ignore start */
         if (response.error) {
           throw response.error;
         }
-        handleCancel();
+        /* v8 ignore end */
+        handleClose();
         toast.success(
           `Signup successful! You must verify your email: ${response.data.email} before signing in.`,
           {
@@ -276,14 +278,8 @@ export default function SignupForm() {
               />
             </FormControlRow>
             <StyledFormButtonContainer data-testid="form-button-container">
-              <Button type="submit" disabled={!isValid}>
-                Create
-              </Button>
-              <Button
-                type="button"
-                variation="secondary"
-                onClick={handleCancel}
-              >
+              <Button type="submit">Sign up</Button>
+              <Button type="button" variation="secondary" onClick={handleClose}>
                 Cancel
               </Button>
             </StyledFormButtonContainer>
