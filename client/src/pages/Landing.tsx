@@ -118,24 +118,21 @@ export default function Landing() {
             Making Community Boards Fun, Interactive & Useful Again
           </StyledHeroH1>
           <Heading as="h2">
-            Spread your Message. <br />
-            See what others are Discussing & Doing in your{" "}
+            Spread Your Message. <br />
+            See What Others are Discussing & Doing in Your{" "}
             <span>Local Digital Community Board</span>
           </Heading>
           <StyledButtonContainer>
-            <Button onClick={getUserGeo}>Open Board Near You</Button>
+            <Button onClick={getUserGeo}>Search Board Near You</Button>
             <StyledAuthButtonsContainer>
+              <Button variation="secondary" onClick={handleSignUpClick}>
+                Signup
+              </Button>
               <Button
                 variation="secondary-outlined"
                 onClick={() => setShowLoginModal(true)}
               >
                 Login
-              </Button>
-              <Button
-                variation="secondary-outlined"
-                onClick={handleSignUpClick}
-              >
-                Signup
               </Button>
             </StyledAuthButtonsContainer>
           </StyledButtonContainer>

@@ -13,6 +13,9 @@ const StyledCloseContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   padding: 2.4rem;
+  font-size: 3rem;
+  color: var(--color-brand-700);
+  cursor: pointer;
 `;
 
 const StyledContentContainer = styled.div`

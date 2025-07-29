@@ -36,6 +36,7 @@ const variations = {
 
     &:hover {
       background-color: var(--color-grey-0);
+      color: var(--color-grey-0);
     }
   `,
   "secondary-outlined": css`
