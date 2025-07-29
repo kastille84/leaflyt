@@ -1,17 +1,25 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, act } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 
 import * as GlobalContext from "../../../src/context/GlobalContext";
 import LoginModal from "../../../src/features/authentication/LoginModal";
+import useLogin from "../../../src/features/authentication/useLogin";
+
+import {
+  getActionButtons,
+  getFieldError,
+  QueryClientProviderWrapper,
+} from "../../test-utils";
+import { authUserProfileResponse } from "../../fixtures/authentication/login";
 
 // fixtures
 import { mockUseGlobalContextReturnObj } from "../../fixtures/globalContext";
-import { getFieldError, QueryClientProviderWrapper } from "../../test-utils";
 
 const user = userEvent.setup();
 
 // mocks
 vi.mock("../../../src/context/GlobalContext");
+vi.mock("../../../src/features/authentication/useLogin");
 
 // getters
 function getEmail() {
@@ -33,26 +41,37 @@ function getPassword() {
 }
 
 describe("LoginModal", () => {
-  beforeEach(() => {
-    vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
-      ...mockUseGlobalContextReturnObj,
-      showLoginModal: true,
-    }));
-  });
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
+  describe("Display", () => {
+    beforeEach(() => {
+      vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
+        ...mockUseGlobalContextReturnObj,
+        showLoginModal: true,
+      }));
+    });
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
 
-  it("should render LoginModal", async () => {
-    // assemble
-    // act
-    render(<LoginModal />, { wrapper: QueryClientProviderWrapper() });
-    // assert
-    const loginModalComp = screen.getByTestId("login-modal");
-    expect(loginModalComp).toBeTruthy();
+    it("should render LoginModal", async () => {
+      // assemble
+      // act
+      render(<LoginModal />, { wrapper: QueryClientProviderWrapper() });
+      // assert
+      const loginModalComp = screen.getByTestId("login-modal");
+      expect(loginModalComp).toBeTruthy();
+    });
   });
 
   describe("Input Functionality", () => {
+    beforeEach(() => {
+      vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
+        ...mockUseGlobalContextReturnObj,
+        showLoginModal: true,
+      }));
+    });
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
     it("should update the email", async () => {
       // assemble
       render(<LoginModal />, { wrapper: QueryClientProviderWrapper() });
@@ -87,8 +106,26 @@ describe("LoginModal", () => {
     });
   });
 
-  describe("login the user", () => {
-    it("should login the user", async () => {
+  describe("Submit the form", () => {
+    const loginUserMock = vi.fn();
+    const setUserSpy = vi.fn();
+    beforeEach(() => {
+      vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
+        ...mockUseGlobalContextReturnObj,
+        showLoginModal: true,
+        setUser: setUserSpy,
+      }));
+      vi.mocked(useLogin).mockImplementation(() => {
+        return {
+          login: loginUserMock,
+          loginError: null,
+        };
+      });
+    });
+    afterEach(() => {
+      vi.clearAllMocks();
+    });
+    it("should login the user successfully", async () => {
       // assemble
       render(<LoginModal />, { wrapper: QueryClientProviderWrapper() });
       // act
@@ -97,10 +134,44 @@ describe("LoginModal", () => {
       const { input: passwordInput } = getPassword();
       await user.type(passwordInput, "password1");
       const { submit } = getActionButtons();
-      await user.click(submit);
+      await act(async () => {
+        await user.click(submit);
+      });
+      // trigger onSuccess with response
+      await act(async () => {
+        await loginUserMock.mock.calls[0][1].onSuccess({
+          data: authUserProfileResponse,
+          error: null,
+        });
+      });
       // assert
-      await waitFor(() => {
-        expect(mockUseGlobalContextReturnObj.loginUser).toHaveBeenCalled();
+      await waitFor(async () => {
+        await expect(setUserSpy).toHaveBeenCalledWith(authUserProfileResponse);
+      });
+    });
+
+    it("should throw an error if login fails", async () => {
+      // assemble
+      render(<LoginModal />, { wrapper: QueryClientProviderWrapper() });
+      // act
+      const { input: emailInput } = getEmail();
+      await user.type(emailInput, "test@email.com");
+      const { input: passwordInput } = getPassword();
+      await user.type(passwordInput, "password1");
+      const { submit } = getActionButtons();
+      await act(async () => {
+        await user.click(submit);
+      });
+      // trigger onError with error
+      await act(async () => {
+        await loginUserMock.mock.calls[0][1].onError({
+          message: "error has occurred",
+        });
+      });
+
+      // assert
+      await waitFor(async () => {
+        await expect(setUserSpy).not.toHaveBeenCalled();
       });
     });
   });

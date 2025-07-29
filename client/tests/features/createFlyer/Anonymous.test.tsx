@@ -2,7 +2,16 @@ import { act, render, screen, waitFor } from "@testing-library/react";
 // import { fireEvent } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import Anonymous from "../../../src/features/createFlyer/Anonymous";
-import { QueryClientProviderWrapper } from "../../test-utils";
+import {
+  getActionButtons,
+  getFileUpload,
+  getImagePreview,
+  getImagePreviewItem,
+  getInput,
+  getQuill,
+  getSelect,
+  QueryClientProviderWrapper,
+} from "../../test-utils";
 import { resultInfo } from "../../fixtures/cloudinary/responses";
 import useCreateUnregisteredFlyer from "../../../src/features/createFlyer/useCreateUnregisteredFlyer";
 import toast from "react-hot-toast";
@@ -12,68 +21,6 @@ const user = userEvent.setup();
 
 vi.mock("../../../src/features/createFlyer/useCreateUnregisteredFlyer");
 vi.mock("react-hot-toast");
-
-function getInput(name: string) {
-  const Container = screen.getByTestId(`${name}-container`);
-  return {
-    container: Container,
-    label: Container.querySelector("label") as HTMLLabelElement,
-    input: Container.querySelector("input") as HTMLInputElement,
-  };
-}
-
-function getSelect(name: string) {
-  const Container = screen.getByTestId(`${name}-container`);
-  return {
-    container: Container,
-    label: Container.querySelector("label") as HTMLLabelElement,
-    select: Container.querySelector("select") as HTMLSelectElement,
-  };
-}
-
-function getQuill() {
-  const Container = screen.getByTestId("content-container");
-  return {
-    container: Container,
-    label: Container.querySelector("label") as HTMLLabelElement,
-    quill: Container.querySelector(".ql-editor") as HTMLDivElement,
-  };
-}
-
-function getActionButtons() {
-  const Container = screen.getByTestId("form-button-container");
-  return {
-    container: Container,
-    submit: Container.querySelector(
-      'button[type="submit"]'
-    ) as HTMLButtonElement,
-    cancel: Container.querySelector(
-      'button[type="button"]'
-    ) as HTMLButtonElement,
-  };
-}
-
-function getFileUpload(name: string) {
-  const Container = screen.getByTestId(`${name}-container`);
-  return {
-    label: Container.querySelector("label") as HTMLLabelElement,
-    input: Container.querySelector("input") as HTMLInputElement,
-    button: Container.querySelector("button") as HTMLButtonElement,
-  };
-}
-
-function getImagePreview() {
-  return {
-    imagePreview: screen.getByTestId("image-preview"),
-  };
-}
-function getImagePreviewItem(idx: number) {
-  const imagePreviewItem = screen.getByTestId(`image-preview-item-${idx}`);
-  return {
-    imagePreviewItem,
-    deleteButton: imagePreviewItem.querySelector("[data-testid='delete']"),
-  };
-}
 
 const createUploadWidgetSpy = vi.fn();
 const openSpy = vi.fn();

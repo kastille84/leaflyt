@@ -119,7 +119,7 @@ export const signupUserResponse = {
   is_anonymous: false,
 };
 
-const signupUserProfileResponse = {
+export const signupUserProfileResponse = {
   id: 4,
   created_at: "2025-07-10T22:25:45.103248+00:00",
   user: "407749fa-fbac-4141-b8d0-6d8e62403d1b",
@@ -144,5 +144,21 @@ const signupUserProfileResponse = {
       '<span class="street-address">754 Broadway</span>, <span class="locality">Newburgh</span>, <span class="region">NY</span> <span class="postal-code">12550-6506</span>, <span class="country-name">USA</span>',
     formatted_address: "754 Broadway, Newburgh, NY 12550, USA",
     html_attributions: [],
+  },
+};
+
+export const signupSubmitWithError = {
+  error: {
+    code: "23505",
+    details: null,
+    hint: null,
+    message: "Something went wrong on our end. Please try again later.",
+    statusCode: 500,
+  },
+};
+export const signupSubmitWithSuccess = {
+  error: null,
+  data: {
+    email: "kastille84@gmail.com",
   },
 };
