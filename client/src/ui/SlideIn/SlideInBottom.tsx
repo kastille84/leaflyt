@@ -1,0 +1,57 @@
+// import component 👇
+import Drawer from "react-modern-drawer";
+
+//import styles 👇
+import "react-modern-drawer/dist/index.css";
+import { useGlobalContext } from "../../context/GlobalContext";
+import RegistrationSlideIn from "../../features/authentication/SignupContainer";
+import { SIGNUP } from "../../constants";
+import styled from "styled-components";
+import { HiOutlineXMark } from "react-icons/hi2";
+
+const StyledCloseContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding: 2.4rem;
+`;
+
+const StyledContentContainer = styled.div`
+  height: 80rem;
+`;
+
+export default function SlideInBottom() {
+  const {
+    isOpenBottomSlideIn,
+    setIsOpenBottomSlideIn,
+    bottomSlideInType,
+    setBottomSlideInType,
+  } = useGlobalContext();
+
+  function determineSlideInType() {
+    if (bottomSlideInType === SIGNUP) {
+      return <RegistrationSlideIn />;
+    } else if (bottomSlideInType === "upsell") {
+      return <p>Upsell</p>;
+    }
+  }
+
+  function handleDrawerClose() {
+    setIsOpenBottomSlideIn(false);
+    setBottomSlideInType(null);
+  }
+
+  return (
+    <Drawer
+      open={isOpenBottomSlideIn}
+      onClose={handleDrawerClose}
+      direction="bottom"
+      size={"100vh"}
+      // style={{ position: "fixed", top: "auto", bottom: 0, right: 0, left: 0 }}
+    >
+      <StyledCloseContainer>
+        <HiOutlineXMark onClick={handleDrawerClose} />
+      </StyledCloseContainer>
+      <StyledContentContainer>{determineSlideInType()} </StyledContentContainer>
+    </Drawer>
+  );
+}
