@@ -37,6 +37,34 @@ export const FILE_UPLOAD_OPTIONS = [
     // autoMinimize: true,
     return_delete_token: true,
   },
+  // LEVEL - 1
+  {
+    // widgetParameters: { multiple: false, maxFiles: 1 },
+    sources: [
+      "local",
+      "url",
+      "camera",
+      "image_search",
+      "unsplash",
+      "google_drive",
+      "shutterstock",
+    ],
+    multiple: false,
+    maxFiles: 1,
+    // cropping parameters
+    cropping: true,
+    croppingShowBackButton: true,
+    // upload parameters
+    tags: ["anonymous"],
+    resourceType: "image",
+    // customization parameters
+    theme: "minimal",
+    buttonCaption: "Upload File(s)",
+    // advanced parameters
+    showPoweredBy: false,
+    // autoMinimize: true,
+    return_delete_token: true,
+  },
 ];
 
 export const SIGNUP = "signup";

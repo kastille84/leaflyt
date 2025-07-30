@@ -17,7 +17,7 @@ const StyledFlyerFormContainer = styled.div`
   }
 
   & svg {
-    color: var(--color-brand-600);
+    color: var(--color-grey-600);
     font-size: 2.4rem;
     cursor: pointer;
   }
@@ -27,9 +27,9 @@ const StyledFlyerFormContainer = styled.div`
 `;
 
 const StyledTopSection = styled.div`
-  background-color: var(--color-blue-200);
+  background-color: var(--color-brand-500);
   /* background-color: var(--color-grey-50); */
-  color: var(--color-grey-600);
+  color: var(--color-grey-700);
   display: flex;
   justify-content: space-between;
   align-items: center;

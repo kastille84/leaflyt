@@ -57,6 +57,8 @@ export default () => {
     lifeSpan: { limit: plan.lifespan },
     registered: plan.level >= 1,
     paid: plan.level >= 2,
+    name: plan.name,
+    canUpgrade: plan.level < 4,
   };
 
   return planLimits;
