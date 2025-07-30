@@ -10,7 +10,7 @@ import EmailInput from "../../ui/Form/EmailInput";
 import PasswordInput from "../../ui/Form/PasswordInput";
 import useLogin from "./useLogin";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const StyledButtonContainer = styled.div`
   margin-top: 2.4rem;
@@ -69,7 +69,8 @@ const StyledSubmitError = styled(Heading)`
 export default function LoginModal() {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const { showLoginModal, setShowLoginModal, setUser } = useGlobalContext();
+  const { showLoginModal, setShowLoginModal, setUser, selectedPlace } =
+    useGlobalContext();
 
   const { login } = useLogin();
   const navigate = useNavigate();
@@ -111,7 +112,9 @@ export default function LoginModal() {
         toast.success(`Login successful!`);
         setShowSpinner(false);
         // TODO: redirect user to dashboard
-        navigate("/dashboard");
+        navigate(
+          `/dashboard${selectedPlace?.id ? "/board/" + selectedPlace.id : ""}`
+        );
       },
       onError: (error) => {
         console.log("onError", error.message);

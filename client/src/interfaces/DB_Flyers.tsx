@@ -11,6 +11,7 @@ interface DB_Flyer_Create {
   content: string;
   tags?: string[];
   fileUrlArr?: UploadApiResponse[];
+  postingMethod: "onLocation" | "remote" | "remoteBulk";
 }
 
 interface DB_Flyer_Create_Unregistered extends DB_Flyer_Create {

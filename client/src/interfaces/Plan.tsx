@@ -7,11 +7,11 @@ export interface Plan {
   subtitle: string;
   created_at: string;
   numOfMedia: number;
-  hasAnalytics: boolean;
+  hasAnalytics: null | "lite" | "full";
   templateLimit: number;
   hasBulkPosting: boolean;
   priceDescription: string;
   remotePostingLimit: number;
   onLocationPostingLimit: number;
-  virtualPostingDistance: number;
+  virtualPostingDistance: number | null;
 }

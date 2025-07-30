@@ -71,13 +71,14 @@ export default function ActionMenu() {
 
   async function handleLogout() {
     // remove from localStorage
-    await supabase.auth.signOut();
-    // clear data from globalcontext
-    setUser(null);
-    setSelectedPlace(null);
-    setCoords(null);
-    // redirect to home
-    navigate("/");
+    await supabase.auth.signOut().then(() => {
+      // clear data from globalcontext
+      setUser(null);
+      setSelectedPlace(null);
+      setCoords(null);
+      // redirect to home
+      navigate("/");
+    });
   }
 
   function determineAuthActions() {

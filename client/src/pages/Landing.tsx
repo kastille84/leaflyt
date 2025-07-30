@@ -65,12 +65,12 @@ const StyledButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 3.2rem;
+  padding-right: 3.2rem;
 `;
 
 const StyledAuthButtonsContainer = styled.div`
   display: flex;
   gap: 2.4rem;
-  padding-right: 3.2rem;
 `;
 
 export default function Landing() {
@@ -123,7 +123,6 @@ export default function Landing() {
             <span>Local Digital Community Board</span>
           </Heading>
           <StyledButtonContainer>
-            <Button onClick={getUserGeo}>Search Board Near You</Button>
             <StyledAuthButtonsContainer>
               <Button variation="secondary" onClick={handleSignUpClick}>
                 Signup
@@ -135,6 +134,7 @@ export default function Landing() {
                 Login
               </Button>
             </StyledAuthButtonsContainer>
+            <Button onClick={getUserGeo}>Search For a Board Near You</Button>
           </StyledButtonContainer>
         </StyledHeroArticle>
         <StyledFigure>
