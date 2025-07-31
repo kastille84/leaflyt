@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FieldErrors,
   FieldValues,
@@ -36,11 +36,13 @@ export default function ImageInput({
   const uploadButtonRef = useRef(null);
   const cloudinaryWidgetRef = useRef(null);
 
+  // const [fileUrlArr, setFileUrlArr] = useState<any>([]);
+
   useEffect(() => {
     setValue("fileUrlArr", []);
   }, []);
   const fileUrlArr = getValues("fileUrlArr");
-
+  // console.log("fileUrlArr", fileUrlArr);
   const openCloudinaryWidget = () => {
     if (!cloudinaryWidgetRef?.current && uploadButtonRef?.current) {
       cloudinaryWidgetRef.current = window.cloudinary.createUploadWidget(
@@ -53,11 +55,18 @@ export default function ImageInput({
           if (!error && result && result.event === "success") {
             // TODO: remove this console.log
             console.log("Done! Here is the image info: ", result.info);
-            setValue("fileUrlArr", [...fileUrlArr, result.info]); // Update form field
+            // setFileUrlArr((prevFileUrlArr: any) => [
+            //   ...prevFileUrlArr,
+            //   result.info,
+            // ]);
+            setValue("fileUrlArr", [...getValues("fileUrlArr"), result.info]); // Update form field
+            console.log("getFileUrlArr", getValues("fileUrlArr"));
+            (cloudinaryWidgetRef.current as any).close();
           }
           if (error) {
             console.log(error);
             toast.error(error.message);
+            (cloudinaryWidgetRef.current as any).close();
           }
         }
       );

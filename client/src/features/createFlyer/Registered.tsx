@@ -26,6 +26,7 @@ import ContentInput from "../../ui/Form/ContentInput";
 import ImageInput from "../../ui/Form/ImageInput";
 import ImagePreview from "../../ui/Form/ImagePreview";
 import TagsInput from "../../ui/Form/TagsInput";
+import Button from "../../ui/Button";
 
 const StyledRegisteredContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
@@ -67,6 +68,16 @@ const StyledFormContent = styled.div`
   /* margin-bottom: 4.8rem; */
 `;
 
+const StyledFormButtonContainer = styled.div`
+  /* position: fixed; */
+  /* bottom: 2.4rem; */
+  /* right: 2.4rem; */
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 2.4rem;
+`;
+
 export default function Registered() {
   const [showSpinner, setShowSpinner] = useState(false);
   const {
@@ -81,7 +92,7 @@ export default function Registered() {
   } = useForm({
     mode: "onBlur",
   });
-  const { user } = useGlobalContext();
+  const { user, setShowCloseSlideInModal } = useGlobalContext();
   const planLimits = useGetUserLimits();
 
   const categoryWatch = watch("category");
@@ -89,8 +100,12 @@ export default function Registered() {
   const fileUrlArrWatch = watch("fileUrlArr");
 
   const onSubmit = async (data: any) => {
-    console.log(data);
+    console.log("registered data", data);
   };
+
+  function handleCancel() {
+    setShowCloseSlideInModal(true);
+  }
 
   return (
     <StyledRegisteredContainer>
@@ -170,6 +185,16 @@ export default function Registered() {
                 getValues={getValues}
               />
             </FormControlRow>
+            <StyledFormButtonContainer data-testid="form-button-container">
+              <Button type="submit">Create</Button>
+              <Button
+                type="button"
+                variation="secondary"
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
+            </StyledFormButtonContainer>
           </StyledFormContent>
         </Form>
       </StyledFormContainer>

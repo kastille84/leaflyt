@@ -1,9 +1,14 @@
+import { useEffect } from "react";
 import styled from "styled-components";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
+import { supabase } from "../services/supabase";
 import ActionMenu from "../ui/ActionMenu";
 import Sidebar from "../ui/Sidebar";
 import CloseSlideInModal from "../ui/Modals/CloseSlideInModal";
+
+import useLoginWithAccessToken from "../features/authentication/useLoginWithAccessToken";
+import { useGlobalContext } from "../context/GlobalContext";
 
 const StyledMainLayout = styled.main`
   height: 100vh;
@@ -21,6 +26,28 @@ const StyledMainContentContainer = styled.div`
 `;
 
 export default function MainLayout() {
+  const { setUser } = useGlobalContext();
+  const navigate = useNavigate();
+
+  const { autoLogin } = useLoginWithAccessToken();
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        autoLogin(session.access_token, {
+          onSuccess: (response) => {
+            console.log("response", response);
+            // set user in global context
+            setUser(response.data);
+            navigate("/dashboard");
+          },
+          onError: (error) => {
+            console.log("error", error);
+          },
+        });
+      }
+    });
+  }, []);
+
   return (
     <StyledMainLayout data-testid="main-layout">
       <ActionMenu></ActionMenu>
