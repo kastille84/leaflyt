@@ -1,8 +1,9 @@
 import { UploadApiResponse } from "cloudinary";
+import { Auth_User_Profile_Response } from "./Auth_User";
 
 interface DB_Flyer_Create {
   id?: string;
-  userId?: string;
+  user?: string | Auth_User_Profile_Response;
   // boardId?: string;
   placeId?: string;
   title: string;

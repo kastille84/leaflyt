@@ -62,11 +62,11 @@ const StyledFigure = styled.figure`
 `;
 
 const StyledTopImageContainer = styled.div`
+  background-color: var(--color-brand-500);
   position: absolute;
   top: 0;
 
-  background-color: var(--color-grey-600);
-  opacity: 0.65;
+  opacity: 0.85;
   color: var(--color-grey-50);
   width: 100%;
   padding: 1rem 2.4rem;
@@ -77,7 +77,7 @@ const StyledTopImageContainer = styled.div`
 const StyledTopTextContainer = styled.div`
   width: 100%;
   padding: 1rem 2.4rem;
-  background-color: var(--color-brand-500);
+  background-color: var(--color-grey-600);
   color: var(--color-grey-50);
   display: flex;
   justify-content: space-between;
@@ -164,7 +164,7 @@ export default function BoardFlyerBlock({
   }
 
   function determineAvatarAndName() {
-    if (!flyer.userId) {
+    if (!flyer.user) {
       // anonymous flyer
       switch (flyer.typeOfUser) {
         case "anonymous":

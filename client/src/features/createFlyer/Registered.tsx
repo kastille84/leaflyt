@@ -27,6 +27,8 @@ import ImageInput from "../../ui/Form/ImageInput";
 import ImagePreview from "../../ui/Form/ImagePreview";
 import TagsInput from "../../ui/Form/TagsInput";
 import Button from "../../ui/Button";
+import Input from "../../ui/Input";
+import FullNameInput from "../../ui/Form/FullNameInput";
 
 const StyledRegisteredContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
@@ -78,6 +80,12 @@ const StyledFormButtonContainer = styled.div`
   gap: 2.4rem;
 `;
 
+const StyledCheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+`;
+
 export default function Registered() {
   const [showSpinner, setShowSpinner] = useState(false);
   const {
@@ -92,12 +100,18 @@ export default function Registered() {
   } = useForm({
     mode: "onBlur",
   });
-  const { user, setShowCloseSlideInModal } = useGlobalContext();
+  const {
+    user,
+    setShowCloseSlideInModal,
+    setBottomSlideInType,
+    setIsOpenBottomSlideIn,
+  } = useGlobalContext();
   const planLimits = useGetUserLimits();
 
   const categoryWatch = watch("category");
   const subcategoryWatch = watch("subcategory");
   const fileUrlArrWatch = watch("fileUrlArr");
+  const isTemplateWatch = watch("isTemplate");
 
   const onSubmit = async (data: any) => {
     console.log("registered data", data);
@@ -105,6 +119,11 @@ export default function Registered() {
 
   function handleCancel() {
     setShowCloseSlideInModal(true);
+  }
+
+  function handleOpenFlyerDesigner() {
+    setIsOpenBottomSlideIn(true);
+    setBottomSlideInType("flyerDesigner");
   }
 
   return (
@@ -185,6 +204,38 @@ export default function Registered() {
                 getValues={getValues}
               />
             </FormControlRow>
+            <FormControlRow>
+              <FormControl>
+                <Heading as="h4">Make This Flyer a Reusable Template</Heading>
+                <p>
+                  Creating flyers by scratch each time you post can be tedious.
+                  Create a template to save you time and effort by reusing it
+                  for future flyers.
+                </p>
+                <StyledCheckboxContainer>
+                  <Input type="checkbox" {...register("isTemplate")} /> Check
+                  this box to create a template
+                </StyledCheckboxContainer>
+                {isTemplateWatch && (
+                  <FullNameInput
+                    register={register}
+                    registerName="templateName"
+                    name="Template"
+                    errors={errors}
+                  />
+                )}
+              </FormControl>
+              <FormControl>
+                <Heading as="h4">Flyer Design</Heading>
+                <p>Give your flyer a personal touch.</p>
+                <p>
+                  <Button size="small" onClick={handleOpenFlyerDesigner}>
+                    Open the Flyer Designer
+                  </Button>
+                </p>
+              </FormControl>
+            </FormControlRow>
+
             <StyledFormButtonContainer data-testid="form-button-container">
               <Button type="submit">Create</Button>
               <Button

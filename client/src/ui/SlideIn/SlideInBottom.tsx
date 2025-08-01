@@ -4,10 +4,11 @@ import Drawer from "react-modern-drawer";
 //import styles 👇
 import "react-modern-drawer/dist/index.css";
 import { useGlobalContext } from "../../context/GlobalContext";
-import RegistrationSlideIn from "../../features/authentication/SignupContainer";
+import RegistrationContainer from "../../features/authentication/SignupContainer";
 import { SIGNUP } from "../../constants";
 import styled from "styled-components";
 import { HiOutlineXMark } from "react-icons/hi2";
+import FlyerDesignerContainer from "../../features/createFlyer/FlyerDesigner/FlyerDesignerContainer";
 
 const StyledCloseContainer = styled.div`
   display: flex;
@@ -32,9 +33,11 @@ export default function SlideInBottom() {
 
   function determineSlideInType() {
     if (bottomSlideInType === SIGNUP) {
-      return <RegistrationSlideIn />;
+      return <RegistrationContainer />;
     } else if (bottomSlideInType === "upsell") {
       return <p>Upsell</p>;
+    } else if (bottomSlideInType === "flyerDesigner") {
+      return <FlyerDesignerContainer />;
     }
   }
 
