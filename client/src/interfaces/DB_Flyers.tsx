@@ -1,6 +1,29 @@
 import { UploadApiResponse } from "cloudinary";
 import { Auth_User_Profile_Response } from "./Auth_User";
 
+export interface FlyerDesign {
+  top: {
+    backgroundColor: string;
+    color: string;
+  };
+  outlines: {
+    color: string;
+  };
+  font: string;
+  title: {
+    color: string;
+  };
+  subcategory: {
+    color: string;
+  };
+  readMore: {
+    color: string;
+  };
+  tags: {
+    color: string;
+  };
+}
+
 interface DB_Flyer_Create {
   id?: string;
   user?: string | Auth_User_Profile_Response;
@@ -13,6 +36,7 @@ interface DB_Flyer_Create {
   tags?: string[];
   fileUrlArr?: UploadApiResponse[];
   postingMethod: "onLocation" | "remote" | "remoteBulk";
+  flyerDesign: null | FlyerDesign;
 }
 
 interface DB_Flyer_Create_Unregistered extends DB_Flyer_Create {

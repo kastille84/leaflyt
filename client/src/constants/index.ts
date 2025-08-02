@@ -147,4 +147,50 @@ export const FILE_UPLOAD_OPTIONS = [
   },
 ];
 
+export const UNREGISTERED_FLYER_DESIGN_DEFAULT = {
+  top: {
+    backgroundColor: "var(--color-grey-600)",
+    color: "var(--color-grey-50)",
+  },
+  outlines: {
+    color: "var(--color-grey-600)",
+  },
+  font: '"DM Sans", sans-serif',
+  title: {
+    color: "var(--color-grey-700)",
+  },
+  subcategory: {
+    color: "var(--color-orange-600)",
+  },
+  readMore: {
+    color: "var(--color-brand-600)",
+  },
+  tags: {
+    color: "var(--color-blue-400)",
+  },
+};
+
+export const REGISTERED_FLYER_DESIGN_DEFAULT = {
+  top: {
+    backgroundColor: "var(--color-brand-500)",
+    color: "var(--color-grey-50)",
+  },
+  outlines: {
+    color: "var(--color-brand-500)",
+  },
+  font: '"DM Sans", sans-serif',
+  title: {
+    color: "var(--color-grey-700)",
+  },
+  subcategory: {
+    color: "var(--color-orange-600)",
+  },
+  readMore: {
+    color: "var(--color-brand-600)",
+  },
+  tags: {
+    color: "var(--color-blue-400)",
+  },
+};
+
 export const SIGNUP = "signup";

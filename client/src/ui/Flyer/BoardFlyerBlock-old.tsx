@@ -1,6 +1,5 @@
+import { DB_Flyers_Response } from "../../interfaces/DB_Flyers";
 import styled, { css } from "styled-components";
-
-import { DB_Flyers_Response, FlyerDesign } from "../../interfaces/DB_Flyers";
 import Heading from "../Heading";
 import {
   HiOutlineChatBubbleLeftEllipsis,
@@ -10,11 +9,17 @@ import {
 } from "react-icons/hi2";
 import { shortenTitle } from "../../utils/GeneralUtils";
 import { useState } from "react";
-import useGetUserLimits from "../../hooks/useGetUserLimits";
-import {
-  UNREGISTERED_FLYER_DESIGN_DEFAULT,
-  REGISTERED_FLYER_DESIGN_DEFAULT,
-} from "../../constants";
+
+// const variations = {
+//   imageBasedFlyer: css``,
+//   textBasedFlyer: css``,
+// };
+// const StyledBoardFlyerBlock = styled.div`
+//   box-shadow: var(--shadow-sm);
+
+//   ${variations.imageBasedFlyer}
+//   ${variations.textBasedFlyer}
+// `;
 
 const common = {
   style: css`
@@ -22,7 +27,7 @@ const common = {
     &:hover {
       box-shadow: var(--shadow-lg);
     }
-
+    border: 1px solid var(--color-grey-200);
     width: 40rem;
     display: flex;
     flex-direction: column;
@@ -30,10 +35,24 @@ const common = {
   `,
 };
 
-const StyledFlyerBlock = styled.div<{ flyerDesign: FlyerDesign }>`
+const StyledFlyerBlock = styled.div`
   ${common.style}
-  border: 1px solid var(--color-grey-200);
-  /* border: 1px solid ${(props) => props.flyerDesign.outlines.color}; */
+`;
+
+const StyledImageBasedFlyerBlock = styled.div`
+  ${common.style}
+
+  & section {
+    padding: 2.4rem;
+    /* padding-top: 0; */
+  }
+`;
+
+const StyledTextBasedFlyerBlock = styled.div`
+  ${common.style}
+  & section {
+    padding: 2.4rem;
+  }
 `;
 
 const StyledFigure = styled.figure`
@@ -42,24 +61,24 @@ const StyledFigure = styled.figure`
   position: relative;
 `;
 
-const StyledTopImageContainer = styled.div<{ flyerDesign: FlyerDesign }>`
-  background-color: ${(props) => props.flyerDesign.top.backgroundColor};
+const StyledTopImageContainer = styled.div`
+  background-color: var(--color-brand-500);
   position: absolute;
   top: 0;
 
   opacity: 0.85;
-  color: ${(props) => props.flyerDesign.top.color};
+  color: var(--color-grey-50);
   width: 100%;
   padding: 1rem 2.4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
-const StyledTopTextContainer = styled.div<{ flyerDesign: FlyerDesign }>`
+const StyledTopTextContainer = styled.div`
   width: 100%;
   padding: 1rem 2.4rem;
-  background-color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
-  color: ${({ flyerDesign }) => flyerDesign.top.color};
+  background-color: var(--color-grey-600);
+  color: var(--color-grey-50);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -71,23 +90,22 @@ const StyledMainContentContainer = styled.div`
   font-size: 1.4rem;
 `;
 
-const StyledSubcategory = styled.small<{ flyerDesign: FlyerDesign }>`
+const StyledSubcategory = styled.small`
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 1px;
-  color: ${({ flyerDesign }) => flyerDesign.subcategory.color};
+  color: var(--color-orange-600);
 `;
 
-const StyledHeading = styled(Heading)<{ flyerDesign: FlyerDesign }>`
-  color: ${({ flyerDesign }) => flyerDesign.title.color};
+const StyledHeading = styled(Heading)`
   text-transform: capitalize;
   margin-bottom: 1.2rem;
 `;
 
-const StyledReadMore = styled.p<{ flyerDesign: FlyerDesign }>`
+const StyledReadMore = styled.p`
   text-transform: capitalize;
   font-weight: 600;
-  color: ${({ flyerDesign }) => flyerDesign.readMore.color};
+  color: var(--color-brand-600);
   cursor: pointer;
   text-align: right;
   letter-spacing: 0.4px;
@@ -99,29 +117,20 @@ const StyledTagContainer = styled.div`
   gap: 1rem;
 `;
 
-const StyledTag = styled.small<{ flyerDesign: FlyerDesign }>`
+const StyledTag = styled.small`
   text-transform: capitalize;
   font-weight: 600;
   letter-spacing: 1px;
   font-size: 1rem;
-  color: ${({ flyerDesign }) => flyerDesign.tags.color};
+  color: var(--color-blue-400);
 `;
 
 const StyledActionContainer = styled.section`
   display: flex;
   justify-content: flex-end;
-  align-items: center;
   gap: 2.4rem;
   border-top: 1px solid var(--color-grey-200);
   padding: 1rem 2.4rem;
-`;
-
-const StyledActionIconContainer = styled.div<{ flyerDesign: FlyerDesign }>`
-  display: flex;
-  align-items: center;
-  & svg {
-    color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
-  }
 `;
 
 const StyledAvatarContainer = styled.div`
@@ -129,10 +138,10 @@ const StyledAvatarContainer = styled.div`
   gap: 1.2rem;
   align-items: center;
 `;
-const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
-  background-color: ${({ flyerDesign }) => flyerDesign.top.color};
+const StyledAvatar = styled.div`
+  background-color: var(--color-grey-50);
   /* opacity: 0.65; */
-  color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
+  color: var(--color-brand-700);
   width: 35px;
   height: 35px;
   padding: 1rem;
@@ -146,16 +155,7 @@ export default function BoardFlyerBlock({
 }: {
   flyer: DB_Flyers_Response;
 }) {
-  const userLimits = useGetUserLimits();
-
   const [isReadMore, setIsReadMore] = useState(false);
-  const [flyerStyles, setFlyerStyles] = useState(() => {
-    if (!flyer.flyerDesign) {
-      return UNREGISTERED_FLYER_DESIGN_DEFAULT;
-    }
-    return flyer.flyerDesign;
-  });
-
   function hasFiles() {
     if (flyer?.fileUrlArr?.length) {
       return true;
@@ -170,16 +170,14 @@ export default function BoardFlyerBlock({
         case "anonymous":
           return (
             <>
-              <StyledAvatar flyerDesign={flyerStyles}>A</StyledAvatar>
+              <StyledAvatar>A</StyledAvatar>
               <div>Anonymous</div>
             </>
           );
         case "individual":
           return (
             <>
-              <StyledAvatar flyerDesign={flyerStyles}>
-                {flyer.individual!.name.firstName[0]}
-              </StyledAvatar>
+              <StyledAvatar>{flyer.individual!.name.firstName[0]}</StyledAvatar>
               <div>
                 {flyer.individual!.name.firstName} &nbsp;
                 {flyer.individual!.name.lastName}
@@ -189,18 +187,14 @@ export default function BoardFlyerBlock({
         case "organization":
           return (
             <>
-              <StyledAvatar flyerDesign={flyerStyles}>
-                {flyer.organization!.name[0]}
-              </StyledAvatar>
+              <StyledAvatar>{flyer.organization!.name[0]}</StyledAvatar>
               <div>{flyer.organization!.name}</div>
             </>
           );
         case "business":
           return (
             <>
-              <StyledAvatar flyerDesign={flyerStyles}>
-                {flyer.business!.name[0]}
-              </StyledAvatar>
+              <StyledAvatar>{flyer.business!.name[0]}</StyledAvatar>
               <div>{flyer.business!.name}</div>
             </>
           );
@@ -223,7 +217,7 @@ export default function BoardFlyerBlock({
   }
 
   return (
-    <StyledFlyerBlock flyerDesign={flyerStyles}>
+    <StyledFlyerBlock>
       {hasFiles() && (
         <StyledFigure>
           <img
@@ -231,23 +225,17 @@ export default function BoardFlyerBlock({
             width={"100%"}
             height={"auto"}
           />
-          <StyledTopImageContainer flyerDesign={flyerStyles}>
+          <StyledTopImageContainer>
             {renderTopContent()}
           </StyledTopImageContainer>
         </StyledFigure>
       )}
       {!hasFiles() && (
-        <StyledTopTextContainer flyerDesign={flyerStyles}>
-          {renderTopContent()}
-        </StyledTopTextContainer>
+        <StyledTopTextContainer>{renderTopContent()}</StyledTopTextContainer>
       )}
       <StyledMainContentContainer>
-        <StyledSubcategory flyerDesign={flyerStyles}>
-          {flyer.subcategory}
-        </StyledSubcategory>
-        <StyledHeading as="h2" flyerDesign={flyerStyles}>
-          {flyer.title}
-        </StyledHeading>
+        <StyledSubcategory>{flyer.subcategory}</StyledSubcategory>
+        <StyledHeading as="h2">{flyer.title}</StyledHeading>
         {!isReadMore && (
           <div
             dangerouslySetInnerHTML={{
@@ -259,33 +247,26 @@ export default function BoardFlyerBlock({
           <div dangerouslySetInnerHTML={{ __html: flyer.content }}></div>
         )}
         {flyer.content.length > 75 && (
-          <StyledReadMore
-            flyerDesign={flyerStyles}
-            onClick={() => setIsReadMore(!isReadMore)}
-          >
+          <StyledReadMore onClick={() => setIsReadMore(!isReadMore)}>
             {isReadMore ? "Read less" : "Read more"}
           </StyledReadMore>
         )}
         <StyledTagContainer>
-          <StyledTag flyerDesign={flyerStyles}>#</StyledTag>
+          <StyledTag>#</StyledTag>
           {flyer.tags &&
-            flyer.tags.map((tag) => (
-              <StyledTag flyerDesign={flyerStyles} key={tag}>
-                {tag}
-              </StyledTag>
-            ))}
+            flyer.tags.map((tag) => <StyledTag key={tag}>{tag}</StyledTag>)}
         </StyledTagContainer>
       </StyledMainContentContainer>
       <StyledActionContainer>
-        <StyledActionIconContainer flyerDesign={flyerStyles}>
+        <div>
           <HiOutlineHandThumbUp />
-        </StyledActionIconContainer>
-        <StyledActionIconContainer flyerDesign={flyerStyles}>
+        </div>
+        <div>
           <HiOutlineChatBubbleLeftEllipsis />
-        </StyledActionIconContainer>
-        <StyledActionIconContainer flyerDesign={flyerStyles}>
+        </div>
+        <div>
           <HiOutlineShare />
-        </StyledActionIconContainer>
+        </div>
       </StyledActionContainer>
     </StyledFlyerBlock>
   );

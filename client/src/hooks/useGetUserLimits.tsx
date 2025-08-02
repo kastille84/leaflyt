@@ -59,6 +59,7 @@ export default () => {
     paid: plan.level >= 2,
     name: plan.name,
     canUpgrade: plan.level < 4,
+    level: plan.level,
   };
 
   return planLimits;
