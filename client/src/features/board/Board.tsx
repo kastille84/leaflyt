@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 import useGetBoard from "./useGetBoard";
 import NoFlyers from "./NoFlyers";
-import BoardFlyerBlock from "../../ui/Flyer/BoardFlyerBlock";
+import BoardFlyerBlock from "../../ui/Flyer/StaticFlyerBlock";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/GlobalContext";

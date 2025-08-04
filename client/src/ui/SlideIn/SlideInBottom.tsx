@@ -9,6 +9,7 @@ import { SIGNUP } from "../../constants";
 import styled from "styled-components";
 import { HiOutlineXMark } from "react-icons/hi2";
 import FlyerDesignerContainer from "../../features/createFlyer/FlyerDesigner/FlyerDesignerContainer";
+import { FlyerDesignerContextProvider } from "../../context/FlyerDesignerContext";
 
 const StyledCloseContainer = styled.div`
   display: flex;
@@ -37,7 +38,11 @@ export default function SlideInBottom() {
     } else if (bottomSlideInType === "upsell") {
       return <p>Upsell</p>;
     } else if (bottomSlideInType === "flyerDesigner") {
-      return <FlyerDesignerContainer />;
+      return (
+        <FlyerDesignerContextProvider>
+          <FlyerDesignerContainer />;
+        </FlyerDesignerContextProvider>
+      );
     }
   }
 

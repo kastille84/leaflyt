@@ -5,7 +5,7 @@ import useGetBoard from "../../../src/features/board/useGetBoard";
 import { noBoardFoundForPlaceError } from "../../fixtures/supabase/board/errors";
 import NoFlyers from "../../../src/features/board/NoFlyers";
 import { dummyBoardData } from "../../fixtures/supabase/board/data";
-import BoardFlyerBlock from "../../../src/ui/Flyer/BoardFlyerBlock";
+import BoardFlyerBlock from "../../../src/ui/Flyer/StaticFlyerBlock";
 
 // mocks
 vi.mock("react-router-dom");

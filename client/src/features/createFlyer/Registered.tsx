@@ -105,6 +105,7 @@ export default function Registered() {
     setShowCloseSlideInModal,
     setBottomSlideInType,
     setIsOpenBottomSlideIn,
+    setFlyerDesignOptions,
   } = useGlobalContext();
   const planLimits = useGetUserLimits();
 
@@ -124,6 +125,10 @@ export default function Registered() {
   function handleOpenFlyerDesigner() {
     setIsOpenBottomSlideIn(true);
     setBottomSlideInType("flyerDesigner");
+    setFlyerDesignOptions({
+      getValues: getValues,
+      setValue: setValue,
+    });
   }
 
   return (

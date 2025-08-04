@@ -1,12 +1,33 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
-export type FlyerDesignerContextType = {};
 
-const FlyerDesignerContext = createContext<FlyerDesignerContextType>({});
+type Section = "top" | "title" | "subcategory" | "readMore" | "tags";
+export type FlyerDesignerContextType = {
+  selectedFlyer: any;
+  setSelectedFlyer: React.Dispatch<React.SetStateAction<any>>;
+  selectedSection: Section;
+  setSelectionSection: React.Dispatch<React.SetStateAction<Section>>;
+};
+
+const FlyerDesignerContext = createContext<FlyerDesignerContextType>({
+  selectedFlyer: null,
+  setSelectedFlyer: () => {},
+  selectedSection: "top",
+  setSelectionSection: () => {},
+});
 
 function FlyerDesignerContextProvider({ children }: PropsWithChildren) {
-  const [selectedFlyer, setSelectedFlyer] = useState();
+  const [selectedFlyer, setSelectedFlyer] = useState(null);
+  const [selectedSection, setSelectionSection] = useState<Section>("top");
+
   return (
-    <FlyerDesignerContext.Provider value={{}}>
+    <FlyerDesignerContext.Provider
+      value={{
+        selectedFlyer,
+        setSelectedFlyer,
+        selectedSection,
+        setSelectionSection,
+      }}
+    >
       {children}
     </FlyerDesignerContext.Provider>
   );

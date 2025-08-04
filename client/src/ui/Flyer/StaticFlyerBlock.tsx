@@ -141,7 +141,7 @@ const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
   align-items: center;
   border-radius: 100%;
 `;
-export default function BoardFlyerBlock({
+export default function StaticFlyerBlock({
   flyer,
 }: {
   flyer: DB_Flyers_Response;
@@ -205,8 +205,30 @@ export default function BoardFlyerBlock({
             </>
           );
       }
+    } else {
+      if (flyer.user.typeOfUser === "individual") {
+        return (
+          <>
+            <StyledAvatar flyerDesign={flyerStyles}>
+              {flyer.user!.firstName[0]}
+            </StyledAvatar>
+            <div>
+              {flyer.user!.firstName} &nbsp;
+              {flyer.user!.lastName}
+            </div>
+          </>
+        );
+      } else {
+        return (
+          <>
+            <StyledAvatar flyerDesign={flyerStyles}>
+              {flyer.user!.name[0]}
+            </StyledAvatar>
+            <div>{flyer.user!.name}</div>
+          </>
+        );
+      }
     }
-    // TODO: logic for registered flyer
   }
 
   function renderTopContent() {
@@ -242,6 +264,7 @@ export default function BoardFlyerBlock({
         </StyledTopTextContainer>
       )}
       <StyledMainContentContainer>
+        {/* TODO: Make this section dynamic (mainContent, infoContent, couponContent) */}
         <StyledSubcategory flyerDesign={flyerStyles}>
           {flyer.subcategory}
         </StyledSubcategory>
