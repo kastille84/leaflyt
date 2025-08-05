@@ -1,6 +1,12 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 
-type Section = "top" | "title" | "subcategory" | "readMore" | "tags";
+type Section =
+  | "top_backgroundColor"
+  | "top_color"
+  | "title_color"
+  | "subcategory_color"
+  | "readMore_color"
+  | "tags_color";
 export type FlyerDesignerContextType = {
   selectedFlyer: any;
   setSelectedFlyer: React.Dispatch<React.SetStateAction<any>>;
@@ -11,13 +17,15 @@ export type FlyerDesignerContextType = {
 const FlyerDesignerContext = createContext<FlyerDesignerContextType>({
   selectedFlyer: null,
   setSelectedFlyer: () => {},
-  selectedSection: "top",
+  selectedSection: "top_backgroundColor",
   setSelectionSection: () => {},
 });
 
 function FlyerDesignerContextProvider({ children }: PropsWithChildren) {
   const [selectedFlyer, setSelectedFlyer] = useState(null);
-  const [selectedSection, setSelectionSection] = useState<Section>("top");
+  const [selectedSection, setSelectionSection] = useState<Section>(
+    "top_backgroundColor"
+  );
 
   return (
     <FlyerDesignerContext.Provider

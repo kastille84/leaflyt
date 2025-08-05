@@ -224,16 +224,22 @@ const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
   border-radius: 100%;
 `;
 
+const StyledAvatarName = styled.div<{ selected: boolean }>`
+  ${({ selected }) =>
+    selected &&
+    css`
+      border: 2px dashed var(--color-red-800);
+    `}
+  &:hover {
+    border: 2px dashed var(--color-red-800);
+  }
+`;
+
 export default function ConfigurableFlyerBlock({ flyer }: { flyer: any }) {
+  const flyerDesign = flyer.flyerDesign;
   const { user } = useGlobalContext();
   const { setSelectionSection, selectedSection } = useFlyerDesignerContext();
   const [isReadMore, setIsReadMore] = useState(false);
-  const [flyerStyles, setFlyerStyles] = useState(() => {
-    if (flyer && !flyer.flyerDesign) {
-      return REGISTERED_FLYER_DESIGN_DEFAULT;
-    }
-    return flyer.flyerDesign;
-  });
 
   useEffect(() => {}, [selectedSection]);
 
@@ -248,22 +254,36 @@ export default function ConfigurableFlyerBlock({ flyer }: { flyer: any }) {
     if (user!.typeOfUser === "individual") {
       return (
         <>
-          <StyledAvatar flyerDesign={flyerStyles}>
+          <StyledAvatar flyerDesign={flyerDesign}>
             {user!.firstName![0]}
           </StyledAvatar>
-          <div>
+          <StyledAvatarName
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectionSection("top_color");
+            }}
+            selected={selectedSection === "top_color"}
+          >
             {user!.firstName} &nbsp;
             {user!.lastName}
-          </div>
+          </StyledAvatarName>
         </>
       );
     } else {
       return (
         <>
-          <StyledAvatar flyerDesign={flyerStyles}>
+          <StyledAvatar flyerDesign={flyerDesign}>
             {user!.name![0]}
           </StyledAvatar>
-          <div>{user!.name}</div>
+          <StyledAvatarName
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectionSection("top_color");
+            }}
+            selected={selectedSection === "top_color"}
+          >
+            {user!.name}
+          </StyledAvatarName>
         </>
       );
     }
@@ -283,7 +303,7 @@ export default function ConfigurableFlyerBlock({ flyer }: { flyer: any }) {
   }
 
   return (
-    <StyledFlyerBlock flyerDesign={REGISTERED_FLYER_DESIGN_DEFAULT}>
+    <StyledFlyerBlock flyerDesign={flyerDesign}>
       {hasFiles() && (
         <StyledFigure>
           <img
@@ -292,9 +312,9 @@ export default function ConfigurableFlyerBlock({ flyer }: { flyer: any }) {
             height={"auto"}
           />
           <StyledTopImageContainer
-            flyerDesign={flyerStyles}
-            onClick={() => setSelectionSection("top")}
-            selected={selectedSection === "top"}
+            flyerDesign={flyerDesign}
+            onClick={() => setSelectionSection("top_backgroundColor")}
+            selected={selectedSection === "top_backgroundColor"}
           >
             {renderTopContent()}
           </StyledTopImageContainer>
@@ -302,9 +322,9 @@ export default function ConfigurableFlyerBlock({ flyer }: { flyer: any }) {
       )}
       {!hasFiles() && (
         <StyledTopTextContainer
-          flyerDesign={flyerStyles}
-          onClick={() => setSelectionSection("top")}
-          selected={selectedSection === "top"}
+          flyerDesign={flyerDesign}
+          onClick={() => setSelectionSection("top_backgroundColor")}
+          selected={selectedSection === "top_backgroundColor"}
         >
           {renderTopContent()}
         </StyledTopTextContainer>
@@ -312,17 +332,17 @@ export default function ConfigurableFlyerBlock({ flyer }: { flyer: any }) {
       <StyledMainContentContainer>
         {/* TODO: Make this section dynamic (mainContent, infoContent, couponContent) */}
         <StyledSubcategory
-          flyerDesign={flyerStyles}
-          selected={selectedSection === "subcategory"}
-          onClick={() => setSelectionSection("subcategory")}
+          flyerDesign={flyerDesign}
+          selected={selectedSection === "subcategory_color"}
+          onClick={() => setSelectionSection("subcategory_color")}
         >
           {flyer.subcategory}
         </StyledSubcategory>
         <StyledHeading
           as="h2"
-          flyerDesign={flyerStyles}
-          selected={selectedSection === "title"}
-          onClick={() => setSelectionSection("title")}
+          flyerDesign={flyerDesign}
+          selected={selectedSection === "title_color"}
+          onClick={() => setSelectionSection("title_color")}
         >
           {flyer.title}
         </StyledHeading>
@@ -338,24 +358,24 @@ export default function ConfigurableFlyerBlock({ flyer }: { flyer: any }) {
         )}
         {flyer.content.length > 75 && (
           <StyledReadMore
-            flyerDesign={flyerStyles}
-            selected={selectedSection === "readMore"}
+            flyerDesign={flyerDesign}
+            selected={selectedSection === "readMore_color"}
             onClick={() => {
               setIsReadMore(!isReadMore);
-              setSelectionSection("readMore");
+              setSelectionSection("readMore_color");
             }}
           >
             {isReadMore ? "Read less" : "Read more"}
           </StyledReadMore>
         )}
         <StyledTagContainer
-          onClick={() => setSelectionSection("tags")}
-          selected={selectedSection === "tags"}
+          onClick={() => setSelectionSection("tags_color")}
+          selected={selectedSection === "tags_color"}
         >
-          <StyledTag flyerDesign={flyerStyles}>#</StyledTag>
+          <StyledTag flyerDesign={flyerDesign}>#</StyledTag>
           {flyer.tags &&
             flyer.tags.map((tag: any) => (
-              <StyledTag flyerDesign={flyerStyles} key={tag}>
+              <StyledTag flyerDesign={flyerDesign} key={tag}>
                 {tag}
               </StyledTag>
             ))}
@@ -363,20 +383,20 @@ export default function ConfigurableFlyerBlock({ flyer }: { flyer: any }) {
       </StyledMainContentContainer>
       <StyledActionContainer>
         <StyledActionIconContainer
-          flyerDesign={flyerStyles}
-          selected={selectedSection === "top"}
+          flyerDesign={flyerDesign}
+          selected={selectedSection === "top_backgroundColor"}
         >
           <HiOutlineHandThumbUp />
         </StyledActionIconContainer>
         <StyledActionIconContainer
-          flyerDesign={flyerStyles}
-          selected={selectedSection === "top"}
+          flyerDesign={flyerDesign}
+          selected={selectedSection === "top_backgroundColor"}
         >
           <HiOutlineChatBubbleLeftEllipsis />
         </StyledActionIconContainer>
         <StyledActionIconContainer
-          flyerDesign={flyerStyles}
-          selected={selectedSection === "top"}
+          flyerDesign={flyerDesign}
+          selected={selectedSection === "top_backgroundColor"}
         >
           <HiOutlineShare />
         </StyledActionIconContainer>

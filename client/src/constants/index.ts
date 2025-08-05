@@ -172,25 +172,47 @@ export const UNREGISTERED_FLYER_DESIGN_DEFAULT = {
 
 export const REGISTERED_FLYER_DESIGN_DEFAULT = {
   top: {
-    backgroundColor: "var(--color-brand-500)",
-    color: "var(--color-grey-50)",
+    backgroundColor: "#55a166",
+    color: "#f1f1f1",
   },
   outlines: {
-    color: "var(--color-brand-500)",
+    color: "#55a166",
   },
   font: '"DM Sans", sans-serif',
   title: {
-    color: "var(--color-grey-700)",
+    color: "#303030",
   },
   subcategory: {
-    color: "var(--color-orange-600)",
+    color: "#B77739",
   },
   readMore: {
-    color: "var(--color-brand-600)",
+    color: "#2B8A40",
   },
   tags: {
-    color: "var(--color-blue-400)",
+    color: "#6699A2",
   },
 };
+// export const REGISTERED_FLYER_DESIGN_DEFAULT = {
+//   top: {
+//     backgroundColor: "var(--color-brand-500)",
+//     color: "var(--color-grey-50)",
+//   },
+//   outlines: {
+//     color: "var(--color-brand-500)",
+//   },
+//   font: '"DM Sans", sans-serif',
+//   title: {
+//     color: "var(--color-grey-700)",
+//   },
+//   subcategory: {
+//     color: "var(--color-orange-600)",
+//   },
+//   readMore: {
+//     color: "var(--color-brand-600)",
+//   },
+//   tags: {
+//     color: "var(--color-blue-400)",
+//   },
+// };
 
 export const SIGNUP = "signup";

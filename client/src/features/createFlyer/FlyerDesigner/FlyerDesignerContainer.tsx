@@ -4,6 +4,7 @@ import Display from "./Display";
 import { useGlobalContext } from "../../../context/GlobalContext";
 import { useFlyerDesignerContext } from "../../../context/FlyerDesignerContext";
 import { useEffect } from "react";
+import { REGISTERED_FLYER_DESIGN_DEFAULT } from "../../../constants";
 
 const StyledContainer = styled.div`
   width: 80%;
@@ -21,6 +22,10 @@ export default function FlyerDesignerContainer() {
 
   useEffect(() => {
     if (flyerForDisplay) {
+      if (!flyerForDisplay.flyerDesign) {
+        flyerForDisplay.flyerDesign = REGISTERED_FLYER_DESIGN_DEFAULT;
+      }
+
       setSelectedFlyer(flyerForDisplay);
     }
   }, []);

@@ -5,6 +5,9 @@ import Form from "../../../ui/Form/Form";
 import FormControlRow from "../../../ui/Form/FormControlRow";
 import FormControl from "../../../ui/Form/FormControl";
 import SelectInput from "../../../ui/Form/SelectInput";
+import { useFlyerDesignerContext } from "../../../context/FlyerDesignerContext";
+import ColorInput from "../../../ui/Form/ColorInput";
+import { useEffect } from "react";
 
 const StyledConfigurationContainer = styled.div`
   width: 100%;
@@ -15,25 +18,34 @@ const StyledConfigurationContainer = styled.div`
   /* justify-content: center; */
   /* align-items: center; */
   flex-direction: column;
-  border-left: 1px solid var(--color-grey-200);
+  /* border-left: 1px solid var(--color-grey-200); */
   /* border-left: none; */
 `;
 
 export default function Configuration() {
+  const { selectedSection, selectedFlyer, setSelectedFlyer } =
+    useFlyerDesignerContext();
   const {
     register,
-    unregister,
     handleSubmit,
     watch,
     getValues,
     setValue,
     formState: { errors },
-    control,
   } = useForm({
     mode: "onBlur",
+    defaultValues: {
+      ...selectedFlyer.flyerDesign,
+    },
   });
   // watchers
+  const formValuesWatch = watch();
   const fontWatch = watch("font");
+  console.log("selectedFlyer", selectedFlyer);
+
+  useEffect(() => {
+    setSelectedFlyer({ ...selectedFlyer, flyerDesign: getValues() });
+  }, [formValuesWatch]);
 
   return (
     <StyledConfigurationContainer>
@@ -50,6 +62,16 @@ export default function Configuration() {
             value={fontWatch}
             errors={errors}
           />
+        </FormControlRow>
+        <FormControlRow>
+          <FormControl>
+            <ColorInput
+              register={register}
+              getValues={getValues}
+              setValue={setValue}
+              selectedSection={selectedSection}
+            />
+          </FormControl>
         </FormControlRow>
       </Form>
     </StyledConfigurationContainer>
