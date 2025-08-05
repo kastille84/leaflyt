@@ -8,6 +8,7 @@ import SelectInput from "../../../ui/Form/SelectInput";
 import { useFlyerDesignerContext } from "../../../context/FlyerDesignerContext";
 import ColorInput from "../../../ui/Form/ColorInput";
 import { useEffect } from "react";
+import BorderRadiusInput from "../../../ui/Form/BorderRadiusInput";
 
 const StyledConfigurationContainer = styled.div`
   width: 100%;
@@ -56,7 +57,7 @@ export default function Configuration() {
             register={register}
             registerName="font"
             options={[
-              { value: '"Merriweather", serif', label: "Serif" },
+              { value: '"Noto Serif", serif', label: "Serif" },
               { value: '"DM Sans", sans-serif', label: "Sans Serif" },
             ]}
             value={fontWatch}
@@ -72,6 +73,9 @@ export default function Configuration() {
               selectedSection={selectedSection}
             />
           </FormControl>
+        </FormControlRow>
+        <FormControlRow>
+          <BorderRadiusInput register={register} getValues={getValues} />
         </FormControlRow>
       </Form>
     </StyledConfigurationContainer>

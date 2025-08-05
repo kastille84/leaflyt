@@ -22,6 +22,10 @@ export interface FlyerDesign {
   tags: {
     color: string;
   };
+  borderTopLeftRadius: number;
+  borderTopRightRadius: number;
+  borderBottomLeftRadius: number;
+  borderBottomRightRadius: number;
 }
 
 interface DB_Flyer_Create {

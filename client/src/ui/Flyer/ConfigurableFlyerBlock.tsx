@@ -34,8 +34,17 @@ const common = {
 
 const StyledFlyerBlock = styled.div<{ flyerDesign: FlyerDesign }>`
   ${common.style}
+  font-family: ${({ flyerDesign }) => flyerDesign.font};
   border: 1px solid var(--color-grey-200);
   /* border: 1px solid ${(props) => props.flyerDesign.outlines.color}; */
+  border-top-left-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopLeftRadius}px;
+  border-top-right-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopRightRadius}px;
+  border-bottom-left-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderBottomLeftRadius}px;
+  border-bottom-right-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderBottomRightRadius}px;
 `;
 
 const StyledFigure = styled.figure`
@@ -60,6 +69,10 @@ const StyledTopImageContainer = styled.div<{
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  border-top-left-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopLeftRadius}px;
+  border-top-right-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopRightRadius}px;
   &:hover {
     border: 2px dashed var(--color-red-800);
   }
@@ -82,6 +95,10 @@ const StyledTopTextContainer = styled.div<{
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  border-top-left-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopLeftRadius}px;
+  border-top-right-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopRightRadius}px;
   &:hover {
     border: 2px dashed var(--color-red-800);
   }

@@ -168,6 +168,10 @@ export const UNREGISTERED_FLYER_DESIGN_DEFAULT = {
   tags: {
     color: "var(--color-blue-400)",
   },
+  borderTopLeftRadius: 0,
+  borderTopRightRadius: 0,
+  borderBottomLeftRadius: 0,
+  borderBottomRightRadius: 0,
 };
 
 export const REGISTERED_FLYER_DESIGN_DEFAULT = {
@@ -191,6 +195,10 @@ export const REGISTERED_FLYER_DESIGN_DEFAULT = {
   tags: {
     color: "#6699A2",
   },
+  borderTopLeftRadius: 0,
+  borderTopRightRadius: 0,
+  borderBottomLeftRadius: 0,
+  borderBottomRightRadius: 0,
 };
 // export const REGISTERED_FLYER_DESIGN_DEFAULT = {
 //   top: {
