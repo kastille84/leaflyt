@@ -373,18 +373,18 @@ export default function ConfigurableFlyerBlock({ flyer }: { flyer: any }) {
         {isReadMore && (
           <div dangerouslySetInnerHTML={{ __html: flyer.content }}></div>
         )}
-        {flyer.content.length > 75 && (
-          <StyledReadMore
-            flyerDesign={flyerDesign}
-            selected={selectedSection === "readMore_color"}
-            onClick={() => {
-              setIsReadMore(!isReadMore);
-              setSelectionSection("readMore_color");
-            }}
-          >
-            {isReadMore ? "Read less" : "Read more"}
-          </StyledReadMore>
-        )}
+
+        <StyledReadMore
+          flyerDesign={flyerDesign}
+          selected={selectedSection === "readMore_color"}
+          onClick={() => {
+            setIsReadMore(!isReadMore);
+            setSelectionSection("readMore_color");
+          }}
+        >
+          {isReadMore ? "Read less" : "Read more"}
+        </StyledReadMore>
+
         <StyledTagContainer
           onClick={() => setSelectionSection("tags_color")}
           selected={selectedSection === "tags_color"}
