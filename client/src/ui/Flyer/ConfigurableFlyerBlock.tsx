@@ -47,10 +47,15 @@ const StyledFlyerBlock = styled.div<{ flyerDesign: FlyerDesign }>`
     flyerDesign.borderBottomRightRadius}px;
 `;
 
-const StyledFigure = styled.figure`
+const StyledFigure = styled.figure<{ flyerDesign: FlyerDesign }>`
   width: 100%;
   height: auto;
   position: relative;
+  overflow: hidden;
+  border-top-left-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopLeftRadius}px;
+  border-top-right-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopRightRadius}px;
 `;
 
 const StyledTopImageContainer = styled.div<{
@@ -322,7 +327,7 @@ export default function ConfigurableFlyerBlock({ flyer }: { flyer: any }) {
   return (
     <StyledFlyerBlock flyerDesign={flyerDesign}>
       {hasFiles() && (
-        <StyledFigure>
+        <StyledFigure flyerDesign={flyerDesign}>
           <img
             src={flyer!.fileUrlArr![0].secure_url}
             width={"100%"}

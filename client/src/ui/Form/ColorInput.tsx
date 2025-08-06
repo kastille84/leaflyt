@@ -49,6 +49,7 @@ export default function ColorInput({
       <StyledLabel htmlFor="color">Select Color</StyledLabel>
       <ColorPicker
         hideInput={["rgb", "hsv"]}
+        hideAlpha={true}
         color={color}
         onChange={handleColorChange}
         onChangeComplete={handleColorChangeComplete}

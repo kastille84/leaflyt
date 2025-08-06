@@ -32,14 +32,28 @@ const common = {
 
 const StyledFlyerBlock = styled.div<{ flyerDesign: FlyerDesign }>`
   ${common.style}
+  font-family: ${({ flyerDesign }) => flyerDesign.font};
   border: 1px solid var(--color-grey-200);
   /* border: 1px solid ${(props) => props.flyerDesign.outlines.color}; */
+  border-top-left-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopLeftRadius}px;
+  border-top-right-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopRightRadius}px;
+  border-bottom-left-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderBottomLeftRadius}px;
+  border-bottom-right-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderBottomRightRadius}px;
 `;
 
-const StyledFigure = styled.figure`
+const StyledFigure = styled.figure<{ flyerDesign: FlyerDesign }>`
   width: 100%;
   height: auto;
   position: relative;
+  overflow: hidden;
+  border-top-left-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopLeftRadius}px;
+  border-top-right-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopRightRadius}px;
 `;
 
 const StyledTopImageContainer = styled.div<{ flyerDesign: FlyerDesign }>`
@@ -54,6 +68,10 @@ const StyledTopImageContainer = styled.div<{ flyerDesign: FlyerDesign }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-top-left-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopLeftRadius}px;
+  border-top-right-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopRightRadius}px;
 `;
 const StyledTopTextContainer = styled.div<{ flyerDesign: FlyerDesign }>`
   width: 100%;
@@ -63,7 +81,12 @@ const StyledTopTextContainer = styled.div<{ flyerDesign: FlyerDesign }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   border-bottom: 1px solid var(--color-grey-200);
+  border-top-left-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopLeftRadius}px;
+  border-top-right-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderTopRightRadius}px;
 `;
 
 const StyledMainContentContainer = styled.div`
@@ -247,7 +270,7 @@ export default function StaticFlyerBlock({
   return (
     <StyledFlyerBlock flyerDesign={flyerStyles}>
       {hasFiles() && (
-        <StyledFigure>
+        <StyledFigure flyerDesign={flyerStyles}>
           <img
             src={flyer!.fileUrlArr![0].secure_url}
             width={"100%"}
