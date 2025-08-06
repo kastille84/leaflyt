@@ -41,6 +41,10 @@ interface DB_Flyer_Create {
   fileUrlArr?: UploadApiResponse[];
   postingMethod: "onLocation" | "remote" | "remoteBulk";
   flyerDesign: null | FlyerDesign;
+  callToAction: {
+    cta: string;
+    instructions: string;
+  };
 }
 
 interface DB_Flyer_Create_Unregistered extends DB_Flyer_Create {

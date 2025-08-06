@@ -29,6 +29,7 @@ import TagsInput from "../../ui/Form/TagsInput";
 import Button from "../../ui/Button";
 import Input from "../../ui/Input";
 import FullNameInput from "../../ui/Form/FullNameInput";
+import CtaInput from "../../ui/Form/ctaInput";
 
 const StyledRegisteredContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
@@ -114,8 +115,10 @@ export default function Registered() {
   const fileUrlArrWatch = watch("fileUrlArr");
   const isTemplateWatch = watch("isTemplate");
 
+  console.log("errors", errors);
   const onSubmit = async (data: any) => {
     console.log("registered data", data);
+    // #TODO - add default flyer design if none is set
   };
 
   function handleCancel() {
@@ -210,6 +213,18 @@ export default function Registered() {
               />
             </FormControlRow>
             <FormControlRow>
+              <CtaInput register={register} control={control} errors={errors} />
+              <FormControl>
+                <Heading as="h4">Flyer Design</Heading>
+                <p>Give your flyer a personal touch.</p>
+                <p>
+                  <Button size="small" onClick={handleOpenFlyerDesigner}>
+                    Open the Flyer Designer
+                  </Button>
+                </p>
+              </FormControl>
+            </FormControlRow>
+            <FormControlRow>
               <FormControl>
                 <Heading as="h4">Make This Flyer a Reusable Template</Heading>
                 <p>
@@ -229,15 +244,6 @@ export default function Registered() {
                     errors={errors}
                   />
                 )}
-              </FormControl>
-              <FormControl>
-                <Heading as="h4">Flyer Design</Heading>
-                <p>Give your flyer a personal touch.</p>
-                <p>
-                  <Button size="small" onClick={handleOpenFlyerDesigner}>
-                    Open the Flyer Designer
-                  </Button>
-                </p>
               </FormControl>
             </FormControlRow>
 
