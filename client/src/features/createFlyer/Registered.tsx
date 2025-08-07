@@ -116,6 +116,8 @@ export default function Registered() {
   const isTemplateWatch = watch("isTemplate");
 
   console.log("errors", errors);
+  console.log("getValules", getValues());
+
   const onSubmit = async (data: any) => {
     console.log("registered data", data);
     // #TODO - add default flyer design if none is set
@@ -213,16 +215,12 @@ export default function Registered() {
               />
             </FormControlRow>
             <FormControlRow>
-              <CtaInput register={register} control={control} errors={errors} />
-              <FormControl>
-                <Heading as="h4">Flyer Design</Heading>
-                <p>Give your flyer a personal touch.</p>
-                <p>
-                  <Button size="small" onClick={handleOpenFlyerDesigner}>
-                    Open the Flyer Designer
-                  </Button>
-                </p>
-              </FormControl>
+              <CtaInput
+                register={register}
+                watch={watch}
+                control={control}
+                errors={errors}
+              />
             </FormControlRow>
             <FormControlRow>
               <FormControl>
@@ -244,6 +242,15 @@ export default function Registered() {
                     errors={errors}
                   />
                 )}
+              </FormControl>
+              <FormControl>
+                <Heading as="h4">Flyer Design</Heading>
+                <p>Give your flyer a personal touch.</p>
+                <p>
+                  <Button size="small" onClick={handleOpenFlyerDesigner}>
+                    Open the Flyer Designer
+                  </Button>
+                </p>
               </FormControl>
             </FormControlRow>
 
