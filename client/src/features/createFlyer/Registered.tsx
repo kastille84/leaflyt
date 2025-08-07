@@ -10,7 +10,7 @@ import useGetUserLimits from "../../hooks/useGetUserLimits";
 import Form from "../../ui/Form/Form";
 
 import Heading from "../../ui/Heading";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import FormControlRow from "../../ui/Form/FormControlRow";
 import TitleInput from "../../ui/Form/TitleInput";
@@ -30,6 +30,8 @@ import Button from "../../ui/Button";
 import Input from "../../ui/Input";
 import FullNameInput from "../../ui/Form/FullNameInput";
 import CtaInput from "../../ui/Form/ctaInput";
+import LifespanInput from "../../ui/Form/LifespanInput";
+import { LIFESPAN } from "../../constants";
 
 const StyledRegisteredContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
@@ -114,6 +116,7 @@ export default function Registered() {
   const subcategoryWatch = watch("subcategory");
   const fileUrlArrWatch = watch("fileUrlArr");
   const isTemplateWatch = watch("isTemplate");
+  const lifespanWatch = watch("lifespan");
 
   console.log("errors", errors);
   console.log("getValules", getValues());
@@ -135,6 +138,12 @@ export default function Registered() {
       setValue: setValue,
     });
   }
+
+  useEffect(() => {
+    if (!isTemplateWatch) {
+      unregister("templateName");
+    }
+  }, [isTemplateWatch]);
 
   return (
     <StyledRegisteredContainer>
@@ -217,10 +226,28 @@ export default function Registered() {
             <FormControlRow>
               <CtaInput
                 register={register}
+                setValue={setValue}
                 watch={watch}
                 control={control}
                 errors={errors}
               />
+            </FormControlRow>
+            <FormControlRow>
+              <LifespanInput
+                register={register}
+                options={LIFESPAN[planLimits.level].options}
+                value={lifespanWatch}
+                errors={errors}
+              />
+              <FormControl>
+                <Heading as="h4">Flyer Design</Heading>
+                <p>Give your flyer a personal touch.</p>
+                <p>
+                  <Button size="small" onClick={handleOpenFlyerDesigner}>
+                    Open the Flyer Designer
+                  </Button>
+                </p>
+              </FormControl>
             </FormControlRow>
             <FormControlRow>
               <FormControl>
@@ -243,15 +270,7 @@ export default function Registered() {
                   />
                 )}
               </FormControl>
-              <FormControl>
-                <Heading as="h4">Flyer Design</Heading>
-                <p>Give your flyer a personal touch.</p>
-                <p>
-                  <Button size="small" onClick={handleOpenFlyerDesigner}>
-                    Open the Flyer Designer
-                  </Button>
-                </p>
-              </FormControl>
+              <FormControl>{/* Empty */}</FormControl>
             </FormControlRow>
 
             <StyledFormButtonContainer data-testid="form-button-container">

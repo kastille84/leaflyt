@@ -42,9 +42,11 @@ interface DB_Flyer_Create {
   postingMethod: "onLocation" | "remote" | "remoteBulk";
   flyerDesign: null | FlyerDesign;
   callToAction: {
-    cta: string;
+    ctaType: string;
+    headline: string;
     instructions: string;
   };
+  lifespan: string;
 }
 
 interface DB_Flyer_Create_Unregistered extends DB_Flyer_Create {

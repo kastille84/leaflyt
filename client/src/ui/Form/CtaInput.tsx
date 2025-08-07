@@ -13,6 +13,7 @@ import FieldInputError from "./FieldInputError";
 import styled from "styled-components";
 import Input from "../Input";
 import RadioGroupInput from "./RadioGroupInput";
+import { useEffect } from "react";
 
 const StyledLabel = styled.label`
   font-weight: 600;
@@ -31,14 +32,14 @@ export default function CtaInput({
   register,
   watch,
   // getValues,
-  // setValue,
+  setValue,
   control,
   errors,
 }: {
   register: UseFormRegister<any>;
   watch: UseFormWatch<any>;
   // getValues: UseFormGetValues<any>;
-  // setValue: UseFormSetValue<any>;
+  setValue: UseFormSetValue<any>;
   control: Control<FieldValues, any, FieldValues>;
   errors: FieldErrors<{
     callToAction: {
@@ -49,6 +50,13 @@ export default function CtaInput({
 }) {
   const { callToAction } = errors;
   const ctaTypeWatch = watch("callToAction.ctaType");
+
+  useEffect(() => {
+    if (ctaTypeWatch === "none") {
+      setValue("callToAction.headline", "");
+      setValue("callToAction.instructions", "");
+    }
+  }, [ctaTypeWatch]);
 
   return (
     <>
@@ -74,7 +82,7 @@ export default function CtaInput({
           ]}
         />
       </FormControl>
-      {ctaTypeWatch !== "none" && (
+      {ctaTypeWatch && ctaTypeWatch !== "none" && (
         <FormControl>
           <StyledLabel
             htmlFor="headline"
@@ -117,7 +125,7 @@ export default function CtaInput({
                 className={`${callToAction?.instructions && "error"}`}
                 {...field}
                 theme="snow"
-                placeholder="Give detailed instructions & explain the terms... i.e Save this flyer for your next visit."
+                placeholder="Give detailed instructions & explain the terms... i.e Save this flyer on your device and show it on your next visit."
               />
             )}
             rules={{
@@ -137,7 +145,9 @@ export default function CtaInput({
           )}
         </FormControl>
       )}
-      {ctaTypeWatch === "none" && <FormControl>{/*Empty */}</FormControl>}
+      {(!ctaTypeWatch || ctaTypeWatch === "none") && (
+        <FormControl>{/*Empty */}</FormControl>
+      )}
     </>
   );
 }

@@ -224,3 +224,30 @@ export const REGISTERED_FLYER_DESIGN_DEFAULT = {
 // };
 
 export const SIGNUP = "signup";
+
+export const LIFESPAN = [
+  { options: [{ value: "0", label: "1 week" }] },
+  {
+    options: [{ value: "1", label: "1 week" }],
+  },
+  {
+    options: [
+      { value: "1", label: "1 week" },
+      { value: "2", label: "2 Weeks" },
+    ],
+  },
+  {
+    options: [
+      { value: "1", label: "1 week" },
+      { value: "2", label: "2 Weeks" },
+    ],
+  },
+  {
+    options: [
+      { value: "1", label: "1 week" },
+      { value: "2", label: "2 Weeks" },
+      { value: "3", label: "3 Weeks" },
+      { value: "4", label: "4 Weeks" },
+    ],
+  },
+];
