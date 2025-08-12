@@ -3,6 +3,7 @@ import {
   HiOutlineArrowRight,
   HiOutlineExclamationCircle,
 } from "react-icons/hi2";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { useGlobalContext } from "../../context/GlobalContext";
 import useGetUserLimits from "../../hooks/useGetUserLimits";
@@ -31,7 +32,11 @@ import Input from "../../ui/Input";
 import FullNameInput from "../../ui/Form/FullNameInput";
 import CtaInput from "../../ui/Form/ctaInput";
 import LifespanInput from "../../ui/Form/LifespanInput";
-import { LIFESPAN } from "../../constants";
+import { LIFESPAN, REGISTERED_FLYER_DESIGN_DEFAULT } from "../../constants";
+import CommentsInput from "../../ui/Form/CommentsInput";
+import useCreateRegisteredFlyer from "./useCreateRegisteredFlyer";
+import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const StyledRegisteredContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
@@ -109,21 +114,47 @@ export default function Registered() {
     setBottomSlideInType,
     setIsOpenBottomSlideIn,
     setFlyerDesignOptions,
+    setIsOpenFlyerDrawer,
+    setDrawerAction,
   } = useGlobalContext();
   const planLimits = useGetUserLimits();
+  const { createFlyer } = useCreateRegisteredFlyer();
+
+  const queryClient = useQueryClient();
+  const { id: boardId } = useParams();
 
   const categoryWatch = watch("category");
   const subcategoryWatch = watch("subcategory");
   const fileUrlArrWatch = watch("fileUrlArr");
-  const isTemplateWatch = watch("isTemplate");
+  const templateWatch = watch("template");
   const lifespanWatch = watch("lifespan");
 
   console.log("errors", errors);
   console.log("getValules", getValues());
 
   const onSubmit = async (data: any) => {
+    // add default flyer design if none is set
+    if (!data.flyerDesign) {
+      data.flyerDesign = REGISTERED_FLYER_DESIGN_DEFAULT;
+    }
+    // add the user to the flyer
+    data.user = user?.id;
     console.log("registered data", data);
-    // #TODO - add default flyer design if none is set
+    setShowSpinner(true);
+    createFlyer(data, {
+      onSuccess: () => {
+        setShowSpinner(false);
+        toast.success("Flyer created!");
+        setIsOpenFlyerDrawer(false);
+        setDrawerAction(null);
+        // queryClient.invalidateQueries({ queryKey: ["board", boardId] });
+        queryClient.refetchQueries({ queryKey: ["board", boardId] });
+      },
+      onError: (error: any) => {
+        setShowSpinner(false);
+        toast.error(error.message);
+      },
+    });
   };
 
   function handleCancel() {
@@ -140,10 +171,10 @@ export default function Registered() {
   }
 
   useEffect(() => {
-    if (!isTemplateWatch) {
+    if (!templateWatch) {
       unregister("templateName");
     }
-  }, [isTemplateWatch]);
+  }, [templateWatch]);
 
   return (
     <StyledRegisteredContainer>
@@ -251,23 +282,26 @@ export default function Registered() {
             </FormControlRow>
             <FormControlRow>
               <FormControl>
-                <Heading as="h4">Make This Flyer a Reusable Template</Heading>
+                <Heading as="h4">Create Reusable Template (encouraged)</Heading>
                 <p>
-                  Creating flyers by scratch each time you post can be tedious.
-                  Create a template to save you time and effort by reusing it
-                  for future flyers.
+                  Creating flyers from scratch each time you post can be
+                  tedious. Create a template to save you time and effort by
+                  reusing it for future flyers.
                 </p>
                 <StyledCheckboxContainer>
-                  <Input type="checkbox" {...register("isTemplate")} /> Check
-                  this box to create a template
+                  <Input type="checkbox" {...register("template")} /> Check this
+                  box to create a template
                 </StyledCheckboxContainer>
-                {isTemplateWatch && (
-                  <FullNameInput
-                    register={register}
-                    registerName="templateName"
-                    name="Template"
-                    errors={errors}
-                  />
+                {templateWatch && (
+                  <>
+                    <FullNameInput
+                      register={register}
+                      registerName="templateName"
+                      name="Template"
+                      errors={errors}
+                    />
+                    <CommentsInput register={register} />
+                  </>
                 )}
               </FormControl>
               <FormControl>{/* Empty */}</FormControl>

@@ -28,7 +28,7 @@ export interface FlyerDesign {
   borderBottomRightRadius: number;
 }
 
-interface DB_Flyer_Create {
+export interface DB_Flyer_Create {
   id?: string;
   user?: string | Auth_User_Profile_Response;
   // boardId?: string;
@@ -39,14 +39,15 @@ interface DB_Flyer_Create {
   content: string;
   tags?: string[];
   fileUrlArr?: UploadApiResponse[];
-  postingMethod: "onLocation" | "remote" | "remoteBulk";
-  flyerDesign: null | FlyerDesign;
-  callToAction: {
+  postingMethod?: "onLocation" | "remote" | "remoteBulk";
+  flyerDesign?: null | FlyerDesign;
+  callToAction?: {
     ctaType: string;
     headline: string;
     instructions: string;
   };
-  lifespan: string;
+  lifespan?: string;
+  template?: string;
 }
 
 interface DB_Flyer_Create_Unregistered extends DB_Flyer_Create {
