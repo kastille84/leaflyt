@@ -18,7 +18,6 @@ const getOrCreateBoard = async (selectedPlace: NearbySearchPlaceResult) => {
       formattedAddress: selectedPlace.formattedAddress,
       latlng: selectedPlace.location,
       tags: selectedPlace.types,
-      flyers: [],
     };
     try {
       newBoard = await createBoard(boardData);
@@ -43,14 +42,9 @@ export const createUnregisteredFlyer = async (
   try {
     const { data: newFlyer, error } = await supabase
       .from("flyers")
-      .insert([{ ...flyerData, placeId: selectedPlace.id }])
+      .insert([{ ...flyerData, placeId: selectedPlace.id }]) // selectedPlace.id is the placeId of the board
       .select("*")
       .single();
-    // add the flyer to the board
-    await supabase
-      .from("boards")
-      .update({ flyers: [...board.data!.flyers, newFlyer] })
-      .eq("id", board.data!.id);
 
     if (error) {
       console.error(error);
@@ -77,7 +71,21 @@ export const createRegisteredFlyer = async (
     try {
       const { data: newTemplate, error } = await supabase
         .from("templates")
-        .insert([{ ...flyerData, placeId: selectedPlace.id }])
+        .insert([
+          {
+            user: flyerData.user,
+            templateName: flyerData.templateName,
+            title: flyerData.title,
+            category: flyerData.category,
+            subcategory: flyerData.subcategory,
+            content: flyerData.content,
+            tags: flyerData.tags,
+            flyerDesign: flyerData.flyerDesign,
+            callToAction: flyerData.callToAction,
+            fileUrlArr: flyerData.fileUrlArr,
+            hasComments: flyerData.hasComments,
+          },
+        ])
         .select("*")
         .single();
       if (error) {
@@ -96,18 +104,23 @@ export const createRegisteredFlyer = async (
       .from("flyers")
       .insert([
         {
-          ...flyerData,
           template: createdTemplate?.id, // many to one with template table
           placeId: selectedPlace.id, // many to one with board table
+          user: flyerData.user,
+          title: flyerData.title,
+          category: flyerData.category,
+          subcategory: flyerData.subcategory,
+          content: flyerData.content,
+          tags: flyerData.tags,
+          flyerDesign: flyerData.flyerDesign,
+          callToAction: flyerData.callToAction,
+          fileUrlArr: flyerData.fileUrlArr,
+          postingMethod: flyerData.postingMethod || "onLocation",
+          lifespan: flyerData.lifespan,
         },
       ])
       .select("*")
       .single();
-    // add the flyer to the board
-    // await supabase
-    //   .from("boards")
-    //   .update({ flyers: [...board.data!.flyers, newFlyer] })
-    //   .eq("id", board.data!.id);
 
     if (error) {
       console.error(error);

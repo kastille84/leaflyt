@@ -48,6 +48,8 @@ export interface DB_Flyer_Create {
   };
   lifespan?: string;
   template?: string;
+  templateName?: string;
+  hasComments?: boolean;
 }
 
 interface DB_Flyer_Create_Unregistered extends DB_Flyer_Create {

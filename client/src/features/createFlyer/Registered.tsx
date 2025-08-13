@@ -274,7 +274,11 @@ export default function Registered() {
                 <Heading as="h4">Flyer Design</Heading>
                 <p>Give your flyer a personal touch.</p>
                 <p>
-                  <Button size="small" onClick={handleOpenFlyerDesigner}>
+                  <Button
+                    type="button"
+                    size="small"
+                    onClick={handleOpenFlyerDesigner}
+                  >
                     Open the Flyer Designer
                   </Button>
                 </p>
