@@ -15,8 +15,16 @@ export const getBoard = async (
 }> => {
   const { data, error } = await supabase
     .from("boards")
-    .select("*")
+    .select(
+      `*,
+        flyers(*, user(*))`
+    )
     .eq("placeId", placeId)
+    .order("created_at", {
+      referencedTable: "flyers",
+      ascending: false,
+      nullsFirst: false,
+    })
     .single();
   return { data, error };
 };
