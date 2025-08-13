@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 import useGetBoard from "./useGetBoard";
 import NoFlyers from "./NoFlyers";
-import BoardFlyerBlock from "../../ui/Flyer/StaticFlyerBlock";
+import StaticFlyerBlock from "../../ui/Flyer/StaticFlyerBlock";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/GlobalContext";
@@ -38,7 +38,7 @@ export default function Board() {
         <Masonry columnsCount={3} gutter="1.6rem">
           {board?.data!.flyers?.length &&
             board?.data!.flyers.map((flyer) => (
-              <BoardFlyerBlock key={flyer!.id} flyer={flyer} />
+              <StaticFlyerBlock key={flyer!.id} flyer={flyer} />
             ))}
         </Masonry>
       </div>

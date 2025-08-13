@@ -70,6 +70,10 @@ const StyledInfoAlertContainer = styled.div`
   }
 `;
 
+const StyledSubmitError = styled(Heading)`
+  color: var(--color-red-600);
+`;
+
 const StyledFormContainer = styled.div`
   padding: 1.6rem 2.4rem;
 `;
@@ -96,6 +100,8 @@ const StyledCheckboxContainer = styled.div`
 
 export default function Registered() {
   const [showSpinner, setShowSpinner] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
   const {
     register,
     unregister,
@@ -133,6 +139,7 @@ export default function Registered() {
   console.log("getValules", getValues());
 
   const onSubmit = async (data: any) => {
+    setSubmitError("");
     // add default flyer design if none is set
     if (!data.flyerDesign) {
       data.flyerDesign = REGISTERED_FLYER_DESIGN_DEFAULT;
@@ -153,6 +160,9 @@ export default function Registered() {
       onError: (error: any) => {
         setShowSpinner(false);
         toast.error(error.message);
+        setSubmitError(error.message);
+        // set focus on error
+        document.querySelector("#form-error")?.scrollIntoView();
       },
     });
   };
@@ -200,6 +210,11 @@ export default function Registered() {
       )}
       <StyledFormContainer>
         <Form onSubmit={handleSubmit(onSubmit)}>
+          {submitError && (
+            <StyledSubmitError as={"h4"} id="form-error">
+              Error: {submitError}
+            </StyledSubmitError>
+          )}
           <StyledFormContent>
             {/* Title / Category */}
             <FormControlRow>

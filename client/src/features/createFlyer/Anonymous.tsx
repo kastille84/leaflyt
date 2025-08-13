@@ -73,6 +73,9 @@ const StyledInfoAlertContainer = styled.div`
   }
 `;
 
+const StyledSubmitError = styled(Heading)`
+  color: var(--color-red-600);
+`;
 const StyledFormContainer = styled.div`
   padding: 1.6rem 2.4rem;
 `;
@@ -93,6 +96,7 @@ const StyledFormButtonContainer = styled.div`
 
 export default function Anonymous() {
   const [showSpinner, setShowSpinner] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const {
     register,
     unregister,
@@ -138,6 +142,7 @@ export default function Anonymous() {
   useEffect(() => {});
 
   const onSubmit = async (data: any) => {
+    setSubmitError("");
     console.log("data", data);
     const prepData = {
       ...data,
@@ -155,6 +160,9 @@ export default function Anonymous() {
       onError: (error: any) => {
         setShowSpinner(false);
         toast.error(error.message);
+        setSubmitError(error.message);
+        // set focus on error
+        document.querySelector("#form-error")?.scrollIntoView();
       },
     });
   };
@@ -183,6 +191,11 @@ export default function Anonymous() {
       </StyledInfoAlertContainer>
       <StyledFormContainer>
         <Form onSubmit={handleSubmit(onSubmit)}>
+          {submitError && (
+            <StyledSubmitError as={"h4"} id="form-error">
+              Error: {submitError}
+            </StyledSubmitError>
+          )}
           <StyledFormContent>
             {/* Title / Category */}
             <FormControlRow>
