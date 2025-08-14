@@ -28,9 +28,9 @@ export type ContextType = {
   setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenBottomSlideIn: boolean;
   setIsOpenBottomSlideIn: React.Dispatch<React.SetStateAction<boolean>>;
-  bottomSlideInType: "signup" | "upsell" | "flyerDesigner" | null;
+  bottomSlideInType: "signup" | "upgrade" | "flyerDesigner" | null;
   setBottomSlideInType: React.Dispatch<
-    React.SetStateAction<"signup" | "upsell" | "flyerDesigner" | null>
+    React.SetStateAction<"signup" | "upgrade" | "flyerDesigner" | null>
   >;
   user: Auth_User_Profile_Response | null;
   setUser: React.Dispatch<
@@ -82,7 +82,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [isOpenBottomSlideIn, setIsOpenBottomSlideIn] =
     useState<boolean>(false);
   const [bottomSlideInType, setBottomSlideInType] = useState<
-    "signup" | "upsell" | "flyerDesigner" | null
+    "signup" | "upgrade" | "flyerDesigner" | null
   >(null);
   const [user, setUser] = useState<Auth_User_Profile_Response | null>(null);
   const [flyerDesignOptions, setFlyerDesignOptions] = useState<{

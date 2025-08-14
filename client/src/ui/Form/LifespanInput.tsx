@@ -3,6 +3,7 @@ import Select from "../Select";
 import FormControl from "./FormControl";
 import FieldInputError from "./FieldInputError";
 import styled from "styled-components";
+import UpgradeText from "../UpgradeText";
 
 const StyledLabel = styled.label`
   font-weight: 600;
@@ -17,11 +18,13 @@ export default function LifespanInput({
   options,
   value,
   errors,
+  canUpgrade,
 }: {
   register: UseFormRegister<any>;
   options: { value: string; label: string }[];
   value: string;
   errors: FieldErrors<FieldValues>;
+  canUpgrade?: boolean;
 }) {
   return (
     <FormControl className="lifespan" testId="lifespan-container">
@@ -31,6 +34,9 @@ export default function LifespanInput({
       >
         Select the Lifespan
       </StyledLabel>
+      {canUpgrade && (
+        <UpgradeText text="Upgrade to increase the life of your flyer." />
+      )}
       <Select
         options={options}
         value={value}

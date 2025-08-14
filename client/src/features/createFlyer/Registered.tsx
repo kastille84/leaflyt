@@ -37,6 +37,8 @@ import CommentsInput from "../../ui/Form/CommentsInput";
 import useCreateRegisteredFlyer from "./useCreateRegisteredFlyer";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import UpgradeText from "../../ui/UpgradeText";
+import FlyerDesignerInput from "../../ui/Form/FlyerDesignerInput";
 
 const StyledRegisteredContainer = styled.div``;
 const StyledInfoAlertContainer = styled.div`
@@ -117,9 +119,6 @@ export default function Registered() {
   const {
     user,
     setShowCloseSlideInModal,
-    setBottomSlideInType,
-    setIsOpenBottomSlideIn,
-    setFlyerDesignOptions,
     setIsOpenFlyerDrawer,
     setDrawerAction,
   } = useGlobalContext();
@@ -171,15 +170,6 @@ export default function Registered() {
     setShowCloseSlideInModal(true);
   }
 
-  function handleOpenFlyerDesigner() {
-    setIsOpenBottomSlideIn(true);
-    setBottomSlideInType("flyerDesigner");
-    setFlyerDesignOptions({
-      getValues: getValues,
-      setValue: setValue,
-    });
-  }
-
   useEffect(() => {
     if (!templateWatch) {
       unregister("templateName");
@@ -198,13 +188,7 @@ export default function Registered() {
           </Heading>
           <div>
             <p>Do more with your flyers by upgrading your plan.</p>
-            <p>
-              Why is it better to upgrade?{" "}
-              <span className="learn-more">
-                LEARN MORE
-                <HiOutlineArrowRight />
-              </span>
-            </p>
+            <UpgradeText text="Why is it better to upgrade?" />
           </div>
         </StyledInfoAlertContainer>
       )}
@@ -284,20 +268,13 @@ export default function Registered() {
                 options={LIFESPAN[planLimits.level].options}
                 value={lifespanWatch}
                 errors={errors}
+                canUpgrade={planLimits.canUpgrade}
               />
-              <FormControl>
-                <Heading as="h4">Flyer Design</Heading>
-                <p>Give your flyer a personal touch.</p>
-                <p>
-                  <Button
-                    type="button"
-                    size="small"
-                    onClick={handleOpenFlyerDesigner}
-                  >
-                    Open the Flyer Designer
-                  </Button>
-                </p>
-              </FormControl>
+              <FlyerDesignerInput
+                setValue={setValue}
+                getValues={getValues}
+                canUpgrade={!planLimits.paid}
+              />
             </FormControlRow>
             <FormControlRow>
               <FormControl>
