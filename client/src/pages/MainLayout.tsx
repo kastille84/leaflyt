@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import styled from "styled-components";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 import { supabase } from "../services/supabase";
 import ActionMenu from "../ui/ActionMenu";
@@ -28,6 +28,7 @@ const StyledMainContentContainer = styled.div`
 export default function MainLayout() {
   const { setUser } = useGlobalContext();
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const { autoLogin } = useLoginWithAccessToken();
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function MainLayout() {
             console.log("response", response);
             // set user in global context
             setUser(response.data);
-            navigate("/dashboard");
+            navigate(`/dashboard${id ? "/board/" + id : ""}`);
           },
           onError: (error) => {
             console.log("error", error);

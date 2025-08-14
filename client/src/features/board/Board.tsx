@@ -8,6 +8,7 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/GlobalContext";
 import useGetPlaceByPlaceId from "../../hooks/useGetPlaceByPlaceId";
+import InfoAlert from "../../ui/InfoAlert";
 
 const StyledBoardContainer = styled.div``;
 
@@ -33,15 +34,18 @@ export default function Board() {
 
   // if flyers, then show a list of flyers
   return (
-    <StyledBoardContainer data-testid="board-container">
-      <div data-testid="board" style={{ width: "80%", margin: "auto" }}>
-        <Masonry columnsCount={3} gutter="1.6rem">
-          {board?.data!.flyers?.length &&
-            board?.data!.flyers.map((flyer) => (
-              <StaticFlyerBlock key={flyer!.id} flyer={flyer} />
-            ))}
-        </Masonry>
-      </div>
-    </StyledBoardContainer>
+    <>
+      <StyledBoardContainer data-testid="board-container">
+        <div data-testid="board" style={{ width: "80%", margin: "auto" }}>
+          <InfoAlert text="Testing Info Alert" />
+          <Masonry columnsCount={3} gutter="1.6rem">
+            {board?.data!.flyers?.length &&
+              board?.data!.flyers.map((flyer) => (
+                <StaticFlyerBlock key={flyer!.id} flyer={flyer} />
+              ))}
+          </Masonry>
+        </div>
+      </StyledBoardContainer>
+    </>
   );
 }

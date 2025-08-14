@@ -11,12 +11,18 @@ const StyledLearnMore = styled.small`
   text-transform: capitalize;
   text-decoration: underline;
 `;
-export default function UpgradeText({ text }: { text?: string }) {
+export default function UpgradeText({
+  text,
+  type = "upgrade",
+}: {
+  text?: string;
+  type?: "upgrade" | "signup";
+}) {
   const displayText = text || "Upgrade to get more features";
 
   const { setBottomSlideInType, setIsOpenBottomSlideIn } = useGlobalContext();
   const handleLearnMore = () => {
-    setBottomSlideInType("upgrade");
+    setBottomSlideInType(type);
     setIsOpenBottomSlideIn(true);
   };
 

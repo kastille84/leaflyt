@@ -39,38 +39,9 @@ import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import UpgradeText from "../../ui/UpgradeText";
 import FlyerDesignerInput from "../../ui/Form/FlyerDesignerInput";
+import FormInfoAlert from "../../ui/Form/FormInfoAlert";
 
 const StyledRegisteredContainer = styled.div``;
-const StyledInfoAlertContainer = styled.div`
-  display: flex;
-  gap: 2.4rem;
-  align-items: center;
-  background-color: var(--color-orange-200);
-  padding: 1.6rem 2.4rem;
-
-  & h4 {
-    color: var(--color-orange-600);
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-  }
-
-  & p {
-    font-size: 1.4rem;
-    letter-spacing: 0.4px;
-  }
-  & .learn-more {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-  & .learn-more,
-  & .learn-more svg {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--color-orange-600);
-  }
-`;
 
 const StyledSubmitError = styled(Heading)`
   color: var(--color-red-600);
@@ -179,18 +150,11 @@ export default function Registered() {
   return (
     <StyledRegisteredContainer>
       {planLimits.canUpgrade && (
-        <StyledInfoAlertContainer>
-          <Heading as={"h4"}>
-            <span>
-              <HiOutlineExclamationCircle />
-            </span>
-            <span>{planLimits.name} Plan</span>
-          </Heading>
-          <div>
-            <p>Do more with your flyers by upgrading your plan.</p>
-            <UpgradeText text="Why is it better to upgrade?" />
-          </div>
-        </StyledInfoAlertContainer>
+        <FormInfoAlert
+          planName={planLimits.name}
+          text="Do more with your flyers by upgrading your plan."
+          supportText="Why is it better to upgrade?"
+        />
       )}
       <StyledFormContainer>
         <Form onSubmit={handleSubmit(onSubmit)}>
