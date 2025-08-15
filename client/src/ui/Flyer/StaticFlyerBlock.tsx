@@ -15,6 +15,9 @@ import {
   UNREGISTERED_FLYER_DESIGN_DEFAULT,
   REGISTERED_FLYER_DESIGN_DEFAULT,
 } from "../../constants";
+import Info from "./SubComponents/Info";
+import CTA from "./SubComponents/CTA";
+import Contact from "./SubComponents/Contact";
 
 const common = {
   style: css`
@@ -89,45 +92,9 @@ const StyledTopTextContainer = styled.div<{ flyerDesign: FlyerDesign }>`
     flyerDesign.borderTopRightRadius}px;
 `;
 
-const StyledMainContentContainer = styled.div`
-  padding: 2.4rem 2.4rem 1rem 2.4rem;
+const StyledinfoContentContainer = styled.div`
+  padding: 1rem 2.4rem;
   font-size: 1.4rem;
-`;
-
-const StyledSubcategory = styled.small<{ flyerDesign: FlyerDesign }>`
-  text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: ${({ flyerDesign }) => flyerDesign.subcategory.color};
-`;
-
-const StyledHeading = styled(Heading)<{ flyerDesign: FlyerDesign }>`
-  color: ${({ flyerDesign }) => flyerDesign.title.color};
-  text-transform: capitalize;
-  margin-bottom: 1.2rem;
-`;
-
-const StyledReadMore = styled.p<{ flyerDesign: FlyerDesign }>`
-  text-transform: capitalize;
-  font-weight: 600;
-  color: ${({ flyerDesign }) => flyerDesign.readMore.color};
-  cursor: pointer;
-  text-align: right;
-  letter-spacing: 0.4px;
-`;
-
-const StyledTagContainer = styled.div`
-  margin-top: 1rem;
-  display: flex;
-  gap: 1rem;
-`;
-
-const StyledTag = styled.small<{ flyerDesign: FlyerDesign }>`
-  text-transform: capitalize;
-  font-weight: 600;
-  letter-spacing: 1px;
-  font-size: 1rem;
-  color: ${({ flyerDesign }) => flyerDesign.tags.color};
 `;
 
 const StyledActionContainer = styled.section`
@@ -164,6 +131,83 @@ const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
   align-items: center;
   border-radius: 100%;
 `;
+
+const PillsContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+`;
+const pillStyle = {
+  infoOutline: css`
+    background-color: var(--color-grey-50);
+    color: var(--color-brand-600);
+    border: 1px solid var(--color-brand-600);
+  `,
+  info: css`
+    background-color: var(--color-brand-600);
+    color: var(--color-grey-50);
+    border: 1px solid var(--color-brand-600);
+  `,
+  contactOutline: css`
+    background-color: var(--color-grey-50);
+    color: var(--color-brand-600);
+    border: 1px solid var(--color-brand-600);
+  `,
+  contact: css`
+    background-color: var(--color-brand-600);
+    color: var(--color-grey-50);
+    border: 1px solid var(--color-brand-600);
+  `,
+  ctaOutline: css`
+    background-color: var(--color-grey-50);
+    color: var(--color-red-600);
+    border: 1px solid var(--color-red-600);
+  `,
+  cta: css`
+    background-color: var(--color-red-600);
+    color: var(--color-grey-50);
+    border: 1px solid var(--color-red-600);
+  `,
+};
+const Pill = styled.div<{
+  contentType: "info" | "contact" | "cta";
+  type: "info" | "contact" | "cta";
+}>`
+  ${({ contentType, type }) =>
+    contentType === type ? pillStyle[type] : pillStyle[`${type}Outline`]}
+  padding: 0.1rem 0.8rem;
+  border-radius: 10px;
+  letter-spacing: 1.2px;
+  text-transform: capitalize;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  ${({ type }) =>
+    type === "cta" &&
+    css`
+      animation: pulse 2s infinite ease-in-out;
+      /* transition: all 1.4s; */
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1) rotate(0deg);
+        }
+        50% {
+          transform: scale(1.1) rotate(2deg);
+
+          ${pillStyle[type]}
+        }
+        100% {
+          transform: scale(1) rotate(0deg);
+        }
+      }
+      :hover {
+        animation: scale 0.3s ease-in-out;
+      }
+    `}
+`;
+
 export default function StaticFlyerBlock({
   flyer,
 }: {
@@ -171,13 +215,15 @@ export default function StaticFlyerBlock({
 }) {
   const userLimits = useGetUserLimits();
 
-  const [isReadMore, setIsReadMore] = useState(false);
   const [flyerStyles, setFlyerStyles] = useState(() => {
     if (!flyer.flyerDesign) {
       return UNREGISTERED_FLYER_DESIGN_DEFAULT;
     }
     return flyer.flyerDesign;
   });
+  const [contentType, setContentType] = useState<"info" | "contact" | "cta">(
+    "info"
+  );
 
   function hasFiles() {
     if (flyer?.fileUrlArr?.length) {
@@ -286,42 +332,39 @@ export default function StaticFlyerBlock({
           {renderTopContent()}
         </StyledTopTextContainer>
       )}
-      <StyledMainContentContainer>
-        {/* TODO: Make this section dynamic (mainContent, infoContent, couponContent) */}
-        <StyledSubcategory flyerDesign={flyerStyles}>
-          {flyer.subcategory}
-        </StyledSubcategory>
-        <StyledHeading as="h2" flyerDesign={flyerStyles}>
-          {flyer.title}
-        </StyledHeading>
-        {!isReadMore && (
-          <div
-            dangerouslySetInnerHTML={{
-              __html: shortenTitle(flyer.content, 75),
-            }}
-          ></div>
-        )}
-        {isReadMore && (
-          <div dangerouslySetInnerHTML={{ __html: flyer.content }}></div>
-        )}
-        {flyer.content.length > 75 && (
-          <StyledReadMore
-            flyerDesign={flyerStyles}
-            onClick={() => setIsReadMore(!isReadMore)}
+      <StyledinfoContentContainer>
+        {/* TODO: Make this section dynamic (infoContent, contactContent, couponContent) */}
+        <PillsContainer>
+          <Pill
+            contentType={contentType}
+            type="info"
+            onClick={() => setContentType("info")}
           >
-            {isReadMore ? "Read less" : "Read more"}
-          </StyledReadMore>
+            info
+          </Pill>
+          <Pill
+            contentType={contentType}
+            type="contact"
+            onClick={() => setContentType("contact")}
+          >
+            contact
+          </Pill>
+          {flyer.callToAction?.ctaType === "offer" && (
+            <Pill
+              contentType={contentType}
+              type="cta"
+              onClick={() => setContentType("cta")}
+            >
+              deal
+            </Pill>
+          )}
+        </PillsContainer>
+        {contentType === "info" && (
+          <Info flyer={flyer} flyerStyles={flyerStyles} />
         )}
-        <StyledTagContainer>
-          <StyledTag flyerDesign={flyerStyles}>#</StyledTag>
-          {flyer.tags &&
-            flyer.tags.map((tag) => (
-              <StyledTag flyerDesign={flyerStyles} key={tag}>
-                {tag}
-              </StyledTag>
-            ))}
-        </StyledTagContainer>
-      </StyledMainContentContainer>
+        {contentType === "contact" && <Contact flyer={flyer} />}
+        {contentType === "cta" && <CTA flyer={flyer} />}
+      </StyledinfoContentContainer>
       <StyledActionContainer>
         <StyledActionIconContainer flyerDesign={flyerStyles}>
           <HiOutlineHandThumbUp />

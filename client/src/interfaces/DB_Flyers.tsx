@@ -42,7 +42,7 @@ export interface DB_Flyer_Create {
   postingMethod?: "onLocation" | "remote" | "remoteBulk";
   flyerDesign?: null | FlyerDesign;
   callToAction?: {
-    ctaType: string;
+    ctaType: "offer" | "ask" | "none";
     headline: string;
     instructions: string;
   };
