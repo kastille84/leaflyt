@@ -176,7 +176,7 @@ const Pill = styled.div<{
 }>`
   ${({ contentType, type }) =>
     contentType === type ? pillStyle[type] : pillStyle[`${type}Outline`]}
-  padding: 0.1rem 0.8rem;
+  padding: 0.05rem 0.8rem;
   border-radius: 10px;
   letter-spacing: 1.2px;
   text-transform: capitalize;
@@ -186,24 +186,30 @@ const Pill = styled.div<{
   ${({ type }) =>
     type === "cta" &&
     css`
-      animation: pulse 2s infinite ease-in-out;
+      animation: pulse 5s infinite;
       /* transition: all 1.4s; */
 
       @keyframes pulse {
         0% {
-          transform: scale(1) rotate(0deg);
+          transform: scale(1) rotate(3deg);
         }
-        50% {
-          transform: scale(1.1) rotate(2deg);
+        2% {
+          transform: scale(1.1) rotate(-3deg);
 
           ${pillStyle[type]}
         }
-        100% {
+        4% {
+          transform: scale(1.1) rotate(3deg);
+        }
+        6% {
+          transform: scale(1.1) rotate(-3deg);
+        }
+        8% {
+          transform: scale(1.1) rotate(3deg);
+        }
+        10% {
           transform: scale(1) rotate(0deg);
         }
-      }
-      :hover {
-        animation: scale 0.3s ease-in-out;
       }
     `}
 `;
