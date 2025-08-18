@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 import { DB_Flyers_Response, FlyerDesign } from "../../interfaces/DB_Flyers";
-import Heading from "../Heading";
+
 import {
   HiOutlineChatBubbleLeftEllipsis,
   HiOutlineEllipsisHorizontal,
@@ -348,13 +348,15 @@ export default function StaticFlyerBlock({
           >
             info
           </Pill>
-          <Pill
-            contentType={contentType}
-            type="contact"
-            onClick={() => setContentType("contact")}
-          >
-            contact
-          </Pill>
+          {flyer.typeOfUser !== "anonymous" && (
+            <Pill
+              contentType={contentType}
+              type="contact"
+              onClick={() => setContentType("contact")}
+            >
+              contact
+            </Pill>
+          )}
           {flyer.callToAction?.ctaType === "offer" && (
             <Pill
               contentType={contentType}

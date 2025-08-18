@@ -53,7 +53,7 @@ export interface DB_Flyer_Create {
 }
 
 interface DB_Flyer_Create_Unregistered extends DB_Flyer_Create {
-  typeOfUser: string;
+  typeOfUser: "individual" | "business" | "organization" | "anonymous";
 }
 
 export interface DB_Flyer_Create_Unregistered_Anonymous

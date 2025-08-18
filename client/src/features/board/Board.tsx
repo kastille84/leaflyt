@@ -36,14 +36,20 @@ export default function Board() {
   return (
     <>
       <StyledBoardContainer data-testid="board-container">
-        <div data-testid="board" style={{ width: "80%", margin: "auto" }}>
+        <div data-testid="board" style={{ width: "90%", margin: "auto" }}>
           <InfoAlert text="Testing Info Alert" />
-          <Masonry columnsCount={3} gutter="1.6rem">
-            {board?.data!.flyers?.length &&
-              board?.data!.flyers.map((flyer) => (
-                <StaticFlyerBlock key={flyer!.id} flyer={flyer} />
-              ))}
-          </Masonry>
+          <ResponsiveMasonry
+            columnsCountBreakPoints={{ 350: 1, 1096: 2, 1600: 3 }}
+
+            // gutterBreakpoints={{ 350: "12px", 750: "16px", 900: "24px" }}
+          >
+            <Masonry columnsCount={3} gutter="1.6rem">
+              {board?.data!.flyers?.length &&
+                board?.data!.flyers.map((flyer) => (
+                  <StaticFlyerBlock key={flyer!.id} flyer={flyer} />
+                ))}
+            </Masonry>
+          </ResponsiveMasonry>
         </div>
       </StyledBoardContainer>
     </>
