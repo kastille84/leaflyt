@@ -413,13 +413,13 @@ export default function StaticFlyerBlock({
               contact
             </Pill>
           )}
-          {flyer.callToAction?.ctaType === "offer" && (
+          {flyer.callToAction && (
             <Pill
               contentType={contentType}
               type="cta"
               onClick={() => setContentType("cta")}
             >
-              deal
+              {flyer.callToAction?.ctaType === "offer" ? "deal" : "ask"}
             </Pill>
           )}
         </PillsContainer>

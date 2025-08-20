@@ -89,7 +89,7 @@ export default function ImageCarousel({
       <Carousel
         ssr={false}
         responsive={responsive}
-        showDots
+        // showDots
         itemClass="carousel-item"
       >
         {filesToUse!.map((file, index) => (
@@ -109,7 +109,15 @@ export default function ImageCarousel({
             onClick={() => handleImageClick(filesToUse!)}
             height={heightToUse}
           >
-            {file.resource_type === "video" && "Video"}
+            {file.resource_type === "video" && (
+              <video
+                controls
+                src={file.secure_url}
+                width={"100%"}
+                height={"auto"}
+                onClick={(e) => e.stopPropagation()}
+              />
+            )}
             {file.resource_type === "image" && (
               <img
                 src={file.secure_url}
