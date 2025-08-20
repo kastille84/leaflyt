@@ -1,16 +1,12 @@
 import styled, { css } from "styled-components";
 
-import { DB_Flyers_Response, FlyerDesign } from "../../interfaces/DB_Flyers";
-
 import {
   HiOutlineChatBubbleLeftEllipsis,
   HiOutlineEllipsisHorizontal,
   HiOutlineHandThumbUp,
   HiOutlineShare,
 } from "react-icons/hi2";
-import { shortenTitle } from "../../utils/GeneralUtils";
 import { useState } from "react";
-import useGetUserLimits from "../../hooks/useGetUserLimits";
 import {
   UNREGISTERED_FLYER_DESIGN_DEFAULT,
   REGISTERED_FLYER_DESIGN_DEFAULT,
@@ -18,6 +14,16 @@ import {
 import Info from "./SubComponents/Info";
 import CTA from "./SubComponents/CTA";
 import Contact from "./SubComponents/Contact";
+import {
+  DB_Flyer_Create,
+  DB_Flyer_Create_Unregistered_Business,
+  DB_Flyer_Create_Unregistered_Individual,
+  DB_Flyer_Create_Unregistered_Organization,
+  DB_Flyers_Response,
+  FlyerDesign,
+} from "../../interfaces/DB_Flyers";
+import ImageCarousel from "./SubComponents/ImageCarousel";
+import { Auth_User_Profile_Response } from "../../interfaces/Auth_User";
 
 const common = {
   style: css`
@@ -48,7 +54,7 @@ const StyledFlyerBlock = styled.div<{ flyerDesign: FlyerDesign }>`
     flyerDesign.borderBottomRightRadius}px;
 `;
 
-const StyledFigure = styled.figure<{ flyerDesign: FlyerDesign }>`
+const StyledImageSection = styled.figure<{ flyerDesign: FlyerDesign }>`
   width: 100%;
   height: auto;
   position: relative;
@@ -219,8 +225,6 @@ export default function StaticFlyerBlock({
 }: {
   flyer: DB_Flyers_Response;
 }) {
-  const userLimits = useGetUserLimits();
-
   const [flyerStyles, setFlyerStyles] = useState(() => {
     if (!flyer.flyerDesign) {
       return UNREGISTERED_FLYER_DESIGN_DEFAULT;
@@ -232,7 +236,7 @@ export default function StaticFlyerBlock({
   );
 
   function hasFiles() {
-    if (flyer?.fileUrlArr?.length) {
+    if (flyer?.fileUrlArr?.length! >= 1) {
       return true;
     }
     return false;
@@ -253,11 +257,21 @@ export default function StaticFlyerBlock({
           return (
             <>
               <StyledAvatar flyerDesign={flyerStyles}>
-                {flyer.individual!.name.firstName[0]}
+                {
+                  (flyer as DB_Flyer_Create_Unregistered_Individual).individual
+                    .name.firstName[0]
+                }
               </StyledAvatar>
               <div>
-                {flyer.individual!.name.firstName} &nbsp;
-                {flyer.individual!.name.lastName}
+                {
+                  (flyer as DB_Flyer_Create_Unregistered_Individual).individual
+                    .name.firstName
+                }{" "}
+                &nbsp;
+                {
+                  (flyer as DB_Flyer_Create_Unregistered_Individual).individual
+                    .name.lastName
+                }
               </div>
             </>
           );
@@ -265,31 +279,61 @@ export default function StaticFlyerBlock({
           return (
             <>
               <StyledAvatar flyerDesign={flyerStyles}>
-                {flyer.organization!.name[0]}
+                {
+                  (flyer as DB_Flyer_Create_Unregistered_Organization)
+                    .organization.name[0]
+                }
               </StyledAvatar>
-              <div>{flyer.organization!.name}</div>
+              <div>
+                {
+                  (flyer as DB_Flyer_Create_Unregistered_Organization)
+                    .organization.name
+                }
+              </div>
             </>
           );
         case "business":
           return (
             <>
               <StyledAvatar flyerDesign={flyerStyles}>
-                {flyer.business!.name[0]}
+                {
+                  (flyer as DB_Flyer_Create_Unregistered_Business).business
+                    .name[0]
+                }
               </StyledAvatar>
-              <div>{flyer.business!.name}</div>
+              <div>
+                {(flyer as DB_Flyer_Create_Unregistered_Business).business.name}
+              </div>
             </>
           );
       }
     } else {
-      if (flyer.user.typeOfUser === "individual") {
+      if (
+        ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
+          .typeOfUser === "individual"
+      ) {
         return (
           <>
             <StyledAvatar flyerDesign={flyerStyles}>
-              {flyer.user!.firstName[0]}
+              {
+                (
+                  (
+                    (flyer as DB_Flyer_Create)
+                      .user as Auth_User_Profile_Response
+                  ).firstName as string
+                )[0]
+              }
             </StyledAvatar>
             <div>
-              {flyer.user!.firstName} &nbsp;
-              {flyer.user!.lastName}
+              {
+                ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
+                  .firstName
+              }{" "}
+              &nbsp;
+              {
+                ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
+                  .lastName
+              }
             </div>
           </>
         );
@@ -297,9 +341,21 @@ export default function StaticFlyerBlock({
         return (
           <>
             <StyledAvatar flyerDesign={flyerStyles}>
-              {flyer.user!.name[0]}
+              {
+                (
+                  (
+                    (flyer as DB_Flyer_Create)
+                      .user as Auth_User_Profile_Response
+                  ).name as string
+                )[0]
+              }
             </StyledAvatar>
-            <div>{flyer.user!.name}</div>
+            <div>
+              {
+                ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
+                  .name as string
+              }
+            </div>
           </>
         );
       }
@@ -322,16 +378,16 @@ export default function StaticFlyerBlock({
   return (
     <StyledFlyerBlock flyerDesign={flyerStyles}>
       {hasFiles() && (
-        <StyledFigure flyerDesign={flyerStyles}>
-          <img
-            src={flyer!.fileUrlArr![0].secure_url}
-            width={"100%"}
-            height={"auto"}
+        <StyledImageSection flyerDesign={flyerStyles}>
+          <ImageCarousel
+            images={flyer.fileUrlArr || []}
+            fromFlyerBlock
+            // bgColor={flyerStyles.top.backgroundColor}
           />
           <StyledTopImageContainer flyerDesign={flyerStyles}>
             {renderTopContent()}
           </StyledTopImageContainer>
-        </StyledFigure>
+        </StyledImageSection>
       )}
       {!hasFiles() && (
         <StyledTopTextContainer flyerDesign={flyerStyles}>

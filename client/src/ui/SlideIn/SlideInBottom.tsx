@@ -10,6 +10,7 @@ import styled from "styled-components";
 import { HiOutlineXMark } from "react-icons/hi2";
 import FlyerDesignerContainer from "../../features/createFlyer/FlyerDesigner/FlyerDesignerContainer";
 import { FlyerDesignerContextProvider } from "../../context/FlyerDesignerContext";
+import FullCarouselContainer from "../Flyer/FullCarouselContainer";
 
 const StyledCloseContainer = styled.div`
   display: flex;
@@ -30,25 +31,44 @@ export default function SlideInBottom() {
     setIsOpenBottomSlideIn,
     bottomSlideInType,
     setBottomSlideInType,
+    setCarouselFlyers,
   } = useGlobalContext();
 
   function determineSlideInType() {
-    if (bottomSlideInType === SIGNUP) {
-      return <RegistrationContainer />;
-    } else if (bottomSlideInType === "upsell") {
-      return <p>Upsell</p>;
-    } else if (bottomSlideInType === "flyerDesigner") {
-      return (
-        <FlyerDesignerContextProvider>
-          <FlyerDesignerContainer />;
-        </FlyerDesignerContextProvider>
-      );
+    switch (bottomSlideInType) {
+      case "signup":
+        return <RegistrationContainer />;
+      case "upgrade":
+        return <p>Upgrade</p>;
+      case "carousel":
+        return <FullCarouselContainer />;
+      case "flyerDesigner":
+        return (
+          <FlyerDesignerContextProvider>
+            <FlyerDesignerContainer />;
+          </FlyerDesignerContextProvider>
+        );
     }
+
+    // if (bottomSlideInType === SIGNUP) {
+    //   return <RegistrationContainer />;
+    // } else if (bottomSlideInType === "upgrade") {
+    //   return <p>Upgrade</p>;
+    // } else if (bottomSlideInType === "flyerDesigner") {
+    //   return (
+    //     <FlyerDesignerContextProvider>
+    //       <FlyerDesignerContainer />;
+    //     </FlyerDesignerContextProvider>
+    //   );
+    // }
   }
 
   function handleDrawerClose() {
     setIsOpenBottomSlideIn(false);
     setBottomSlideInType(null);
+    if (bottomSlideInType === "carousel") {
+      setCarouselFlyers(null);
+    }
   }
 
   return (

@@ -1,4 +1,5 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
+import { UploadApiResponse } from "cloudinary";
 import useGetUserGeo from "../hooks/useGetUserGeo";
 import { LatLng, NearbySearchPlaceResult } from "../interfaces/Geo";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
@@ -28,9 +29,11 @@ export type ContextType = {
   setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenBottomSlideIn: boolean;
   setIsOpenBottomSlideIn: React.Dispatch<React.SetStateAction<boolean>>;
-  bottomSlideInType: "signup" | "upgrade" | "flyerDesigner" | null;
+  bottomSlideInType: "signup" | "upgrade" | "flyerDesigner" | "carousel" | null;
   setBottomSlideInType: React.Dispatch<
-    React.SetStateAction<"signup" | "upgrade" | "flyerDesigner" | null>
+    React.SetStateAction<
+      "signup" | "upgrade" | "flyerDesigner" | "carousel" | null
+    >
   >;
   user: Auth_User_Profile_Response | null;
   setUser: React.Dispatch<
@@ -38,6 +41,10 @@ export type ContextType = {
   >;
   flyerDesignOptions: any;
   setFlyerDesignOptions: React.Dispatch<React.SetStateAction<any>>;
+  carouselImages: UploadApiResponse[] | null;
+  setCarouselImages: React.Dispatch<
+    React.SetStateAction<UploadApiResponse[] | null>
+  >;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -66,6 +73,8 @@ const GlobalContext = createContext<ContextType>({
   setUser: () => {},
   flyerDesignOptions: null,
   setFlyerDesignOptions: () => {},
+  carouselImages: null,
+  setCarouselImages: () => {},
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -82,13 +91,16 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [isOpenBottomSlideIn, setIsOpenBottomSlideIn] =
     useState<boolean>(false);
   const [bottomSlideInType, setBottomSlideInType] = useState<
-    "signup" | "upgrade" | "flyerDesigner" | null
+    "signup" | "upgrade" | "flyerDesigner" | "carousel" | null
   >(null);
   const [user, setUser] = useState<Auth_User_Profile_Response | null>(null);
   const [flyerDesignOptions, setFlyerDesignOptions] = useState<{
     getValues: UseFormGetValues<any>;
     setValue: UseFormSetValue<any>;
   } | null>(null);
+  const [carouselImages, setCarouselImages] = useState<
+    UploadApiResponse[] | null
+  >(null);
 
   const {
     getUserGeo,
@@ -126,6 +138,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         setUser,
         flyerDesignOptions,
         setFlyerDesignOptions,
+        carouselImages,
+        setCarouselImages,
       }}
     >
       {children}

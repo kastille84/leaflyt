@@ -44,7 +44,6 @@ import toast from "react-hot-toast";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 import AttestationInput from "../../ui/Form/AttestationInput";
 import { useParams } from "react-router-dom";
-import UpgradeText from "../../ui/UpgradeText";
 
 const StyledAnonymousContainer = styled.div``;
 
