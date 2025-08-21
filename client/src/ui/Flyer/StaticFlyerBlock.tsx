@@ -382,7 +382,7 @@ export default function StaticFlyerBlock({
           <ImageCarousel
             images={flyer.fileUrlArr || []}
             fromFlyerBlock
-            // bgColor={flyerStyles.top.backgroundColor}
+            bgColor={flyerStyles.top.backgroundColor}
           />
           <StyledTopImageContainer flyerDesign={flyerStyles}>
             {renderTopContent()}

@@ -4,9 +4,14 @@ import "react-multi-carousel/lib/styles.css";
 import { useGlobalContext } from "../../../context/GlobalContext";
 import { UploadApiResponse } from "cloudinary";
 
-const StyledFigure = styled.figure<{ height?: number }>`
+const StyledFigure = styled.figure<{
+  height?: number;
+  backgroundColor?: string;
+}>`
   width: 100%;
   height: ${(props) => props.height}px;
+  background-color: ${(props) => props.backgroundColor};
+  /* opacity: 0.85; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,6 +96,7 @@ export default function ImageCarousel({
         responsive={responsive}
         // showDots
         itemClass="carousel-item"
+        afterChange={(index) => {}}
       >
         {filesToUse!.map((file, index) => (
           // <div
@@ -108,14 +114,18 @@ export default function ImageCarousel({
             key={index}
             onClick={() => handleImageClick(filesToUse!)}
             height={heightToUse}
+            backgroundColor={
+              file.resource_type === "video" ? bgColor : "var(--color-grey-75)"
+            }
           >
             {file.resource_type === "video" && (
               <video
                 controls
                 src={file.secure_url}
-                width={"100%"}
+                width={fromFlyerBlock ? "100%" : "60%"}
                 height={"auto"}
                 onClick={(e) => e.stopPropagation()}
+                onBlur={(e) => e.target.pause()}
               />
             )}
             {file.resource_type === "image" && (

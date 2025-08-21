@@ -58,6 +58,7 @@ export default function ActionMenu() {
     isGettingLocation,
     coords,
     setCoords,
+    hasFlyerAtLocation,
   } = useGlobalContext();
 
   const navigate = useNavigate();
@@ -110,7 +111,7 @@ export default function ActionMenu() {
   }
 
   function determineSelectedPlaceActions() {
-    if (selectedPlace?.id) {
+    if (selectedPlace?.id && !hasFlyerAtLocation) {
       return (
         <div>
           <Button

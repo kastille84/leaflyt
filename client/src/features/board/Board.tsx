@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 import useGetBoard from "./useGetBoard";
 import NoFlyers from "./NoFlyers";
@@ -14,10 +15,12 @@ const StyledBoardContainer = styled.div``;
 
 export default function Board() {
   const { id } = useParams();
-  const { selectedPlace } = useGlobalContext();
+  const QueryClient = useQueryClient();
+  const { selectedPlace, user, hasFlyerAtLocation, setHasFlyerAtLocation } =
+    useGlobalContext();
   const [shouldGetPlace, setShouldGetPlace] = useState(false);
 
-  const { isLoadingBoard, board } = useGetBoard();
+  const { isLoadingBoard, board } = useGetBoard(user?.id!);
   useGetPlaceByPlaceId(id!, shouldGetPlace);
 
   useEffect(() => {
@@ -25,6 +28,22 @@ export default function Board() {
       setShouldGetPlace(true);
     }
   }, [board?.data, selectedPlace]);
+
+  useEffect(() => {
+    if (user) {
+      checkIfUserHasFlyerHere();
+    }
+  }, [user]);
+
+  async function checkIfUserHasFlyerHere() {
+    await QueryClient.refetchQueries({
+      queryKey: ["board", id],
+    });
+    const boardData = await QueryClient.getQueryData(["board", id]);
+    if ((boardData as any)?.data?.hasFlyerHere) {
+      setHasFlyerAtLocation(true);
+    }
+  }
 
   if (isLoadingBoard) return <OverlaySpinner message="Loading Board" />;
   // if no flyers, then show "NoFlyers" component which has a button to create a new flyer
@@ -37,7 +56,9 @@ export default function Board() {
     <>
       <StyledBoardContainer data-testid="board-container">
         <div data-testid="board" style={{ width: "90%", margin: "auto" }}>
-          <InfoAlert text="Testing Info Alert" />
+          {hasFlyerAtLocation && (
+            <InfoAlert text="You already have a flyer posted here" />
+          )}
           <ResponsiveMasonry
             columnsCountBreakPoints={{ 350: 1, 1096: 2, 1600: 3 }}
 

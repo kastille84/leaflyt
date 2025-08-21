@@ -1,6 +1,8 @@
 import { PostgrestError } from "@supabase/supabase-js";
 import { DB_Board, DB_Board_Response } from "../interfaces/DB_Board";
 import { supabase } from "./supabase";
+import { DB_Flyers_Response } from "../interfaces/DB_Flyers";
+import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
 
 export const getBoards = async () => {
   const { data, error } = await supabase.from("boards").select("*");
@@ -8,11 +10,23 @@ export const getBoards = async () => {
 };
 
 export const getBoard = async (
-  placeId: string
+  placeId: string,
+  profileId?: number
 ): Promise<{
   data: DB_Board_Response | null;
   error: PostgrestError | null;
 }> => {
+  let foundUserFlyer = null;
+  if (profileId) {
+    const { data: foundUser } = await supabase
+      .from("flyers")
+      .select("*")
+      .eq("placeId", placeId)
+      .eq("user", profileId)
+      .single();
+    foundUserFlyer = foundUser;
+  }
+
   const { data, error } = await supabase
     .from("boards")
     .select(
@@ -26,7 +40,8 @@ export const getBoard = async (
       nullsFirst: false,
     })
     .single();
-  return { data, error };
+
+  return { data: { ...data, hasFlyerHere: !!foundUserFlyer }, error };
 };
 
 export const createBoard = async (

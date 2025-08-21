@@ -45,6 +45,8 @@ export type ContextType = {
   setCarouselImages: React.Dispatch<
     React.SetStateAction<UploadApiResponse[] | null>
   >;
+  hasFlyerAtLocation: boolean;
+  setHasFlyerAtLocation: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -75,6 +77,8 @@ const GlobalContext = createContext<ContextType>({
   setFlyerDesignOptions: () => {},
   carouselImages: null,
   setCarouselImages: () => {},
+  hasFlyerAtLocation: false,
+  setHasFlyerAtLocation: () => {},
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -101,6 +105,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [carouselImages, setCarouselImages] = useState<
     UploadApiResponse[] | null
   >(null);
+  const [hasFlyerAtLocation, setHasFlyerAtLocation] = useState(false);
 
   const {
     getUserGeo,
@@ -140,6 +145,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         setFlyerDesignOptions,
         carouselImages,
         setCarouselImages,
+        hasFlyerAtLocation,
+        setHasFlyerAtLocation,
       }}
     >
       {children}
