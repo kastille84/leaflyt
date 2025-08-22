@@ -24,24 +24,21 @@ export default function Board() {
   useGetPlaceByPlaceId(id!, shouldGetPlace);
 
   useEffect(() => {
-    if (board?.data && !selectedPlace) {
-      setShouldGetPlace(true);
-    }
-  }, [board?.data, selectedPlace]);
+    setShouldGetPlace(true);
+  }, [selectedPlace]);
 
   useEffect(() => {
     if (user) {
       checkIfUserHasFlyerHere();
     }
-  }, [user]);
+  }, [user, selectedPlace, board, id]);
 
   async function checkIfUserHasFlyerHere() {
-    await QueryClient.refetchQueries({
-      queryKey: ["board", id],
-    });
     const boardData = await QueryClient.getQueryData(["board", id]);
     if ((boardData as any)?.data?.hasFlyerHere) {
       setHasFlyerAtLocation(true);
+    } else {
+      setHasFlyerAtLocation(false);
     }
   }
 

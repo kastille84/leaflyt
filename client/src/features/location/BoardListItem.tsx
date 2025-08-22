@@ -38,12 +38,15 @@ const ButtonContainer = styled.div`
 
 export default function BoardListItem({ place }: BoardListingItemProps) {
   const navigate = useNavigate();
-  const { setSelectedPlace } = useGlobalContext();
+  const { setSelectedPlace, setIsSelectingNewPlace, setHasFlyerAtLocation } =
+    useGlobalContext();
   function onSelectBoard() {
+    setHasFlyerAtLocation((prev) => false);
     setSelectedPlace(place);
+    setIsSelectingNewPlace(false);
     // navigate to
     // `/board/${place.placeId}`
-    navigate(`/dashboard/board/${place.id}`);
+    navigate(`/dashboard/board/${place.id}`, { replace: true });
   }
 
   return (

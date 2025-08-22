@@ -29,10 +29,21 @@ export type ContextType = {
   setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenBottomSlideIn: boolean;
   setIsOpenBottomSlideIn: React.Dispatch<React.SetStateAction<boolean>>;
-  bottomSlideInType: "signup" | "upgrade" | "flyerDesigner" | "carousel" | null;
+  bottomSlideInType:
+    | "signup"
+    | "upgrade"
+    | "flyerDesigner"
+    | "carousel"
+    | "hasTemplates"
+    | null;
   setBottomSlideInType: React.Dispatch<
     React.SetStateAction<
-      "signup" | "upgrade" | "flyerDesigner" | "carousel" | null
+      | "signup"
+      | "upgrade"
+      | "flyerDesigner"
+      | "carousel"
+      | "hasTemplates"
+      | null
     >
   >;
   user: Auth_User_Profile_Response | null;
@@ -47,6 +58,8 @@ export type ContextType = {
   >;
   hasFlyerAtLocation: boolean;
   setHasFlyerAtLocation: React.Dispatch<React.SetStateAction<boolean>>;
+  isSelectingNewPlace: boolean;
+  setIsSelectingNewPlace: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -79,6 +92,8 @@ const GlobalContext = createContext<ContextType>({
   setCarouselImages: () => {},
   hasFlyerAtLocation: false,
   setHasFlyerAtLocation: () => {},
+  isSelectingNewPlace: false,
+  setIsSelectingNewPlace: () => {},
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -95,7 +110,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [isOpenBottomSlideIn, setIsOpenBottomSlideIn] =
     useState<boolean>(false);
   const [bottomSlideInType, setBottomSlideInType] = useState<
-    "signup" | "upgrade" | "flyerDesigner" | "carousel" | null
+    "signup" | "upgrade" | "flyerDesigner" | "carousel" | "hasTemplates" | null
   >(null);
   const [user, setUser] = useState<Auth_User_Profile_Response | null>(null);
   const [flyerDesignOptions, setFlyerDesignOptions] = useState<{
@@ -106,6 +121,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
     UploadApiResponse[] | null
   >(null);
   const [hasFlyerAtLocation, setHasFlyerAtLocation] = useState(false);
+  const [isSelectingNewPlace, setIsSelectingNewPlace] = useState(false);
 
   const {
     getUserGeo,
@@ -147,6 +163,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         setCarouselImages,
         hasFlyerAtLocation,
         setHasFlyerAtLocation,
+        isSelectingNewPlace,
+        setIsSelectingNewPlace,
       }}
     >
       {children}

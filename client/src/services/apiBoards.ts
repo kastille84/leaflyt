@@ -41,7 +41,10 @@ export const getBoard = async (
     })
     .single();
 
-  return { data: { ...data, hasFlyerHere: !!foundUserFlyer }, error };
+  return {
+    data: data ? { ...data, hasFlyerHere: !!foundUserFlyer } : {},
+    error,
+  };
 };
 
 export const createBoard = async (

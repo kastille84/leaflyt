@@ -48,19 +48,9 @@ export default function SlideInBottom() {
             <FlyerDesignerContainer />;
           </FlyerDesignerContextProvider>
         );
+      case "hasTemplates":
+        return <p>Templates</p>;
     }
-
-    // if (bottomSlideInType === SIGNUP) {
-    //   return <RegistrationContainer />;
-    // } else if (bottomSlideInType === "upgrade") {
-    //   return <p>Upgrade</p>;
-    // } else if (bottomSlideInType === "flyerDesigner") {
-    //   return (
-    //     <FlyerDesignerContextProvider>
-    //       <FlyerDesignerContainer />;
-    //     </FlyerDesignerContextProvider>
-    //   );
-    // }
   }
 
   function handleDrawerClose() {
