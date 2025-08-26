@@ -84,6 +84,7 @@ export const createRegisteredFlyer = async (
             callToAction: flyerData.callToAction,
             fileUrlArr: flyerData.fileUrlArr,
             hasComments: flyerData.hasComments,
+            lifespan: flyerData.lifespan,
           },
         ])
         .select("*")

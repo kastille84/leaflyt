@@ -106,3 +106,28 @@ export type DB_Flyers_Create_Unregistered =
   | DB_Flyer_Create_Unregistered_Organization;
 
 export type DB_Flyers_Response = DB_Flyers_Create_Unregistered;
+
+// export interface DB_Template {
+//   id: string;
+//   user: string | Auth_User_Profile_Response;
+//   templateName: string;
+//   title: string;
+//   category: string;
+//   subcategory: string;
+//   content: string;
+//   tags: string[];
+//   flyerDesign: FlyerDesign;
+//   callToAction: flyerData.callToAction;
+//   fileUrlArr: flyerData.fileUrlArr;
+//   hasComments: flyerData.hasComments;
+// }
+
+interface RemoveFlyerKeys {
+  id: string;
+  placeId: string;
+  postingMethod?: "onLocation" | "remote" | "remoteBulk";
+}
+export interface DB_Template
+  extends Omit<DB_Flyer_Create, keyof RemoveFlyerKeys> {
+  id: string;
+}

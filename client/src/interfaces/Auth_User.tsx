@@ -1,3 +1,4 @@
+import { DB_Template } from "./DB_Flyers";
 import { Plan } from "./Plan";
 
 interface Individual {
@@ -133,7 +134,7 @@ export interface Auth_User_Profile_Response {
   };
   avatar?: string;
   flyers: any[]; // TODO: add flyer type
-  templates: any[]; // TODO: add template type
+  templates: DB_Template[];
 }
 
 export interface LoginSubmitData {

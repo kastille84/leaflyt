@@ -11,6 +11,7 @@ import { HiOutlineXMark } from "react-icons/hi2";
 import FlyerDesignerContainer from "../../features/createFlyer/FlyerDesigner/FlyerDesignerContainer";
 import { FlyerDesignerContextProvider } from "../../context/FlyerDesignerContext";
 import FullCarouselContainer from "../Flyer/FullCarouselContainer";
+import TemplateSelectionContainer from "../../features/template/TemplateSelectionContainer";
 
 const StyledCloseContainer = styled.div`
   display: flex;
@@ -49,7 +50,7 @@ export default function SlideInBottom() {
           </FlyerDesignerContextProvider>
         );
       case "hasTemplates":
-        return <p>Templates</p>;
+        return <TemplateSelectionContainer />;
     }
   }
 

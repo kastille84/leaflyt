@@ -28,6 +28,7 @@ export default function CreateFlyerButton({
     setDrawerAction("create");
     setIsOpenFlyerDrawer(true);
   }
+
   return (
     <Button
       size={size}
