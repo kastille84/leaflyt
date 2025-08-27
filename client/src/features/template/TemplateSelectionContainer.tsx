@@ -2,6 +2,7 @@ import styled from "styled-components";
 import WhichTemplate from "./WhichTemplate";
 import { useState } from "react";
 import { DB_Template } from "../../interfaces/DB_Flyers";
+import TemplateDisplay from "./TemplateDisplay";
 
 const StyledTemplateContainer = styled.div`
   width: 70%;
@@ -19,8 +20,11 @@ export default function TemplateSelectionContainer() {
 
   return (
     <StyledTemplateContainer>
-      <WhichTemplate setSelectedTemplate={setSelectedTemplate} />
-      <div>FlyerDisplay</div>
+      <WhichTemplate
+        setSelectedTemplate={setSelectedTemplate}
+        selectedTemplate={selectedTemplate}
+      />
+      <TemplateDisplay selectedTemplate={selectedTemplate} />
     </StyledTemplateContainer>
   );
 }

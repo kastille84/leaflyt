@@ -90,3 +90,17 @@ export const getContactInfoFromFlyer = (flyer: DB_Flyers_Response) => {
     }
   }
 };
+
+export const getContactInfoFromUser = (user: Auth_User_Profile_Response) => {
+  const contactInfo: any = {};
+  contactInfo.email = user.email;
+  contactInfo.phone = user.phone;
+  contactInfo.website = user.website;
+  if (user.firstName) {
+    contactInfo.firstName = user.firstName;
+    contactInfo.lastName = user.lastName;
+  } else {
+    contactInfo.name = user.name;
+  }
+  return contactInfo;
+};

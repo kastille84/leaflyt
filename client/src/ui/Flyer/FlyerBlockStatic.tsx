@@ -6,11 +6,8 @@ import {
   HiOutlineHandThumbUp,
   HiOutlineShare,
 } from "react-icons/hi2";
-import { useState } from "react";
-import {
-  UNREGISTERED_FLYER_DESIGN_DEFAULT,
-  REGISTERED_FLYER_DESIGN_DEFAULT,
-} from "../../constants";
+import { useEffect, useState } from "react";
+import { UNREGISTERED_FLYER_DESIGN_DEFAULT } from "../../constants";
 import Info from "./SubComponents/Info";
 import CTA from "./SubComponents/CTA";
 import Contact from "./SubComponents/Contact";
@@ -19,11 +16,12 @@ import {
   DB_Flyer_Create_Unregistered_Business,
   DB_Flyer_Create_Unregistered_Individual,
   DB_Flyer_Create_Unregistered_Organization,
-  DB_Flyers_Response,
+  DB_Template,
   FlyerDesign,
 } from "../../interfaces/DB_Flyers";
 import ImageCarousel from "./SubComponents/ImageCarousel";
 import { Auth_User_Profile_Response } from "../../interfaces/Auth_User";
+import { useGlobalContext } from "../../context/GlobalContext";
 
 const common = {
   style: css`
@@ -220,17 +218,20 @@ const Pill = styled.div<{
     `}
 `;
 
-export default function StaticFlyerBlock({
-  flyer,
-}: {
-  flyer: DB_Flyers_Response;
-}) {
+export default function FlyerBlockStatic({ flyer }: { flyer: DB_Template }) {
+  const { user } = useGlobalContext();
   const [flyerStyles, setFlyerStyles] = useState(() => {
     if (!flyer.flyerDesign) {
       return UNREGISTERED_FLYER_DESIGN_DEFAULT;
     }
     return flyer.flyerDesign;
   });
+
+  useEffect(() => {
+    if (flyer.flyerDesign) {
+      setFlyerStyles(flyer.flyerDesign);
+    }
+  }, [flyer]);
   const [contentType, setContentType] = useState<"info" | "contact" | "cta">(
     "info"
   );
@@ -243,122 +244,27 @@ export default function StaticFlyerBlock({
   }
 
   function determineAvatarAndName() {
-    if (!flyer.user) {
-      // anonymous flyer
-      switch (flyer.typeOfUser) {
-        case "anonymous":
-          return (
-            <>
-              <StyledAvatar flyerDesign={flyerStyles}>A</StyledAvatar>
-              <div>Anonymous</div>
-            </>
-          );
-        case "individual":
-          return (
-            <>
-              <StyledAvatar flyerDesign={flyerStyles}>
-                {
-                  (flyer as DB_Flyer_Create_Unregistered_Individual).individual
-                    .name.firstName[0]
-                }
-              </StyledAvatar>
-              <div>
-                {
-                  (flyer as DB_Flyer_Create_Unregistered_Individual).individual
-                    .name.firstName
-                }{" "}
-                &nbsp;
-                {
-                  (flyer as DB_Flyer_Create_Unregistered_Individual).individual
-                    .name.lastName
-                }
-              </div>
-            </>
-          );
-        case "organization":
-          return (
-            <>
-              <StyledAvatar flyerDesign={flyerStyles}>
-                {
-                  (flyer as DB_Flyer_Create_Unregistered_Organization)
-                    .organization.name[0]
-                }
-              </StyledAvatar>
-              <div>
-                {
-                  (flyer as DB_Flyer_Create_Unregistered_Organization)
-                    .organization.name
-                }
-              </div>
-            </>
-          );
-        case "business":
-          return (
-            <>
-              <StyledAvatar flyerDesign={flyerStyles}>
-                {
-                  (flyer as DB_Flyer_Create_Unregistered_Business).business
-                    .name[0]
-                }
-              </StyledAvatar>
-              <div>
-                {(flyer as DB_Flyer_Create_Unregistered_Business).business.name}
-              </div>
-            </>
-          );
-      }
+    if ((user as Auth_User_Profile_Response).typeOfUser === "individual") {
+      return (
+        <>
+          <StyledAvatar flyerDesign={flyerStyles}>
+            {((user as Auth_User_Profile_Response).firstName as string)[0]}
+          </StyledAvatar>
+          <div>
+            {(user as Auth_User_Profile_Response).firstName} &nbsp;
+            {(user as Auth_User_Profile_Response).lastName}
+          </div>
+        </>
+      );
     } else {
-      if (
-        ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
-          .typeOfUser === "individual"
-      ) {
-        return (
-          <>
-            <StyledAvatar flyerDesign={flyerStyles}>
-              {
-                (
-                  (
-                    (flyer as DB_Flyer_Create)
-                      .user as Auth_User_Profile_Response
-                  ).firstName as string
-                )[0]
-              }
-            </StyledAvatar>
-            <div>
-              {
-                ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
-                  .firstName
-              }{" "}
-              &nbsp;
-              {
-                ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
-                  .lastName
-              }
-            </div>
-          </>
-        );
-      } else {
-        return (
-          <>
-            <StyledAvatar flyerDesign={flyerStyles}>
-              {
-                (
-                  (
-                    (flyer as DB_Flyer_Create)
-                      .user as Auth_User_Profile_Response
-                  ).name as string
-                )[0]
-              }
-            </StyledAvatar>
-            <div>
-              {
-                ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
-                  .name as string
-              }
-            </div>
-          </>
-        );
-      }
+      return (
+        <>
+          <StyledAvatar flyerDesign={flyerStyles}>
+            {((user as Auth_User_Profile_Response).name as string)[0]}
+          </StyledAvatar>
+          <div>{(user as Auth_User_Profile_Response).name as string}</div>
+        </>
+      );
     }
   }
 
@@ -395,7 +301,6 @@ export default function StaticFlyerBlock({
         </StyledTopTextContainer>
       )}
       <StyledinfoContentContainer>
-        {/* TODO: Make this section dynamic (infoContent, contactContent, couponContent) */}
         <PillsContainer>
           <Pill
             contentType={contentType}
@@ -404,15 +309,15 @@ export default function StaticFlyerBlock({
           >
             info
           </Pill>
-          {flyer.typeOfUser !== "anonymous" && (
-            <Pill
-              contentType={contentType}
-              type="contact"
-              onClick={() => setContentType("contact")}
-            >
-              contact
-            </Pill>
-          )}
+
+          <Pill
+            contentType={contentType}
+            type="contact"
+            onClick={() => setContentType("contact")}
+          >
+            contact
+          </Pill>
+
           {flyer.callToAction && (
             <Pill
               contentType={contentType}
@@ -424,10 +329,12 @@ export default function StaticFlyerBlock({
           )}
         </PillsContainer>
         {contentType === "info" && (
-          <Info flyer={flyer} flyerStyles={flyerStyles} />
+          <Info flyer={flyer as DB_Template} flyerStyles={flyerStyles} />
         )}
-        {contentType === "contact" && <Contact flyer={flyer} />}
-        {contentType === "cta" && <CTA flyer={flyer} />}
+        {contentType === "contact" && (
+          <Contact flyer={flyer as DB_Template} user={user!} />
+        )}
+        {contentType === "cta" && <CTA flyer={flyer as DB_Template} />}
       </StyledinfoContentContainer>
       <StyledActionContainer>
         <StyledActionIconContainer flyerDesign={flyerStyles}>

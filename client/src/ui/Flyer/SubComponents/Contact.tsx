@@ -1,6 +1,13 @@
 import styled from "styled-components";
-import { DB_Flyers_Response, FlyerDesign } from "../../../interfaces/DB_Flyers";
-import { getContactInfoFromFlyer } from "../../../utils/ServiceUtils";
+import {
+  DB_Flyers_Response,
+  DB_Template,
+  FlyerDesign,
+} from "../../../interfaces/DB_Flyers";
+import {
+  getContactInfoFromFlyer,
+  getContactInfoFromUser,
+} from "../../../utils/ServiceUtils";
 import {
   HiOutlineEnvelope,
   HiOutlineGlobeAlt,
@@ -8,6 +15,7 @@ import {
 } from "react-icons/hi2";
 import { UNREGISTERED_FLYER_DESIGN_DEFAULT } from "../../../constants";
 import Heading from "../../Heading";
+import { Auth_User_Profile_Response } from "../../../interfaces/Auth_User";
 
 const StyledTile = styled.div<{ flyerDesign: FlyerDesign }>`
   padding: 2.4rem;
@@ -52,8 +60,16 @@ const StyledWebsite = styled.a`
   text-decoration: underline;
 `;
 
-export default function Contact({ flyer }: { flyer: DB_Flyers_Response }) {
-  const contactInfo = getContactInfoFromFlyer(flyer);
+export default function Contact({
+  flyer,
+  user,
+}: {
+  flyer: DB_Flyers_Response | DB_Template;
+  user?: Auth_User_Profile_Response;
+}) {
+  const contactInfo = user
+    ? getContactInfoFromUser(user)
+    : getContactInfoFromFlyer(flyer as DB_Flyers_Response);
   const flyerDesign = flyer.flyerDesign
     ? flyer.flyerDesign
     : UNREGISTERED_FLYER_DESIGN_DEFAULT;

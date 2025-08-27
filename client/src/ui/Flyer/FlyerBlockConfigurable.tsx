@@ -257,7 +257,7 @@ const StyledAvatarName = styled.div<{ selected: boolean }>`
   }
 `;
 
-export default function ConfigurableFlyerBlock({ flyer }: { flyer: any }) {
+export default function FlyerBlockConfigurable({ flyer }: { flyer: any }) {
   const flyerDesign = flyer.flyerDesign;
   const { user } = useGlobalContext();
   const { setSelectionSection, selectedSection } = useFlyerDesignerContext();

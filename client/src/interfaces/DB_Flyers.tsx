@@ -30,7 +30,7 @@ export interface FlyerDesign {
 
 export interface DB_Flyer_Create {
   id?: string;
-  user?: string | Auth_User_Profile_Response;
+  user?: string | Auth_User_Profile_Response | number;
   // boardId?: string;
   placeId?: string;
   title: string;

@@ -30,7 +30,7 @@ import TagsInput from "../../ui/Form/TagsInput";
 import Button from "../../ui/Button";
 import Input from "../../ui/Input";
 import FullNameInput from "../../ui/Form/FullNameInput";
-import CtaInput from "../../ui/Form/ctaInput";
+import CtaInput from "../../ui/Form/CtaInput";
 import LifespanInput from "../../ui/Form/LifespanInput";
 import { LIFESPAN, REGISTERED_FLYER_DESIGN_DEFAULT } from "../../constants";
 import CommentsInput from "../../ui/Form/CommentsInput";

@@ -142,6 +142,28 @@ export const signupUser = async (prepData: SignupSubmitData) => {
   }
 };
 
+// export const getUser = async () => {
+//   try {
+//     const { data, error } = await supabase.auth.getUser();
+//     if (error) {
+//       throw error;
+//     }
+//     const { data: userProfile, error: userProfileError } = await supabase
+//       .from("profiles")
+//       .select("*")
+//       .eq("email", data.user.email)
+//       .single();
+//     if (userProfileError) {
+//       throw new Error("Could not fetch user profile");
+//     }
+//     return {
+//       data: userProfile,
+//       error: null,
+//     };
+//   } catch (error) {
+//     return { data: null, error };
+//   }
+// };
 // export const getUserWithFlyersAndTemplates = async () => {
 //     const { data, error } = await supabase
 //     .from('users') // Start by querying the users table

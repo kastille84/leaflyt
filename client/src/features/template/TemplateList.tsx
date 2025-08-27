@@ -15,22 +15,24 @@ const StyledListItem = styled.li`
   border: 1px solid var(--color-grey-200);
   border-radius: 5px;
   box-shadow: var(--shadow-lg);
-  border-top: 2px solid var(--color-brand-600);
+  border-top: 3px solid var(--color-blue-600);
   /* border-radius: var(--border-radius-md); */
   background-color: var(--color-grey-50);
   cursor: pointer;
 
   &:hover,
-  & .selected {
+  &.selected {
     background-color: var(--color-grey-100);
-    border: 2px solid var(--color-brand-600);
+    border: 3px solid var(--color-brand-600);
   }
 `;
 
 export default function TemplateList({
   setSelectedTemplate,
+  selectedTemplate,
 }: {
   setSelectedTemplate: React.Dispatch<React.SetStateAction<DB_Template | null>>;
+  selectedTemplate: DB_Template | null;
 }) {
   const { user } = useGlobalContext();
   const { templates } = user!;
@@ -40,7 +42,10 @@ export default function TemplateList({
       {templates.map((template: DB_Template) => (
         <StyledListItem
           key={template.id}
-          onClick={() => setSelectedTemplate(template)}
+          onClick={() => {
+            setSelectedTemplate((prev) => template);
+          }}
+          className={template.id === selectedTemplate?.id ? "selected" : ""}
         >
           {template.templateName}
         </StyledListItem>

@@ -4,7 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 import useGetBoard from "./useGetBoard";
 import NoFlyers from "./NoFlyers";
-import StaticFlyerBlock from "../../ui/Flyer/StaticFlyerBlock";
+import FlyerBlockInteractive from "../../ui/Flyer/FlyerBlockInteractive";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/GlobalContext";
@@ -35,6 +35,9 @@ export default function Board() {
 
   async function checkIfUserHasFlyerHere() {
     const boardData = await QueryClient.getQueryData(["board", id]);
+    // const boardData = await QueryClient.ensureQueryData({
+    //   queryKey: ["board", id],
+    // });
     if ((boardData as any)?.data?.hasFlyerHere) {
       setHasFlyerAtLocation(true);
     } else {
@@ -64,7 +67,7 @@ export default function Board() {
             <Masonry columnsCount={3} gutter="1.6rem">
               {board?.data!.flyers?.length &&
                 board?.data!.flyers.map((flyer) => (
-                  <StaticFlyerBlock key={flyer!.id} flyer={flyer} />
+                  <FlyerBlockInteractive key={flyer!.id} flyer={flyer} />
                 ))}
             </Masonry>
           </ResponsiveMasonry>

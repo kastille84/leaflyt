@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ConfigurableFlyerBlock from "../../../ui/Flyer/ConfigurableFlyerBlock";
+import FlyerBlockConfigurable from "../../../ui/Flyer/FlyerBlockConfigurable";
 import { useFlyerDesignerContext } from "../../../context/FlyerDesignerContext";
 import Heading from "../../../ui/Heading";
 
@@ -28,7 +28,7 @@ export default function Display() {
         <p>Click on the section of the flyer to configure it</p>
       </StyledHeadingContainer>
       <Canvas>
-        {selectedFlyer && <ConfigurableFlyerBlock flyer={selectedFlyer} />}
+        {selectedFlyer && <FlyerBlockConfigurable flyer={selectedFlyer} />}
       </Canvas>
     </div>
   );

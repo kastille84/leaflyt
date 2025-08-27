@@ -1,5 +1,9 @@
 import styled from "styled-components";
-import { DB_Flyers_Response, FlyerDesign } from "../../../interfaces/DB_Flyers";
+import {
+  DB_Flyers_Response,
+  DB_Template,
+  FlyerDesign,
+} from "../../../interfaces/DB_Flyers";
 import { useState } from "react";
 import Heading from "../../Heading";
 import { shortenTitle } from "../../../utils/GeneralUtils";
@@ -44,7 +48,7 @@ export default function Content({
   flyer,
   flyerStyles,
 }: {
-  flyer: DB_Flyers_Response;
+  flyer: DB_Flyers_Response | DB_Template;
   flyerStyles: FlyerDesign;
 }) {
   const [isReadMore, setIsReadMore] = useState(false);

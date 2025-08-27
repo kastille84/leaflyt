@@ -3,8 +3,11 @@ import { createBoard, getBoard } from "./apiBoards";
 import {
   DB_Flyers_Create_Unregistered,
   DB_Flyer_Create,
+  DB_Template,
 } from "../interfaces/DB_Flyers";
 import { NearbySearchPlaceResult } from "../interfaces/Geo";
+import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
+import { getUser } from "./apiAuth";
 
 const getOrCreateBoard = async (selectedPlace: NearbySearchPlaceResult) => {
   // make a call to get the latest board data
@@ -127,6 +130,56 @@ export const createRegisteredFlyer = async (
       console.error(error);
       throw new Error("Error creating a flyer: " + error.message);
     }
+    return newFlyer;
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error creating a flyer: " + error.message);
+  }
+};
+
+export const createFlyerFromTemplate = async (
+  templateData: DB_Template,
+  selectedPlace: NearbySearchPlaceResult,
+  user: Auth_User_Profile_Response
+) => {
+  const board = await getOrCreateBoard(selectedPlace);
+
+  const flyerData: DB_Flyer_Create & {
+    typeOfUser: string;
+    created_at?: string;
+  } = {
+    ...templateData,
+    typeOfUser: user.typeOfUser,
+    placeId: selectedPlace.id,
+    user: user.id,
+    template: templateData.id,
+  };
+
+  delete flyerData.id;
+  delete flyerData.hasComments;
+  delete flyerData.templateName;
+  delete flyerData.created_at;
+
+  try {
+    const { data: newFlyer, error } = await supabase
+      .from("flyers")
+      .insert([flyerData])
+      .select("*")
+      .single();
+
+    if (error) {
+      console.error(error);
+      throw new Error("Error creating a flyer: " + error.message);
+    }
+
+    // tie newFlyer to template
+    // await supabase
+    //   .from("templates")
+    //   .update({ flyer: newFlyer.id })
+    //   .eq("id", templateData.template);
+
+    // return updated User with included new flyer
+    // const user = await getUser();
     return newFlyer;
   } catch (error: any) {
     console.error(error);

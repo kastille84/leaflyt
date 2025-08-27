@@ -8,7 +8,9 @@ export default function useGetBoard(profileId: number) {
   const { isLoading: isLoadingBoard, data: board } = useQuery({
     queryKey: ["board", id],
     queryFn: () => getBoard(id!, profileId),
-    enabled: !!id,
+    // enabled: !!id,
+    gcTime: 0,
+    staleTime: 0,
   });
 
   return { isLoadingBoard, board };

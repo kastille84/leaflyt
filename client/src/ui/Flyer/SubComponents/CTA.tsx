@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { DB_Flyers_Response } from "../../../interfaces/DB_Flyers";
+import { DB_Flyers_Response, DB_Template } from "../../../interfaces/DB_Flyers";
 import Heading from "../../Heading";
 import Button from "../../Button";
 
@@ -22,7 +22,11 @@ const StyledRedeemContainer = styled.div`
   flex-direction: column;
   gap: 2.4rem;
 `;
-export default function CTA({ flyer }: { flyer: DB_Flyers_Response }) {
+export default function CTA({
+  flyer,
+}: {
+  flyer: DB_Flyers_Response | DB_Template;
+}) {
   return (
     <>
       <StyledTile>
