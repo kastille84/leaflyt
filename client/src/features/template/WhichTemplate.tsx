@@ -43,7 +43,7 @@ const StyledScratchOption = styled.p`
   cursor: pointer;
 
   &:hover,
-  & .selected {
+  &.selected {
     background-color: var(--color-grey-100);
     border: 2px solid var(--color-orange-700);
   }
@@ -117,7 +117,10 @@ export default function WhichTemplate({
         selectedTemplate={selectedTemplate}
       />
       <div>
-        <StyledScratchOption onClick={handleScratchSelection}>
+        <StyledScratchOption
+          onClick={handleScratchSelection}
+          className={selectedTemplate === null ? "selected" : ""}
+        >
           Or Create From Scratch
         </StyledScratchOption>
       </div>

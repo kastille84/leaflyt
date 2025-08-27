@@ -7,7 +7,6 @@ import {
 } from "../interfaces/DB_Flyers";
 import { NearbySearchPlaceResult } from "../interfaces/Geo";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
-import { getUser } from "./apiAuth";
 
 const getOrCreateBoard = async (selectedPlace: NearbySearchPlaceResult) => {
   // make a call to get the latest board data

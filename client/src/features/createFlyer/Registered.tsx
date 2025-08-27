@@ -116,6 +116,7 @@ export default function Registered() {
     }
     // add the user to the flyer
     data.user = user?.id;
+
     console.log("registered data", data);
     setShowSpinner(true);
     createFlyer(data, {
