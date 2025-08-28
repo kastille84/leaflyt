@@ -24,6 +24,7 @@ vi.mock("react-hot-toast");
 
 const createUploadWidgetSpy = vi.fn();
 const openSpy = vi.fn();
+const closeSpy = vi.fn();
 const errorSpy = vi.fn();
 const resultSpy = vi.fn();
 // mocks
@@ -134,7 +135,10 @@ describe("Anonymous", () => {
       beforeEach(() => {
         // vi.useFakeTimers();
         createUploadWidgetSpy.mockImplementation(function () {
-          return { open: openSpy.mockReturnValue(true) };
+          return {
+            open: openSpy.mockReturnValue(true),
+            close: closeSpy.mockReturnValue(true),
+          };
         });
       });
       afterEach(() => {
@@ -344,7 +348,10 @@ describe("Anonymous", () => {
 
     beforeEach(() => {
       createUploadWidgetSpy.mockImplementation(function () {
-        return { open: openSpy.mockReturnValue(true) };
+        return {
+          open: openSpy.mockReturnValue(true),
+          close: closeSpy.mockReturnValue(true),
+        };
       });
       vi.mocked(useCreateUnregisteredFlyer).mockImplementation(() => {
         return {

@@ -8,7 +8,7 @@ import useLogin from "../../../src/features/authentication/useLogin";
 import {
   getActionButtons,
   getFieldError,
-  QueryClientProviderWrapper,
+  QueryClientProviderWrapperWithBrowserRouter,
 } from "../../test-utils";
 import { authUserProfileResponse } from "../../fixtures/authentication/login";
 
@@ -55,7 +55,9 @@ describe("LoginModal", () => {
     it("should render LoginModal", async () => {
       // assemble
       // act
-      render(<LoginModal />, { wrapper: QueryClientProviderWrapper() });
+      render(<LoginModal />, {
+        wrapper: QueryClientProviderWrapperWithBrowserRouter(),
+      });
       // assert
       const loginModalComp = screen.getByTestId("login-modal");
       expect(loginModalComp).toBeTruthy();
@@ -74,7 +76,9 @@ describe("LoginModal", () => {
     });
     it("should update the email", async () => {
       // assemble
-      render(<LoginModal />, { wrapper: QueryClientProviderWrapper() });
+      render(<LoginModal />, {
+        wrapper: QueryClientProviderWrapperWithBrowserRouter(),
+      });
       // act
       const { input: emailInput } = getEmail();
       await user.type(emailInput, "test@email.com");
@@ -91,7 +95,9 @@ describe("LoginModal", () => {
 
     it("should update the password", async () => {
       // assemble
-      render(<LoginModal />, { wrapper: QueryClientProviderWrapper() });
+      render(<LoginModal />, {
+        wrapper: QueryClientProviderWrapperWithBrowserRouter(),
+      });
       // act
       const { input: passwordInput } = getPassword();
       await user.type(passwordInput, "password1");
@@ -127,7 +133,9 @@ describe("LoginModal", () => {
     });
     it("should login the user successfully", async () => {
       // assemble
-      render(<LoginModal />, { wrapper: QueryClientProviderWrapper() });
+      render(<LoginModal />, {
+        wrapper: QueryClientProviderWrapperWithBrowserRouter(),
+      });
       // act
       const { input: emailInput } = getEmail();
       await user.type(emailInput, "test@email.com");
@@ -152,7 +160,9 @@ describe("LoginModal", () => {
 
     it("should throw an error if login fails", async () => {
       // assemble
-      render(<LoginModal />, { wrapper: QueryClientProviderWrapper() });
+      render(<LoginModal />, {
+        wrapper: QueryClientProviderWrapperWithBrowserRouter(),
+      });
       // act
       const { input: emailInput } = getEmail();
       await user.type(emailInput, "test@email.com");
