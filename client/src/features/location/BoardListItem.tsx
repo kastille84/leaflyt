@@ -46,7 +46,7 @@ export default function BoardListItem({ place }: BoardListingItemProps) {
     setIsSelectingNewPlace(false);
     // navigate to
     // `/board/${place.placeId}`
-    navigate(`/dashboard/board/${place.id}`, { replace: true });
+    navigate(`/dashboard/board/${place.id}`);
   }
 
   return (

@@ -10,7 +10,7 @@ import EmailInput from "../../ui/Form/EmailInput";
 import PasswordInput from "../../ui/Form/PasswordInput";
 import useLogin from "./useLogin";
 import toast from "react-hot-toast";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const StyledButtonContainer = styled.div`
   margin-top: 2.4rem;
