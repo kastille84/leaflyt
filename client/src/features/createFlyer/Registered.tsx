@@ -43,6 +43,14 @@ import FormInfoAlert from "../../ui/Form/FormInfoAlert";
 
 const StyledRegisteredContainer = styled.div``;
 
+const StyledLabel = styled.label`
+  font-weight: 600;
+  color: var(--color-brand-600);
+  &.error {
+    color: var(--color-orange-600);
+  }
+`;
+
 const StyledSubmitError = styled(Heading)`
   color: var(--color-red-600);
 `;
@@ -149,7 +157,7 @@ export default function Registered() {
   }, [templateWatch]);
 
   return (
-    <StyledRegisteredContainer>
+    <StyledRegisteredContainer data-testid="registered-container">
       {planLimits.canUpgrade && (
         <FormInfoAlert
           planName={planLimits.name}
@@ -242,8 +250,8 @@ export default function Registered() {
               />
             </FormControlRow>
             <FormControlRow>
-              <FormControl>
-                <Heading as="h4">Create Reusable Template (encouraged)</Heading>
+              <FormControl testId="template-container">
+                <StyledLabel>Create Reusable Template (encouraged)</StyledLabel>
                 <p>
                   Creating flyers from scratch each time you post can be
                   tedious. Create a template to save you time and effort by

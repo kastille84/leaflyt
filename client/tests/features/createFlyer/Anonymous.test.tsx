@@ -76,10 +76,6 @@ describe("Anonymous", () => {
     it("should update title", async () => {
       render(<Anonymous />, { wrapper: QueryClientProviderWrapper() });
       const { input: titleInput } = getInput("title");
-      // titleInput.value = "Hello";
-      // titleInput.dispatchEvent(new Event("change"));
-      // fireEvent.change(titleInput, { target: { value: "Hello" } });
-      // fireEvent.input(titleInput, { target: { value: "Hello" } });
       await user.type(titleInput, "Hello");
       await waitFor(() => {
         expect(titleInput.value).toBe("Hello");

@@ -1,9 +1,17 @@
+import styled from "styled-components";
 import FormControl from "./FormControl";
-import Heading from "../Heading";
 import Button from "../Button";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
 import UpgradeText from "../UpgradeText";
+
+const StyledLabel = styled.label`
+  font-weight: 600;
+  color: var(--color-brand-600);
+  &.error {
+    color: var(--color-orange-600);
+  }
+`;
 
 export default function FlyerDesignerInput({
   getValues,
@@ -29,8 +37,8 @@ export default function FlyerDesignerInput({
   }
 
   return (
-    <FormControl>
-      <Heading as="h4">Flyer Designer</Heading>
+    <FormControl testId="flyerDesigner-container">
+      <StyledLabel>Flyer Designer</StyledLabel>
       <p>Give your flyer a custom look and feel.</p>
       <p>
         <Button

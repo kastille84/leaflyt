@@ -83,7 +83,7 @@ export default function CtaInput({
         />
       </FormControl>
       {ctaTypeWatch && ctaTypeWatch !== "none" && (
-        <FormControl>
+        <FormControl testId="cta-input-container">
           <StyledLabel
             htmlFor="headline"
             className={`${callToAction?.headline && "error"}`}

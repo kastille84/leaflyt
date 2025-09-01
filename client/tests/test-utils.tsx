@@ -76,8 +76,8 @@ function getActionButtons() {
     ) as HTMLButtonElement,
   };
 }
-function getQuill() {
-  const Container = screen.getByTestId("content-container");
+function getQuill(name = "content") {
+  const Container = screen.getByTestId(`${name}-container`);
   return {
     container: Container,
     label: Container.querySelector("label") as HTMLLabelElement,
@@ -119,6 +119,17 @@ function getAddressResults() {
   };
 }
 
+function getFlyerDesigner(name: string) {
+  const Container = screen.getByTestId(`${name}-container`);
+  return {
+    label: Container.querySelector("label") as HTMLLabelElement,
+    upgrade: Container.querySelector(
+      "[data-testid='upgrade-text-container']"
+    ) as HTMLInputElement,
+    button: Container.querySelector("button") as HTMLButtonElement,
+  };
+}
+
 export {
   renderHook,
   QueryClientProviderWrapper,
@@ -132,4 +143,5 @@ export {
   getImagePreview,
   getImagePreviewItem,
   getAddressResults,
+  getFlyerDesigner,
 };

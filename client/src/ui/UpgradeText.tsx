@@ -27,7 +27,7 @@ export default function UpgradeText({
   };
 
   return (
-    <StyledUpgradeTextContainer>
+    <StyledUpgradeTextContainer data-testid="upgrade-text-container">
       <p>
         {displayText}{" "}
         <StyledLearnMore onClick={handleLearnMore}>
