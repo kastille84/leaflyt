@@ -45,7 +45,7 @@ export default function ColorInput({
   console.log("getValues", getValues());
   console.log("color", getValues(registerName));
   return (
-    <FormControl>
+    <FormControl testId="color-input-container">
       <StyledLabel htmlFor="color">Select Color</StyledLabel>
       <ColorPicker
         hideInput={["rgb", "hsv"]}

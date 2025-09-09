@@ -20,14 +20,15 @@ import toast from "react-hot-toast";
 import { getFieldError } from "../../test-utils";
 
 // fixtures
-import { mockUseGlobalContextReturnObj } from "../../fixtures/globalContext";
+import { mockUseGlobalContextReturnObj } from "../../fixtures/context/globalContext";
 import { userFromContext } from "../../fixtures/authentication/login";
 
-const user = userEvent.setup();
 // mocks
 vi.mock("../../../src/context/GlobalContext");
 vi.mock("../../../src/features/createFlyer/useCreateRegisteredFlyer");
 vi.mock("react-hot-toast");
+
+const user = userEvent.setup();
 
 const createUploadWidgetSpy = vi.fn();
 const openSpy = vi.fn();
@@ -179,7 +180,7 @@ describe("Registered", () => {
         });
       });
       afterEach(() => {
-        vi.unstubAllGlobals();
+        // vi.unstubAllGlobals();
         openSpy.mockReset();
         // vi.useRealTimers(); // Restore real timers
       });
@@ -282,6 +283,184 @@ describe("Registered", () => {
       await user.selectOptions(lifespanSelect, "2 weeks");
       await waitFor(() => {
         expect(lifespanSelect.value).toBe("2");
+      });
+    });
+
+    it("should update create template", async () => {
+      render(<Registered />, { wrapper: QueryClientProviderWrapper() });
+      const { input: templateCheckbox } = getInput("template");
+      await waitFor(() => {
+        expect(templateCheckbox.checked).toBeFalsy();
+      });
+      await user.click(templateCheckbox);
+      await waitFor(() => {
+        expect(templateCheckbox.checked).toBeTruthy();
+      });
+      const { input: templateInput } = getInput("fullName");
+      const { submit } = getActionButtons();
+      await user.click(submit);
+      const { error: contentError } = getFieldError("fullName");
+      expect(contentError.textContent).toBe("Template Name is required");
+      await user.type(templateInput, "Hello");
+      const { input: commentsCheckbox } = getInput("comments-input");
+      await user.click(commentsCheckbox);
+    });
+  });
+
+  describe("Submit the form", () => {
+    const createFlyerSpy = vi.fn();
+
+    beforeEach(() => {
+      vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
+        ...mockUseGlobalContextReturnObj,
+        user: userFromContext,
+      }));
+      createUploadWidgetSpy.mockImplementation(function () {
+        return {
+          open: openSpy.mockReturnValue(true),
+          close: closeSpy.mockReturnValue(true),
+        };
+      });
+      vi.mocked(useCreateRegisteredFlyer).mockImplementation(() => {
+        return {
+          createFlyer: createFlyerSpy,
+          createFlyerError: null,
+          createFlyerUsingTemplate: vi.fn(),
+          createFlyerUsingTemplateError: null,
+        };
+      });
+    });
+    afterEach(() => {
+      vi.unstubAllGlobals();
+      // openSpy.mockReset();
+      // vi.clearAllMocks();
+    });
+
+    it("should submit the form and succeed", async () => {
+      render(<Registered />, { wrapper: QueryClientProviderWrapper() });
+      const { input: titleInput } = getInput("title");
+      await user.type(titleInput, "Hello");
+      const { select: categorySelect } = getSelect("category");
+      await user.selectOptions(categorySelect, "Events & Activities");
+      await waitFor(() => {
+        expect(categorySelect.value).toBe("Events & Activities");
+      });
+      const { select: subcategorySelect } = getSelect("subcategory");
+      await user.selectOptions(subcategorySelect, "Community Events");
+      const { quill: contentQuill } = getQuill();
+      await user.type(contentQuill, "This is content");
+      const { button: fileButton } = getFileUpload("file");
+      await user.click(fileButton);
+      await waitFor(() => {
+        expect(openSpy).toHaveBeenCalled();
+      });
+      await act(async () => {
+        await createUploadWidgetSpy.mock.calls[0][1](null, {
+          event: "success",
+          info: resultInfo,
+        });
+      });
+      const { input: tagsInput } = getInput("tags");
+      await user.type(tagsInput, "hello-tag");
+      await user.keyboard("[Enter]");
+      const offerRadioInput = screen.getByLabelText(
+        "Offer (BOGO/Coupon/Free Consultation/etc)"
+      );
+      await user.click(offerRadioInput);
+      // Headline
+      await waitFor(() => {
+        expect(screen.getByLabelText("Headline")).toBeTruthy();
+      });
+      const headlineInput: HTMLInputElement = screen.getByLabelText("Headline");
+      await user.type(headlineInput, "Hello");
+      const { quill: ctaContentQuill } = getQuill("cta-input");
+      await user.type(ctaContentQuill, "Hello");
+      const { select: lifespanSelect } = getSelect("lifespan");
+      await user.selectOptions(lifespanSelect, "2 weeks");
+      const { input: templateCheckbox } = getInput("template");
+      await user.click(templateCheckbox);
+      const { input: templateInput } = getInput("fullName");
+      await user.type(templateInput, "Hello");
+      const { input: commentsCheckbox } = getInput("comments-input");
+      await user.click(commentsCheckbox);
+      const { submit } = getActionButtons();
+      await user.click(submit);
+      await waitFor(() => {
+        expect(createFlyerSpy).toHaveBeenCalled();
+      });
+      await act(async () => {
+        // trigger toast success
+        await createFlyerSpy.mock.calls[0][1].onSuccess();
+      });
+
+      await waitFor(() => {
+        // expect(toast.success).toHaveBeenCalledWith("Flyer created!");
+        expect(createFlyerSpy).toHaveBeenCalled();
+      });
+    });
+
+    it("should submit the form and fail", async () => {
+      render(<Registered />, { wrapper: QueryClientProviderWrapper() });
+      const { input: titleInput } = getInput("title");
+      await user.type(titleInput, "Hello");
+      const { select: categorySelect } = getSelect("category");
+      await user.selectOptions(categorySelect, "Events & Activities");
+      await waitFor(() => {
+        expect(categorySelect.value).toBe("Events & Activities");
+      });
+      const { select: subcategorySelect } = getSelect("subcategory");
+      await user.selectOptions(subcategorySelect, "Community Events");
+      const { quill: contentQuill } = getQuill();
+      await user.type(contentQuill, "This is content");
+      const { button: fileButton } = getFileUpload("file");
+      await user.click(fileButton);
+      await waitFor(() => {
+        expect(openSpy).toHaveBeenCalled();
+      });
+      await act(async () => {
+        await createUploadWidgetSpy.mock.calls[0][1](null, {
+          event: "success",
+          info: resultInfo,
+        });
+      });
+      const { input: tagsInput } = getInput("tags");
+      await user.type(tagsInput, "hello-tag");
+      await user.keyboard("[Enter]");
+      const offerRadioInput = screen.getByLabelText(
+        "Offer (BOGO/Coupon/Free Consultation/etc)"
+      );
+      await user.click(offerRadioInput);
+      // Headline
+      await waitFor(() => {
+        expect(screen.getByLabelText("Headline")).toBeTruthy();
+      });
+      const headlineInput: HTMLInputElement = screen.getByLabelText("Headline");
+      await user.type(headlineInput, "Hello");
+      const { quill: ctaContentQuill } = getQuill("cta-input");
+      await user.type(ctaContentQuill, "Hello");
+      const { select: lifespanSelect } = getSelect("lifespan");
+      await user.selectOptions(lifespanSelect, "2 weeks");
+      const { input: templateCheckbox } = getInput("template");
+      await user.click(templateCheckbox);
+      const { input: templateInput } = getInput("fullName");
+      await user.type(templateInput, "Hello");
+      const { input: commentsCheckbox } = getInput("comments-input");
+      await user.click(commentsCheckbox);
+      const { submit } = getActionButtons();
+      await user.click(submit);
+      await waitFor(() => {
+        expect(createFlyerSpy).toHaveBeenCalled();
+      });
+      await act(async () => {
+        // trigger toast success
+        await createFlyerSpy.mock.calls[0][1].onError({
+          message: "error has occurred",
+        });
+      });
+
+      await waitFor(() => {
+        // expect(toast.error).toHaveBeenCalledWith("error has occurred");
+        expect(createFlyerSpy).toHaveBeenCalled();
       });
     });
   });

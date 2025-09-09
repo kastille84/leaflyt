@@ -13,7 +13,7 @@ import {
 import { authUserProfileResponse } from "../../fixtures/authentication/login";
 
 // fixtures
-import { mockUseGlobalContextReturnObj } from "../../fixtures/globalContext";
+import { mockUseGlobalContextReturnObj } from "../../fixtures/context/globalContext";
 
 const user = userEvent.setup();
 

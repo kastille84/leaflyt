@@ -5,7 +5,7 @@ import Landing from "../../src/pages/Landing";
 import * as GlobalContext from "../../src/context/GlobalContext";
 
 // fixtures
-import { mockUseGlobalContextReturnObj } from "../fixtures/globalContext";
+import { mockUseGlobalContextReturnObj } from "../fixtures/context/globalContext";
 import { QueryClientProviderWrapper } from "../test-utils";
 
 // mocks

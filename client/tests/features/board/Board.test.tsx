@@ -10,7 +10,7 @@ import NoFlyers from "../../../src/features/board/NoFlyers";
 import { dummyBoardData } from "../../fixtures/supabase/board/data";
 import FlyerBlockInteractive from "../../../src/ui/Flyer/FlyerBlockInteractive";
 import { QueryClientProviderWrapper } from "../../test-utils";
-import { mockUseGlobalContextReturnObj } from "../../fixtures/globalContext";
+import { mockUseGlobalContextReturnObj } from "../../fixtures/context/globalContext";
 import { userFromContext } from "../../fixtures/authentication/login";
 
 // mocks

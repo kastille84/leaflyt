@@ -6,7 +6,7 @@ import NoFlyers from "../../../src/features/board/NoFlyers";
 import * as GlobalContext from "../../../src/context/GlobalContext";
 
 // fixtures
-import { mockUseGlobalContextReturnObj } from "../../fixtures/globalContext";
+import { mockUseGlobalContextReturnObj } from "../../fixtures/context/globalContext";
 import { act } from "react";
 
 // mocks

@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import CloseSlideInModal from "../../../src/ui/Modals/CloseSlideInModal";
 import * as GlobalContext from "../../../src/context/GlobalContext";
-import { mockUseGlobalContextReturnObj } from "../../fixtures/globalContext";
+import { mockUseGlobalContextReturnObj } from "../../fixtures/context/globalContext";
 
 // mocks
 vi.mock("../../../src/context/GlobalContext");

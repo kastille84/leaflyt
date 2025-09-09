@@ -6,7 +6,7 @@ import BoardListing from "../../../src/features/location/BoardListing";
 
 // fixtures
 import { responseData } from "../../fixtures/nearbyPlaces";
-import { mockUseGlobalContextReturnObj } from "../../fixtures/globalContext";
+import { mockUseGlobalContextReturnObj } from "../../fixtures/context/globalContext";
 
 // mocks
 vi.mock("../../../src/features/location/BoardListing");

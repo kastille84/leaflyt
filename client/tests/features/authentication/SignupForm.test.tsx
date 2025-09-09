@@ -16,7 +16,7 @@ import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocomplet
 import toast from "react-hot-toast";
 
 // fixtures
-import { mockUseGlobalContextReturnObj } from "../../fixtures/globalContext";
+import { mockUseGlobalContextReturnObj } from "../../fixtures/context/globalContext";
 import {
   placeDetailsCallbackArg,
   placePredictionsArr,
