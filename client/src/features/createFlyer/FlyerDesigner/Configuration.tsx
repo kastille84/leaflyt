@@ -73,7 +73,7 @@ export default function Configuration() {
   }
 
   return (
-    <StyledConfigurationContainer>
+    <StyledConfigurationContainer data-testid="configuration-container">
       <Heading as="h2">Controls</Heading>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <FormControlRow>

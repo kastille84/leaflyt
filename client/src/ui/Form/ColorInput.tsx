@@ -34,7 +34,7 @@ export default function ColorInput({
       ? `${selectedSection.split("_").join(".")}`
       : `${selectedSection}`;
 
-  const [color, setColor] = useColor(getValues(registerName));
+  const [color, setColor] = useColor(getValues(registerName) || "#000000");
   function handleColorChange(color: any) {
     setColor(color);
   }

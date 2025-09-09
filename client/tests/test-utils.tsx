@@ -130,6 +130,22 @@ function getFlyerDesigner(name: string) {
   };
 }
 
+function getColorInput(name: string) {
+  const Container = screen.getByTestId(`${name}-container`);
+  return {
+    input: Container.querySelector("input[id='hex']") as HTMLInputElement,
+  };
+}
+
+function getBorderRadius(name: string) {
+  const Container = screen.getByTestId(`${name}-container`);
+  return {
+    input: Container.querySelector("input[id='radius']") as HTMLInputElement,
+    select: Container.querySelector("select") as HTMLSelectElement,
+    label: Container.querySelector("label") as HTMLLabelElement,
+  };
+}
+
 export {
   renderHook,
   QueryClientProviderWrapper,
@@ -144,4 +160,6 @@ export {
   getImagePreviewItem,
   getAddressResults,
   getFlyerDesigner,
+  getColorInput,
+  getBorderRadius,
 };
