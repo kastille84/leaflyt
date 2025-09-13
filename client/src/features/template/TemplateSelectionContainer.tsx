@@ -19,7 +19,7 @@ export default function TemplateSelectionContainer() {
   );
 
   return (
-    <StyledTemplateContainer>
+    <StyledTemplateContainer data-testid="template-selection-container">
       <WhichTemplate
         setSelectedTemplate={setSelectedTemplate}
         selectedTemplate={selectedTemplate}

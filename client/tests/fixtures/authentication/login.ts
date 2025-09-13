@@ -549,7 +549,7 @@ export const userFromContext = {
   ],
   templates: [
     {
-      id: 2,
+      id: 2 as number | string,
       tags: ["some", "new", "product"],
       user: 3,
       title: "Test Product",

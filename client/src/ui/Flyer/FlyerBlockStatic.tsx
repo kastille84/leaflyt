@@ -244,7 +244,7 @@ export default function FlyerBlockStatic({ flyer }: { flyer: DB_Template }) {
   }
 
   function determineAvatarAndName() {
-    if ((user as Auth_User_Profile_Response).typeOfUser === "individual") {
+    if ((user as Auth_User_Profile_Response)?.typeOfUser === "individual") {
       return (
         <>
           <StyledAvatar flyerDesign={flyerStyles}>

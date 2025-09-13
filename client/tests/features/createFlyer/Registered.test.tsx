@@ -113,7 +113,7 @@ describe("Registered", () => {
       }));
     });
     afterEach(() => {
-      vi.restoreAllMocks();
+      vi.clearAllMocks();
     });
     it("should update title", async () => {
       render(<Registered />, { wrapper: QueryClientProviderWrapper() });

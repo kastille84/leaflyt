@@ -8,7 +8,6 @@ import useCreateRegisteredFlyer from "../createFlyer/useCreateRegisteredFlyer";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import OverlaySpinner from "../../ui/OverlaySpinner";
-import { useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { loginUserWithAccessToken } from "../../services/apiAuth";
 
@@ -80,6 +79,7 @@ export default function WhichTemplate({
       setIsOpenBottomSlideIn(false);
       setDrawerAction("create");
       setIsOpenFlyerDrawer(true);
+      return;
     }
     setShowSpinner(true);
 
@@ -104,7 +104,7 @@ export default function WhichTemplate({
   }
 
   return (
-    <StyledWhichTemplateContainer>
+    <StyledWhichTemplateContainer data-testid="which-template-container">
       <div>
         <StyledTopHeading as="h2">
           Select a Template for Quick Posting
@@ -124,8 +124,13 @@ export default function WhichTemplate({
           Or Create From Scratch
         </StyledScratchOption>
       </div>
-      <div>
-        <Button size="medium" variation="primary" onClick={handleDone}>
+      <div data-testid="form-button-container">
+        <Button
+          type="button"
+          size="medium"
+          variation="primary"
+          onClick={handleDone}
+        >
           Done
         </Button>
         {showSpinner && <OverlaySpinner message={"Creating your flyer..."} />}

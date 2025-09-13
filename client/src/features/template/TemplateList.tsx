@@ -38,7 +38,7 @@ export default function TemplateList({
   const { templates } = user!;
 
   return (
-    <StyledTemplateListContainer>
+    <StyledTemplateListContainer data-testid="template-list-container">
       {templates.map((template: DB_Template) => (
         <StyledListItem
           key={template.id}

@@ -23,7 +23,7 @@ export default function TemplateDisplay({
   }, [selectedTemplate]);
 
   return (
-    <StyledDisplayContainer>
+    <StyledDisplayContainer data-testid="template-display">
       {!selectedTemplate && <p>Select a template to display.</p>}
       {selectedTemplate && <FlyerBlockStatic flyer={selectedTemplate} />}
     </StyledDisplayContainer>

@@ -66,6 +66,7 @@ export default function Configuration() {
 
   function onSubmit(data: any) {
     console.log("data", data);
+    console.log("getValues", getValues());
     flyerDesignOptions.setValue("flyerDesign", getValues());
     toast.success("Flyer design updated!");
     setBottomSlideInType(null);
