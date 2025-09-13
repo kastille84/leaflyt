@@ -24,6 +24,7 @@ vi.mock("react-hot-toast");
 
 const createUploadWidgetSpy = vi.fn();
 const openSpy = vi.fn();
+const closeSpy = vi.fn();
 const errorSpy = vi.fn();
 const resultSpy = vi.fn();
 // mocks
@@ -75,10 +76,6 @@ describe("Anonymous", () => {
     it("should update title", async () => {
       render(<Anonymous />, { wrapper: QueryClientProviderWrapper() });
       const { input: titleInput } = getInput("title");
-      // titleInput.value = "Hello";
-      // titleInput.dispatchEvent(new Event("change"));
-      // fireEvent.change(titleInput, { target: { value: "Hello" } });
-      // fireEvent.input(titleInput, { target: { value: "Hello" } });
       await user.type(titleInput, "Hello");
       await waitFor(() => {
         expect(titleInput.value).toBe("Hello");
@@ -134,7 +131,10 @@ describe("Anonymous", () => {
       beforeEach(() => {
         // vi.useFakeTimers();
         createUploadWidgetSpy.mockImplementation(function () {
-          return { open: openSpy.mockReturnValue(true) };
+          return {
+            open: openSpy.mockReturnValue(true),
+            close: closeSpy.mockReturnValue(true),
+          };
         });
       });
       afterEach(() => {
@@ -344,7 +344,10 @@ describe("Anonymous", () => {
 
     beforeEach(() => {
       createUploadWidgetSpy.mockImplementation(function () {
-        return { open: openSpy.mockReturnValue(true) };
+        return {
+          open: openSpy.mockReturnValue(true),
+          close: closeSpy.mockReturnValue(true),
+        };
       });
       vi.mocked(useCreateUnregisteredFlyer).mockImplementation(() => {
         return {

@@ -11,6 +11,7 @@ import {
   HiOutlineExclamationCircle,
 } from "react-icons/hi2";
 
+import FormInfoAlert from "../../ui/Form/FormInfoAlert";
 import Button from "../../ui/Button";
 import FormControlRow from "../../ui/Form/FormControlRow";
 import FormControl from "../../ui/Form/FormControl";
@@ -45,34 +46,10 @@ import AttestationInput from "../../ui/Form/AttestationInput";
 import { useParams } from "react-router-dom";
 
 const StyledAnonymousContainer = styled.div``;
-const StyledInfoAlertContainer = styled.div`
-  background-color: var(--color-orange-200);
-  padding: 1.6rem 2.4rem;
 
-  & h4 {
-    color: var(--color-orange-600);
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-  }
-
-  & p {
-    font-size: 1.4rem;
-    letter-spacing: 0.4px;
-  }
-  & .learn-more {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-  & .learn-more,
-  & .learn-more svg {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--color-orange-600);
-  }
+const StyledSubmitError = styled(Heading)`
+  color: var(--color-red-600);
 `;
-
 const StyledFormContainer = styled.div`
   padding: 1.6rem 2.4rem;
 `;
@@ -93,6 +70,7 @@ const StyledFormButtonContainer = styled.div`
 
 export default function Anonymous() {
   const [showSpinner, setShowSpinner] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const {
     register,
     unregister,
@@ -138,6 +116,7 @@ export default function Anonymous() {
   useEffect(() => {});
 
   const onSubmit = async (data: any) => {
+    setSubmitError("");
     console.log("data", data);
     const prepData = {
       ...data,
@@ -155,6 +134,9 @@ export default function Anonymous() {
       onError: (error: any) => {
         setShowSpinner(false);
         toast.error(error.message);
+        setSubmitError(error.message);
+        // set focus on error
+        document.querySelector("#form-error")?.scrollIntoView();
       },
     });
   };
@@ -165,24 +147,17 @@ export default function Anonymous() {
 
   return (
     <StyledAnonymousContainer data-testid="anonymous-container">
-      <StyledInfoAlertContainer>
-        <Heading as={"h4"}>
-          <span>
-            <HiOutlineExclamationCircle />
-          </span>
-          <span>You are posting as an Unregistered User</span>
-        </Heading>
-        <p>Do more with your flyers by signing-in or registering</p>
-        <p>
-          Why is it better to be a registered user?{" "}
-          <span className="learn-more">
-            LEARN MORE
-            <HiOutlineArrowRight />
-          </span>
-        </p>
-      </StyledInfoAlertContainer>
+      <FormInfoAlert
+        text="Do more with your flyers by signing up or logging in."
+        supportText="Register to get more features"
+      />
       <StyledFormContainer>
         <Form onSubmit={handleSubmit(onSubmit)}>
+          {submitError && (
+            <StyledSubmitError as={"h4"} id="form-error">
+              Error: {submitError}
+            </StyledSubmitError>
+          )}
           <StyledFormContent>
             {/* Title / Category */}
             <FormControlRow>

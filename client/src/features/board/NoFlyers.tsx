@@ -3,6 +3,8 @@ import Button from "../../ui/Button";
 import { HiOutlinePaperAirplane } from "react-icons/hi2";
 
 import { useGlobalContext } from "../../context/GlobalContext";
+import CreateFlyer from "../createFlyer/CreateFlyer";
+import CreateFlyerButton from "../../ui/Flyer/CreateFlyerButton";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -20,12 +22,6 @@ const StyledButtonContainer = styled.div`
   text-align: center;
 `;
 export default function NoFlyers() {
-  const { setIsOpenFlyerDrawer, setDrawerAction } = useGlobalContext();
-
-  function handleCreateFlyer() {
-    setIsOpenFlyerDrawer(true);
-    setDrawerAction("create");
-  }
   return (
     <>
       <StyledContainer data-testid="no-flyers-container">
@@ -36,9 +32,7 @@ export default function NoFlyers() {
           <p>There are no flyers at this location.</p>
           <p> Be the first to create one!</p>
           <StyledButtonContainer>
-            <Button onClick={handleCreateFlyer} size="large">
-              Create Flyer
-            </Button>
+            <CreateFlyerButton size="large" />
           </StyledButtonContainer>
         </div>
       </StyledContainer>

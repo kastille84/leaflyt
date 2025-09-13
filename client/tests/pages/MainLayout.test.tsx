@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import MainLayout from "../../src/pages/MainLayout";
 import ActionMenu from "../../src/ui/ActionMenu";
 import Sidebar from "../../src/ui/Sidebar";
+import { QueryClientProviderWrapperWithBrowserRouter } from "../test-utils";
 
 //  mocks
 vi.mock("../../src/pages/MainLayout");
@@ -34,7 +35,9 @@ describe("MainLayout Page", () => {
     vi.restoreAllMocks();
   });
   it("should render MainLayout", () => {
-    render(<MainLayout />);
+    render(<MainLayout />, {
+      wrapper: QueryClientProviderWrapperWithBrowserRouter(),
+    });
     const mainLayout = screen.getByTestId("main-layout");
     const actionMenu = screen.getByTestId("mock-action-menu");
     const sidebar = screen.getByTestId("mock-sidebar");

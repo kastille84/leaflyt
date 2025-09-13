@@ -5,7 +5,7 @@ import Landing from "../../src/pages/Landing";
 import * as GlobalContext from "../../src/context/GlobalContext";
 
 // fixtures
-import { mockUseGlobalContextReturnObj } from "../fixtures/globalContext";
+import { mockUseGlobalContextReturnObj } from "../fixtures/context/globalContext";
 import { QueryClientProviderWrapper } from "../test-utils";
 
 // mocks
@@ -37,16 +37,20 @@ describe("Landing Page", () => {
 
     const h2 = screen.getByRole("heading", { level: 2 });
     expect(h2.textContent).toBe(
-      "Spread your Message. See what others are Discussing & Doing in your Local Digital Community Board"
+      "Spread Your Message. See What Others are Discussing & Doing in Your Local Digital Community Board"
     );
 
-    const button = screen.getByRole("button");
-    expect(button.textContent).toBe("Open Board Near You");
+    const button = screen.getByRole("button", {
+      name: "Search For a Board Near You",
+    });
+    expect(button.textContent).toBe("Search For a Board Near You");
   });
 
   it("should call getUserGeo when button is clicked", () => {
     render(<Landing />, { wrapper: QueryClientProviderWrapper() });
-    const button = screen.getByRole("button");
+    const button = screen.getByRole("button", {
+      name: "Search For a Board Near You",
+    });
     fireEvent.click(button);
     // await waitFor(() => expect(mockGetUserGeo).toHaveBeenCalledTimes(1));
     expect(mockGetUserGeo).toHaveBeenCalled();

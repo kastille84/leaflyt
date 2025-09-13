@@ -2,6 +2,7 @@
 import React from "react";
 import { renderHook, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter } from "react-router-dom";
 
 const QueryClientProviderWrapper = () => {
   const queryClient = new QueryClient({
@@ -14,6 +15,23 @@ const QueryClientProviderWrapper = () => {
   return ({ children: children }: { children: React.ReactNode }) => {
     return (
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    );
+  };
+};
+
+const QueryClientProviderWrapperWithBrowserRouter = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false, // Important for reliable testing of error states
+      },
+    },
+  });
+  return ({ children: children }: { children: React.ReactNode }) => {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>{children}</BrowserRouter>
+      </QueryClientProvider>
     );
   };
 };
@@ -58,8 +76,8 @@ function getActionButtons() {
     ) as HTMLButtonElement,
   };
 }
-function getQuill() {
-  const Container = screen.getByTestId("content-container");
+function getQuill(name = "content") {
+  const Container = screen.getByTestId(`${name}-container`);
   return {
     container: Container,
     label: Container.querySelector("label") as HTMLLabelElement,
@@ -101,9 +119,37 @@ function getAddressResults() {
   };
 }
 
+function getFlyerDesigner(name: string) {
+  const Container = screen.getByTestId(`${name}-container`);
+  return {
+    label: Container.querySelector("label") as HTMLLabelElement,
+    upgrade: Container.querySelector(
+      "[data-testid='upgrade-text-container']"
+    ) as HTMLInputElement,
+    button: Container.querySelector("button") as HTMLButtonElement,
+  };
+}
+
+function getColorInput(name: string) {
+  const Container = screen.getByTestId(`${name}-container`);
+  return {
+    input: Container.querySelector("input[id='hex']") as HTMLInputElement,
+  };
+}
+
+function getBorderRadius(name: string) {
+  const Container = screen.getByTestId(`${name}-container`);
+  return {
+    input: Container.querySelector("input[id='radius']") as HTMLInputElement,
+    select: Container.querySelector("select") as HTMLSelectElement,
+    label: Container.querySelector("label") as HTMLLabelElement,
+  };
+}
+
 export {
   renderHook,
   QueryClientProviderWrapper,
+  QueryClientProviderWrapperWithBrowserRouter,
   getInput,
   getSelect,
   getFieldError,
@@ -113,4 +159,7 @@ export {
   getImagePreview,
   getImagePreviewItem,
   getAddressResults,
+  getFlyerDesigner,
+  getColorInput,
+  getBorderRadius,
 };

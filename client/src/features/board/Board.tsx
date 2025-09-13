@@ -1,29 +1,49 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 import useGetBoard from "./useGetBoard";
 import NoFlyers from "./NoFlyers";
-import BoardFlyerBlock from "../../ui/Flyer/BoardFlyerBlock";
+import FlyerBlockInteractive from "../../ui/Flyer/FlyerBlockInteractive";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/GlobalContext";
 import useGetPlaceByPlaceId from "../../hooks/useGetPlaceByPlaceId";
+import InfoAlert from "../../ui/InfoAlert";
 
 const StyledBoardContainer = styled.div``;
 
 export default function Board() {
   const { id } = useParams();
-  const { selectedPlace } = useGlobalContext();
+  const QueryClient = useQueryClient();
+  const { selectedPlace, user, hasFlyerAtLocation, setHasFlyerAtLocation } =
+    useGlobalContext();
   const [shouldGetPlace, setShouldGetPlace] = useState(false);
 
-  const { isLoadingBoard, board } = useGetBoard();
+  const { isLoadingBoard, board } = useGetBoard(user?.id!);
   useGetPlaceByPlaceId(id!, shouldGetPlace);
 
   useEffect(() => {
-    if (board?.data && !selectedPlace) {
-      setShouldGetPlace(true);
+    setShouldGetPlace(true);
+  }, [selectedPlace]);
+
+  useEffect(() => {
+    if (user) {
+      checkIfUserHasFlyerHere();
     }
-  }, [board?.data, selectedPlace]);
+  }, [user, selectedPlace, board, id]);
+
+  async function checkIfUserHasFlyerHere() {
+    const boardData = await QueryClient.getQueryData(["board", id]);
+    // const boardData = await QueryClient.ensureQueryData({
+    //   queryKey: ["board", id],
+    // });
+    if ((boardData as any)?.data?.hasFlyerHere) {
+      setHasFlyerAtLocation(true);
+    } else {
+      setHasFlyerAtLocation(false);
+    }
+  }
 
   if (isLoadingBoard) return <OverlaySpinner message="Loading Board" />;
   // if no flyers, then show "NoFlyers" component which has a button to create a new flyer
@@ -33,15 +53,26 @@ export default function Board() {
 
   // if flyers, then show a list of flyers
   return (
-    <StyledBoardContainer data-testid="board-container">
-      <div data-testid="board" style={{ width: "80%", margin: "auto" }}>
-        <Masonry columnsCount={3} gutter="1.6rem">
-          {board?.data!.flyers?.length &&
-            board?.data!.flyers.map((flyer) => (
-              <BoardFlyerBlock key={flyer!.id} flyer={flyer} />
-            ))}
-        </Masonry>
-      </div>
-    </StyledBoardContainer>
+    <>
+      <StyledBoardContainer data-testid="board-container">
+        <div data-testid="board" style={{ width: "90%", margin: "auto" }}>
+          {hasFlyerAtLocation && (
+            <InfoAlert text="You already have a flyer posted here" />
+          )}
+          <ResponsiveMasonry
+            columnsCountBreakPoints={{ 350: 1, 1096: 2, 1600: 3 }}
+
+            // gutterBreakpoints={{ 350: "12px", 750: "16px", 900: "24px" }}
+          >
+            <Masonry columnsCount={3} gutter="1.6rem">
+              {board?.data!.flyers?.length &&
+                board?.data!.flyers.map((flyer) => (
+                  <FlyerBlockInteractive key={flyer!.id} flyer={flyer} />
+                ))}
+            </Masonry>
+          </ResponsiveMasonry>
+        </div>
+      </StyledBoardContainer>
+    </>
   );
 }

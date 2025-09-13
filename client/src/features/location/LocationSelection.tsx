@@ -58,7 +58,8 @@ const StyledOverlay = styled.div`
 
 export default function LocationSelection({ coords }: { coords: LatLng }) {
   const { places, error, isGettingPlaces } = useGetPlacesByCoords(coords);
-  const { setIsGettingLocation, setCoords } = useGlobalContext();
+  const { setIsGettingLocation, setCoords, setIsSelectingNewPlace } =
+    useGlobalContext();
 
   if (isGettingPlaces)
     return (
@@ -74,6 +75,7 @@ export default function LocationSelection({ coords }: { coords: LatLng }) {
           data-testid="location-selection-close-icon"
           onClick={() => {
             setIsGettingLocation(false);
+            setIsSelectingNewPlace(false);
             setCoords(null);
           }}
         />

@@ -7,7 +7,7 @@ export interface Plan {
   subtitle: string;
   created_at: string;
   numOfMedia: number;
-  hasAnalytics: null | "lite" | "full";
+  hasAnalytics: null | "lite" | "full" | string;
   templateLimit: number;
   hasBulkPosting: boolean;
   priceDescription: string;

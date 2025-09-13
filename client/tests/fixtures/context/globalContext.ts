@@ -22,4 +22,12 @@ export const mockUseGlobalContextReturnObj = {
   setBottomSlideInType: () => {},
   user: null,
   setUser: () => {},
+  flyerDesignOptions: null,
+  setFlyerDesignOptions: () => {},
+  carouselImages: null,
+  setCarouselImages: () => {},
+  hasFlyerAtLocation: false,
+  setHasFlyerAtLocation: () => {},
+  isSelectingNewPlace: false,
+  setIsSelectingNewPlace: () => {},
 };

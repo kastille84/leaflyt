@@ -1,7 +1,9 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
+import { UploadApiResponse } from "cloudinary";
 import useGetUserGeo from "../hooks/useGetUserGeo";
 import { LatLng, NearbySearchPlaceResult } from "../interfaces/Geo";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
+import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
 
 export type ContextType = {
   getUserGeo: () => void;
@@ -27,14 +29,37 @@ export type ContextType = {
   setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenBottomSlideIn: boolean;
   setIsOpenBottomSlideIn: React.Dispatch<React.SetStateAction<boolean>>;
-  bottomSlideInType: "signup" | "upsell" | null;
+  bottomSlideInType:
+    | "signup"
+    | "upgrade"
+    | "flyerDesigner"
+    | "carousel"
+    | "hasTemplates"
+    | null;
   setBottomSlideInType: React.Dispatch<
-    React.SetStateAction<"signup" | "upsell" | null>
+    React.SetStateAction<
+      | "signup"
+      | "upgrade"
+      | "flyerDesigner"
+      | "carousel"
+      | "hasTemplates"
+      | null
+    >
   >;
   user: Auth_User_Profile_Response | null;
   setUser: React.Dispatch<
     React.SetStateAction<Auth_User_Profile_Response | null>
   >;
+  flyerDesignOptions: any;
+  setFlyerDesignOptions: React.Dispatch<React.SetStateAction<any>>;
+  carouselImages: UploadApiResponse[] | null;
+  setCarouselImages: React.Dispatch<
+    React.SetStateAction<UploadApiResponse[] | null>
+  >;
+  hasFlyerAtLocation: boolean;
+  setHasFlyerAtLocation: React.Dispatch<React.SetStateAction<boolean>>;
+  isSelectingNewPlace: boolean;
+  setIsSelectingNewPlace: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -61,6 +86,14 @@ const GlobalContext = createContext<ContextType>({
   setBottomSlideInType: () => {},
   user: null,
   setUser: () => {},
+  flyerDesignOptions: null,
+  setFlyerDesignOptions: () => {},
+  carouselImages: null,
+  setCarouselImages: () => {},
+  hasFlyerAtLocation: false,
+  setHasFlyerAtLocation: () => {},
+  isSelectingNewPlace: false,
+  setIsSelectingNewPlace: () => {},
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -77,9 +110,18 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [isOpenBottomSlideIn, setIsOpenBottomSlideIn] =
     useState<boolean>(false);
   const [bottomSlideInType, setBottomSlideInType] = useState<
-    "signup" | "upsell" | null
+    "signup" | "upgrade" | "flyerDesigner" | "carousel" | "hasTemplates" | null
   >(null);
   const [user, setUser] = useState<Auth_User_Profile_Response | null>(null);
+  const [flyerDesignOptions, setFlyerDesignOptions] = useState<{
+    getValues: UseFormGetValues<any>;
+    setValue: UseFormSetValue<any>;
+  } | null>(null);
+  const [carouselImages, setCarouselImages] = useState<
+    UploadApiResponse[] | null
+  >(null);
+  const [hasFlyerAtLocation, setHasFlyerAtLocation] = useState(false);
+  const [isSelectingNewPlace, setIsSelectingNewPlace] = useState(false);
 
   const {
     getUserGeo,
@@ -115,6 +157,14 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         setBottomSlideInType,
         user,
         setUser,
+        flyerDesignOptions,
+        setFlyerDesignOptions,
+        carouselImages,
+        setCarouselImages,
+        hasFlyerAtLocation,
+        setHasFlyerAtLocation,
+        isSelectingNewPlace,
+        setIsSelectingNewPlace,
       }}
     >
       {children}

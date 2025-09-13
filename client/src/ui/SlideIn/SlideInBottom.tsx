@@ -4,10 +4,14 @@ import Drawer from "react-modern-drawer";
 //import styles 👇
 import "react-modern-drawer/dist/index.css";
 import { useGlobalContext } from "../../context/GlobalContext";
-import RegistrationSlideIn from "../../features/authentication/SignupContainer";
+import RegistrationContainer from "../../features/authentication/SignupContainer";
 import { SIGNUP } from "../../constants";
 import styled from "styled-components";
 import { HiOutlineXMark } from "react-icons/hi2";
+import FlyerDesignerContainer from "../../features/createFlyer/FlyerDesigner/FlyerDesignerContainer";
+import { FlyerDesignerContextProvider } from "../../context/FlyerDesignerContext";
+import FullCarouselContainer from "../Flyer/FullCarouselContainer";
+import TemplateSelectionContainer from "../../features/template/TemplateSelectionContainer";
 
 const StyledCloseContainer = styled.div`
   display: flex;
@@ -28,19 +32,34 @@ export default function SlideInBottom() {
     setIsOpenBottomSlideIn,
     bottomSlideInType,
     setBottomSlideInType,
+    setCarouselImages,
   } = useGlobalContext();
 
   function determineSlideInType() {
-    if (bottomSlideInType === SIGNUP) {
-      return <RegistrationSlideIn />;
-    } else if (bottomSlideInType === "upsell") {
-      return <p>Upsell</p>;
+    switch (bottomSlideInType) {
+      case "signup":
+        return <RegistrationContainer />;
+      case "upgrade":
+        return <p>Upgrade</p>;
+      case "carousel":
+        return <FullCarouselContainer />;
+      case "flyerDesigner":
+        return (
+          <FlyerDesignerContextProvider>
+            <FlyerDesignerContainer />;
+          </FlyerDesignerContextProvider>
+        );
+      case "hasTemplates":
+        return <TemplateSelectionContainer />;
     }
   }
 
   function handleDrawerClose() {
     setIsOpenBottomSlideIn(false);
     setBottomSlideInType(null);
+    if (bottomSlideInType === "carousel") {
+      setCarouselImages(null);
+    }
   }
 
   return (

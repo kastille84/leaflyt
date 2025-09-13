@@ -8,7 +8,7 @@ export interface DB_Board {
   formattedAddress: string;
   latlng: LatLng;
   tags: string[];
-  flyers: string[];
+  flyers?: string[];
   created_at?: Date;
 }
 export interface DB_Board_Response {

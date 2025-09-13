@@ -1,3 +1,4 @@
+import { DB_Flyers_Response, DB_Template } from "./DB_Flyers";
 import { Plan } from "./Plan";
 
 interface Individual {
@@ -129,11 +130,11 @@ export interface Auth_User_Profile_Response {
     place_id: string;
     adr_address: string;
     formatted_address: string;
-    html_attributions: [];
+    html_attributions: any[];
   };
-  avatar?: string;
+  avatar?: string | null;
   flyers: any[]; // TODO: add flyer type
-  templates: any[]; // TODO: add template type
+  templates: DB_Template[];
 }
 
 export interface LoginSubmitData {

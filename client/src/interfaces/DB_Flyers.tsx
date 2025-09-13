@@ -1,8 +1,36 @@
 import { UploadApiResponse } from "cloudinary";
+import { Auth_User_Profile_Response } from "./Auth_User";
 
-interface DB_Flyer_Create {
+export interface FlyerDesign {
+  top: {
+    backgroundColor: string;
+    color: string;
+  };
+  outlines: {
+    color: string;
+  };
+  font: string;
+  title: {
+    color: string;
+  };
+  subcategory: {
+    color: string;
+  };
+  readMore: {
+    color: string;
+  };
+  tags: {
+    color: string;
+  };
+  borderTopLeftRadius: number;
+  borderTopRightRadius: number;
+  borderBottomLeftRadius: number;
+  borderBottomRightRadius: number;
+}
+
+export interface DB_Flyer_Create {
   id?: string;
-  userId?: string;
+  user?: string | Auth_User_Profile_Response | number;
   // boardId?: string;
   placeId?: string;
   title: string;
@@ -11,11 +39,21 @@ interface DB_Flyer_Create {
   content: string;
   tags?: string[];
   fileUrlArr?: UploadApiResponse[];
-  postingMethod: "onLocation" | "remote" | "remoteBulk";
+  postingMethod?: "onLocation" | "remote" | "remoteBulk";
+  flyerDesign?: null | FlyerDesign;
+  callToAction?: {
+    ctaType: "offer" | "ask" | "none";
+    headline: string;
+    instructions: string;
+  };
+  lifespan?: string;
+  template?: string;
+  templateName?: string;
+  hasComments?: boolean;
 }
 
 interface DB_Flyer_Create_Unregistered extends DB_Flyer_Create {
-  typeOfUser: string;
+  typeOfUser: "individual" | "business" | "organization" | "anonymous";
 }
 
 export interface DB_Flyer_Create_Unregistered_Anonymous
@@ -68,3 +106,28 @@ export type DB_Flyers_Create_Unregistered =
   | DB_Flyer_Create_Unregistered_Organization;
 
 export type DB_Flyers_Response = DB_Flyers_Create_Unregistered;
+
+// export interface DB_Template {
+//   id: string;
+//   user: string | Auth_User_Profile_Response;
+//   templateName: string;
+//   title: string;
+//   category: string;
+//   subcategory: string;
+//   content: string;
+//   tags: string[];
+//   flyerDesign: FlyerDesign;
+//   callToAction: flyerData.callToAction;
+//   fileUrlArr: flyerData.fileUrlArr;
+//   hasComments: flyerData.hasComments;
+// }
+
+interface RemoveFlyerKeys {
+  id: string;
+  placeId: string;
+  postingMethod?: "onLocation" | "remote" | "remoteBulk";
+}
+export interface DB_Template
+  extends Omit<DB_Flyer_Create, keyof RemoveFlyerKeys> {
+  id: string;
+}

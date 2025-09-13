@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import OverlaySpinner from "./OverlaySpinner";
 import LocationSelection from "../features/location/LocationSelection";
 import { supabase } from "../services/supabase";
+import CreateFlyerButton from "./Flyer/CreateFlyerButton";
 
 const StyledActionMenu = styled.div`
   grid-column: 1 / -1;
@@ -58,6 +59,9 @@ export default function ActionMenu() {
     isGettingLocation,
     coords,
     setCoords,
+    hasFlyerAtLocation,
+    isSelectingNewPlace,
+    setIsSelectingNewPlace,
   } = useGlobalContext();
 
   const navigate = useNavigate();
@@ -110,31 +114,30 @@ export default function ActionMenu() {
   }
 
   function determineSelectedPlaceActions() {
-    if (selectedPlace?.id) {
+    if (selectedPlace?.id && !hasFlyerAtLocation) {
       return (
         <div>
-          <Button
-            size="small"
-            onClick={() => {
-              setDrawerAction("create");
-              setIsOpenFlyerDrawer(true);
-            }}
-          >
-            Create Flyer
-          </Button>
-        </div>
-      );
-    } else {
-      // action to find nearest place
-      // only here if for some reason you are on the dashboard and don't have a selected place
-      return (
-        <div>
-          <Button size="small" onClick={getUserGeo}>
-            Open Board Near You
-          </Button>
+          <CreateFlyerButton size="small" />
         </div>
       );
     }
+    // else {
+    //   // action to find nearest place
+    //   // only here if for some reason you are on the dashboard and don't have a selected place
+    //   return (
+    //     <div>
+    //       <Button
+    //         size="small"
+    //         onClick={() => {
+    //           setIsSelectingNewPlace(true);
+    //           getUserGeo();
+    //         }}
+    //       >
+    //         Open Board Near You
+    //       </Button>
+    //     </div>
+    //   );
+    // }
   }
 
   return (
@@ -143,6 +146,18 @@ export default function ActionMenu() {
         <div>
           <p>{selectedPlace?.displayName.text}</p>
           <p>{selectedPlace?.formattedAddress}</p>
+        </div>
+        <div>
+          <Button
+            size="small"
+            variation="secondary"
+            onClick={() => {
+              setIsSelectingNewPlace(true);
+              getUserGeo();
+            }}
+          >
+            Open Board Near You
+          </Button>
         </div>
         {determineSelectedPlaceActions()}
         <StyledActionContainer>
@@ -155,7 +170,9 @@ export default function ActionMenu() {
       {!selectedPlace && isGettingLocation && (
         <OverlaySpinner message="Getting Your Location based on your device's GPS, mobile or wifi signal" />
       )}
-      {!selectedPlace && coords && <LocationSelection coords={coords} />}
+      {(!selectedPlace || isSelectingNewPlace) && coords && (
+        <LocationSelection coords={coords} />
+      )}
     </>
   );
 }
