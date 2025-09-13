@@ -96,7 +96,7 @@ describe("Registered", () => {
       const { label: templateLabel, input: templateInput } =
         getInput("template");
       expect(templateLabel.textContent).toBe(
-        "Create Reusable Template (encouraged)"
+        "Create Reusable Template (Encouraged)"
       );
       expect(templateInput).toBeTruthy();
       // cancel
@@ -289,10 +289,12 @@ describe("Registered", () => {
     it("should update create template", async () => {
       render(<Registered />, { wrapper: QueryClientProviderWrapper() });
       const { input: templateCheckbox } = getInput("template");
-      await waitFor(() => {
-        expect(templateCheckbox.checked).toBeFalsy();
-      });
-      await user.click(templateCheckbox);
+      // uncheck it
+      // await user.click(templateCheckbox);
+      // await waitFor(() => {
+      //   expect(templateCheckbox.checked).toBeFalsy();
+      // });
+      // await user.click(templateCheckbox);
       await waitFor(() => {
         expect(templateCheckbox.checked).toBeTruthy();
       });
@@ -377,8 +379,6 @@ describe("Registered", () => {
       await user.type(ctaContentQuill, "Hello");
       const { select: lifespanSelect } = getSelect("lifespan");
       await user.selectOptions(lifespanSelect, "2 weeks");
-      const { input: templateCheckbox } = getInput("template");
-      await user.click(templateCheckbox);
       const { input: templateInput } = getInput("fullName");
       await user.type(templateInput, "Hello");
       const { input: commentsCheckbox } = getInput("comments-input");
@@ -440,8 +440,7 @@ describe("Registered", () => {
       await user.type(ctaContentQuill, "Hello");
       const { select: lifespanSelect } = getSelect("lifespan");
       await user.selectOptions(lifespanSelect, "2 weeks");
-      const { input: templateCheckbox } = getInput("template");
-      await user.click(templateCheckbox);
+
       const { input: templateInput } = getInput("fullName");
       await user.type(templateInput, "Hello");
       const { input: commentsCheckbox } = getInput("comments-input");

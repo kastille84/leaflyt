@@ -251,15 +251,15 @@ export default function Registered() {
             </FormControlRow>
             <FormControlRow>
               <FormControl testId="template-container">
-                <StyledLabel>Create Reusable Template (encouraged)</StyledLabel>
+                <StyledLabel>Create Reusable Template (Encouraged)</StyledLabel>
                 <p>
                   Creating flyers from scratch each time you post can be
                   tedious. Create a template to save you time and effort by
                   reusing it for future flyers.
                 </p>
                 <StyledCheckboxContainer>
-                  <Input type="checkbox" {...register("template")} /> Check this
-                  box to create a template
+                  <Input type="checkbox" {...register("template")} checked />{" "}
+                  Check this box to create a template
                 </StyledCheckboxContainer>
                 {templateWatch && (
                   <>
