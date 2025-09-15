@@ -11,6 +11,7 @@ import {
   HiCreditCard,
   HiOutlineMapPin,
 } from "react-icons/hi2";
+import { useGlobalContext } from "../context/GlobalContext";
 
 const NavList = styled.ul`
   display: flex;
@@ -41,6 +42,7 @@ const StyledNavLink = styled(NavLink)`
 `;
 export default function MainNav() {
   const { id } = useParams();
+  const { selectedPlace } = useGlobalContext();
   // # TODO - need to group links that are only for logged in users
   return (
     <nav>
@@ -50,9 +52,14 @@ export default function MainNav() {
             <HiOutlineBuildingStorefront /> <span>Home</span>
           </StyledNavLink>
         </li>
-        {id && (
+        <li>
+          <StyledNavLink to="/dashboard/my-area">
+            <HiOutlineUsers /> <span>My Area</span>
+          </StyledNavLink>
+        </li>
+        {selectedPlace && (
           <li>
-            <StyledNavLink to={`/dashboard/board/${id}`}>
+            <StyledNavLink to={`/dashboard/board/${selectedPlace.id}`}>
               <HiOutlineNewspaper /> <span>Current Board</span>
             </StyledNavLink>
           </li>
@@ -72,7 +79,7 @@ export default function MainNav() {
             <HiOutlineUsers /> <span>My Account</span>
           </StyledNavLink>
         </li>
-        <li>
+        {/* <li>
           <StyledNavLink to="/dashboard/notifications">
             <HiBellAlert /> <span>Notifications</span>
           </StyledNavLink>
@@ -86,7 +93,7 @@ export default function MainNav() {
           <StyledNavLink to="/dashboard/billings">
             <HiCreditCard /> <span>Billings</span>
           </StyledNavLink>
-        </li>
+        </li> */}
       </NavList>
     </nav>
   );
