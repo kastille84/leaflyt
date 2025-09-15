@@ -3,8 +3,10 @@ import styled from "styled-components";
 import {
   Map,
   Marker,
+  AdvancedMarker,
   MapControl,
   ControlPosition,
+  Pin,
 } from "@vis.gl/react-google-maps";
 import { useGlobalContext } from "../../context/GlobalContext";
 import MyRectangle from "./MyRectangle";
@@ -33,24 +35,51 @@ export default function MapContainer() {
     }
   };
 
+  const displayMyFlyers = () => {
+    // const mappedFlyersToMarkers = user?.flyers.map((flyer) =>({
+    //   position: {
+    //     lat: Number(flyer.address?.geometry.location.lat) || 0,
+    //     lng: Number(flyer.address?.geometry.location.lng) || 0,
+    //   },
+    //   placeName: flyer.address?.name,
+    //   key: flyer.id
+    // }))
+    const mappedFlyersToMarkers = user?.flyers.map((flyer) => (
+      <Marker
+        position={{
+          lat: Number(flyer.place?.latlng.latitude) || 0,
+          lng: Number(flyer.place?.latlng.longitude) || 0,
+        }}
+        data-key={flyer.id}
+        data-placeName={flyer.address?.name}
+      />
+    ));
+
+    return mappedFlyersToMarkers || [];
+  };
+
   return (
     <StyledMapContainer>
       <Map
         defaultCenter={{ lat: userLat, lng: userLng }}
         defaultZoom={determizeDefaultZoom()}
         zoomControl
-
-        // defaultBounds={{
-        //   north: userLat + 0.0007,
-        //   south: userLat - 0.0007,
-        //   east: userLng + 0.0007,
-        //   west: userLng - 0.0007,
-        // }}
       >
         {/* <MapControl position={ControlPosition.TOP_LEFT}>
           <h3>Map</h3>
         </MapControl> */}
+        {/* HOME */}
         <Marker position={{ lat: userLat, lng: userLng }} />
+
+        {/* <AdvancedMarker position={{ lat: userLat, lng: userLng }}>
+          <Pin
+            background={"#0f9d58"}
+            borderColor={"#006425"}
+            glyphColor={"#60d98f"}
+          />
+        </AdvancedMarker> */}
+        {/* My Flyers */}
+        {displayMyFlyers()}
         <MyRectangle
           bounds={{
             north: userLat + planLimits.distance.limit!,

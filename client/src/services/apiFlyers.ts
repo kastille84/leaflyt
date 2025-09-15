@@ -108,7 +108,7 @@ export const createRegisteredFlyer = async (
       .insert([
         {
           template: createdTemplate?.id, // many to one with template table
-          placeId: selectedPlace.id, // many to one with board table
+          place: selectedPlace.id, // many to one with board table
           user: flyerData.user,
           title: flyerData.title,
           category: flyerData.category,
@@ -120,6 +120,15 @@ export const createRegisteredFlyer = async (
           fileUrlArr: flyerData.fileUrlArr,
           postingMethod: flyerData.postingMethod || "onLocation",
           lifespan: flyerData.lifespan,
+          // placeInfo: {
+          //   displayName: selectedPlace.displayName.text,
+          //   formattedAddress: selectedPlace.formattedAddress,
+          //   location: {
+          //     lat: selectedPlace.location.latitude,
+          //     lng: selectedPlace.location.longitude,
+          //   },
+          //   tags: selectedPlace.types,
+          // },
         },
       ])
       .select("*")
@@ -149,9 +158,18 @@ export const createFlyerFromTemplate = async (
   } = {
     ...templateData,
     typeOfUser: user.typeOfUser,
-    placeId: selectedPlace.id,
+    place: selectedPlace.id,
     user: user.id,
     template: templateData.id,
+    // placeInfo: {
+    //   displayName: selectedPlace.displayName.text,
+    //   formattedAddress: selectedPlace.formattedAddress,
+    //   location: {
+    //     lat: selectedPlace.location.latitude,
+    //     lng: selectedPlace.location.longitude,
+    //   },
+    //   tags: selectedPlace.types,
+    // },
   };
 
   delete flyerData.id;

@@ -21,7 +21,7 @@ export const getBoard = async (
     const { data: foundUser } = await supabase
       .from("flyers")
       .select("*")
-      .eq("placeId", placeId)
+      .eq("place", placeId)
       .eq("user", profileId)
       .single();
     foundUserFlyer = foundUser;
