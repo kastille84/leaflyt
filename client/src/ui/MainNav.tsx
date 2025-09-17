@@ -10,8 +10,11 @@ import {
   HiBellAlert,
   HiCreditCard,
   HiOutlineMapPin,
+  HiOutlineMap,
+  HiOutlineChartPie,
 } from "react-icons/hi2";
 import { useGlobalContext } from "../context/GlobalContext";
+import useGetUserLimits from "../hooks/useGetUserLimits";
 
 const NavList = styled.ul`
   display: flex;
@@ -39,10 +42,18 @@ const StyledNavLink = styled(NavLink)`
     border-radius: var(--border-radius-sm);
     border: 1px solid var(--color-blue-100);
   }
+
+  &.disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
+    color: var(--color-grey-400);
+  }
 `;
 export default function MainNav() {
   const { id } = useParams();
   const { selectedPlace } = useGlobalContext();
+  const { registered, level } = useGetUserLimits();
   // # TODO - need to group links that are only for logged in users
   return (
     <nav>
@@ -52,11 +63,6 @@ export default function MainNav() {
             <HiOutlineBuildingStorefront /> <span>Home</span>
           </StyledNavLink>
         </li>
-        <li>
-          <StyledNavLink to="/dashboard/my-area">
-            <HiOutlineUsers /> <span>My Area</span>
-          </StyledNavLink>
-        </li>
         {selectedPlace && (
           <li>
             <StyledNavLink to={`/dashboard/board/${selectedPlace.id}`}>
@@ -64,21 +70,41 @@ export default function MainNav() {
             </StyledNavLink>
           </li>
         )}
+
         <li>
-          <StyledNavLink to="/dashboard/my-flyers">
+          <StyledNavLink
+            to="/dashboard/my-area"
+            className={registered ? "" : "disabled"}
+          >
+            <HiOutlineMap /> <span>My Area</span>
+          </StyledNavLink>
+        </li>
+
+        <li>
+          <StyledNavLink
+            to="/dashboard/my-flyers"
+            className={registered ? "" : "disabled"}
+          >
             <HiOutlinePaperAirplane /> <span>My Flyers</span>
           </StyledNavLink>
         </li>
         <li>
-          <StyledNavLink to="/dashboard/post-from-home">
-            <HiOutlineMapPin /> <span>Post At Home</span>
+          <StyledNavLink
+            to="/dashboard/post-from-home"
+            className={registered ? "" : "disabled"}
+          >
+            <HiOutlineChartPie /> <span>Statistics</span>
           </StyledNavLink>
         </li>
         <li>
-          <StyledNavLink to="/dashboard/account">
+          <StyledNavLink
+            to="/dashboard/account"
+            className={registered ? "" : "disabled"}
+          >
             <HiOutlineUsers /> <span>My Account</span>
           </StyledNavLink>
         </li>
+
         {/* <li>
           <StyledNavLink to="/dashboard/notifications">
             <HiBellAlert /> <span>Notifications</span>
