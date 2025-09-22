@@ -13,6 +13,7 @@ import {
 import { useGlobalContext } from "../../context/GlobalContext";
 import MyRectangle from "./MyRectangle";
 import useGetUserLimits from "../../hooks/useGetUserLimits";
+import PlaceSearchInput from "../../ui/Form/PlaceSearchInput";
 const StyledMapContainer = styled.div`
   width: 100%;
   height: 80vh;
@@ -27,71 +28,12 @@ const StyledInputContainer = styled.div`
   display: flex;
   justify-content: center;
 `;
-const StyledInput = styled.input`
-  width: 40rem;
-  background-color: var(--color-grey-50);
-  border-radius: var(--border-radius-sm);
-  padding: 0.8rem 1.2rem;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--color-brand-500);
-`;
-
-const StyledResults = styled.ul`
-  position: absolute;
-  top: 5.2rem;
-  z-index: 100;
-  width: 40rem;
-  background-color: var(--color-grey-50);
-  border-radius: var(--border-radius-sm);
-  padding: 0.8rem 1.2rem;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--color-brand-500);
-`;
 
 export default function MapContainer() {
   const { user } = useGlobalContext();
   const planLimits = useGetUserLimits();
   const userLat = Number(user?.address?.geometry.location.lat) || 0;
   const userLng = Number(user?.address?.geometry.location.lng) || 0;
-
-  const placesLibrary = useMapsLibrary("places");
-  const [service, setService] = useState<any>(null);
-  const [inputValue, setInputValue] = useState("");
-  const [results, setResults] = useState([]);
-
-  useEffect(() => {
-    if (placesLibrary) {
-      setService(new placesLibrary.AutocompleteService());
-    }
-    return () => setService(null);
-  }, [placesLibrary]);
-
-  const updateResults = (inputValue: string) => {
-    if (!service || inputValue.length === 0) {
-      setResults([]);
-      return;
-    }
-    const request = {
-      input: inputValue,
-      bounds: {
-        north: userLat + planLimits.distance.limit!,
-        south: userLat - planLimits.distance.limit!,
-        east: userLng + planLimits.distance.limit!,
-        west: userLng - planLimits.distance.limit!,
-      },
-      radius: planLimits.distance.limit!,
-    };
-
-    service.getQueryPredictions(request, (res: any) => {
-      setResults(res);
-    });
-  };
-
-  const onInputChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    const value = ev.target.value;
-    setInputValue(value);
-    updateResults(value);
-  };
 
   const handleSelectedPlace = (place: any) => {
     // setInputValue(place.description);
@@ -167,23 +109,7 @@ export default function MapContainer() {
         />
         <StyledInputContainer>
           <div>
-            <StyledInput
-              value={inputValue}
-              onChange={onInputChange}
-              placeholder="Search"
-            />
-            {results && results.length > 0 && (
-              <StyledResults>
-                {results.map((place: any) => (
-                  <li
-                    key={place.place_id}
-                    onClick={() => handleSelectedPlace(place)}
-                  >
-                    {place.description}
-                  </li>
-                ))}
-              </StyledResults>
-            )}
+            <PlaceSearchInput onPlaceSelect={handleSelectedPlace} />
           </div>
         </StyledInputContainer>
       </Map>
