@@ -34,6 +34,15 @@ const StyledResults = styled.ul`
     right: 1.2rem;
     color: var(--color-brand-500);
   }
+  & li {
+    padding: 0.8rem 1.2rem;
+    cursor: pointer;
+    border-radius: var(--border-radius-sm);
+    transition: all 0.2s ease-in-out;
+    &:hover {
+      background-color: var(--color-grey-100);
+    }
+  }
 `;
 
 export default function PlaceSearchInput({

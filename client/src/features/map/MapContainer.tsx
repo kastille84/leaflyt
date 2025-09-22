@@ -14,6 +14,9 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import MyRectangle from "./MyRectangle";
 import useGetUserLimits from "../../hooks/useGetUserLimits";
 import PlaceSearchInput from "../../ui/Form/PlaceSearchInput";
+import useGetPlaceByPlaceId from "../../hooks/useGetPlaceByPlaceId";
+import { should } from "chai";
+import { getPlaceDetails } from "../../services/googleMaps";
 const StyledMapContainer = styled.div`
   width: 100%;
   height: 80vh;
@@ -30,15 +33,20 @@ const StyledInputContainer = styled.div`
 `;
 
 export default function MapContainer() {
-  const { user } = useGlobalContext();
+  const { user, setSelectedPlace } = useGlobalContext();
   const planLimits = useGetUserLimits();
   const userLat = Number(user?.address?.geometry.location.lat) || 0;
   const userLng = Number(user?.address?.geometry.location.lng) || 0;
 
-  const handleSelectedPlace = (place: any) => {
-    // setInputValue(place.description);
-    // setResults([]);
-    console.log("place", place);
+  const handleSelectedPlace = async (place: any) => {
+    try {
+      const placeDetails = await getPlaceDetails(place.place_id);
+      console.log("placeDetails", placeDetails);
+      setSelectedPlace(placeDetails);
+      // #TODO: OPEN BOARD
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const determizeDefaultZoom = () => {
