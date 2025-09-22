@@ -8,15 +8,21 @@ import {
   ControlPosition,
   Pin,
   useMapsLibrary,
+  InfoWindow,
 } from "@vis.gl/react-google-maps";
+import toast from "react-hot-toast";
+import OverlaySpinner from "../../ui/OverlaySpinner";
+
+const myAreaMapId = import.meta.env.VITE_GOOGLE_MAP_MY_AREA_MAP_ID;
 
 import { useGlobalContext } from "../../context/GlobalContext";
 import MyRectangle from "./MyRectangle";
 import useGetUserLimits from "../../hooks/useGetUserLimits";
 import PlaceSearchInput from "../../ui/Form/PlaceSearchInput";
-import useGetPlaceByPlaceId from "../../hooks/useGetPlaceByPlaceId";
-import { should } from "chai";
 import { getPlaceDetails } from "../../services/googleMaps";
+import { useNavigate } from "react-router-dom";
+import MarkerWithInfoWindow from "./MarkerWithInfoWindow";
+
 const StyledMapContainer = styled.div`
   width: 100%;
   height: 80vh;
@@ -32,20 +38,45 @@ const StyledInputContainer = styled.div`
   justify-content: center;
 `;
 
+const StyledMarkerContainer = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+`;
+const StyledTooltipContainer = styled.div`
+  position: "absolute";
+  bottom: "100%"; // Position above the marker
+  left: "50%";
+  transform: "translateX(-50%)";
+  backgroundcolor: "white";
+  padding: "8px";
+  borderradius: "4px";
+  boxshadow: "0 2px 5px rgba(0,0,0,0.2)";
+  whitespace: "nowrap";
+  zindex: 1; // Ensure tooltip is above other map elements
+  background-color: var(--color-grey-50);
+`;
+
 export default function MapContainer() {
+  const navigate = useNavigate();
   const { user, setSelectedPlace } = useGlobalContext();
   const planLimits = useGetUserLimits();
   const userLat = Number(user?.address?.geometry.location.lat) || 0;
   const userLng = Number(user?.address?.geometry.location.lng) || 0;
 
+  const [showSpinner, setShowSpinner] = useState(false);
+  const [selectedMarker, setSelectedMarker] = useState<any>(null);
+
   const handleSelectedPlace = async (place: any) => {
     try {
+      setShowSpinner(true);
       const placeDetails = await getPlaceDetails(place.place_id);
       console.log("placeDetails", placeDetails);
       setSelectedPlace(placeDetails);
-      // #TODO: OPEN BOARD
-    } catch (error) {
-      console.log(error);
+      setShowSpinner(false);
+      navigate(`/dashboard/board/${placeDetails.id}`);
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
 
@@ -63,22 +94,14 @@ export default function MapContainer() {
   };
 
   const displayMyFlyers = () => {
-    // const mappedFlyersToMarkers = user?.flyers.map((flyer) =>({
-    //   position: {
-    //     lat: Number(flyer.address?.geometry.location.lat) || 0,
-    //     lng: Number(flyer.address?.geometry.location.lng) || 0,
-    //   },
-    //   placeName: flyer.address?.name,
-    //   key: flyer.id
-    // }))
     const mappedFlyersToMarkers = user?.flyers.map((flyer) => (
-      <Marker
+      <MarkerWithInfoWindow
+        key={flyer.id}
         position={{
           lat: Number(flyer.place?.latlng.latitude) || 0,
           lng: Number(flyer.place?.latlng.longitude) || 0,
         }}
-        data-key={flyer.id}
-        data-placeName={flyer.address?.name}
+        flyer={flyer}
       />
     ));
 
@@ -91,20 +114,20 @@ export default function MapContainer() {
         defaultCenter={{ lat: userLat, lng: userLng }}
         defaultZoom={determizeDefaultZoom()}
         zoomControl
+        mapId={myAreaMapId}
       >
-        {/* <MapControl position={ControlPosition.TOP_LEFT}>
+        {/* <MapControl position={ControlPosition.TOP_LEFT}>fd
           <h3>Map</h3>
         </MapControl> */}
         {/* HOME */}
-        <Marker position={{ lat: userLat, lng: userLng }} />
-
-        {/* <AdvancedMarker position={{ lat: userLat, lng: userLng }}>
+        <AdvancedMarker position={{ lat: userLat, lng: userLng }}>
           <Pin
             background={"#0f9d58"}
             borderColor={"#006425"}
             glyphColor={"#60d98f"}
           />
-        </AdvancedMarker> */}
+        </AdvancedMarker>
+
         {/* My Flyers */}
         {displayMyFlyers()}
         <MyRectangle
@@ -121,6 +144,9 @@ export default function MapContainer() {
           </div>
         </StyledInputContainer>
       </Map>
+      {showSpinner && (
+        <OverlaySpinner message={"Getting the Selected Community Board..."} />
+      )}
     </StyledMapContainer>
   );
 }
