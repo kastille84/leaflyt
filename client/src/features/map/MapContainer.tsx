@@ -18,6 +18,9 @@ const StyledMapContainer = styled.div`
   width: 100%;
   height: 80vh;
   position: relative;
+  & .gm-fullscreen-control {
+    z-index: 101;
+  }
 `;
 
 const StyledInputContainer = styled.div`

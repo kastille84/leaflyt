@@ -1,8 +1,4 @@
 import styled from "styled-components";
-import {
-  HiOutlineArrowRight,
-  HiOutlineExclamationCircle,
-} from "react-icons/hi2";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useGlobalContext } from "../../context/GlobalContext";
@@ -12,7 +8,7 @@ import Form from "../../ui/Form/Form";
 
 import Heading from "../../ui/Heading";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormProps } from "react-hook-form";
 import FormControlRow from "../../ui/Form/FormControlRow";
 import TitleInput from "../../ui/Form/TitleInput";
 import FormControl from "../../ui/Form/FormControl";
@@ -40,6 +36,7 @@ import toast from "react-hot-toast";
 import UpgradeText from "../../ui/UpgradeText";
 import FlyerDesignerInput from "../../ui/Form/FlyerDesignerInput";
 import FormInfoAlert from "../../ui/Form/FormInfoAlert";
+import { DB_Flyers_Response } from "../../interfaces/DB_Flyers";
 
 const StyledRegisteredContainer = styled.div``;
 
@@ -79,9 +76,21 @@ const StyledCheckboxContainer = styled.div`
   gap: 0.8rem;
 `;
 
-export default function Registered() {
+export default function Registered({
+  flyer,
+}: {
+  flyer?: DB_Flyers_Response | null;
+}) {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
+
+  const formOptions: UseFormProps = {
+    mode: "onBlur",
+  };
+
+  if (flyer) {
+    formOptions.defaultValues = flyer;
+  }
 
   const {
     register,
@@ -92,9 +101,7 @@ export default function Registered() {
     setValue,
     formState: { errors },
     control,
-  } = useForm({
-    mode: "onBlur",
-  });
+  } = useForm(formOptions);
   const {
     user,
     setShowCloseSlideInModal,

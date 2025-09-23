@@ -11,15 +11,7 @@ import Button from "../../ui/Button";
 import { useNavigate } from "react-router-dom";
 import { DB_Board } from "../../interfaces/DB_Board";
 
-const StyledContainer = styled.div`
-  & .my-infowindow {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    /* background-color: var(--color-grey-50); */
-    background-color: red;
-  }
-`;
+const StyledContainer = styled.div``;
 
 const StyledContentContainer = styled.div`
   display: flex;
@@ -52,7 +44,7 @@ export default function MarkerWithInfoWindow({
   const handleClose = useCallback(() => setInfoWindowShown(false), []);
 
   return (
-    <StyledContainer>
+    <StyledContainer onBlur={handleClose}>
       <AdvancedMarker
         ref={markerRef}
         position={position}
@@ -67,8 +59,8 @@ export default function MarkerWithInfoWindow({
           className="my-infowindow"
         >
           <StyledContentContainer>
-            <Heading as={"h3"}>{flyer.title}</Heading>
-            <p>{(flyer.place as DB_Board)?.name}</p>
+            <Heading as={"h4"}>{(flyer.place as DB_Board)?.name}</Heading>
+            <p>{flyer.title}</p>
             <Button
               variation="primary"
               size="small"

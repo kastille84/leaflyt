@@ -24,6 +24,7 @@ import {
 } from "../../interfaces/DB_Flyers";
 import ImageCarousel from "./SubComponents/ImageCarousel";
 import { Auth_User_Profile_Response } from "../../interfaces/Auth_User";
+import DropdownMenu from "../DropdownMenu";
 
 const common = {
   style: css`
@@ -369,9 +370,10 @@ export default function FlyerBlockInteractive({
         <StyledAvatarContainer>
           {determineAvatarAndName()}
         </StyledAvatarContainer>
-        <div>
-          <HiOutlineEllipsisHorizontal />
-        </div>
+        <DropdownMenu>
+          <li>Edit</li>
+          <li>How</li>
+        </DropdownMenu>
       </>
     );
   }
