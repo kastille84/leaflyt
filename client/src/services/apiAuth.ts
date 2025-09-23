@@ -25,7 +25,7 @@ export const loginUser = async (email: string, password: string) => {
       .from("profiles")
       .select(
         `*,
-        flyers(*),
+        flyers(*, place(*)),
         templates(*),
         plan(*)`
       )
@@ -54,7 +54,7 @@ export const loginUserWithAccessToken = async () => {
       .from("profiles")
       .select(
         `*,
-        flyers(*),
+        flyers(*, place(*)),
         templates(*),
         plan(*)`
       )

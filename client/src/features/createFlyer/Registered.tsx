@@ -100,6 +100,7 @@ export default function Registered() {
     setShowCloseSlideInModal,
     setIsOpenFlyerDrawer,
     setDrawerAction,
+    selectedPlace,
   } = useGlobalContext();
   const planLimits = useGetUserLimits();
   const { createFlyer } = useCreateRegisteredFlyer();

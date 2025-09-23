@@ -103,12 +103,28 @@ export const createRegisteredFlyer = async (
   }
   // create the flyer and attach the template id
   try {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const pt = urlParams.get("pt");
+    // posting type
+    if (pt) {
+      switch (pt) {
+        case "r":
+          flyerData.postingMethod = "remote";
+          break;
+        case "rb":
+          flyerData.postingMethod = "remoteBulk";
+          break;
+        default:
+          flyerData.postingMethod = "onLocation";
+      }
+    }
     const { data: newFlyer, error } = await supabase
       .from("flyers")
       .insert([
         {
           template: createdTemplate?.id, // many to one with template table
-          placeId: selectedPlace.id, // many to one with board table
+          place: selectedPlace.id, // many to one with board table
           user: flyerData.user,
           title: flyerData.title,
           category: flyerData.category,
@@ -120,6 +136,15 @@ export const createRegisteredFlyer = async (
           fileUrlArr: flyerData.fileUrlArr,
           postingMethod: flyerData.postingMethod || "onLocation",
           lifespan: flyerData.lifespan,
+          // placeInfo: {
+          //   displayName: selectedPlace.displayName.text,
+          //   formattedAddress: selectedPlace.formattedAddress,
+          //   location: {
+          //     lat: selectedPlace.location.latitude,
+          //     lng: selectedPlace.location.longitude,
+          //   },
+          //   tags: selectedPlace.types,
+          // },
         },
       ])
       .select("*")
@@ -141,6 +166,9 @@ export const createFlyerFromTemplate = async (
   selectedPlace: NearbySearchPlaceResult,
   user: Auth_User_Profile_Response
 ) => {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const pt = urlParams.get("pt");
   const board = await getOrCreateBoard(selectedPlace);
 
   const flyerData: DB_Flyer_Create & {
@@ -149,15 +177,37 @@ export const createFlyerFromTemplate = async (
   } = {
     ...templateData,
     typeOfUser: user.typeOfUser,
-    placeId: selectedPlace.id,
+    place: selectedPlace.id,
     user: user.id,
     template: templateData.id,
+    // placeInfo: {
+    //   displayName: selectedPlace.displayName.text,
+    //   formattedAddress: selectedPlace.formattedAddress,
+    //   location: {
+    //     lat: selectedPlace.location.latitude,
+    //     lng: selectedPlace.location.longitude,
+    //   },
+    //   tags: selectedPlace.types,
+    // },
   };
 
   delete flyerData.id;
   delete flyerData.hasComments;
   delete flyerData.templateName;
   delete flyerData.created_at;
+  // posting type
+  if (pt) {
+    switch (pt) {
+      case "r":
+        flyerData.postingMethod = "remote";
+        break;
+      case "rb":
+        flyerData.postingMethod = "remoteBulk";
+        break;
+      default:
+        flyerData.postingMethod = "onLocation";
+    }
+  }
 
   try {
     const { data: newFlyer, error } = await supabase

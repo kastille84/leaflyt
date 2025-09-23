@@ -1,5 +1,16 @@
 import { UploadApiResponse } from "cloudinary";
 import { Auth_User_Profile_Response } from "./Auth_User";
+import { DB_Board } from "./DB_Board";
+
+export type PlaceInfo = {
+  displayName: string;
+  formattedAddress: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  tags: string[];
+};
 
 export interface FlyerDesign {
   top: {
@@ -32,7 +43,7 @@ export interface DB_Flyer_Create {
   id?: string;
   user?: string | Auth_User_Profile_Response | number;
   // boardId?: string;
-  placeId?: string;
+  place?: string | DB_Board;
   title: string;
   category: string;
   subcategory: string;
@@ -50,6 +61,7 @@ export interface DB_Flyer_Create {
   template?: string;
   templateName?: string;
   hasComments?: boolean;
+  placeInfo?: PlaceInfo;
 }
 
 interface DB_Flyer_Create_Unregistered extends DB_Flyer_Create {
@@ -124,8 +136,9 @@ export type DB_Flyers_Response = DB_Flyers_Create_Unregistered;
 
 interface RemoveFlyerKeys {
   id: string;
-  placeId: string;
+  place: string;
   postingMethod?: "onLocation" | "remote" | "remoteBulk";
+  placeInfo?: PlaceInfo;
 }
 export interface DB_Template
   extends Omit<DB_Flyer_Create, keyof RemoveFlyerKeys> {

@@ -39,7 +39,10 @@ export default function FlyerDesignerInput({
   return (
     <FormControl testId="flyerDesigner-container">
       <StyledLabel>Flyer Designer</StyledLabel>
-      <p>Give your flyer a custom look and feel.</p>
+      <p>
+        Give your flyer a custom look and feel. (Best viewed after you've filled
+        out the fields above)
+      </p>
       <p>
         <Button
           disabled={canUpgrade}

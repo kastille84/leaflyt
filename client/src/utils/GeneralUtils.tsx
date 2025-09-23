@@ -52,6 +52,16 @@ function getSubcategoriesForSelect(categories: any, categoryToFind: string) {
   return subcategories;
 }
 
+export const debounce = (func: any, delay: number) => {
+  let timeoutId: any;
+  return (...args: any) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+};
+
 export {
   shortenTitle,
   accessNestedProperty,
