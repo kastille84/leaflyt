@@ -1,15 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import {
-  Map,
-  Marker,
-  AdvancedMarker,
-  MapControl,
-  ControlPosition,
-  Pin,
-  useMapsLibrary,
-  InfoWindow,
-} from "@vis.gl/react-google-maps";
+import { Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 import toast from "react-hot-toast";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 
@@ -38,25 +29,6 @@ const StyledInputContainer = styled.div`
   justify-content: center;
 `;
 
-const StyledMarkerContainer = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-`;
-const StyledTooltipContainer = styled.div`
-  position: "absolute";
-  bottom: "100%"; // Position above the marker
-  left: "50%";
-  transform: "translateX(-50%)";
-  backgroundcolor: "white";
-  padding: "8px";
-  borderradius: "4px";
-  boxshadow: "0 2px 5px rgba(0,0,0,0.2)";
-  whitespace: "nowrap";
-  zindex: 1; // Ensure tooltip is above other map elements
-  background-color: var(--color-grey-50);
-`;
-
 export default function MapContainer() {
   const navigate = useNavigate();
   const { user, setSelectedPlace } = useGlobalContext();
@@ -74,7 +46,7 @@ export default function MapContainer() {
       console.log("placeDetails", placeDetails);
       setSelectedPlace(placeDetails);
       setShowSpinner(false);
-      navigate(`/dashboard/board/${placeDetails.id}`);
+      navigate(`/dashboard/board/${placeDetails.id}?&pt=r`);
     } catch (error: any) {
       toast.error(error.message);
     }

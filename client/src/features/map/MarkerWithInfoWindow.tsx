@@ -7,14 +7,24 @@ import { useCallback, useState } from "react";
 import { DB_Flyer_Create } from "../../interfaces/DB_Flyers";
 import Heading from "../../ui/Heading";
 import styled from "styled-components";
+import Button from "../../ui/Button";
+import { useNavigate } from "react-router-dom";
+import { DB_Board } from "../../interfaces/DB_Board";
 
 const StyledContainer = styled.div`
-  &.infowindow {
+  & .my-infowindow {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
-    background-color: var(--color-grey-50);
+    /* background-color: var(--color-grey-50); */
+    background-color: red;
   }
+`;
+
+const StyledContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 `;
 
 export default function MarkerWithInfoWindow({
@@ -24,6 +34,7 @@ export default function MarkerWithInfoWindow({
   position: { lat: number; lng: number };
   flyer: DB_Flyer_Create;
 }) {
+  const navigtate = useNavigate();
   // `markerRef` and `marker` are needed to establish the connection between
   // the marker and infowindow (if you're using the Marker component, you
   // can use the `useMarkerRef` hook instead).
@@ -53,10 +64,23 @@ export default function MarkerWithInfoWindow({
           anchor={marker}
           onClose={handleClose}
           shouldFocus
-          className="infowindow"
+          className="my-infowindow"
         >
-          <Heading as={"h3"}>{flyer.title}</Heading>
-          <p>Go to Board</p>
+          <StyledContentContainer>
+            <Heading as={"h3"}>{flyer.title}</Heading>
+            <p>{(flyer.place as DB_Board)?.name}</p>
+            <Button
+              variation="primary"
+              size="small"
+              onClick={() =>
+                navigtate(
+                  `/dashboard/board/${(flyer.place as DB_Board)?.placeId}`
+                )
+              }
+            >
+              Go to Board
+            </Button>
+          </StyledContentContainer>
         </InfoWindow>
       )}
     </StyledContainer>

@@ -12,7 +12,7 @@ const MyRectangle = ({ bounds, options }: any) => {
       map: map,
       strokeColor: "#B74539",
       strokeOpacity: 0.8,
-      strokeWeight: 2,
+      strokeWeight: 3,
       fillColor: "#226e33",
       fillOpacity: 0.35,
       ...options,
