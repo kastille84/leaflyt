@@ -25,6 +25,7 @@ import {
 import ImageCarousel from "./SubComponents/ImageCarousel";
 import { Auth_User_Profile_Response } from "../../interfaces/Auth_User";
 import DropdownMenu from "../DropdownMenu";
+import { useGlobalContext } from "../../context/GlobalContext";
 
 const common = {
   style: css`
@@ -237,6 +238,8 @@ export default function FlyerBlockInteractive({
     "info"
   );
 
+  const { setFlyerToEdit, setShowEditFlyerModal, user } = useGlobalContext();
+
   function hasFiles() {
     if (flyer?.fileUrlArr?.length! >= 1) {
       return true;
@@ -364,6 +367,11 @@ export default function FlyerBlockInteractive({
     }
   }
 
+  function handleEditClick() {
+    setFlyerToEdit(flyer);
+    setShowEditFlyerModal(true);
+  }
+
   function renderTopContent() {
     return (
       <>
@@ -371,8 +379,11 @@ export default function FlyerBlockInteractive({
           {determineAvatarAndName()}
         </StyledAvatarContainer>
         <DropdownMenu>
-          <li>Edit</li>
-          <li>How</li>
+          {(flyer.user as Auth_User_Profile_Response)?.id === user?.id && (
+            <li onClick={handleEditClick}>Edit</li>
+          )}
+          <li>Template</li>
+          <li>Flag</li>
         </DropdownMenu>
       </>
     );

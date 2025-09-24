@@ -16,6 +16,8 @@ export default function FlyerSlideIn() {
     drawerAction,
     setDrawerAction,
     selectedPlace,
+    flyerToEdit,
+    setFlyerToEdit,
   } = useGlobalContext();
 
   const determineTypeOfDrawer = (): JSX.Element | null => {
@@ -23,12 +25,13 @@ export default function FlyerSlideIn() {
     if (drawerAction === "create") {
       return <CreateFlyer />;
     }
-    return <Registered flyer={null} />; // TODO: implement edit flyer
+    return <Registered flyerToEdit={flyerToEdit} />;
   };
 
   function handleDrawerClose() {
     setShowCloseSlideInModal(true);
     setDrawerAction(null);
+    setFlyerToEdit(null);
   }
 
   if (!selectedPlace) return null;

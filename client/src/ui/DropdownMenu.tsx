@@ -16,6 +16,7 @@ const StyledDropdownMenuContainer = styled.div`
   background-color: var(--color-grey-50);
   color: var(--color-grey-900);
   opacity: 1 !important;
+  border: 1px solid var(--color-grey-200);
   /* border-radius: var(--border-radius-sm); */
   /* padding: 0.8rem 1.2rem; */
 `;
@@ -29,6 +30,11 @@ const StyledUl = styled.ul`
 
   & li {
     text-align: center;
+    cursor: pointer;
+    /* border: 1px solid var(--color-grey-200); */
+  }
+  & li:hover {
+    background-color: var(--color-grey-100);
   }
 `;
 
@@ -45,7 +51,7 @@ export default function DropdownMenu(props: any) {
         <HiEllipsisHorizontal onClick={handleClick} />
       </StyledActionButtonContainer>
       {isOpen && (
-        <StyledDropdownMenuContainer>
+        <StyledDropdownMenuContainer onMouseLeave={() => setIsOpen(false)}>
           <StyledUl>{props.children}</StyledUl>
         </StyledDropdownMenuContainer>
       )}

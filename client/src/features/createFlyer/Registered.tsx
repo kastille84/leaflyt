@@ -77,9 +77,9 @@ const StyledCheckboxContainer = styled.div`
 `;
 
 export default function Registered({
-  flyer,
+  flyerToEdit,
 }: {
-  flyer?: DB_Flyers_Response | null;
+  flyerToEdit?: DB_Flyers_Response | null;
 }) {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -88,8 +88,8 @@ export default function Registered({
     mode: "onBlur",
   };
 
-  if (flyer) {
-    formOptions.defaultValues = flyer;
+  if (flyerToEdit) {
+    formOptions.defaultValues = flyerToEdit;
   }
 
   const {
@@ -257,32 +257,36 @@ export default function Registered({
                 canUpgrade={!planLimits.paid}
               />
             </FormControlRow>
-            <FormControlRow>
-              <FormControl testId="template-container">
-                <StyledLabel>Create Reusable Template (Encouraged)</StyledLabel>
-                <p>
-                  Creating flyers from scratch each time you post can be
-                  tedious. Create a template to save you time and effort by
-                  reusing it for future flyers.
-                </p>
-                <StyledCheckboxContainer>
-                  <Input type="checkbox" {...register("template")} checked />{" "}
-                  Check this box to create a template
-                </StyledCheckboxContainer>
-                {templateWatch && (
-                  <>
-                    <FullNameInput
-                      register={register}
-                      registerName="templateName"
-                      name="Template"
-                      errors={errors}
-                    />
-                    <CommentsInput register={register} />
-                  </>
-                )}
-              </FormControl>
-              <FormControl>{/* Empty */}</FormControl>
-            </FormControlRow>
+            {!flyerToEdit && (
+              <FormControlRow>
+                <FormControl testId="template-container">
+                  <StyledLabel>
+                    Create Reusable Template (Encouraged)
+                  </StyledLabel>
+                  <p>
+                    Creating flyers from scratch each time you post can be
+                    tedious. Create a template to save you time and effort by
+                    reusing it for future flyers.
+                  </p>
+                  <StyledCheckboxContainer>
+                    <Input type="checkbox" {...register("template")} checked />{" "}
+                    Check this box to create a template
+                  </StyledCheckboxContainer>
+                  {templateWatch && (
+                    <>
+                      <FullNameInput
+                        register={register}
+                        registerName="templateName"
+                        name="Template"
+                        errors={errors}
+                      />
+                      <CommentsInput register={register} />
+                    </>
+                  )}
+                </FormControl>
+                <FormControl>{/* Empty */}</FormControl>
+              </FormControlRow>
+            )}
 
             <StyledFormButtonContainer data-testid="form-button-container">
               <Button type="submit">Create</Button>
