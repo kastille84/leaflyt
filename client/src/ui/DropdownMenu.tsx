@@ -29,12 +29,14 @@ const StyledUl = styled.ul`
   gap: 0.8rem;
 
   & li {
-    text-align: center;
+    /* text-align: center; */
     cursor: pointer;
+    font-size: 1.4rem;
     /* border: 1px solid var(--color-grey-200); */
   }
   & li:hover {
-    background-color: var(--color-grey-100);
+    /* background-color: var(--color-grey-100); */
+    background-color: var(--color-blue-200);
   }
 `;
 

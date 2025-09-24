@@ -372,6 +372,13 @@ export default function FlyerBlockInteractive({
     setShowEditFlyerModal(true);
   }
 
+  function doesFlyerBelongToUser() {
+    if ((flyer.user as Auth_User_Profile_Response)?.id === user?.id) {
+      return true;
+    }
+    return false;
+  }
+
   function renderTopContent() {
     return (
       <>
@@ -379,10 +386,10 @@ export default function FlyerBlockInteractive({
           {determineAvatarAndName()}
         </StyledAvatarContainer>
         <DropdownMenu>
-          {(flyer.user as Auth_User_Profile_Response)?.id === user?.id && (
-            <li onClick={handleEditClick}>Edit</li>
-          )}
-          <li>Template</li>
+          {doesFlyerBelongToUser() && <li onClick={handleEditClick}>Edit</li>}
+          {doesFlyerBelongToUser() && flyer.template && <li>View Template</li>}
+          {!doesFlyerBelongToUser() && <li>Save</li>}
+          <hr />
           <li>Flag</li>
         </DropdownMenu>
       </>
