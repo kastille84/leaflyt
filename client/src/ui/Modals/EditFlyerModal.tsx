@@ -70,6 +70,7 @@ export default function EditFlyerModal() {
         on this board.
       </Heading>
       <StyledButtonContainer>
+        {/* #TODO: add the "edit template" functionality */}
         <Button size="small" variation="primary" onClick={handleStay}>
           Edit Template
         </Button>

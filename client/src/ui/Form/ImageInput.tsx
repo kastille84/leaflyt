@@ -39,8 +39,11 @@ export default function ImageInput({
   // const [fileUrlArr, setFileUrlArr] = useState<any>([]);
 
   useEffect(() => {
-    setValue("fileUrlArr", []);
+    if (!getValues("fileUrlArr")?.length) {
+      setValue("fileUrlArr", []);
+    }
   }, []);
+
   const fileUrlArr = getValues("fileUrlArr");
   // console.log("fileUrlArr", fileUrlArr);
   const openCloudinaryWidget = () => {

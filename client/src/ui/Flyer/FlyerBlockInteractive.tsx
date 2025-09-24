@@ -238,7 +238,13 @@ export default function FlyerBlockInteractive({
     "info"
   );
 
-  const { setFlyerToEdit, setShowEditFlyerModal, user } = useGlobalContext();
+  const {
+    setFlyerToEdit,
+    setShowEditFlyerModal,
+    user,
+    setIsOpenFlyerDrawer,
+    setDrawerAction,
+  } = useGlobalContext();
 
   function hasFiles() {
     if (flyer?.fileUrlArr?.length! >= 1) {
@@ -369,7 +375,12 @@ export default function FlyerBlockInteractive({
 
   function handleEditClick() {
     setFlyerToEdit(flyer);
-    setShowEditFlyerModal(true);
+    if (flyer.template) {
+      setShowEditFlyerModal(true);
+    } else {
+      setIsOpenFlyerDrawer(true);
+      setDrawerAction("edit");
+    }
   }
 
   function doesFlyerBelongToUser() {
@@ -390,7 +401,8 @@ export default function FlyerBlockInteractive({
           {doesFlyerBelongToUser() && flyer.template && <li>View Template</li>}
           {!doesFlyerBelongToUser() && <li>Save</li>}
           <hr />
-          <li>Flag</li>
+          <li>Delete</li>
+          <li>Inappropriate</li>
         </DropdownMenu>
       </>
     );

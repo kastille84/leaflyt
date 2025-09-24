@@ -107,7 +107,6 @@ export default function Registered({
     setShowCloseSlideInModal,
     setIsOpenFlyerDrawer,
     setDrawerAction,
-    selectedPlace,
   } = useGlobalContext();
   const planLimits = useGetUserLimits();
   const { createFlyer } = useCreateRegisteredFlyer();
@@ -223,6 +222,7 @@ export default function Registered({
                   <ImagePreview
                     fileUrlArr={fileUrlArrWatch}
                     setValue={setValue}
+                    isTimed={!flyerToEdit}
                   />
                 )}
               </FormControl>
