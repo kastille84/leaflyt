@@ -4,6 +4,7 @@ import { DB_Flyer_Create, DB_Template } from "../../interfaces/DB_Flyers";
 import {
   createRegisteredFlyer,
   createFlyerFromTemplate,
+  updateRegisteredFlyer,
 } from "../../services/apiFlyers";
 
 export default function useCreateRegisteredFlyer() {
@@ -12,6 +13,11 @@ export default function useCreateRegisteredFlyer() {
   const { mutate: createFlyer, error: createFlyerError } = useMutation({
     mutationFn: (prepData: DB_Flyer_Create) =>
       createRegisteredFlyer(prepData, selectedPlace!),
+  });
+
+  const { mutate: editFlyer, error: editFlyerError } = useMutation({
+    mutationFn: (prepData: DB_Flyer_Create) =>
+      updateRegisteredFlyer(prepData, selectedPlace!),
   });
 
   const {
@@ -25,6 +31,8 @@ export default function useCreateRegisteredFlyer() {
   return {
     createFlyer,
     createFlyerError,
+    editFlyer,
+    editFlyerError,
     createFlyerUsingTemplate,
     createFlyerUsingTemplateError,
   };

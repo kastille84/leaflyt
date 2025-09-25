@@ -18,10 +18,12 @@ export default function ImagePreview({
   fileUrlArr,
   setValue,
   isTimed,
+  isTemplate,
 }: {
   fileUrlArr: UploadApiResponse[];
   setValue: UseFormSetValue<any>;
   isTimed: boolean;
+  isTemplate: boolean;
 }) {
   async function handleDeleteImage(idx: number) {
     const imgToRemoveFromCloudinary = fileUrlArr.splice(idx, 1);
@@ -29,10 +31,11 @@ export default function ImagePreview({
       if (isTimed) {
         // Delete image from cloudinary
         await deleteFileOverTime(imgToRemoveFromCloudinary[0]);
-      } else {
-        // If stand-alone flyer, just delete from filrUrlArr
+      } else if (isTemplate) {
         // If template, delete from cloudinary
       }
+      // If stand-alone flyer, Do nothing, since we just spliced from filrUrlArr alrady
+
       // remove image from state
       setValue("fileUrlArr", fileUrlArr);
     } catch (error) {

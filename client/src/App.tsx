@@ -35,7 +35,7 @@ function App() {
         <GlobalContextProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/dashboard" element={<MainLayout />}>
+              <Route path="/dashboard/" element={<MainLayout />}>
                 <Route path="board/:id" element={<Board />} />
                 <Route path="my-area" element={<MyArea />} />
               </Route>
@@ -44,6 +44,8 @@ function App() {
               <Route path="*" element={<div>Page not found</div>} />
             </Routes>
             <LoginModal />
+            <FlyerSlideIn />
+            <SlideInBottom />
           </BrowserRouter>
           <Toaster
             position="top-center"
@@ -70,9 +72,6 @@ function App() {
               },
             }}
           />
-          <FlyerSlideIn />
-
-          <SlideInBottom />
         </GlobalContextProvider>
       </QueryClientProvider>
     </div>

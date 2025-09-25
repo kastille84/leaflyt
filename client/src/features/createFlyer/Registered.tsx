@@ -31,12 +31,12 @@ import LifespanInput from "../../ui/Form/LifespanInput";
 import { LIFESPAN, REGISTERED_FLYER_DESIGN_DEFAULT } from "../../constants";
 import CommentsInput from "../../ui/Form/CommentsInput";
 import useCreateRegisteredFlyer from "./useCreateRegisteredFlyer";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import UpgradeText from "../../ui/UpgradeText";
 import FlyerDesignerInput from "../../ui/Form/FlyerDesignerInput";
 import FormInfoAlert from "../../ui/Form/FormInfoAlert";
-import { DB_Flyers_Response } from "../../interfaces/DB_Flyers";
+import { DB_Flyers_Response, DB_Template } from "../../interfaces/DB_Flyers";
 
 const StyledRegisteredContainer = styled.div``;
 
@@ -78,8 +78,10 @@ const StyledCheckboxContainer = styled.div`
 
 export default function Registered({
   flyerToEdit,
+  templateToEdit,
 }: {
   flyerToEdit?: DB_Flyers_Response | null;
+  templateToEdit?: DB_Template | null;
 }) {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -107,12 +109,15 @@ export default function Registered({
     setShowCloseSlideInModal,
     setIsOpenFlyerDrawer,
     setDrawerAction,
+    setFlyerToEdit,
+    selectedPlace,
   } = useGlobalContext();
   const planLimits = useGetUserLimits();
-  const { createFlyer } = useCreateRegisteredFlyer();
+  const { createFlyer, editFlyer } = useCreateRegisteredFlyer();
 
   const queryClient = useQueryClient();
-  const { id: boardId } = useParams();
+  // const { id: boardId } = useParams();
+  // const navigate = useNavigate();
 
   const categoryWatch = watch("category");
   const subcategoryWatch = watch("subcategory");
@@ -134,23 +139,60 @@ export default function Registered({
 
     console.log("registered data", data);
     setShowSpinner(true);
-    createFlyer(data, {
-      onSuccess: () => {
-        setShowSpinner(false);
-        toast.success("Flyer created!");
-        setIsOpenFlyerDrawer(false);
-        setDrawerAction(null);
-        // queryClient.invalidateQueries({ queryKey: ["board", boardId] });
-        queryClient.refetchQueries({ queryKey: ["board", boardId] });
-      },
-      onError: (error: any) => {
-        setShowSpinner(false);
-        toast.error(error.message);
-        setSubmitError(error.message);
-        // set focus on error
-        document.querySelector("#form-error")?.scrollIntoView();
-      },
-    });
+
+    if (flyerToEdit) {
+      // action - Edit Existing Flyer
+      editFlyer(data, {
+        onSuccess: () => {
+          setShowSpinner(false);
+          toast.success("Flyer updated!");
+          setIsOpenFlyerDrawer(false);
+          setDrawerAction(null);
+          setFlyerToEdit(null);
+          queryClient.invalidateQueries({
+            queryKey: ["board", selectedPlace?.id],
+          });
+          // queryClient.refetchQueries({
+          //   queryKey: ["board", selectedPlace?.id],
+          //   stale: true,
+          // });
+        },
+        onError: (error: any) => {
+          setShowSpinner(false);
+          toast.error(error.message);
+          setSubmitError(error.message);
+          // set focus on error
+          document.querySelector("#form-error")?.scrollIntoView();
+        },
+      });
+    } else if (templateToEdit) {
+      // action - Edit Existing Template
+    } else {
+      // action - Create New Flyer
+      createFlyer(data, {
+        onSuccess: () => {
+          setShowSpinner(false);
+          toast.success("Flyer created!");
+          setIsOpenFlyerDrawer(false);
+          setDrawerAction(null);
+          queryClient.invalidateQueries({
+            queryKey: ["board", selectedPlace?.id],
+          });
+          // queryClient.refetchQueries({
+          //   queryKey: ["board", selectedPlace?.id],
+          // });
+        },
+        onError: (error: any) => {
+          setShowSpinner(false);
+          toast.error(error.message);
+          setSubmitError(error.message);
+          // set focus on error
+          document.querySelector("#form-error")?.scrollIntoView();
+        },
+      });
+    }
+
+    // navigate(".", { replace: true });
   };
 
   function handleCancel() {
@@ -222,7 +264,8 @@ export default function Registered({
                   <ImagePreview
                     fileUrlArr={fileUrlArrWatch}
                     setValue={setValue}
-                    isTimed={!flyerToEdit}
+                    isTimed={!flyerToEdit && !templateToEdit}
+                    isTemplate={!!templateToEdit}
                   />
                 )}
               </FormControl>
@@ -289,7 +332,9 @@ export default function Registered({
             )}
 
             <StyledFormButtonContainer data-testid="form-button-container">
-              <Button type="submit">Create</Button>
+              <Button type="submit">
+                {flyerToEdit || templateToEdit ? "Update" : "Create"}
+              </Button>
               <Button
                 type="button"
                 variation="secondary"

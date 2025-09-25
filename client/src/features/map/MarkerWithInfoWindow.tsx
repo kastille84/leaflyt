@@ -66,7 +66,7 @@ export default function MarkerWithInfoWindow({
               size="small"
               onClick={() =>
                 navigtate(
-                  `/dashboard/board/${(flyer.place as DB_Board)?.placeId}`
+                  `/dashboard/board/${(flyer.place as DB_Board)?.placeId}?&pt=r`
                 )
               }
             >

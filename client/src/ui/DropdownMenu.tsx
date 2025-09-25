@@ -17,6 +17,7 @@ const StyledDropdownMenuContainer = styled.div`
   color: var(--color-grey-900);
   opacity: 1 !important;
   border: 1px solid var(--color-grey-200);
+  z-index: 1002;
   /* border-radius: var(--border-radius-sm); */
   /* padding: 0.8rem 1.2rem; */
 `;

@@ -136,15 +136,6 @@ export const createRegisteredFlyer = async (
           fileUrlArr: flyerData.fileUrlArr,
           postingMethod: flyerData.postingMethod || "onLocation",
           lifespan: flyerData.lifespan,
-          // placeInfo: {
-          //   displayName: selectedPlace.displayName.text,
-          //   formattedAddress: selectedPlace.formattedAddress,
-          //   location: {
-          //     lat: selectedPlace.location.latitude,
-          //     lng: selectedPlace.location.longitude,
-          //   },
-          //   tags: selectedPlace.types,
-          // },
         },
       ])
       .select("*")
@@ -158,6 +149,54 @@ export const createRegisteredFlyer = async (
   } catch (error: any) {
     console.error(error);
     throw new Error("Error creating a flyer: " + error.message);
+  }
+};
+export const updateRegisteredFlyer = async (
+  flyerData: DB_Flyer_Create,
+  selectedPlace: NearbySearchPlaceResult
+) => {
+  const board = await getOrCreateBoard(selectedPlace);
+
+  // Flyer is made to be Stand-alone, if once belonging to a template, remove reference
+  flyerData.template = null;
+  // create the flyer and attach the template id
+  try {
+    const { data: updatedFlyer, error } = await supabase
+      .from("flyers")
+      .update(flyerData)
+      .eq("id", flyerData.id)
+      .select("*")
+      .single();
+    // const { data: newFlyer, error } = await supabase
+    //   .from("flyers")
+    //   .insert([
+    //     {
+    //       template: createdTemplate?.id, // many to one with template table
+    //       place: selectedPlace.id, // many to one with board table
+    //       user: flyerData.user,
+    //       title: flyerData.title,
+    //       category: flyerData.category,
+    //       subcategory: flyerData.subcategory,
+    //       content: flyerData.content,
+    //       tags: flyerData.tags,
+    //       flyerDesign: flyerData.flyerDesign,
+    //       callToAction: flyerData.callToAction,
+    //       fileUrlArr: flyerData.fileUrlArr,
+    //       postingMethod: flyerData.postingMethod || "onLocation",
+    //       lifespan: flyerData.lifespan,
+    //     },
+    //   ])
+    //   .select("*")
+    //   .single();
+
+    if (error) {
+      console.error(error);
+      throw new Error("Error updating the flyer: " + error.message);
+    }
+    return updatedFlyer;
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error updating the flyer: " + error.message);
   }
 };
 

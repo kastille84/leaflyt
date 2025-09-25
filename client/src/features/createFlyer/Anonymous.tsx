@@ -201,6 +201,8 @@ export default function Anonymous() {
                   <ImagePreview
                     fileUrlArr={fileUrlArrWatch}
                     setValue={setValue}
+                    isTimed={true}
+                    isTemplate={false}
                   />
                 )}
               </FormControl>
