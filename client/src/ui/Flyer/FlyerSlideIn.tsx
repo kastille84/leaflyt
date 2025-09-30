@@ -7,6 +7,7 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import CreateFlyer from "../../features/createFlyer/CreateFlyer";
 import FlyerFormContainer from "./FlyerFormContainer";
 import { JSX } from "react";
+import Registered from "../../features/createFlyer/Registered";
 
 export default function FlyerSlideIn() {
   const {
@@ -15,6 +16,8 @@ export default function FlyerSlideIn() {
     drawerAction,
     setDrawerAction,
     selectedPlace,
+    flyerToEdit,
+    setFlyerToEdit,
   } = useGlobalContext();
 
   const determineTypeOfDrawer = (): JSX.Element | null => {
@@ -22,12 +25,13 @@ export default function FlyerSlideIn() {
     if (drawerAction === "create") {
       return <CreateFlyer />;
     }
-    return <CreateFlyer />; // TODO: implement edit flyer
+    return <Registered flyerToEdit={flyerToEdit} />;
   };
 
   function handleDrawerClose() {
     setShowCloseSlideInModal(true);
     setDrawerAction(null);
+    setFlyerToEdit(null);
   }
 
   if (!selectedPlace) return null;

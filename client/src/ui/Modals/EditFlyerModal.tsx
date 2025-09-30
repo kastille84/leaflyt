@@ -12,14 +12,12 @@ const StyledButtonContainer = styled.div`
   gap: 1.6rem;
 `;
 
-export default function CloseSlideInModal() {
+export default function EditFlyerModal() {
   const {
-    showCloseSlideInModal,
-    setShowCloseSlideInModal,
+    showEditFlyerModal,
+    setShowEditFlyerModal,
     setIsOpenFlyerDrawer,
     setDrawerAction,
-    flyerToEdit,
-    setFlyerToEdit,
   } = useGlobalContext();
   const customStyles = {
     overlay: {
@@ -39,31 +37,48 @@ export default function CloseSlideInModal() {
   };
 
   function handleLeave() {
-    setShowCloseSlideInModal(false);
+    setShowEditFlyerModal(false);
     setIsOpenFlyerDrawer(false);
     setDrawerAction(null);
-    if (flyerToEdit) setFlyerToEdit(null);
   }
 
   function handleStay() {
-    setShowCloseSlideInModal(false);
+    setShowEditFlyerModal(false);
+  }
+
+  function handleEditFlyer() {
+    setShowEditFlyerModal(false);
+    setIsOpenFlyerDrawer(true);
+    setDrawerAction("edit");
   }
 
   return (
     // https://www.npmjs.com/package/react-modal
     <Modal
       testId="close-slide-in-modal"
-      isOpen={showCloseSlideInModal}
+      isOpen={showEditFlyerModal}
       style={customStyles}
     >
-      <Heading as="h2">Don't lose your message!</Heading>
-      <p>Are you sure you want to leave?</p>
+      <Heading as="h2">This flyer was created using a "Template"</Heading>
+      <p>
+        Editing the flyer will make the flyer out-of-sync with the template.
+      </p>
+      <p>Essentially, making it a stand-alone flyer.</p>
+      <p>Stand-alone flyers lose the benefits of the template.</p>
+      <Heading as={"h4"}>
+        It is suggested that you edit the template instead and repost the flyer
+        on this board.
+      </Heading>
       <StyledButtonContainer>
+        {/* #TODO: add the "edit template" functionality */}
         <Button size="small" variation="primary" onClick={handleStay}>
-          Stay
+          Edit Template
+        </Button>
+        <Button size="small" variation="secondary" onClick={handleEditFlyer}>
+          Edit Flyer
         </Button>
         <Button size="small" variation="danger" onClick={handleLeave}>
-          Leave
+          Cancel
         </Button>
       </StyledButtonContainer>
     </Modal>

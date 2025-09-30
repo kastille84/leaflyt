@@ -24,6 +24,8 @@ import {
 } from "../../interfaces/DB_Flyers";
 import ImageCarousel from "./SubComponents/ImageCarousel";
 import { Auth_User_Profile_Response } from "../../interfaces/Auth_User";
+import DropdownMenu from "../DropdownMenu";
+import { useGlobalContext } from "../../context/GlobalContext";
 
 const common = {
   style: css`
@@ -236,6 +238,14 @@ export default function FlyerBlockInteractive({
     "info"
   );
 
+  const {
+    setFlyerToEdit,
+    setShowEditFlyerModal,
+    user,
+    setIsOpenFlyerDrawer,
+    setDrawerAction,
+  } = useGlobalContext();
+
   function hasFiles() {
     if (flyer?.fileUrlArr?.length! >= 1) {
       return true;
@@ -363,15 +373,37 @@ export default function FlyerBlockInteractive({
     }
   }
 
+  function handleEditClick() {
+    setFlyerToEdit(flyer);
+    if (flyer.template) {
+      setShowEditFlyerModal(true);
+    } else {
+      setIsOpenFlyerDrawer(true);
+      setDrawerAction("edit");
+    }
+  }
+
+  function doesFlyerBelongToUser() {
+    if ((flyer.user as Auth_User_Profile_Response)?.id === user?.id) {
+      return true;
+    }
+    return false;
+  }
+
   function renderTopContent() {
     return (
       <>
         <StyledAvatarContainer>
           {determineAvatarAndName()}
         </StyledAvatarContainer>
-        <div>
-          <HiOutlineEllipsisHorizontal />
-        </div>
+        <DropdownMenu>
+          {doesFlyerBelongToUser() && <li onClick={handleEditClick}>Edit</li>}
+          {doesFlyerBelongToUser() && flyer.template && <li>View Template</li>}
+          {!doesFlyerBelongToUser() && <li>Save</li>}
+          <hr />
+          <li>Delete</li>
+          <li>Inappropriate</li>
+        </DropdownMenu>
       </>
     );
   }

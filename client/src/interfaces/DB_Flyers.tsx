@@ -58,7 +58,7 @@ export interface DB_Flyer_Create {
     instructions: string;
   };
   lifespan?: string;
-  template?: string;
+  template?: string | null;
   templateName?: string;
   hasComments?: boolean;
   placeInfo?: PlaceInfo;

@@ -4,6 +4,7 @@ import useGetUserGeo from "../hooks/useGetUserGeo";
 import { LatLng, NearbySearchPlaceResult } from "../interfaces/Geo";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
+import { DB_Flyers_Response } from "../interfaces/DB_Flyers";
 
 export type ContextType = {
   getUserGeo: () => void;
@@ -60,6 +61,12 @@ export type ContextType = {
   setHasFlyerAtLocation: React.Dispatch<React.SetStateAction<boolean>>;
   isSelectingNewPlace: boolean;
   setIsSelectingNewPlace: React.Dispatch<React.SetStateAction<boolean>>;
+  flyerToEdit: DB_Flyers_Response | null;
+  setFlyerToEdit: React.Dispatch<
+    React.SetStateAction<DB_Flyers_Response | null>
+  >;
+  setShowEditFlyerModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showEditFlyerModal: boolean;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -94,6 +101,10 @@ const GlobalContext = createContext<ContextType>({
   setHasFlyerAtLocation: () => {},
   isSelectingNewPlace: false,
   setIsSelectingNewPlace: () => {},
+  flyerToEdit: null,
+  setFlyerToEdit: () => {},
+  setShowEditFlyerModal: () => {},
+  showEditFlyerModal: false,
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -122,6 +133,10 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   >(null);
   const [hasFlyerAtLocation, setHasFlyerAtLocation] = useState(false);
   const [isSelectingNewPlace, setIsSelectingNewPlace] = useState(false);
+  const [flyerToEdit, setFlyerToEdit] = useState<DB_Flyers_Response | null>(
+    null
+  );
+  const [showEditFlyerModal, setShowEditFlyerModal] = useState(false);
 
   const {
     getUserGeo,
@@ -134,6 +149,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   return (
     <GlobalContext.Provider
       value={{
+        // Location
         getUserGeo,
         isGettingLocation,
         coords,
@@ -141,30 +157,39 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         setIsGettingLocation,
         selectedPlace,
         setSelectedPlace,
-        isOpenFlyerDrawer,
-        setIsOpenFlyerDrawer,
-        drawerAction,
-        setDrawerAction,
-        showCloseSlideInModal,
-        setShowCloseSlideInModal,
-        isLoggedIn,
-        setIsLoggedIn,
-        showLoginModal,
-        setShowLoginModal,
-        isOpenBottomSlideIn,
-        setIsOpenBottomSlideIn,
-        bottomSlideInType,
-        setBottomSlideInType,
-        user,
-        setUser,
-        flyerDesignOptions,
-        setFlyerDesignOptions,
-        carouselImages,
-        setCarouselImages,
         hasFlyerAtLocation,
         setHasFlyerAtLocation,
         isSelectingNewPlace,
         setIsSelectingNewPlace,
+        // Drawers
+        isOpenFlyerDrawer,
+        setIsOpenFlyerDrawer,
+        drawerAction,
+        setDrawerAction,
+        // Modals
+        showCloseSlideInModal,
+        setShowCloseSlideInModal,
+        showLoginModal,
+        setShowLoginModal,
+        setShowEditFlyerModal,
+        showEditFlyerModal,
+        // Auth
+        isLoggedIn,
+        setIsLoggedIn,
+        user,
+        setUser,
+        // SlideIns
+        isOpenBottomSlideIn,
+        setIsOpenBottomSlideIn,
+        bottomSlideInType,
+        setBottomSlideInType,
+        //Flyer
+        flyerToEdit,
+        setFlyerToEdit,
+        flyerDesignOptions,
+        setFlyerDesignOptions,
+        carouselImages,
+        setCarouselImages,
       }}
     >
       {children}
