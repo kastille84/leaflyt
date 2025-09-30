@@ -36,6 +36,7 @@ export type ContextType = {
     | "flyerDesigner"
     | "carousel"
     | "hasTemplates"
+    | "chooseAssets"
     | null;
   setBottomSlideInType: React.Dispatch<
     React.SetStateAction<
@@ -44,6 +45,7 @@ export type ContextType = {
       | "flyerDesigner"
       | "carousel"
       | "hasTemplates"
+      | "chooseAssets"
       | null
     >
   >;
@@ -121,7 +123,13 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [isOpenBottomSlideIn, setIsOpenBottomSlideIn] =
     useState<boolean>(false);
   const [bottomSlideInType, setBottomSlideInType] = useState<
-    "signup" | "upgrade" | "flyerDesigner" | "carousel" | "hasTemplates" | null
+    | "signup"
+    | "upgrade"
+    | "flyerDesigner"
+    | "carousel"
+    | "hasTemplates"
+    | "chooseAssets"
+    | null
   >(null);
   const [user, setUser] = useState<Auth_User_Profile_Response | null>(null);
   const [flyerDesignOptions, setFlyerDesignOptions] = useState<{

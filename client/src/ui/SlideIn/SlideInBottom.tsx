@@ -51,6 +51,8 @@ export default function SlideInBottom() {
         );
       case "hasTemplates":
         return <TemplateSelectionContainer />;
+      case "chooseAssets":
+        return <p>Choose Assets</p>;
     }
   }
 

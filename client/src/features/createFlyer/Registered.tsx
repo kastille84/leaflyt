@@ -111,6 +111,8 @@ export default function Registered({
     setDrawerAction,
     setFlyerToEdit,
     selectedPlace,
+    setBottomSlideInType,
+    setIsOpenBottomSlideIn,
   } = useGlobalContext();
   const planLimits = useGetUserLimits();
   const { createFlyer, editFlyer } = useCreateRegisteredFlyer();
@@ -199,6 +201,11 @@ export default function Registered({
     setShowCloseSlideInModal(true);
   }
 
+  function handleChooseAsset() {
+    setBottomSlideInType("chooseAssets");
+    setIsOpenBottomSlideIn(true);
+  }
+
   useEffect(() => {
     if (!templateWatch) {
       unregister("templateName");
@@ -253,7 +260,7 @@ export default function Registered({
                             <Input type="file" id="image" />
                           </FormControl> */}
               <FormControl>
-                <ImageInput
+                {/* <ImageInput
                   register={register}
                   getValues={getValues}
                   setValue={setValue}
@@ -267,7 +274,11 @@ export default function Registered({
                     isTimed={!flyerToEdit && !templateToEdit}
                     isTemplate={!!templateToEdit}
                   />
-                )}
+                )} */}
+                <StyledLabel htmlFor="image">Choose an asset</StyledLabel>
+                <Button type="button" onClick={handleChooseAsset}>
+                  Upload
+                </Button>
               </FormControl>
             </FormControlRow>
             <FormControlRow>
