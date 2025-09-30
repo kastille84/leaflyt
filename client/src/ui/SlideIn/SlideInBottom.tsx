@@ -5,13 +5,14 @@ import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import { useGlobalContext } from "../../context/GlobalContext";
 import RegistrationContainer from "../../features/authentication/SignupContainer";
-import { SIGNUP } from "../../constants";
 import styled from "styled-components";
 import { HiOutlineXMark } from "react-icons/hi2";
 import FlyerDesignerContainer from "../../features/createFlyer/FlyerDesigner/FlyerDesignerContainer";
 import { FlyerDesignerContextProvider } from "../../context/FlyerDesignerContext";
 import FullCarouselContainer from "../Flyer/FullCarouselContainer";
 import TemplateSelectionContainer from "../../features/template/TemplateSelectionContainer";
+import AssestSelectionContainer from "../AssetSelection/AssestSelectionContainer";
+import { AssetSelectionContextProvider } from "../../context/AssetSelectionContext";
 
 const StyledCloseContainer = styled.div`
   display: flex;
@@ -52,7 +53,13 @@ export default function SlideInBottom() {
       case "hasTemplates":
         return <TemplateSelectionContainer />;
       case "chooseAssets":
-        return <p>Choose Assets</p>;
+        return (
+          <AssetSelectionContextProvider>
+            <AssestSelectionContainer />
+          </AssetSelectionContextProvider>
+        );
+      default:
+        return null;
     }
   }
 

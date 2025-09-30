@@ -136,7 +136,12 @@ export interface Auth_User_Profile_Response {
   avatar?: string | null;
   flyers: any[]; // TODO: add flyer type
   templates: DB_Template[];
-  assets: UploadApiResponse[];
+  assets: {
+    id: number;
+    user: number;
+    asset_info: UploadApiResponse;
+    created_at: string;
+  }[];
 }
 
 export interface LoginSubmitData {
