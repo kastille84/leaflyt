@@ -13,6 +13,10 @@ export type AssetSelectionContextType = {
   setSelectedOption: React.Dispatch<React.SetStateAction<"existing" | "new">>;
   assetsList: UploadApiResponse[] | [];
   setAssetsList: React.Dispatch<React.SetStateAction<UploadApiResponse[] | []>>;
+  timedAssetsList: UploadApiResponse[] | [];
+  setTimedAssetsList: React.Dispatch<
+    React.SetStateAction<UploadApiResponse[] | []>
+  >;
 };
 
 const AssetSelectionContext = createContext<AssetSelectionContextType>({
@@ -22,6 +26,8 @@ const AssetSelectionContext = createContext<AssetSelectionContextType>({
   setSelectedOption: () => {},
   assetsList: [],
   setAssetsList: () => {},
+  timedAssetsList: [],
+  setTimedAssetsList: () => {},
 });
 
 function AssetSelectionContextProvider({ children }: PropsWithChildren) {
@@ -30,6 +36,9 @@ function AssetSelectionContextProvider({ children }: PropsWithChildren) {
     "existing"
   );
   const [assetsList, setAssetsList] = useState<UploadApiResponse[] | []>([]);
+  const [timedAssetsList, setTimedAssetsList] = useState<
+    UploadApiResponse[] | []
+  >([]);
 
   return (
     <AssetSelectionContext.Provider
@@ -40,6 +49,8 @@ function AssetSelectionContextProvider({ children }: PropsWithChildren) {
         setSelectedOption,
         assetsList,
         setAssetsList,
+        timedAssetsList,
+        setTimedAssetsList,
       }}
     >
       {children}

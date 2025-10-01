@@ -2,7 +2,8 @@ import styled from "styled-components";
 import Button from "../Button";
 import { useAssetSelectionContext } from "../../context/AssetSelectionContext";
 import ExistingAssetsList from "./ExistingAssetsList/ExistingAssetsList";
-import SelectedAssetList from "./SelectedAssetsList/SelectedAssetList";
+import SelectedAssetList from "./SelectedAssetsList/SelectedAssetsList";
+import NewAssetContainer from "./NewAsset/NewAssetContainer";
 
 const StyledAssestSelectionContainer = styled.div`
   width: 70%;
@@ -12,6 +13,7 @@ const StyledAssestSelectionContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 8% 1fr 20% 5%;
+  grid-gap: 2.4rem;
 `;
 
 const StyledTopButtonContainer = styled.div`
@@ -34,7 +36,7 @@ export default function AssestSelectionContainer() {
     if (selectedOption === "existing") {
       return <ExistingAssetsList />;
     } else if (selectedOption === "new") {
-      return <p>"Add New Asset"</p>;
+      return <NewAssetContainer />;
     }
   }
 
@@ -59,7 +61,7 @@ export default function AssestSelectionContainer() {
           Add New Asset
         </Button>
       </StyledTopButtonContainer>
-      <div>{determineSelectionTypeToDisplay()}</div>
+      {determineSelectionTypeToDisplay()}
 
       <SelectedAssetList selectedAssets={assetsList} />
 

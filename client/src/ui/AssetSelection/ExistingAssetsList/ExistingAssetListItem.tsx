@@ -30,8 +30,10 @@ const StyledCheckbox = styled.input`
 
 export default function ExistingAssetListItem({
   asset,
+  preChecked,
 }: {
   asset: UploadApiResponse;
+  preChecked: boolean;
 }) {
   const { setAssetsList } = useAssetSelectionContext();
 
@@ -56,6 +58,7 @@ export default function ExistingAssetListItem({
         onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
           handleAssetSelection(evt.target.checked)
         }
+        checked={preChecked}
       />
       <p>{asset.original_filename}</p>
     </StyledExistingAssetListItem>

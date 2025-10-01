@@ -5,7 +5,12 @@ import { useGlobalContext } from "../../../context/GlobalContext";
 import ExistingAssetListItem from "./ExistingAssetListItem";
 
 const StyledExistingAssetsListContainer = styled.ul`
+  border: 2px solid var(--color-brand-600);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 1.6rem;
   display: flex;
+  flex-wrap: wrap;
   height: 100%;
   /* flex-direction: column; */
   gap: 1.6rem;
@@ -15,6 +20,7 @@ const StyledExistingAssetsListContainer = styled.ul`
 export default function ExistingAssetsList() {
   // const { selectedOption, setSelectedOption } = useAssetSelectionContext();
   const { user } = useGlobalContext();
+  const { assetsList } = useAssetSelectionContext();
 
   return (
     <StyledExistingAssetsListContainer>
@@ -23,6 +29,9 @@ export default function ExistingAssetsList() {
         <ExistingAssetListItem
           key={asset.id}
           asset={asset.asset_info}
+          preChecked={assetsList.some(
+            (assetItem) => assetItem.public_id === asset.asset_info.public_id
+          )}
         ></ExistingAssetListItem>
       ))}
     </StyledExistingAssetsListContainer>

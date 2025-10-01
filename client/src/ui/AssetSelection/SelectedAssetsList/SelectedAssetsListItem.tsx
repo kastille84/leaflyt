@@ -4,7 +4,22 @@ import { UploadApiResponse } from "cloudinary";
 import { useAssetSelectionContext } from "../../../context/AssetSelectionContext";
 import { HiOutlineArrowTopRightOnSquare } from "react-icons/hi2";
 
-const StyledSelectedAssetsListItem = styled.figure`
+const StyledListItem = styled.li`
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background-color: var(--color-grey-50);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-grey-200);
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+  }
+`;
+
+const StyledFigure = styled.figure`
   position: relative;
   width: 100px;
   height: 100px;
@@ -56,20 +71,24 @@ export default function SelectedAssetsListItem({
   }
 
   return (
-    <StyledSelectedAssetsListItem>
-      <img
-        src={asset.resource_type === "video" ? asset.thumbnail_url : asset.url}
-        alt={asset.original_filename}
-      />
-      {/* <StyledCheckbox
+    <StyledListItem>
+      <StyledFigure>
+        <img
+          src={
+            asset.resource_type === "video" ? asset.thumbnail_url : asset.url
+          }
+          alt={asset.original_filename}
+        />
+        {/* <StyledCheckbox
         type="checkbox"
         onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
           handleAssetSelection(evt.target.checked)
         }
       /> */}
-      <StyledIconContainer>
-        <HiOutlineArrowTopRightOnSquare />
-      </StyledIconContainer>
-    </StyledSelectedAssetsListItem>
+        <StyledIconContainer>
+          <HiOutlineArrowTopRightOnSquare />
+        </StyledIconContainer>
+      </StyledFigure>
+    </StyledListItem>
   );
 }
