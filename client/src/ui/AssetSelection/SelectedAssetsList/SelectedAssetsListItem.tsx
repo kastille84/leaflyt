@@ -8,6 +8,7 @@ const StyledListItem = styled.li`
   position: relative;
   width: 100px;
   height: 100px;
+  margin-bottom: 1.6rem;
   background-color: var(--color-grey-50);
   border-radius: var(--border-radius-sm);
   border: 1px solid var(--color-grey-200);
@@ -59,16 +60,6 @@ export default function SelectedAssetsListItem({
   asset: UploadApiResponse;
 }) {
   const { setAssetsList } = useAssetSelectionContext();
-
-  function handleAssetSelection(checkedVal: boolean) {
-    if (checkedVal) {
-      setAssetsList((prevList) => [...prevList, asset]);
-    } else {
-      setAssetsList((prevList) =>
-        prevList.filter((prevAsset) => prevAsset.public_id !== asset.public_id)
-      );
-    }
-  }
 
   return (
     <StyledListItem>

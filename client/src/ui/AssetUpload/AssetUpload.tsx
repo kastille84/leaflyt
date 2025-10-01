@@ -31,9 +31,11 @@ const StyledLabel = styled.label`
 export default function AssetUpload({
   level,
   onAssetAdded,
+  currentTotalAssets,
 }: {
   level: number;
   onAssetAdded: Function;
+  currentTotalAssets: number;
 }) {
   const uploadButtonRef = useRef(null);
   const cloudinaryWidgetRef = useRef(null);
@@ -94,16 +96,12 @@ export default function AssetUpload({
           ref={uploadButtonRef}
           type="button"
           onClick={openCloudinaryWidget}
-          // disabled={
-          //   fileUrlArr &&
-          //   fileUrlArr?.length >= FILE_UPLOAD_OPTIONS[level].maxFiles
-          // }
-          // variation={
-          //   fileUrlArr &&
-          //   fileUrlArr?.length >= FILE_UPLOAD_OPTIONS[level].maxFiles
-          //     ? "disabled"
-          //     : "primary"
-          // }
+          disabled={currentTotalAssets >= FILE_UPLOAD_OPTIONS[level].maxFiles}
+          variation={
+            currentTotalAssets >= FILE_UPLOAD_OPTIONS[level].maxFiles
+              ? "disabled"
+              : "primary"
+          }
         >
           Upload Asset
         </Button>
@@ -117,7 +115,10 @@ export default function AssetUpload({
               },
             })}
           /> */}
-        <small>Uploaded file will auto-delete in 8 mins</small>
+        <small>
+          Uploaded files can be deleted within the alloted time.
+          <br /> After that, it becomes part of your assets library.
+        </small>
       </StyledAssetUploadContainer>
       {/* Hidden input to store URL */}
       {/* </FormControl> */}

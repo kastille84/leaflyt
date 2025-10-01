@@ -21,7 +21,8 @@ const StyledNewAssetContainer = styled.div`
 
 export default function NewAssetContainer() {
   const userLimits = useGetUserLimits();
-  const { setTimedAssetsList, setAssetsList } = useAssetSelectionContext();
+  const { setTimedAssetsList, setAssetsList, timedAssetsList } =
+    useAssetSelectionContext();
   function handleAssetAdded(addedAsset: UploadApiResponse) {
     setTimedAssetsList((prev) => [...prev, addedAsset]);
     setAssetsList((prev) => [...prev, addedAsset]);
@@ -29,7 +30,11 @@ export default function NewAssetContainer() {
 
   return (
     <StyledNewAssetContainer>
-      <AssetUpload level={userLimits.level} onAssetAdded={handleAssetAdded} />
+      <AssetUpload
+        level={userLimits.level}
+        onAssetAdded={handleAssetAdded}
+        currentTotalAssets={timedAssetsList.length}
+      />
     </StyledNewAssetContainer>
   );
 }
