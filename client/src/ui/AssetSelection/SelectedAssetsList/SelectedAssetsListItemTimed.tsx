@@ -9,6 +9,7 @@ import {
 } from "react-icons/hi2";
 import { useEffect, useState } from "react";
 import useAssetMutations from "../../../features/assets/useAssetMutations";
+import useGetUserProfileById from "../../../hooks/useGetUserProfileById";
 
 const StyledListItem = styled.li`
   position: relative;
@@ -96,8 +97,11 @@ export default function SelectedAssetsListItemTimed({
   idx: number;
   handleDeleteAsset: (idx: number) => void;
 }) {
-  const { setAssetsList } = useAssetSelectionContext();
+  const { setAssetsList, setTimedAssetsList } = useAssetSelectionContext();
   const { addAssetFn } = useAssetMutations();
+  const [isAddedToAssets, setIsAddedToAssets] = useState<boolean>(false);
+  // will get userProfile and set to user after asset is added
+  useGetUserProfileById(isAddedToAssets);
 
   // const [timeLeft, setTimeLeft] = useState<number>(8 * 60);
   const [timeLeft, setTimeLeft] = useState<number>(60);
@@ -112,15 +116,18 @@ export default function SelectedAssetsListItemTimed({
         // If time is 0 or less, clear the interval to stop the timer.
         clearInterval(timer);
         // #TODO: ADD as part of Assets
-        addAssetFn(asset, {
-          onSuccess: () => {
-            console.log("success");
-          },
-          onError: () => {
-            console.log("error");
-          },
-        });
-        // #TODO: Get updated user
+        if (!isAddedToAssets) {
+          addAssetFn(asset, {
+            onSuccess: () => {
+              console.log("success");
+              // this flag, triggers useGetProfileById to get updated user
+              setIsAddedToAssets((prev) => !prev);
+            },
+            onError: () => {
+              console.log("error");
+            },
+          });
+        }
       }
     }, 1000); // Update every 1000 milliseconds (1 second).
 
@@ -142,6 +149,15 @@ export default function SelectedAssetsListItemTimed({
     return `${formattedMinutes}:${formattedSeconds}`;
   };
 
+  useEffect(() => {
+    if (isAddedToAssets) {
+      // remove asset from timedAssetsList
+      setTimedAssetsList((prev) =>
+        prev.filter((asset) => asset.public_id !== asset.public_id)
+      );
+    }
+  }, [isAddedToAssets]);
+
   return (
     <StyledListItem>
       <StyledFigure>
@@ -151,15 +167,17 @@ export default function SelectedAssetsListItemTimed({
           }
           alt={asset.original_filename}
         />
-        {timeLeft > 60 && <p>{formatTime(timeLeft)}</p>}
+        {timeLeft > 0 && <p>{formatTime(timeLeft)}</p>}
         {timeLeft <= 0 && <p>Added to Assets</p>}
 
         <StyledIconContainer>
           <HiOutlineArrowTopRightOnSquare />
         </StyledIconContainer>
-        <StyledCross onClick={() => handleDeleteAsset(idx)}>
-          <HiOutlineXMark />
-        </StyledCross>
+        {!isAddedToAssets && (
+          <StyledCross onClick={() => handleDeleteAsset(idx)}>
+            <HiOutlineXMark />
+          </StyledCross>
+        )}
       </StyledFigure>
     </StyledListItem>
   );
