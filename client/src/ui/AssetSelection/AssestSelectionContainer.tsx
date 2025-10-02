@@ -4,6 +4,7 @@ import { useAssetSelectionContext } from "../../context/AssetSelectionContext";
 import ExistingAssetsList from "./ExistingAssetsList/ExistingAssetsList";
 import SelectedAssetList from "./SelectedAssetsList/SelectedAssetsList";
 import NewAssetContainer from "./NewAsset/NewAssetContainer";
+import useGetUserLimits from "../../hooks/useGetUserLimits";
 
 const StyledAssestSelectionContainer = styled.div`
   width: 70%;
@@ -32,6 +33,8 @@ export default function AssestSelectionContainer() {
   const { selectedOption, setSelectedOption, assetsList } =
     useAssetSelectionContext();
 
+  const userLimits = useGetUserLimits();
+
   function determineSelectionTypeToDisplay() {
     if (selectedOption === "existing") {
       return <ExistingAssetsList />;
@@ -46,8 +49,15 @@ export default function AssestSelectionContainer() {
         <Button
           size="small"
           type="button"
-          variation={selectedOption === "existing" ? "primary" : "secondary"}
+          variation={
+            assetsList.length >= userLimits.media.limit
+              ? "disabled"
+              : selectedOption === "existing"
+              ? "primary"
+              : "secondary"
+          }
           onClick={() => setSelectedOption("existing")}
+          disabled={assetsList.length >= userLimits.media.limit}
         >
           Select From Existing
         </Button>
@@ -55,16 +65,23 @@ export default function AssestSelectionContainer() {
         <Button
           size="small"
           type="button"
-          variation={selectedOption === "new" ? "primary" : "secondary"}
+          variation={
+            assetsList.length >= userLimits.media.limit
+              ? "disabled"
+              : selectedOption === "new"
+              ? "primary"
+              : "secondary"
+          }
           onClick={() => setSelectedOption("new")}
+          disabled={assetsList.length >= userLimits.media.limit}
         >
-          Add New Asset
+          + Add New Asset
         </Button>
       </StyledTopButtonContainer>
       {determineSelectionTypeToDisplay()}
 
       <SelectedAssetList selectedAssets={assetsList} />
-
+      <small>{userLimits.media.limit - assetsList.length} remaining</small>
       <StyledButtonContainer>
         <Button size="small" type="button">
           Done
