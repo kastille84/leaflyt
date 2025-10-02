@@ -8,6 +8,8 @@ export default function useAssetMutations() {
 
   const { mutate: addAssetFn, error: addAssetFnError } = useMutation({
     mutationFn: (asset: UploadApiResponse) => addAsset(asset, user?.id!),
+    retry: true,
+    retryDelay: 10000,
   });
 
   const { mutate: updateAsset, error: updateAssetError } = useMutation({});

@@ -44,7 +44,7 @@ describe("Configuration", () => {
   beforeEach(() => {
     vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
       ...mockUseGlobalContextReturnObj,
-      flyerDesignOptions: {
+      currentFormOptions: {
         getValues: getValuesMock.mockReturnValue(
           configurationSubmitGetValuesMock
         ),

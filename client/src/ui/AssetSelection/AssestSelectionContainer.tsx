@@ -5,6 +5,12 @@ import ExistingAssetsList from "./ExistingAssetsList/ExistingAssetsList";
 import SelectedAssetList from "./SelectedAssetsList/SelectedAssetsList";
 import NewAssetContainer from "./NewAsset/NewAssetContainer";
 import useGetUserLimits from "../../hooks/useGetUserLimits";
+import { useGlobalContext } from "../../context/GlobalContext";
+import toast from "react-hot-toast";
+import useAssetMutations from "../../features/assets/useAssetMutations";
+import useGetUserProfileById from "../../hooks/useGetUserProfileById";
+import { useEffect } from "react";
+import { set } from "react-hook-form";
 
 const StyledAssestSelectionContainer = styled.div`
   width: 70%;
@@ -30,17 +36,49 @@ const StyledButtonContainer = styled.div`
 `;
 
 export default function AssestSelectionContainer() {
-  const { selectedOption, setSelectedOption, assetsList } =
-    useAssetSelectionContext();
+  const { currentFormOptions, setBottomSlideInType, setIsOpenBottomSlideIn } =
+    useGlobalContext();
+  const {
+    selectedOption,
+    setSelectedOption,
+    assetsList,
+    setAssetsList,
+    timedAssetsList,
+  } = useAssetSelectionContext();
+  const { addAssetFn } = useAssetMutations();
 
   const userLimits = useGetUserLimits();
 
+  // will get userProfile and set to user after asset is added
+  useGetUserProfileById(true);
+
+  useEffect(() => {
+    const assetsFromForm = currentFormOptions.getValues("fileUrlArr");
+    if (assetsFromForm) {
+      setAssetsList(assetsFromForm);
+    }
+  }, []);
   function determineSelectionTypeToDisplay() {
     if (selectedOption === "existing") {
       return <ExistingAssetsList />;
     } else if (selectedOption === "new") {
       return <NewAssetContainer />;
     }
+  }
+
+  async function handleDone() {
+    // #TODO: Add logic to save to timed to assets library table
+    try {
+      if (timedAssetsList.length > 0) {
+        await Promise.all(timedAssetsList.map((asset) => addAssetFn(asset)));
+      }
+    } catch (error) {
+      return;
+    }
+    currentFormOptions.setValue("fileUrlArr", assetsList);
+    setBottomSlideInType(null);
+    setIsOpenBottomSlideIn(false);
+    toast.success("Assets added!");
   }
 
   return (
@@ -83,7 +121,7 @@ export default function AssestSelectionContainer() {
       <SelectedAssetList selectedAssets={assetsList} />
       <small>{userLimits.media.limit - assetsList.length} remaining</small>
       <StyledButtonContainer>
-        <Button size="small" type="button">
+        <Button size="small" type="button" onClick={handleDone}>
           Done
         </Button>
         <Button size="small" type="button" variation="secondary">

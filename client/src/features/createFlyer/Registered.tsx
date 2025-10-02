@@ -113,6 +113,7 @@ export default function Registered({
     selectedPlace,
     setBottomSlideInType,
     setIsOpenBottomSlideIn,
+    setCurrentFormOptions,
   } = useGlobalContext();
   const planLimits = useGetUserLimits();
   const { createFlyer, editFlyer } = useCreateRegisteredFlyer();
@@ -205,6 +206,14 @@ export default function Registered({
     setBottomSlideInType("chooseAssets");
     setIsOpenBottomSlideIn(true);
   }
+
+  useEffect(() => {
+    // give globalContext access to the form options
+    setCurrentFormOptions({
+      getValues: getValues,
+      setValue: setValue,
+    });
+  }, []);
 
   useEffect(() => {
     if (!templateWatch) {
@@ -306,8 +315,8 @@ export default function Registered({
                 canUpgrade={planLimits.canUpgrade}
               />
               <FlyerDesignerInput
-                setValue={setValue}
-                getValues={getValues}
+                // setValue={setValue}
+                // getValues={getValues}
                 canUpgrade={!planLimits.paid}
               />
             </FormControlRow>

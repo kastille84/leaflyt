@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import useAssetMutations from "../../../features/assets/useAssetMutations";
 import useGetUserProfileById from "../../../hooks/useGetUserProfileById";
 import { useGlobalContext } from "../../../context/GlobalContext";
+import toast from "react-hot-toast";
 
 const StyledListItem = styled.li`
   position: relative;
@@ -105,8 +106,7 @@ export default function SelectedAssetsListItemTimed({
   // will get userProfile and set to user after asset is added
   const { status, userProfile } = useGetUserProfileById(isAddedToAssets);
 
-  // const [timeLeft, setTimeLeft] = useState<number>(8 * 60);
-  const [timeLeft, setTimeLeft] = useState<number>(60);
+  const [timeLeft, setTimeLeft] = useState<number>(8 * 60);
 
   useEffect(() => {
     // Set up an interval to decrement the timeLeft every second.
@@ -117,7 +117,6 @@ export default function SelectedAssetsListItemTimed({
       } else {
         // If time is 0 or less, clear the interval to stop the timer.
         clearInterval(timer);
-        // #TODO: ADD as part of Assets
         if (!isAddedToAssets) {
           addAssetFn(asset, {
             onSuccess: () => {
@@ -126,7 +125,9 @@ export default function SelectedAssetsListItemTimed({
               setIsAddedToAssets((prev) => !prev);
             },
             onError: () => {
-              console.log("error");
+              toast.error(
+                "Could not add asset to assets library. Re-trying again.."
+              );
             },
           });
         }
