@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import useAssetMutations from "../../../features/assets/useAssetMutations";
 import useGetUserProfileById from "../../../hooks/useGetUserProfileById";
+import { useGlobalContext } from "../../../context/GlobalContext";
 
 const StyledListItem = styled.li`
   position: relative;
@@ -97,11 +98,12 @@ export default function SelectedAssetsListItemTimed({
   idx: number;
   handleDeleteAsset: (idx: number) => void;
 }) {
-  const { setAssetsList, setTimedAssetsList } = useAssetSelectionContext();
+  const { setUser } = useGlobalContext();
+  const { setTimedAssetsList } = useAssetSelectionContext();
   const { addAssetFn } = useAssetMutations();
   const [isAddedToAssets, setIsAddedToAssets] = useState<boolean>(false);
   // will get userProfile and set to user after asset is added
-  useGetUserProfileById(isAddedToAssets);
+  const { status, userProfile } = useGetUserProfileById(isAddedToAssets);
 
   // const [timeLeft, setTimeLeft] = useState<number>(8 * 60);
   const [timeLeft, setTimeLeft] = useState<number>(60);
@@ -150,13 +152,19 @@ export default function SelectedAssetsListItemTimed({
   };
 
   useEffect(() => {
-    if (isAddedToAssets) {
+    if (isAddedToAssets && status === "success") {
       // remove asset from timedAssetsList
       setTimedAssetsList((prev) =>
         prev.filter((asset) => asset.public_id !== asset.public_id)
       );
     }
-  }, [isAddedToAssets]);
+  }, [isAddedToAssets, status]);
+
+  // useEffect(() => {
+  //   if (userProfile) {
+  //     setUser(userProfile);
+  //   }
+  // }, [userProfile]);
 
   return (
     <StyledListItem>

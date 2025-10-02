@@ -6,17 +6,17 @@ import { useEffect } from "react";
 export default function useGetUserProfileById(enabled: boolean) {
   const { user, setUser } = useGlobalContext();
 
-  const { isLoading: isLoadingUserProfile, data: userProfile } = useQuery({
+  const { status, data: userProfile } = useQuery({
     queryKey: ["getUserProfileById", user?.id],
     queryFn: () => getUserProfile(user?.id!),
     enabled: enabled,
   });
 
   useEffect(() => {
-    if (userProfile) {
+    if (status === "success" && userProfile) {
       setUser(userProfile);
     }
-  }, [userProfile]);
+  }, [status, enabled]);
 
-  return { isLoadingUserProfile, userProfile };
+  return { status, userProfile };
 }
