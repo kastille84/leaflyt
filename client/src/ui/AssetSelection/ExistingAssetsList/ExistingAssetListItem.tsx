@@ -60,7 +60,7 @@ export default function ExistingAssetListItem({
         }
         checked={preChecked}
       />
-      <p>{asset.original_filename}</p>
+      {/* <p>{asset.original_filename}</p> */}
     </StyledExistingAssetListItem>
   );
 }

@@ -74,7 +74,6 @@ export default function AssestSelectionContainer() {
   }
 
   async function handleDone() {
-    // #TODO: Add logic to save to timed to assets library table
     try {
       if (timedAssetsList.length > 0) {
         await Promise.all(timedAssetsList.map((asset) => addAssetFn(asset)));
@@ -85,7 +84,9 @@ export default function AssestSelectionContainer() {
     currentFormOptions.setValue("fileUrlArr", assetsList);
     setBottomSlideInType(null);
     setIsOpenBottomSlideIn(false);
-    toast.success("Assets added!");
+    if (timedAssetsList.length > 0) {
+      toast.success("Assets added!");
+    }
   }
 
   async function handleCancel() {

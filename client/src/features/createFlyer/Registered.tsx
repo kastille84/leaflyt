@@ -37,6 +37,7 @@ import UpgradeText from "../../ui/UpgradeText";
 import FlyerDesignerInput from "../../ui/Form/FlyerDesignerInput";
 import FormInfoAlert from "../../ui/Form/FormInfoAlert";
 import { DB_Flyers_Response, DB_Template } from "../../interfaces/DB_Flyers";
+import AssetsPreviewList from "../../ui/AssetSelection/AssetsPreview/AssetsPreviewList";
 
 const StyledRegisteredContainer = styled.div``;
 
@@ -276,7 +277,8 @@ export default function Registered({
                   errors={errors}
                   level={user?.plan?.level || 0}
                 />
-                {fileUrlArrWatch && fileUrlArrWatch.length > 0 && (
+                 */}
+                {/* {fileUrlArrWatch && fileUrlArrWatch.length > 0 && (
                   <ImagePreview
                     fileUrlArr={fileUrlArrWatch}
                     setValue={setValue}
@@ -284,10 +286,13 @@ export default function Registered({
                     isTemplate={!!templateToEdit}
                   />
                 )} */}
-                <StyledLabel htmlFor="image">Choose an asset</StyledLabel>
+                <StyledLabel htmlFor="image">Choose assets</StyledLabel>
                 <Button type="button" onClick={handleChooseAsset}>
                   Upload
                 </Button>
+                {fileUrlArrWatch && fileUrlArrWatch.length > 0 && (
+                  <AssetsPreviewList fileUrlArr={fileUrlArrWatch} />
+                )}
               </FormControl>
             </FormControlRow>
             <FormControlRow>
