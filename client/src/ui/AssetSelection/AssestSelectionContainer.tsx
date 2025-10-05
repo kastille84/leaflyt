@@ -11,6 +11,7 @@ import useAssetMutations from "../../features/assets/useAssetMutations";
 import useGetUserProfileById from "../../hooks/useGetUserProfileById";
 import { useEffect } from "react";
 import { set } from "react-hook-form";
+import { deleteFileOverTime } from "../../services/cloudinary";
 
 const StyledAssestSelectionContainer = styled.div`
   width: 70%;
@@ -58,6 +59,12 @@ export default function AssestSelectionContainer() {
       setAssetsList(assetsFromForm);
     }
   }, []);
+
+  async function deleteAllTimedAssets() {
+    await Promise.all(
+      timedAssetsList.map((asset) => deleteFileOverTime(asset))
+    );
+  }
   function determineSelectionTypeToDisplay() {
     if (selectedOption === "existing") {
       return <ExistingAssetsList />;
@@ -79,6 +86,14 @@ export default function AssestSelectionContainer() {
     setBottomSlideInType(null);
     setIsOpenBottomSlideIn(false);
     toast.success("Assets added!");
+  }
+
+  async function handleCancel() {
+    if (timedAssetsList.length > 0) {
+      await deleteAllTimedAssets();
+    }
+    setBottomSlideInType(null);
+    setIsOpenBottomSlideIn(false);
   }
 
   return (
@@ -124,7 +139,12 @@ export default function AssestSelectionContainer() {
         <Button size="small" type="button" onClick={handleDone}>
           Done
         </Button>
-        <Button size="small" type="button" variation="secondary">
+        <Button
+          size="small"
+          type="button"
+          variation="secondary"
+          onClick={handleCancel}
+        >
           Cancel
         </Button>
       </StyledButtonContainer>

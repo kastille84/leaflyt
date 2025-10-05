@@ -70,6 +70,7 @@ export default function AssetUpload({
             // console.log("getFileUrlArr", getValues("fileUrlArr"));
             onAssetAdded(result.info);
             (cloudinaryWidgetRef.current as any).close();
+            cloudinaryWidgetRef.current = null;
           }
           if (error) {
             console.log(error);
@@ -81,6 +82,7 @@ export default function AssetUpload({
     }
     (cloudinaryWidgetRef.current as any).open();
   };
+
   return (
     <>
       {/* <FormControl testId="file-container"> */}

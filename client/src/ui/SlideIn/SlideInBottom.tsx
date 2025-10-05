@@ -72,6 +72,14 @@ export default function SlideInBottom() {
     }
   }
 
+  function shouldShowXMark() {
+    switch (bottomSlideInType) {
+      case "chooseAssets":
+        return false;
+      default:
+        return true;
+    }
+  }
   return (
     <Drawer
       open={isOpenBottomSlideIn}
@@ -81,7 +89,7 @@ export default function SlideInBottom() {
       // style={{ position: "fixed", top: "auto", bottom: 0, right: 0, left: 0 }}
     >
       <StyledCloseContainer>
-        <HiOutlineXMark onClick={handleDrawerClose} />
+        {shouldShowXMark() && <HiOutlineXMark onClick={handleDrawerClose} />}
       </StyledCloseContainer>
       <StyledContentContainer>{determineSlideInType()} </StyledContentContainer>
     </Drawer>
