@@ -1,5 +1,3 @@
-import { use } from "chai";
-import React from "react";
 import styled from "styled-components";
 import { useGlobalContext } from "../../../context/GlobalContext";
 import { DB_Template } from "../../../interfaces/DB_Flyers";
@@ -8,9 +6,12 @@ import { HiOutlinePencilSquare, HiOutlineXMark } from "react-icons/hi2";
 import Heading from "../../../ui/Heading";
 
 const StyledTemplateListContainer = styled.div`
+  height: 100%;
+  overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
   gap: 2.4rem;
+  padding-bottom: 2.4rem;
 `;
 
 const StyledTemplateHeader = styled.div`
@@ -30,7 +31,7 @@ const StyledTemplateListItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
-  border: 1px dashed var(--color-grey-200);
+  border: 2px dashed var(--color-brand-700);
   padding: 2.4rem;
   background-color: var(--color-grey-50);
 `;

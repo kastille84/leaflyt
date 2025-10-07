@@ -4,6 +4,7 @@ import { DB_Template } from "../../interfaces/DB_Flyers";
 
 const StyledTemplateListContainer = styled.ul`
   display: flex;
+  overflow-y: auto;
   flex-direction: column;
   gap: 2.4rem;
 `;
