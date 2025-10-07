@@ -4,6 +4,7 @@ import Heading from "../Heading";
 import Button from "../Button";
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/GlobalContext";
+import { deleteFileOverTime } from "../../services/cloudinary";
 
 const StyledButtonContainer = styled.div`
   margin-top: 2.4rem;
@@ -20,6 +21,9 @@ export default function CloseSlideInModal() {
     setDrawerAction,
     flyerToEdit,
     setFlyerToEdit,
+    setCurrentFormOptions,
+    currentFormOptions,
+    user,
   } = useGlobalContext();
   const customStyles = {
     overlay: {
@@ -38,11 +42,16 @@ export default function CloseSlideInModal() {
     },
   };
 
-  function handleLeave() {
+  async function handleLeave() {
+    if (flyerToEdit) setFlyerToEdit(null);
+    if (!user && currentFormOptions.getValues("fileUrlArr").length > 0) {
+      // delete any assets that were uploaded while not logged in
+      await deleteFileOverTime(currentFormOptions.getValues("fileUrlArr")[0]);
+    }
     setShowCloseSlideInModal(false);
     setIsOpenFlyerDrawer(false);
     setDrawerAction(null);
-    if (flyerToEdit) setFlyerToEdit(null);
+    setCurrentFormOptions(null);
   }
 
   function handleStay() {

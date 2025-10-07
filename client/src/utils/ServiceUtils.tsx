@@ -35,6 +35,9 @@ export const getContactInfoFromFlyer = (flyer: DB_Flyers_Response) => {
     } else {
       contactInfo.name = (flyer.user as Auth_User_Profile_Response).name;
     }
+    contactInfo.address = (
+      flyer.user as Auth_User_Profile_Response
+    ).address.formatted_address;
     return contactInfo;
   }
 
@@ -70,6 +73,9 @@ export const getContactInfoFromFlyer = (flyer: DB_Flyers_Response) => {
         contactInfo.website = (
           flyer as DB_Flyer_Create_Unregistered_Organization
         ).organization.contact.website;
+        contactInfo.address = (
+          flyer as DB_Flyer_Create_Unregistered_Organization
+        ).organization.contact.address;
         return contactInfo;
       case "business":
         contactInfo.email = (
@@ -84,6 +90,9 @@ export const getContactInfoFromFlyer = (flyer: DB_Flyers_Response) => {
         contactInfo.website = (
           flyer as DB_Flyer_Create_Unregistered_Business
         ).business.contact.website;
+        contactInfo.address = (
+          flyer as DB_Flyer_Create_Unregistered_Business
+        ).business.contact.address;
         return contactInfo;
       default:
         return contactInfo;
@@ -102,5 +111,6 @@ export const getContactInfoFromUser = (user: Auth_User_Profile_Response) => {
   } else {
     contactInfo.name = user.name;
   }
+  contactInfo.addres = user.address.formatted_address;
   return contactInfo;
 };
