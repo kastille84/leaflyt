@@ -6,6 +6,8 @@ import { deleteFileOverTime } from "../../services/cloudinary";
 import ImagePreviewItemTimed from "./ImagePreviewItemTimed";
 import toast from "react-hot-toast";
 import ImagePreviewItem from "./ImagePreviewItem";
+import { useState } from "react";
+import { DB_Flyers_Response } from "../../interfaces/DB_Flyers";
 
 const StyledImagePreview = styled.div`
   display: flex;
@@ -16,13 +18,17 @@ const StyledImagePreview = styled.div`
 
 export default function ImagePreview({
   fileUrlArr,
+  originalFileUrlArr,
   setValue,
   isTimed,
+  isFlyerToEdit,
   isTemplate,
 }: {
   fileUrlArr: UploadApiResponse[];
+  originalFileUrlArr: UploadApiResponse[] | [];
   setValue: UseFormSetValue<any>;
   isTimed: boolean;
+  isFlyerToEdit: boolean;
   isTemplate: boolean;
 }) {
   async function handleDeleteImage(idx: number) {
@@ -33,9 +39,17 @@ export default function ImagePreview({
         await deleteFileOverTime(imgToRemoveFromCloudinary[0]);
       } else if (isTemplate) {
         // If template, delete from cloudinary
+      } else if (isFlyerToEdit) {
+        // Stand-alone flyer
+        const isPartOfOriginal = originalFileUrlArr.find(
+          (url) => url === imgToRemoveFromCloudinary[0]
+        );
+        if (!isPartOfOriginal) {
+          // Delete image from cloudinary
+          await deleteFileOverTime(imgToRemoveFromCloudinary[0]);
+        }
+        // else, do nothing since the file isn't owned by the flyer
       }
-      // If stand-alone flyer, Do nothing, since we just spliced from filrUrlArr alrady
-
       // remove image from state
       setValue("fileUrlArr", fileUrlArr);
     } catch (error) {

@@ -14,26 +14,18 @@ const StyledLabel = styled.label`
 `;
 
 export default function FlyerDesignerInput({
-  getValues,
-  setValue,
+  // getValues,
+  // setValue,
   canUpgrade,
 }: {
-  setValue: UseFormSetValue<any>;
-  getValues: UseFormGetValues<any>;
+  // setValue: UseFormSetValue<any>;
+  // getValues: UseFormGetValues<any>;
   canUpgrade: boolean;
 }) {
-  const {
-    setIsOpenBottomSlideIn,
-    setBottomSlideInType,
-    setFlyerDesignOptions,
-  } = useGlobalContext();
+  const { setIsOpenBottomSlideIn, setBottomSlideInType } = useGlobalContext();
   function handleOpenFlyerDesigner() {
     setIsOpenBottomSlideIn(true);
     setBottomSlideInType("flyerDesigner");
-    setFlyerDesignOptions({
-      getValues: getValues,
-      setValue: setValue,
-    });
   }
 
   return (

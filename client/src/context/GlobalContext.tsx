@@ -36,6 +36,7 @@ export type ContextType = {
     | "flyerDesigner"
     | "carousel"
     | "hasTemplates"
+    | "chooseAssets"
     | null;
   setBottomSlideInType: React.Dispatch<
     React.SetStateAction<
@@ -44,6 +45,7 @@ export type ContextType = {
       | "flyerDesigner"
       | "carousel"
       | "hasTemplates"
+      | "chooseAssets"
       | null
     >
   >;
@@ -51,8 +53,8 @@ export type ContextType = {
   setUser: React.Dispatch<
     React.SetStateAction<Auth_User_Profile_Response | null>
   >;
-  flyerDesignOptions: any;
-  setFlyerDesignOptions: React.Dispatch<React.SetStateAction<any>>;
+  currentFormOptions: any;
+  setCurrentFormOptions: React.Dispatch<React.SetStateAction<any>>;
   carouselImages: UploadApiResponse[] | null;
   setCarouselImages: React.Dispatch<
     React.SetStateAction<UploadApiResponse[] | null>
@@ -93,8 +95,8 @@ const GlobalContext = createContext<ContextType>({
   setBottomSlideInType: () => {},
   user: null,
   setUser: () => {},
-  flyerDesignOptions: null,
-  setFlyerDesignOptions: () => {},
+  currentFormOptions: null,
+  setCurrentFormOptions: () => {},
   carouselImages: null,
   setCarouselImages: () => {},
   hasFlyerAtLocation: false,
@@ -121,10 +123,16 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [isOpenBottomSlideIn, setIsOpenBottomSlideIn] =
     useState<boolean>(false);
   const [bottomSlideInType, setBottomSlideInType] = useState<
-    "signup" | "upgrade" | "flyerDesigner" | "carousel" | "hasTemplates" | null
+    | "signup"
+    | "upgrade"
+    | "flyerDesigner"
+    | "carousel"
+    | "hasTemplates"
+    | "chooseAssets"
+    | null
   >(null);
   const [user, setUser] = useState<Auth_User_Profile_Response | null>(null);
-  const [flyerDesignOptions, setFlyerDesignOptions] = useState<{
+  const [currentFormOptions, setCurrentFormOptions] = useState<{
     getValues: UseFormGetValues<any>;
     setValue: UseFormSetValue<any>;
   } | null>(null);
@@ -186,8 +194,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         //Flyer
         flyerToEdit,
         setFlyerToEdit,
-        flyerDesignOptions,
-        setFlyerDesignOptions,
+        currentFormOptions,
+        setCurrentFormOptions,
         carouselImages,
         setCarouselImages,
       }}
