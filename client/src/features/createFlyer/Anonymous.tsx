@@ -87,8 +87,12 @@ export default function Anonymous() {
   const queryClient = useQueryClient();
   const { id: boardId } = useParams();
 
-  const { setIsOpenFlyerDrawer, setDrawerAction, setShowCloseSlideInModal } =
-    useGlobalContext();
+  const {
+    setIsOpenFlyerDrawer,
+    setDrawerAction,
+    setShowCloseSlideInModal,
+    setCurrentFormOptions,
+  } = useGlobalContext();
   const { createFlyer } = useCreateUnregisteredFlyer();
   const typeOfUserWatch = watch("typeOfUser");
   const typeOfUser = getValues("typeOfUser");
@@ -113,7 +117,13 @@ export default function Anonymous() {
     }
   }, [typeOfUser]);
 
-  useEffect(() => {});
+  useEffect(() => {
+    // give globalContext access to the form options
+    setCurrentFormOptions({
+      getValues: getValues,
+      setValue: setValue,
+    });
+  }, []);
 
   const onSubmit = async (data: any) => {
     setSubmitError("");
@@ -201,8 +211,6 @@ export default function Anonymous() {
                   <ImagePreview
                     fileUrlArr={fileUrlArrWatch}
                     setValue={setValue}
-                    isTimed={true}
-                    isTemplate={false}
                   />
                 )}
               </FormControl>

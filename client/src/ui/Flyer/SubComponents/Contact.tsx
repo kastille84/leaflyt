@@ -11,6 +11,7 @@ import {
 import {
   HiOutlineEnvelope,
   HiOutlineGlobeAlt,
+  HiOutlineHomeModern,
   HiOutlinePhone,
 } from "react-icons/hi2";
 import { UNREGISTERED_FLYER_DESIGN_DEFAULT } from "../../../constants";
@@ -117,6 +118,15 @@ export default function Contact({
                 {contactInfo.website}
               </StyledWebsite>
             </p>
+          </StyledLi>
+        )}
+        {contactInfo.address && (
+          // #TODO: Add copy to clipboard functionality
+          <StyledLi>
+            <span>
+              <HiOutlineHomeModern />
+            </span>
+            <p>{contactInfo.address}</p>
           </StyledLi>
         )}
       </StyledUl>

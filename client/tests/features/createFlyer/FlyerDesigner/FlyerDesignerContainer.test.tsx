@@ -23,7 +23,7 @@ describe("FlyerDesignerContainer", () => {
   beforeEach(() => {
     vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
       ...mockUseGlobalContextReturnObj,
-      flyerDesignOptions: {
+      currentFormOptions: {
         getValues: getValuesMock,
       },
     }));

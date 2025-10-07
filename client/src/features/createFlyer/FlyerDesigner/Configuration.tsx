@@ -33,7 +33,7 @@ const StyledFormButtonContainer = styled.div`
   gap: 2.4rem;
 `;
 export default function Configuration() {
-  const { setBottomSlideInType, setIsOpenBottomSlideIn, flyerDesignOptions } =
+  const { setBottomSlideInType, setIsOpenBottomSlideIn, currentFormOptions } =
     useGlobalContext();
   const { selectedSection, selectedFlyer, setSelectedFlyer } =
     useFlyerDesignerContext();
@@ -67,7 +67,7 @@ export default function Configuration() {
   function onSubmit(data: any) {
     console.log("data", data);
     console.log("getValues", getValues());
-    flyerDesignOptions.setValue("flyerDesign", getValues());
+    currentFormOptions.setValue("flyerDesign", getValues());
     toast.success("Flyer design updated!");
     setBottomSlideInType(null);
     setIsOpenBottomSlideIn(false);

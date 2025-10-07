@@ -16,8 +16,8 @@ const StyledContainer = styled.div`
 `;
 
 export default function FlyerDesignerContainer() {
-  const { flyerDesignOptions } = useGlobalContext();
-  const flyerForDisplay = { ...flyerDesignOptions.getValues() };
+  const { currentFormOptions } = useGlobalContext();
+  const flyerForDisplay = { ...currentFormOptions.getValues() };
   const { setSelectedFlyer, selectedFlyer } = useFlyerDesignerContext();
 
   useEffect(() => {

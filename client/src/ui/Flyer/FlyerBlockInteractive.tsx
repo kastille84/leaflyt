@@ -384,7 +384,7 @@ export default function FlyerBlockInteractive({
   }
 
   function doesFlyerBelongToUser() {
-    if ((flyer.user as Auth_User_Profile_Response)?.id === user?.id) {
+    if (user && (flyer.user as Auth_User_Profile_Response)?.id === user?.id) {
       return true;
     }
     return false;
@@ -399,9 +399,9 @@ export default function FlyerBlockInteractive({
         <DropdownMenu>
           {doesFlyerBelongToUser() && <li onClick={handleEditClick}>Edit</li>}
           {doesFlyerBelongToUser() && flyer.template && <li>View Template</li>}
-          {!doesFlyerBelongToUser() && <li>Save</li>}
+          {user && !doesFlyerBelongToUser() && <li>Save</li>}
           <hr />
-          <li>Delete</li>
+          {doesFlyerBelongToUser() && flyer.template && <li>Delete</li>}
           <li>Inappropriate</li>
         </DropdownMenu>
       </>
