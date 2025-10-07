@@ -288,7 +288,7 @@ export default function Registered({
                 )} */}
                 <StyledLabel htmlFor="image">Choose assets</StyledLabel>
                 <Button type="button" onClick={handleChooseAsset}>
-                  Upload
+                  Open Assets Uploader
                 </Button>
                 {fileUrlArrWatch && fileUrlArrWatch.length > 0 && (
                   <AssetsPreviewList fileUrlArr={fileUrlArrWatch} />
