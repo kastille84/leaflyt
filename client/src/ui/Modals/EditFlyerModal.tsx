@@ -14,10 +14,12 @@ const StyledButtonContainer = styled.div`
 
 export default function EditFlyerModal() {
   const {
+    user,
     showEditFlyerModal,
     setShowEditFlyerModal,
     setIsOpenFlyerDrawer,
     setDrawerAction,
+    setTemplateToEdit,
   } = useGlobalContext();
   const customStyles = {
     overlay: {
@@ -42,8 +44,11 @@ export default function EditFlyerModal() {
     setDrawerAction(null);
   }
 
-  function handleStay() {
+  function handleEditTemplate() {
+    // find the template and set it
     setShowEditFlyerModal(false);
+    setIsOpenFlyerDrawer(true);
+    setDrawerAction("editTemplate");
   }
 
   function handleEditFlyer() {
@@ -71,7 +76,7 @@ export default function EditFlyerModal() {
       </Heading>
       <StyledButtonContainer>
         {/* #TODO: add the "edit template" functionality */}
-        <Button size="small" variation="primary" onClick={handleStay}>
+        <Button size="small" variation="primary" onClick={handleEditTemplate}>
           Edit Template
         </Button>
         <Button size="small" variation="secondary" onClick={handleEditFlyer}>

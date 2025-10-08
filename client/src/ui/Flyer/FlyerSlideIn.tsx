@@ -11,6 +11,7 @@ import Registered from "../../features/createFlyer/Registered";
 
 export default function FlyerSlideIn() {
   const {
+    user,
     isOpenFlyerDrawer,
     setShowCloseSlideInModal,
     drawerAction,
@@ -27,8 +28,14 @@ export default function FlyerSlideIn() {
       case "edit":
         return <Registered flyerToEdit={flyerToEdit} />;
       case "editTemplate":
+        // if coming from editing a flyer which belongs to a template
+        // then use that flyer to find the template to pass
+        let foundTemplateToEdit = null;
+        if (flyerToEdit) {
+          foundTemplateToEdit = user?.templates.find((t) => t.id === flyerToEdit.template);
+        }
         return (
-          <Registered type={drawerAction} templateToEdit={templateToEdit} />
+          <Registered type={drawerAction} templateToEdit={foundTemplateToEdit? foundTemplateToEdit : templateToEdit} />
         );
       case "createTemplate":
         return <Registered type={drawerAction} />;
