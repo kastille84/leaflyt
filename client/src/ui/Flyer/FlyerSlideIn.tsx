@@ -14,27 +14,32 @@ export default function FlyerSlideIn() {
     isOpenFlyerDrawer,
     setShowCloseSlideInModal,
     drawerAction,
-    setDrawerAction,
     selectedPlace,
     flyerToEdit,
-    setFlyerToEdit,
+    templateToEdit,
   } = useGlobalContext();
 
   const determineTypeOfDrawer = (): JSX.Element | null => {
     if (!drawerAction) return null;
-    if (drawerAction === "create") {
-      return <CreateFlyer />;
+    switch (drawerAction) {
+      case "create":
+        return <CreateFlyer />;
+      case "edit":
+        return <Registered flyerToEdit={flyerToEdit} />;
+      case "editTemplate":
+        return (
+          <Registered type={drawerAction} templateToEdit={templateToEdit} />
+        );
+      case "createTemplate":
+        return <Registered type={drawerAction} />;
     }
-    return <Registered flyerToEdit={flyerToEdit} />;
   };
 
   function handleDrawerClose() {
     setShowCloseSlideInModal(true);
-    setDrawerAction(null);
-    setFlyerToEdit(null);
   }
 
-  if (!selectedPlace) return null;
+  // if (!selectedPlace) return null;
   return (
     <>
       {/* https://www.npmjs.com/package/react-modern-drawer */}

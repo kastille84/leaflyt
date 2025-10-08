@@ -25,7 +25,7 @@ const StyledMapContainer = styled.div`
 
 const StyledInputContainer = styled.div`
   position: absolute;
-  top: 2rem;
+  top: 3.5rem;
   z-index: 100;
   width: 100%;
   display: flex;

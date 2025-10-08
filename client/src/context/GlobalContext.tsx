@@ -4,7 +4,7 @@ import useGetUserGeo from "../hooks/useGetUserGeo";
 import { LatLng, NearbySearchPlaceResult } from "../interfaces/Geo";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
-import { DB_Flyers_Response } from "../interfaces/DB_Flyers";
+import { DB_Flyers_Response, DB_Template } from "../interfaces/DB_Flyers";
 
 export type ContextType = {
   getUserGeo: () => void;
@@ -18,9 +18,11 @@ export type ContextType = {
   >;
   setIsOpenFlyerDrawer: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenFlyerDrawer: boolean;
-  drawerAction: "edit" | "create" | null;
+  drawerAction: "edit" | "create" | "editTemplate" | "createTemplate" | null;
   setDrawerAction: React.Dispatch<
-    React.SetStateAction<"edit" | "create" | null>
+    React.SetStateAction<
+      "edit" | "create" | "editTemplate" | "createTemplate" | null
+    >
   >;
   showCloseSlideInModal: boolean;
   setShowCloseSlideInModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -67,6 +69,8 @@ export type ContextType = {
   setFlyerToEdit: React.Dispatch<
     React.SetStateAction<DB_Flyers_Response | null>
   >;
+  templateToEdit: DB_Template | null;
+  setTemplateToEdit: React.Dispatch<React.SetStateAction<DB_Template | null>>;
   setShowEditFlyerModal: React.Dispatch<React.SetStateAction<boolean>>;
   showEditFlyerModal: boolean;
 };
@@ -105,6 +109,8 @@ const GlobalContext = createContext<ContextType>({
   setIsSelectingNewPlace: () => {},
   flyerToEdit: null,
   setFlyerToEdit: () => {},
+  templateToEdit: null,
+  setTemplateToEdit: () => {},
   setShowEditFlyerModal: () => {},
   showEditFlyerModal: false,
 });
@@ -113,9 +119,9 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [selectedPlace, setSelectedPlace] =
     useState<NearbySearchPlaceResult | null>(null);
   const [isOpenFlyerDrawer, setIsOpenFlyerDrawer] = useState<boolean>(false);
-  const [drawerAction, setDrawerAction] = useState<"edit" | "create" | null>(
-    null
-  );
+  const [drawerAction, setDrawerAction] = useState<
+    "edit" | "create" | "editTemplate" | "createTemplate" | null
+  >(null);
   const [showCloseSlideInModal, setShowCloseSlideInModal] =
     useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -142,6 +148,9 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [hasFlyerAtLocation, setHasFlyerAtLocation] = useState(false);
   const [isSelectingNewPlace, setIsSelectingNewPlace] = useState(false);
   const [flyerToEdit, setFlyerToEdit] = useState<DB_Flyers_Response | null>(
+    null
+  );
+  const [templateToEdit, setTemplateToEdit] = useState<DB_Template | null>(
     null
   );
   const [showEditFlyerModal, setShowEditFlyerModal] = useState(false);
@@ -194,6 +203,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         //Flyer
         flyerToEdit,
         setFlyerToEdit,
+        templateToEdit,
+        setTemplateToEdit,
         currentFormOptions,
         setCurrentFormOptions,
         carouselImages,

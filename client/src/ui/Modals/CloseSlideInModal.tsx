@@ -21,6 +21,8 @@ export default function CloseSlideInModal() {
     setDrawerAction,
     flyerToEdit,
     setFlyerToEdit,
+    templateToEdit,
+    setTemplateToEdit,
     setCurrentFormOptions,
     currentFormOptions,
     user,
@@ -44,6 +46,7 @@ export default function CloseSlideInModal() {
 
   async function handleLeave() {
     if (flyerToEdit) setFlyerToEdit(null);
+    if (templateToEdit) setTemplateToEdit(null);
     if (!user && currentFormOptions.getValues("fileUrlArr").length > 0) {
       // delete any assets that were uploaded while not logged in
       await deleteFileOverTime(currentFormOptions.getValues("fileUrlArr")[0]);

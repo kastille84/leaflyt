@@ -1,4 +1,9 @@
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
+import {
+  FieldErrors,
+  FieldValues,
+  RegisterOptions,
+  UseFormRegister,
+} from "react-hook-form";
 import Input from "../Input";
 import FormControl from "./FormControl";
 import FieldInputError from "./FieldInputError";
@@ -17,17 +22,30 @@ export default function FullNameInput({
   registerName,
   name,
   errors,
+  textLimit,
 }: {
   register: UseFormRegister<any>;
   registerName: string;
   name: string;
   errors: FieldErrors<FieldValues>;
+  textLimit?: number;
 }) {
   function getErrorValue(errors: FieldErrors<FieldValues>) {
     return accessNestedProperty(errors, registerName);
   }
 
   const errorObj = getErrorValue(errors);
+
+  const validationRules: RegisterOptions = {
+    required: { value: true, message: `${name} Name is required` },
+  };
+
+  if (textLimit) {
+    validationRules["maxLength"] = {
+      value: textLimit,
+      message: `${name} Name must be less than ${textLimit} characters`,
+    };
+  }
 
   return (
     <FormControl testId={`fullName-container`}>
@@ -37,9 +55,7 @@ export default function FullNameInput({
       <Input
         type="text"
         id="name"
-        {...register(registerName, {
-          required: { value: true, message: `${name} Name is required` },
-        })}
+        {...register(registerName, validationRules)}
         hasError={Boolean(errorObj)}
       />
       {errorObj && <FieldInputError message={errorObj?.message as string} />}

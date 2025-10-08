@@ -20,8 +20,6 @@ import {
   getSubcategoriesForSelect,
 } from "../../utils/GeneralUtils";
 import ContentInput from "../../ui/Form/ContentInput";
-import ImageInput from "../../ui/Form/ImageInput";
-import ImagePreview from "../../ui/Form/ImagePreview";
 import TagsInput from "../../ui/Form/TagsInput";
 import Button from "../../ui/Button";
 import Input from "../../ui/Input";
@@ -31,9 +29,7 @@ import LifespanInput from "../../ui/Form/LifespanInput";
 import { LIFESPAN, REGISTERED_FLYER_DESIGN_DEFAULT } from "../../constants";
 import CommentsInput from "../../ui/Form/CommentsInput";
 import useCreateRegisteredFlyer from "./useCreateRegisteredFlyer";
-import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import UpgradeText from "../../ui/UpgradeText";
 import FlyerDesignerInput from "../../ui/Form/FlyerDesignerInput";
 import FormInfoAlert from "../../ui/Form/FormInfoAlert";
 import { DB_Flyers_Response, DB_Template } from "../../interfaces/DB_Flyers";
@@ -80,9 +76,11 @@ const StyledCheckboxContainer = styled.div`
 export default function Registered({
   flyerToEdit,
   templateToEdit,
+  type = "create",
 }: {
   flyerToEdit?: DB_Flyers_Response | null;
   templateToEdit?: DB_Template | null;
+  type?: "create" | "edit" | "createTemplate" | "editTemplate";
 }) {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -93,6 +91,10 @@ export default function Registered({
 
   if (flyerToEdit) {
     formOptions.defaultValues = flyerToEdit;
+  }
+
+  if (templateToEdit) {
+    formOptions.defaultValues = templateToEdit;
   }
 
   const {
@@ -120,8 +122,6 @@ export default function Registered({
   const { createFlyer, editFlyer } = useCreateRegisteredFlyer();
 
   const queryClient = useQueryClient();
-  // const { id: boardId } = useParams();
-  // const navigate = useNavigate();
 
   const categoryWatch = watch("category");
   const subcategoryWatch = watch("subcategory");
@@ -337,16 +337,22 @@ export default function Registered({
                     reusing it for future flyers.
                   </p>
                   <StyledCheckboxContainer>
-                    <Input type="checkbox" {...register("template")} checked />{" "}
+                    <Input
+                      type="checkbox"
+                      {...register("template")}
+                      checked
+                      disabled={!!type.match(/template/i)}
+                    />{" "}
                     Check this box to create a template
                   </StyledCheckboxContainer>
-                  {templateWatch && (
+                  {(templateWatch || !!type.match(/template/i)) && (
                     <>
                       <FullNameInput
                         register={register}
                         registerName="templateName"
                         name="Template"
                         errors={errors}
+                        textLimit={30}
                       />
                       <CommentsInput register={register} />
                     </>
