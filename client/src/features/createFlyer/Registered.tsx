@@ -109,6 +109,7 @@ export default function Registered({
   } = useForm(formOptions);
   const {
     user,
+    setUser,
     setShowCloseSlideInModal,
     setIsOpenFlyerDrawer,
     setDrawerAction,
@@ -119,7 +120,7 @@ export default function Registered({
     setCurrentFormOptions,
   } = useGlobalContext();
   const planLimits = useGetUserLimits();
-  const { createFlyer, editFlyer } = useCreateRegisteredFlyer();
+  const { createFlyer, editFlyer, editTemplate } = useCreateRegisteredFlyer();
 
   const queryClient = useQueryClient();
 
@@ -170,7 +171,27 @@ export default function Registered({
         },
       });
     } else if (templateToEdit) {
+      // remove the template property
+      delete data.template;
       // action - Edit Existing Template
+      editTemplate(data, {
+        onSuccess: (data: any) => {
+          setShowSpinner(false);
+          toast.success("Template updated!");
+          setIsOpenFlyerDrawer(false);
+          setDrawerAction(null);
+          setFlyerToEdit(null);
+          // update the user
+          setUser(data.user);
+        },
+        onError: (error: any) => {
+          setShowSpinner(false);
+          toast.error(error.message);
+          setSubmitError(error.message);
+          // set focus on error
+          document.querySelector("#form-error")?.scrollIntoView();
+        },
+      });
     } else {
       // action - Create New Flyer
       createFlyer(data, {

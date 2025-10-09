@@ -7,6 +7,7 @@ import {
 } from "../interfaces/DB_Flyers";
 import { NearbySearchPlaceResult } from "../interfaces/Geo";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
+import { getUserProfile } from "./apiUser";
 
 const getOrCreateBoard = async (selectedPlace: NearbySearchPlaceResult) => {
   // make a call to get the latest board data
@@ -272,5 +273,73 @@ export const createFlyerFromTemplate = async (
   } catch (error: any) {
     console.error(error);
     throw new Error("Error creating a flyer: " + error.message);
+  }
+};
+
+// #TODO: AI generated, must check this code and consider effects on templates?
+export const deleteFlyer = async (flyerId: number) => {
+  try {
+    const { error } = await supabase.from("flyers").delete().eq("id", flyerId);
+    if (error) {
+      console.error(error);
+      throw new Error("Error deleting the flyer: " + error.message);
+    }
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error deleting the flyer: " + error.message);
+  }
+};
+
+export const updateTemplate = async (templateData: DB_Template) => {
+  try {
+    const { error } = await supabase
+      .from("templates")
+      .update(templateData)
+      .eq("id", templateData.id);
+    if (error) {
+      console.error(error);
+      throw new Error("Error updating the template: " + error.message);
+    }
+    // update all existing flyers that use this template
+    const { error: updateFlyersError } = await supabase
+      .from("flyers")
+      .update({
+        title: templateData.title,
+        category: templateData.category,
+        subcategory: templateData.subcategory,
+        content: templateData.content,
+        tags: templateData.tags,
+        flyerDesign: templateData.flyerDesign,
+        callToAction: templateData.callToAction,
+        fileUrlArr: templateData.fileUrlArr,
+        lifespan: templateData.lifespan,
+      })
+      .eq("template", templateData.id);
+
+    if (updateFlyersError) {
+      console.error(updateFlyersError);
+      throw new Error(
+        "Error updating all flyers belonging to the template: " +
+          updateFlyersError.message
+      );
+    }
+    // return updated user
+    const { data: user, error: userError } = await getUserProfile(
+      templateData?.user! as number
+    );
+    if (userError) {
+      console.error(userError);
+      throw new Error(
+        "Error reflecting the latest changes, please refresh the page: " +
+          userError.message
+      );
+    }
+    return {
+      data: user,
+      error: null,
+    };
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error updating the template: " + error.message);
   }
 };

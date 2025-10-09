@@ -40,7 +40,17 @@ export default function MyTemplates() {
             created
           </small>
         </StyledTemplateTitleContainer>
-        <Button size="small">Create Template</Button>
+        <Button
+          size="small"
+          // disabled={userLimits.templates.limit === user?.templates.length}
+          // variation={
+          //   userLimits.templates.limit === user?.templates.length
+          //     ? "disabled"
+          //     : "primary"
+          // }
+        >
+          Create Template
+        </Button>
       </StyledHeadingContainer>
       <TemplateList />
     </StyledMyTemplates>
