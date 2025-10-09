@@ -324,22 +324,80 @@ export const updateTemplate = async (templateData: DB_Template) => {
       );
     }
     // return updated user
-    const { data: user, error: userError } = await getUserProfile(
+    const { data: userData, error: getUserError } = await getUserProfile(
       templateData?.user! as number
     );
-    if (userError) {
-      console.error(userError);
-      throw new Error(
-        "Error reflecting the latest changes, please refresh the page: " +
-          userError.message
-      );
+    if (getUserError) {
+      console.error(getUserError);
+      throw new Error("Error updating the template: " + getUserError);
     }
     return {
-      data: user,
+      user: userData,
       error: null,
     };
   } catch (error: any) {
     console.error(error);
     throw new Error("Error updating the template: " + error.message);
+  }
+};
+
+export const createTemplate = async (templateData: DB_Template) => {
+  try {
+    const { data: newTemplate, error } = await supabase
+      .from("templates")
+      .insert([
+        {
+          user: templateData.user,
+          templateName: templateData.templateName,
+          title: templateData.title,
+          category: templateData.category,
+          subcategory: templateData.subcategory,
+          content: templateData.content,
+          tags: templateData.tags,
+          flyerDesign: templateData.flyerDesign,
+          callToAction: templateData.callToAction,
+          fileUrlArr: templateData.fileUrlArr,
+          hasComments: templateData.hasComments,
+          lifespan: templateData.lifespan,
+        },
+      ])
+      .select("*")
+      .single();
+    if (error) {
+      console.error(error);
+      throw new Error("Error creating a template: " + error.message);
+    }
+    // return updated user
+    const { data: userData, error: getUserError } = await getUserProfile(
+      templateData?.user! as number
+    );
+    if (getUserError) {
+      console.error(getUserError);
+      throw new Error("Error updating the template: " + getUserError);
+    }
+    return {
+      user: userData,
+      error: null,
+    };
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error creating a template: " + error.message);
+  }
+};
+
+// #TODO: AI generated, must check this code and consider effects on templates?
+export const deleteTemplate = async (templateId: number) => {
+  try {
+    const { error } = await supabase
+      .from("templates")
+      .delete()
+      .eq("id", templateId);
+    if (error) {
+      console.error(error);
+      throw new Error("Error deleting the template: " + error.message);
+    }
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error deleting the template: " + error.message);
   }
 };

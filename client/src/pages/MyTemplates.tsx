@@ -27,8 +27,13 @@ const StyledTemplateTitleContainer = styled.div`
 `;
 
 export default function MyTemplates() {
-  const { user } = useGlobalContext();
+  const { user, setIsOpenFlyerDrawer, setDrawerAction } = useGlobalContext();
   const userLimits = useGetUserLimits();
+
+  function handleCreateTemplate() {
+    setDrawerAction("createTemplate");
+    setIsOpenFlyerDrawer(true);
+  }
 
   return (
     <StyledMyTemplates>
@@ -42,12 +47,14 @@ export default function MyTemplates() {
         </StyledTemplateTitleContainer>
         <Button
           size="small"
-          // disabled={userLimits.templates.limit === user?.templates.length}
-          // variation={
-          //   userLimits.templates.limit === user?.templates.length
-          //     ? "disabled"
-          //     : "primary"
-          // }
+          disabled={userLimits.templates.limit === user?.templates.length}
+          variation={
+            userLimits.templates.limit === user?.templates.length
+              ? "disabled"
+              : "primary"
+          }
+          onClick={handleCreateTemplate}
+          data-testid="create-template-button"
         >
           Create Template
         </Button>

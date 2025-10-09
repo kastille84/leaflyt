@@ -15,8 +15,12 @@ export const getUserProfile = async (id: number) => {
       )
       .eq("id", id)
       .single();
-    if (error) throw error;
-    return data;
+    if (error) throw new Error(error.message) as any;
+
+    return {
+      data: data,
+      error: null,
+    };
   } catch (error) {
     return { data: null, error };
   }

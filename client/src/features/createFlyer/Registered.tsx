@@ -120,7 +120,8 @@ export default function Registered({
     setCurrentFormOptions,
   } = useGlobalContext();
   const planLimits = useGetUserLimits();
-  const { createFlyer, editFlyer, editTemplate } = useCreateRegisteredFlyer();
+  const { createFlyer, editFlyer, editTemplate, createTemplateFn } =
+    useCreateRegisteredFlyer();
 
   const queryClient = useQueryClient();
 
@@ -175,14 +176,34 @@ export default function Registered({
       delete data.template;
       // action - Edit Existing Template
       editTemplate(data, {
-        onSuccess: (data: any) => {
+        onSuccess: ({ user }: any) => {
           setShowSpinner(false);
           toast.success("Template updated!");
           setIsOpenFlyerDrawer(false);
           setDrawerAction(null);
           setFlyerToEdit(null);
           // update the user
-          setUser(data.user);
+          setUser(user);
+        },
+        onError: (error: any) => {
+          setShowSpinner(false);
+          toast.error(error.message);
+          setSubmitError(error.message);
+          // set focus on error
+          document.querySelector("#form-error")?.scrollIntoView();
+        },
+      });
+    } else if (type === "createTemplate") {
+      // action - Create New Template
+      createTemplateFn(data, {
+        onSuccess: ({ user }: any) => {
+          setShowSpinner(false);
+          toast.success("Template created!");
+          setIsOpenFlyerDrawer(false);
+          setDrawerAction(null);
+          setFlyerToEdit(null);
+          // update the user
+          setUser(user);
         },
         onError: (error: any) => {
           setShowSpinner(false);
