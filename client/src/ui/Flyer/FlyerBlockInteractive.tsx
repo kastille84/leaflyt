@@ -245,6 +245,7 @@ export default function FlyerBlockInteractive({
     user,
     setIsOpenFlyerDrawer,
     setDrawerAction,
+    setShowDeleteFlyerTemplateModal,
   } = useGlobalContext();
 
   const navigate = useNavigate();
@@ -386,6 +387,11 @@ export default function FlyerBlockInteractive({
     }
   }
 
+  function handleDelete() {
+    setSelectedFlyer(flyer);
+    setShowDeleteFlyerTemplateModal(true);
+  }
+
   function doesFlyerBelongToUser() {
     if (user && (flyer.user as Auth_User_Profile_Response)?.id === user?.id) {
       return true;
@@ -408,7 +414,9 @@ export default function FlyerBlockInteractive({
           )}
           {user && !doesFlyerBelongToUser() && <li>Save</li>}
           <hr />
-          {doesFlyerBelongToUser() && flyer.template && <li>Delete</li>}
+          {doesFlyerBelongToUser() && flyer.template && (
+            <li onClick={handleDelete}>Delete</li>
+          )}
           <li>Inappropriate</li>
         </DropdownMenu>
       </>

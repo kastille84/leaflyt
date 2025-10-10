@@ -74,11 +74,11 @@ export default function DeleteFlyerTemplateModal() {
       )}
 
       <StyledButtonContainer>
-        <Button size="small" variation="danger" onClick={handleDelete}>
-          Delete
-        </Button>
         <Button size="small" variation="secondary" onClick={handleCancel}>
           Cancel
+        </Button>
+        <Button size="small" variation="danger" onClick={handleDelete}>
+          Delete
         </Button>
       </StyledButtonContainer>
     </Modal>
