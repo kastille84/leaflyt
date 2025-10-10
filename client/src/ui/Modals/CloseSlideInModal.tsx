@@ -19,10 +19,10 @@ export default function CloseSlideInModal() {
     setShowCloseSlideInModal,
     setIsOpenFlyerDrawer,
     setDrawerAction,
-    flyerToEdit,
-    setFlyerToEdit,
-    templateToEdit,
-    setTemplateToEdit,
+    selectedFlyer,
+    setSelectedFlyer,
+    selectedTemplate,
+    setSelectedTemplate,
     setCurrentFormOptions,
     currentFormOptions,
     user,
@@ -45,8 +45,8 @@ export default function CloseSlideInModal() {
   };
 
   async function handleLeave() {
-    if (flyerToEdit) setFlyerToEdit(null);
-    if (templateToEdit) setTemplateToEdit(null);
+    if (selectedFlyer) setSelectedFlyer(null);
+    if (selectedTemplate) setSelectedTemplate(null);
     if (!user && currentFormOptions.getValues("fileUrlArr").length > 0) {
       // delete any assets that were uploaded while not logged in
       await deleteFileOverTime(currentFormOptions.getValues("fileUrlArr")[0]);

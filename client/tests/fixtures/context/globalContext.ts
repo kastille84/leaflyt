@@ -30,8 +30,8 @@ export const mockUseGlobalContextReturnObj = {
   setHasFlyerAtLocation: () => {},
   isSelectingNewPlace: false,
   setIsSelectingNewPlace: () => {},
-  flyerToEdit: null,
-  setFlyerToEdit: () => {},
+  selectedFlyer: null,
+  setSelectedFlyer: () => {},
   setShowEditFlyerModal: () => {},
   showEditFlyerModal: false,
 };

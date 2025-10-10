@@ -19,7 +19,6 @@ export default function EditFlyerModal() {
     setShowEditFlyerModal,
     setIsOpenFlyerDrawer,
     setDrawerAction,
-    setTemplateToEdit,
   } = useGlobalContext();
   const customStyles = {
     overlay: {
@@ -71,11 +70,9 @@ export default function EditFlyerModal() {
       <p>Essentially, making it a stand-alone flyer.</p>
       <p>Stand-alone flyers lose the benefits of the template.</p>
       <Heading as={"h4"}>
-        It is suggested that you edit the template instead and repost the flyer
-        on this board.
+        It is suggested that you edit the template instead.
       </Heading>
       <StyledButtonContainer>
-        {/* #TODO: add the "edit template" functionality */}
         <Button size="small" variation="primary" onClick={handleEditTemplate}>
           Edit Template
         </Button>

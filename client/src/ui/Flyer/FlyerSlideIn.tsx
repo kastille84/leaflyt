@@ -16,8 +16,8 @@ export default function FlyerSlideIn() {
     setShowCloseSlideInModal,
     drawerAction,
     selectedPlace,
-    flyerToEdit,
-    templateToEdit,
+    selectedFlyer,
+    selectedTemplate,
   } = useGlobalContext();
 
   const determineTypeOfDrawer = (): JSX.Element | null => {
@@ -26,16 +26,23 @@ export default function FlyerSlideIn() {
       case "create":
         return <CreateFlyer />;
       case "edit":
-        return <Registered flyerToEdit={flyerToEdit} />;
+        return <Registered flyerToEdit={selectedFlyer} />;
       case "editTemplate":
         // if coming from editing a flyer which belongs to a template
         // then use that flyer to find the template to pass
         let foundTemplateToEdit = null;
-        if (flyerToEdit) {
-          foundTemplateToEdit = user?.templates.find((t) => t.id === flyerToEdit.template);
+        if (selectedFlyer) {
+          foundTemplateToEdit = user?.templates.find(
+            (t) => t.id === selectedFlyer.template
+          );
         }
         return (
-          <Registered type={drawerAction} templateToEdit={foundTemplateToEdit? foundTemplateToEdit : templateToEdit} />
+          <Registered
+            type={drawerAction}
+            templateToEdit={
+              foundTemplateToEdit ? foundTemplateToEdit : selectedTemplate
+            }
+          />
         );
       case "createTemplate":
         return <Registered type={drawerAction} />;

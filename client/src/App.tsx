@@ -13,6 +13,7 @@ import LoginModal from "./features/authentication/LoginModal";
 import SlideInBottom from "./ui/SlideIn/SlideInBottom";
 import MyArea from "./pages/MyArea";
 import MyTemplates from "./pages/MyTemplates";
+import DeleteFlyerTemplateModal from "./ui/Modals/DeleteFlyerTemplateModal";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,6 +49,7 @@ function App() {
             <LoginModal />
             <FlyerSlideIn />
             <SlideInBottom />
+            <DeleteFlyerTemplateModal />
           </BrowserRouter>
           <Toaster
             position="top-center"

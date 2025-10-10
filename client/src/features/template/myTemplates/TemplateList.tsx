@@ -61,22 +61,32 @@ const StyledTemplateListItem = styled.div`
   background-color: var(--color-grey-50);
 `;
 export default function TemplateList() {
-  const { user, setDrawerAction, setIsOpenFlyerDrawer, setTemplateToEdit } =
-    useGlobalContext();
+  const {
+    user,
+    setDrawerAction,
+    setIsOpenFlyerDrawer,
+    setSelectedTemplate,
+    setShowDeleteFlyerTemplateModal,
+  } = useGlobalContext();
 
   const flyersBelongingToTemplates = groupFlyersToTemplates(user);
   console.log("flyersBelongingToTemplates", flyersBelongingToTemplates);
 
   function handleEdit(template: DB_Template) {
-    setTemplateToEdit(template);
+    setSelectedTemplate(template);
     setDrawerAction("editTemplate");
     setIsOpenFlyerDrawer((prev) => true);
+  }
+
+  function handleDelete(template: DB_Template) {
+    setSelectedTemplate(template);
+    setShowDeleteFlyerTemplateModal(true);
   }
 
   useEffect(() => {
     // return () => {
     //   setDrawerAction(null);
-    //   setTemplateToEdit(null);
+    //   setSelectedTemplate(null);
     //   setIsOpenFlyerDrawer((prev) => false);
     // };
   }, []);
@@ -87,7 +97,7 @@ export default function TemplateList() {
         <StyledTemplateListItem key={template.id}>
           <StyledActionContainer>
             <HiOutlinePencilSquare onClick={() => handleEdit(template)} />
-            <HiOutlineXMark />
+            <HiOutlineXMark onClick={() => handleDelete(template)} />
           </StyledActionContainer>
           <StyledTemplateHeader>
             <Heading as="h3">{template.templateName}</Heading>

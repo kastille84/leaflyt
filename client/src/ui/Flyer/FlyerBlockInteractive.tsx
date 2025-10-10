@@ -26,6 +26,7 @@ import ImageCarousel from "./SubComponents/ImageCarousel";
 import { Auth_User_Profile_Response } from "../../interfaces/Auth_User";
 import DropdownMenu from "../DropdownMenu";
 import { useGlobalContext } from "../../context/GlobalContext";
+import { useNavigate } from "react-router-dom";
 
 const common = {
   style: css`
@@ -239,12 +240,14 @@ export default function FlyerBlockInteractive({
   );
 
   const {
-    setFlyerToEdit,
+    setSelectedFlyer,
     setShowEditFlyerModal,
     user,
     setIsOpenFlyerDrawer,
     setDrawerAction,
   } = useGlobalContext();
+
+  const navigate = useNavigate();
 
   function hasFiles() {
     if (flyer?.fileUrlArr?.length! >= 1) {
@@ -374,7 +377,7 @@ export default function FlyerBlockInteractive({
   }
 
   function handleEditClick() {
-    setFlyerToEdit(flyer);
+    setSelectedFlyer(flyer);
     if (flyer.template) {
       setShowEditFlyerModal(true);
     } else {
@@ -398,7 +401,11 @@ export default function FlyerBlockInteractive({
         </StyledAvatarContainer>
         <DropdownMenu>
           {doesFlyerBelongToUser() && <li onClick={handleEditClick}>Edit</li>}
-          {doesFlyerBelongToUser() && flyer.template && <li>View Template</li>}
+          {doesFlyerBelongToUser() && flyer.template && (
+            <li onClick={() => navigate(`/dashboard/my-templates`)}>
+              View Template
+            </li>
+          )}
           {user && !doesFlyerBelongToUser() && <li>Save</li>}
           <hr />
           {doesFlyerBelongToUser() && flyer.template && <li>Delete</li>}
