@@ -113,7 +113,7 @@ export default function Registered({
     setShowCloseSlideInModal,
     setIsOpenFlyerDrawer,
     setDrawerAction,
-    setFlyerToEdit,
+    setSelectedFlyer,
     selectedPlace,
     setBottomSlideInType,
     setIsOpenBottomSlideIn,
@@ -154,7 +154,7 @@ export default function Registered({
           toast.success("Flyer updated!");
           setIsOpenFlyerDrawer(false);
           setDrawerAction(null);
-          setFlyerToEdit(null);
+          setSelectedFlyer(null);
           queryClient.invalidateQueries({
             queryKey: ["board", selectedPlace?.id],
           });
@@ -181,7 +181,7 @@ export default function Registered({
           toast.success("Template updated!");
           setIsOpenFlyerDrawer(false);
           setDrawerAction(null);
-          setFlyerToEdit(null);
+          setSelectedFlyer(null);
           // update the user
           setUser(user);
         },
@@ -201,7 +201,7 @@ export default function Registered({
           toast.success("Template created!");
           setIsOpenFlyerDrawer(false);
           setDrawerAction(null);
-          setFlyerToEdit(null);
+          setSelectedFlyer(null);
           // update the user
           setUser(user);
         },

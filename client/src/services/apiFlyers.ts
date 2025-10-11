@@ -4,6 +4,7 @@ import {
   DB_Flyers_Create_Unregistered,
   DB_Flyer_Create,
   DB_Template,
+  DB_Flyers_Response,
 } from "../interfaces/DB_Flyers";
 import { NearbySearchPlaceResult } from "../interfaces/Geo";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
@@ -277,13 +278,13 @@ export const createFlyerFromTemplate = async (
 };
 
 // #TODO: AI generated, must check this code and consider effects on templates?
-export const deleteFlyer = async (flyerId: number) => {
+export const deleteFlyer = async (flyer: DB_Flyers_Response) => {
   try {
-    const { error } = await supabase.from("flyers").delete().eq("id", flyerId);
-    if (error) {
-      console.error(error);
-      throw new Error("Error deleting the flyer: " + error.message);
-    }
+    const { error } = await supabase.from("flyers").delete().eq("id", flyer.id);
+    // return updated user
+    return await getLatestUserAfterChanges(
+      (flyer?.user as Auth_User_Profile_Response).id
+    );
   } catch (error: any) {
     console.error(error);
     throw new Error("Error deleting the flyer: " + error.message);
@@ -324,17 +325,19 @@ export const updateTemplate = async (templateData: DB_Template) => {
       );
     }
     // return updated user
-    const { data: userData, error: getUserError } = await getUserProfile(
-      templateData?.user! as number
-    );
-    if (getUserError) {
-      console.error(getUserError);
-      throw new Error("Error updating the template: " + getUserError);
-    }
-    return {
-      user: userData,
-      error: null,
-    };
+    // return updated user
+    return await getLatestUserAfterChanges(templateData?.user! as number);
+    // const { data: userData, error: getUserError } = await getUserProfile(
+    //   templateData?.user! as number
+    // );
+    // if (getUserError) {
+    //   console.error(getUserError);
+    //   throw new Error("Error updating the template: " + getUserError);
+    // }
+    // return {
+    //   user: userData,
+    //   error: null,
+    // };
   } catch (error: any) {
     console.error(error);
     throw new Error("Error updating the template: " + error.message);
@@ -368,6 +371,7 @@ export const createTemplate = async (templateData: DB_Template) => {
       throw new Error("Error creating a template: " + error.message);
     }
     // return updated user
+    return await getLatestUserAfterChanges(templateData?.user! as number);
     const { data: userData, error: getUserError } = await getUserProfile(
       templateData?.user! as number
     );
@@ -401,3 +405,16 @@ export const deleteTemplate = async (templateId: number) => {
     throw new Error("Error deleting the template: " + error.message);
   }
 };
+
+async function getLatestUserAfterChanges(userId: number) {
+  // return updated user
+  const { data: userData, error: getUserError } = await getUserProfile(userId);
+  if (getUserError) {
+    console.error(getUserError);
+    throw new Error("Error updating the template: " + getUserError);
+  }
+  return {
+    user: userData,
+    error: null,
+  };
+}

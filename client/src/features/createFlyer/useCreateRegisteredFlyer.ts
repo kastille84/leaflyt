@@ -1,12 +1,17 @@
 import { useGlobalContext } from "../../context/GlobalContext";
 import { useMutation } from "@tanstack/react-query";
-import { DB_Flyer_Create, DB_Template } from "../../interfaces/DB_Flyers";
+import {
+  DB_Flyer_Create,
+  DB_Flyers_Response,
+  DB_Template,
+} from "../../interfaces/DB_Flyers";
 import {
   createRegisteredFlyer,
   createFlyerFromTemplate,
   updateRegisteredFlyer,
   updateTemplate,
   createTemplate,
+  deleteFlyer,
 } from "../../services/apiFlyers";
 
 export default function useCreateRegisteredFlyer() {
@@ -20,6 +25,10 @@ export default function useCreateRegisteredFlyer() {
   const { mutate: editFlyer, error: editFlyerError } = useMutation({
     mutationFn: (prepData: DB_Flyer_Create) =>
       updateRegisteredFlyer(prepData, selectedPlace!),
+  });
+
+  const { mutate: deleteFlyerFn, error: deleteFlyerFnError } = useMutation({
+    mutationFn: (prepData: DB_Flyers_Response) => deleteFlyer(prepData),
   });
 
   const {
@@ -47,6 +56,8 @@ export default function useCreateRegisteredFlyer() {
     createFlyerError,
     editFlyer,
     editFlyerError,
+    deleteFlyerFn,
+    deleteFlyerFnError,
     createFlyerUsingTemplate,
     createFlyerUsingTemplateError,
     editTemplate,

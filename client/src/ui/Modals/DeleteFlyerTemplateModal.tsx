@@ -1,8 +1,13 @@
+import styled from "styled-components";
+import { useParams } from "react-router-dom";
+
 import Modal from "react-modal";
 import Heading from "../Heading";
 import Button from "../Button";
-import styled from "styled-components";
 import { useGlobalContext } from "../../context/GlobalContext";
+import useCreateRegisteredFlyer from "../../features/createFlyer/useCreateRegisteredFlyer";
+import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 const StyledButtonContainer = styled.div`
   margin-top: 2.4rem;
@@ -13,6 +18,7 @@ const StyledButtonContainer = styled.div`
 
 export default function DeleteFlyerTemplateModal() {
   const {
+    setUser,
     selectedTemplate,
     setSelectedTemplate,
     selectedFlyer,
@@ -20,6 +26,10 @@ export default function DeleteFlyerTemplateModal() {
     setShowDeleteFlyerTemplateModal,
     showDeleteFlyerTemplateModal,
   } = useGlobalContext();
+
+  const { deleteFlyerFn } = useCreateRegisteredFlyer();
+  const { id } = useParams();
+  const queryClient = useQueryClient();
 
   const customStyles = {
     overlay: {
@@ -51,6 +61,21 @@ export default function DeleteFlyerTemplateModal() {
     } else if (selectedFlyer) {
       // delete flyer
       console.log("delete flyer");
+      deleteFlyerFn(selectedFlyer, {
+        onSuccess: ({ user }) => {
+          // update the user
+          setUser(user);
+          toast.success("Flyer deleted!");
+          handleCancel();
+          // invalidate queries to update the board
+          queryClient.invalidateQueries({
+            queryKey: ["board", id],
+          });
+        },
+        onError: (error) => {
+          toast.error("Flyer deletion failed! Try again.");
+        },
+      });
     }
   }
 
