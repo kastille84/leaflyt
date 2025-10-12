@@ -12,6 +12,7 @@ import {
   updateTemplate,
   createTemplate,
   deleteFlyer,
+  deleteTemplate,
 } from "../../services/apiFlyers";
 
 export default function useCreateRegisteredFlyer() {
@@ -51,6 +52,13 @@ export default function useCreateRegisteredFlyer() {
     },
   });
 
+  const { mutate: deleteTemplateFn, error: deleteTemplateFnError } =
+    useMutation({
+      mutationFn: (prepData: DB_Template) => {
+        return deleteTemplate(prepData);
+      },
+    });
+
   return {
     createFlyer,
     createFlyerError,
@@ -64,5 +72,7 @@ export default function useCreateRegisteredFlyer() {
     editTemplateError,
     createTemplateFn,
     createTemplateError,
+    deleteTemplateFn,
+    deleteTemplateFnError,
   };
 }

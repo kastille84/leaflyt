@@ -27,7 +27,7 @@ export default function DeleteFlyerTemplateModal() {
     showDeleteFlyerTemplateModal,
   } = useGlobalContext();
 
-  const { deleteFlyerFn } = useCreateRegisteredFlyer();
+  const { deleteFlyerFn, deleteTemplateFn } = useCreateRegisteredFlyer();
   const { id } = useParams();
   const queryClient = useQueryClient();
 
@@ -58,6 +58,17 @@ export default function DeleteFlyerTemplateModal() {
     if (selectedTemplate) {
       // delete template
       console.log("delete template");
+      deleteTemplateFn(selectedTemplate, {
+        onSuccess: ({ user }) => {
+          // update the user
+          setUser(user);
+          toast.success("Template deleted!");
+          handleCancel();
+        },
+        onError: (error) => {
+          toast.error("Flyer deletion failed! Try again.");
+        },
+      });
     } else if (selectedFlyer) {
       // delete flyer
       console.log("delete flyer");
