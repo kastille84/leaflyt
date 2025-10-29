@@ -132,7 +132,7 @@ export default function Registered({
   const lifespanWatch = watch("lifespan");
 
   console.log("errors", errors);
-  console.log("getValules", getValues());
+  console.log("getValues", getValues());
 
   const onSubmit = async (data: any) => {
     setSubmitError("");
@@ -171,7 +171,7 @@ export default function Registered({
           document.querySelector("#form-error")?.scrollIntoView();
         },
       });
-    } else if (templateToEdit) {
+    } else if (templateToEdit && type === "editTemplate") {
       // remove the template property
       delete data.template;
       // action - Edit Existing Template
@@ -329,7 +329,11 @@ export default function Registered({
                   />
                 )} */}
                 <StyledLabel htmlFor="image">Choose assets</StyledLabel>
-                <Button type="button" onClick={handleChooseAsset}>
+                <Button
+                  type="button"
+                  onClick={handleChooseAsset}
+                  data-testid="choose-asset-button"
+                >
                   Open Assets Uploader
                 </Button>
                 {fileUrlArrWatch && fileUrlArrWatch.length > 0 && (

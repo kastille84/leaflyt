@@ -44,7 +44,7 @@ export default function AssetsPreviewList({
   // }
 
   return (
-    <StyledContainer>
+    <StyledContainer data-testid="container-assets-preview-list">
       <Heading as={"h4"}>Selected Assets</Heading>
       {fileUrlArr.length === 0 && <p>No assets selected</p>}
       <StyledAssetsPreviewList>

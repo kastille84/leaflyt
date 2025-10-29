@@ -32,6 +32,10 @@ export const mockUseGlobalContextReturnObj = {
   setIsSelectingNewPlace: () => {},
   selectedFlyer: null,
   setSelectedFlyer: () => {},
+  selectedTemplate: null,
+  setSelectedTemplate: () => {},
   setShowEditFlyerModal: () => {},
   showEditFlyerModal: false,
+  setShowDeleteFlyerTemplateModal: () => {},
+  showDeleteFlyerTemplateModal: false,
 };

@@ -26,7 +26,7 @@ export default function FlyerSlideIn() {
       case "create":
         return <CreateFlyer />;
       case "edit":
-        return <Registered flyerToEdit={selectedFlyer} />;
+        return <Registered flyerToEdit={selectedFlyer} type="edit" />;
       case "editTemplate":
         // if coming from editing a flyer which belongs to a template
         // then use that flyer to find the template to pass
