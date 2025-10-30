@@ -84,7 +84,7 @@ export default function MapContainer() {
   };
 
   return (
-    <StyledMapContainer>
+    <StyledMapContainer data-testid="map-container">
       <Map
         defaultCenter={{ lat: userLat, lng: userLng }}
         defaultZoom={determizeDefaultZoom()}

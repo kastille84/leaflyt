@@ -109,7 +109,7 @@ export default function PlaceSearchInput({
   };
 
   return (
-    <div>
+    <div data-testid="place-search-container">
       <StyledInput
         type="text"
         value={searchText}
@@ -118,7 +118,7 @@ export default function PlaceSearchInput({
       />
 
       {predictions.length > 0 && (
-        <StyledResults>
+        <StyledResults data-testid="place-search-results">
           {predictions.map((prediction: any) => (
             <li
               key={prediction.place_id}

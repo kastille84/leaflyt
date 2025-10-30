@@ -40,20 +40,107 @@ describe("useCreateRegisteredFlyer", () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
+  describe("flyer", () => {
+    it("should create a flyer", async () => {
+      const { result } = renderHook(() => useCreateRegisteredFlyer(), {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      const { createFlyer } = result.current;
+      const prepData = {
+        flyer: mockCreatedFlyer,
+        template: templateMock,
+      };
 
-  it("should create a flyer", async () => {
-    const { result } = renderHook(() => useCreateRegisteredFlyer(), {
-      wrapper: QueryClientProviderWrapper(),
+      await waitFor(() => {
+        createFlyer(prepData.flyer);
+      });
+      expect(createFlyer).toBeDefined();
     });
-    const { createFlyer } = result.current;
-    const prepData = {
-      flyer: mockCreatedFlyer,
-      template: templateMock,
-    };
 
-    await waitFor(() => {
-      createFlyer(prepData.flyer);
+    it("should edit a flyer", async () => {
+      const { result } = renderHook(() => useCreateRegisteredFlyer(), {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      const { editFlyer } = result.current;
+      const prepData = {
+        flyer: mockCreatedFlyer,
+        template: templateMock,
+      };
+      await waitFor(() => {
+        editFlyer(prepData.flyer);
+      });
+      expect(editFlyer).toBeDefined();
     });
-    expect(createFlyer).toBeDefined();
+    it("should delete a flyer", async () => {
+      const { result } = renderHook(() => useCreateRegisteredFlyer(), {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      const { deleteFlyerFn } = result.current;
+      await waitFor(() => {
+        deleteFlyerFn(mockCreatedFlyer);
+      });
+      expect(deleteFlyerFn).toBeDefined();
+    });
+    it("should create a flyer using template", async () => {
+      const { result } = renderHook(() => useCreateRegisteredFlyer(), {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      const { createFlyerUsingTemplate } = result.current;
+      const prepData = {
+        flyer: mockCreatedFlyer,
+        template: templateMock,
+      };
+      await waitFor(() => {
+        createFlyerUsingTemplate(prepData.template);
+      });
+      expect(createFlyerUsingTemplate).toBeDefined();
+    });
+  });
+
+  describe("template", () => {
+    it("should create a template", async () => {
+      const { result } = renderHook(() => useCreateRegisteredFlyer(), {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      const { createTemplateFn } = result.current;
+      const prepData = {
+        flyer: mockCreatedFlyer,
+        template: templateMock,
+      };
+      await waitFor(() => {
+        createTemplateFn(prepData.template);
+      });
+      expect(createTemplateFn).toBeDefined();
+    });
+
+    it("should edit a template", async () => {
+      const { result } = renderHook(() => useCreateRegisteredFlyer(), {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      const { editTemplate } = result.current;
+      const prepData = {
+        flyer: mockCreatedFlyer,
+        template: templateMock,
+      };
+      await waitFor(() => {
+        editTemplate(prepData.template);
+      });
+      expect(editTemplate).toBeDefined();
+    });
+
+    it("should delete a template", async () => {
+      const { result } = renderHook(() => useCreateRegisteredFlyer(), {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      const { deleteTemplateFn } = result.current;
+      const prepData = {
+        flyer: mockCreatedFlyer,
+        template: templateMock,
+      };
+      await waitFor(() => {
+        deleteTemplateFn(prepData.template);
+      });
+      expect(deleteTemplateFn).toBeDefined();
+    });
   });
 });
