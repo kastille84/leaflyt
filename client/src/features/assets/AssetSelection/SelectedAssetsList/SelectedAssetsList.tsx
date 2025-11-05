@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { UploadApiResponse } from "cloudinary";
 import SelectedAssetsListItem from "./SelectedAssetsListItem";
 import SelectedAssetsListItemTimed from "./SelectedAssetsListItemTimed";
-import Heading from "../../Heading";
-import { useAssetSelectionContext } from "../../../context/AssetSelectionContext";
-import { deleteFileOverTime } from "../../../services/cloudinary";
+import Heading from "../../../../ui/Heading";
+import { useAssetSelectionContext } from "../../../../context/AssetSelectionContext";
+import { deleteFileOverTime } from "../../../../services/cloudinary";
 import toast from "react-hot-toast";
 
 const StyledContainer = styled.div``;

@@ -11,7 +11,7 @@ import FlyerDesignerContainer from "../../features/createFlyer/FlyerDesigner/Fly
 import { FlyerDesignerContextProvider } from "../../context/FlyerDesignerContext";
 import FullCarouselContainer from "../Flyer/FullCarouselContainer";
 import TemplateSelectionContainer from "../../features/template/TemplateSelectionContainer";
-import AssestSelectionContainer from "../AssetSelection/AssestSelectionContainer";
+import AssestSelectionContainer from "../../features/assets/AssetSelection/AssestSelectionContainer";
 import { AssetSelectionContextProvider } from "../../context/AssetSelectionContext";
 
 const StyledCloseContainer = styled.div`

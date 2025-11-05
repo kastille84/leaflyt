@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import AssetUpload from "../../AssetUpload/AssetUpload";
-import useGetUserLimits from "../../../hooks/useGetUserLimits";
+import useGetUserLimits from "../../../../hooks/useGetUserLimits";
 import { UploadApiResponse } from "cloudinary";
-import { useAssetSelectionContext } from "../../../context/AssetSelectionContext";
+import { useAssetSelectionContext } from "../../../../context/AssetSelectionContext";
 
 const StyledNewAssetContainer = styled.div`
   border: 2px solid var(--color-brand-600);

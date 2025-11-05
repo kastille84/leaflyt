@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import { useAssetSelectionContext } from "../../../context/AssetSelectionContext";
-import { useGlobalContext } from "../../../context/GlobalContext";
+import { useAssetSelectionContext } from "../../../../context/AssetSelectionContext";
+import { useGlobalContext } from "../../../../context/GlobalContext";
 import ExistingAssetListItem from "./ExistingAssetListItem";
 
 const StyledExistingAssetsListContainer = styled.ul`

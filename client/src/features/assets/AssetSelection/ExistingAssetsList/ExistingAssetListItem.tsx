@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { UploadApiResponse } from "cloudinary";
-import { useAssetSelectionContext } from "../../../context/AssetSelectionContext";
+import { useAssetSelectionContext } from "../../../../context/AssetSelectionContext";
 
 const StyledExistingAssetListItem = styled.figure`
   position: relative;

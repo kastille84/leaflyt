@@ -6,10 +6,10 @@ import {
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
-import FormControl from "../Form/FormControl";
-import Button from "../Button";
+import FormControl from "../../../ui/Form/FormControl";
+import Button from "../../../ui/Button";
 import styled from "styled-components";
-import { FILE_UPLOAD_OPTIONS } from "../../constants";
+import { FILE_UPLOAD_OPTIONS } from "../../../constants";
 import { UploadApiErrorResponse, UploadApiResponse } from "cloudinary";
 import toast from "react-hot-toast";
 
