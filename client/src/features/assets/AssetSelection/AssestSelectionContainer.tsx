@@ -78,6 +78,7 @@ export default function AssestSelectionContainer() {
         await Promise.all(timedAssetsList.map((asset) => addAssetFn(asset)));
       }
     } catch (error) {
+      toast.error("Error adding assets. Please try again.");
       return;
     }
     currentFormOptions.setValue("fileUrlArr", assetsList);
