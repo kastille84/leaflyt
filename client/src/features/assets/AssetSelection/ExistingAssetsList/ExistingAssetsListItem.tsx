@@ -48,7 +48,7 @@ export default function ExistingAssetsListItem({
   }
 
   return (
-    <StyledExistingAssetsListItem>
+    <StyledExistingAssetsListItem data-testid="existing-asset-list-item">
       <img
         src={asset.resource_type === "video" ? asset.thumbnail_url : asset.url}
         alt={asset.original_filename}
