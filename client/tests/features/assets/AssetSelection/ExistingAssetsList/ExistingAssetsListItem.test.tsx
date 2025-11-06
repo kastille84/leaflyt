@@ -14,6 +14,7 @@ import { mockAssetSelectionContextReturnObj } from "../../../../fixtures/context
 import { mockAssetsList } from "../../../../fixtures/assets/assets";
 import ExistingAssetsListItem from "../../../../../src/features/assets/AssetSelection/ExistingAssetsList/ExistingAssetsListItem";
 import { UploadApiResponse } from "cloudinary";
+import { set } from "react-hook-form";
 
 // userEvent
 
@@ -21,12 +22,14 @@ import { UploadApiResponse } from "cloudinary";
 vi.mock("../../../../../src/context/AssetSelectionContext");
 
 describe("ExistingAssetsListItem", () => {
+  let setAssetsListMock = vi.fn();
   beforeEach(() => {
     vi.mocked(
       AssetSelectionContext.useAssetSelectionContext
     ).mockImplementation(() => ({
       ...mockAssetSelectionContextReturnObj,
       assetsList: mockAssetsList,
+      setAssetsList: setAssetsListMock,
     }));
   });
   afterEach(() => {
@@ -39,6 +42,38 @@ describe("ExistingAssetsListItem", () => {
     // assert
     await waitFor(() => {
       expect(screen.getByTestId("existing-asset-list-item")).toBeDefined();
+    });
+  });
+  it("should select existing asset", async () => {
+    // assemble
+    // act
+    render(<ExistingAssetsListItem asset={mockAssetsList[0]} />);
+    const checkbox = screen.getByRole("checkbox");
+    // assert
+    await waitFor(() => {
+      expect(checkbox).toBeDefined();
+    });
+    act(() => {
+      userEvent.click(checkbox);
+    });
+    await waitFor(() => {
+      expect(setAssetsListMock).toHaveBeenCalled();
+    });
+  });
+  it("should filter asset from existing assets", async () => {
+    // assemble
+    // act
+    render(<ExistingAssetsListItem asset={mockAssetsList[0]} preChecked />);
+    const checkbox = screen.getByRole("checkbox");
+    // assert
+    await waitFor(() => {
+      expect(checkbox).toBeDefined();
+    });
+    act(() => {
+      userEvent.click(checkbox);
+    });
+    await waitFor(() => {
+      expect(setAssetsListMock).toHaveBeenCalled();
     });
   });
 });

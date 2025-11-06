@@ -29,7 +29,7 @@ export default function NewAssetContainer() {
   }
 
   return (
-    <StyledNewAssetContainer>
+    <StyledNewAssetContainer data-testid="new-asset-container">
       <AssetUpload
         level={userLimits.level}
         onAssetAdded={handleAssetAdded}
