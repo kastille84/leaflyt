@@ -168,7 +168,7 @@ export default function SelectedAssetsListItemTimed({
   // }, [userProfile]);
 
   return (
-    <StyledListItem>
+    <StyledListItem data-testid="selected-assets-list-item-timed">
       <StyledFigure>
         <img
           src={

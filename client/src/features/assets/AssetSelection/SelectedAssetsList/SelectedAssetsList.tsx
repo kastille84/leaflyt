@@ -48,7 +48,7 @@ export default function SelectedAssetsList({
   }
 
   return (
-    <StyledContainer>
+    <StyledContainer data-testid="selected-assets-list-container">
       <Heading as={"h3"}>Selected Assets</Heading>
       {selectedAssets.length === 0 && <p>No assets selected</p>}
       <StyledSelectedAssetsList>

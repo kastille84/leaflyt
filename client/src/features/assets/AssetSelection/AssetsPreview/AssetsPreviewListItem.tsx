@@ -60,7 +60,7 @@ export default function AssetsPreviewListItem({
   asset: UploadApiResponse;
 }) {
   return (
-    <StyledListItem>
+    <StyledListItem data-testid="assets-preview-list-item">
       <StyledFigure>
         <img
           src={

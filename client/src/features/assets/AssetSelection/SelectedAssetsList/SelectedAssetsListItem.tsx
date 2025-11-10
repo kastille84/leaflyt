@@ -62,7 +62,7 @@ export default function SelectedAssetsListItem({
   const { setAssetsList } = useAssetSelectionContext();
 
   return (
-    <StyledListItem>
+    <StyledListItem data-testid="selected-assets-list-item">
       <StyledFigure>
         <img
           src={
