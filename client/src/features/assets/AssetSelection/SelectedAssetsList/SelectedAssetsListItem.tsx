@@ -59,7 +59,7 @@ export default function SelectedAssetsListItem({
 }: {
   asset: UploadApiResponse;
 }) {
-  const { setAssetsList } = useAssetSelectionContext();
+  // const { setAssetsList } = useAssetSelectionContext();
 
   return (
     <StyledListItem data-testid="selected-assets-list-item">

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { UploadApiResponse } from "cloudinary";
@@ -7,10 +8,9 @@ import {
   HiOutlineXCircle,
   HiOutlineXMark,
 } from "react-icons/hi2";
-import { useEffect, useState } from "react";
 import useAssetMutations from "../../useAssetMutations";
 import useGetUserProfileById from "../../../../hooks/useGetUserProfileById";
-import { useGlobalContext } from "../../../../context/GlobalContext";
+// import { useGlobalContext } from "../../../../context/GlobalContext";
 import toast from "react-hot-toast";
 
 const StyledListItem = styled.li`
@@ -99,7 +99,7 @@ export default function SelectedAssetsListItemTimed({
   idx: number;
   handleDeleteAsset: (idx: number) => void;
 }) {
-  const { setUser } = useGlobalContext();
+  // const { setUser } = useGlobalContext();
   const { setTimedAssetsList } = useAssetSelectionContext();
   const { addAssetFn } = useAssetMutations();
   const [isAddedToAssets, setIsAddedToAssets] = useState<boolean>(false);
