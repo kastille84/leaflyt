@@ -24,6 +24,9 @@ import {
 } from "../../interfaces/DB_Flyers";
 import ImageCarousel from "./SubComponents/ImageCarousel";
 import { Auth_User_Profile_Response } from "../../interfaces/Auth_User";
+import DropdownMenu from "../DropdownMenu";
+import { useGlobalContext } from "../../context/GlobalContext";
+import { useNavigate } from "react-router-dom";
 
 const common = {
   style: css`
@@ -236,6 +239,17 @@ export default function FlyerBlockInteractive({
     "info"
   );
 
+  const {
+    setSelectedFlyer,
+    setShowEditFlyerModal,
+    user,
+    setIsOpenFlyerDrawer,
+    setDrawerAction,
+    setShowDeleteFlyerTemplateModal,
+  } = useGlobalContext();
+
+  const navigate = useNavigate();
+
   function hasFiles() {
     if (flyer?.fileUrlArr?.length! >= 1) {
       return true;
@@ -363,15 +377,48 @@ export default function FlyerBlockInteractive({
     }
   }
 
+  function handleEditClick() {
+    setSelectedFlyer(flyer);
+    if (flyer.template) {
+      setShowEditFlyerModal(true);
+    } else {
+      setIsOpenFlyerDrawer(true);
+      setDrawerAction("edit");
+    }
+  }
+
+  function handleDelete() {
+    setSelectedFlyer(flyer);
+    setShowDeleteFlyerTemplateModal(true);
+  }
+
+  function doesFlyerBelongToUser() {
+    if (user && (flyer.user as Auth_User_Profile_Response)?.id === user?.id) {
+      return true;
+    }
+    return false;
+  }
+
   function renderTopContent() {
     return (
       <>
         <StyledAvatarContainer>
           {determineAvatarAndName()}
         </StyledAvatarContainer>
-        <div>
-          <HiOutlineEllipsisHorizontal />
-        </div>
+        <DropdownMenu>
+          {doesFlyerBelongToUser() && <li onClick={handleEditClick}>Edit</li>}
+          {doesFlyerBelongToUser() && flyer.template && (
+            <li onClick={() => navigate(`/dashboard/my-templates`)}>
+              View Template
+            </li>
+          )}
+          {user && !doesFlyerBelongToUser() && <li>Save</li>}
+          <hr />
+          {doesFlyerBelongToUser() && flyer.template && (
+            <li onClick={handleDelete}>Delete</li>
+          )}
+          <li>Inappropriate</li>
+        </DropdownMenu>
       </>
     );
   }

@@ -4,6 +4,7 @@ import useGetUserGeo from "../hooks/useGetUserGeo";
 import { LatLng, NearbySearchPlaceResult } from "../interfaces/Geo";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
+import { DB_Flyers_Response, DB_Template } from "../interfaces/DB_Flyers";
 
 export type ContextType = {
   getUserGeo: () => void;
@@ -17,9 +18,11 @@ export type ContextType = {
   >;
   setIsOpenFlyerDrawer: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenFlyerDrawer: boolean;
-  drawerAction: "edit" | "create" | null;
+  drawerAction: "edit" | "create" | "editTemplate" | "createTemplate" | null;
   setDrawerAction: React.Dispatch<
-    React.SetStateAction<"edit" | "create" | null>
+    React.SetStateAction<
+      "edit" | "create" | "editTemplate" | "createTemplate" | null
+    >
   >;
   showCloseSlideInModal: boolean;
   setShowCloseSlideInModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -35,6 +38,7 @@ export type ContextType = {
     | "flyerDesigner"
     | "carousel"
     | "hasTemplates"
+    | "chooseAssets"
     | null;
   setBottomSlideInType: React.Dispatch<
     React.SetStateAction<
@@ -43,6 +47,7 @@ export type ContextType = {
       | "flyerDesigner"
       | "carousel"
       | "hasTemplates"
+      | "chooseAssets"
       | null
     >
   >;
@@ -50,8 +55,8 @@ export type ContextType = {
   setUser: React.Dispatch<
     React.SetStateAction<Auth_User_Profile_Response | null>
   >;
-  flyerDesignOptions: any;
-  setFlyerDesignOptions: React.Dispatch<React.SetStateAction<any>>;
+  currentFormOptions: any;
+  setCurrentFormOptions: React.Dispatch<React.SetStateAction<any>>;
   carouselImages: UploadApiResponse[] | null;
   setCarouselImages: React.Dispatch<
     React.SetStateAction<UploadApiResponse[] | null>
@@ -60,6 +65,18 @@ export type ContextType = {
   setHasFlyerAtLocation: React.Dispatch<React.SetStateAction<boolean>>;
   isSelectingNewPlace: boolean;
   setIsSelectingNewPlace: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedFlyer: DB_Flyers_Response | null;
+  setSelectedFlyer: React.Dispatch<
+    React.SetStateAction<DB_Flyers_Response | null>
+  >;
+  selectedTemplate: DB_Template | null;
+  setSelectedTemplate: React.Dispatch<React.SetStateAction<DB_Template | null>>;
+  setShowEditFlyerModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showEditFlyerModal: boolean;
+  setShowDeleteFlyerTemplateModal: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
+  showDeleteFlyerTemplateModal: boolean;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -86,23 +103,31 @@ const GlobalContext = createContext<ContextType>({
   setBottomSlideInType: () => {},
   user: null,
   setUser: () => {},
-  flyerDesignOptions: null,
-  setFlyerDesignOptions: () => {},
+  currentFormOptions: null,
+  setCurrentFormOptions: () => {},
   carouselImages: null,
   setCarouselImages: () => {},
   hasFlyerAtLocation: false,
   setHasFlyerAtLocation: () => {},
   isSelectingNewPlace: false,
   setIsSelectingNewPlace: () => {},
+  selectedFlyer: null,
+  setSelectedFlyer: () => {},
+  selectedTemplate: null,
+  setSelectedTemplate: () => {},
+  setShowEditFlyerModal: () => {},
+  showEditFlyerModal: false,
+  setShowDeleteFlyerTemplateModal: () => {},
+  showDeleteFlyerTemplateModal: false,
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
   const [selectedPlace, setSelectedPlace] =
     useState<NearbySearchPlaceResult | null>(null);
   const [isOpenFlyerDrawer, setIsOpenFlyerDrawer] = useState<boolean>(false);
-  const [drawerAction, setDrawerAction] = useState<"edit" | "create" | null>(
-    null
-  );
+  const [drawerAction, setDrawerAction] = useState<
+    "edit" | "create" | "editTemplate" | "createTemplate" | null
+  >(null);
   const [showCloseSlideInModal, setShowCloseSlideInModal] =
     useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -110,10 +135,16 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [isOpenBottomSlideIn, setIsOpenBottomSlideIn] =
     useState<boolean>(false);
   const [bottomSlideInType, setBottomSlideInType] = useState<
-    "signup" | "upgrade" | "flyerDesigner" | "carousel" | "hasTemplates" | null
+    | "signup"
+    | "upgrade"
+    | "flyerDesigner"
+    | "carousel"
+    | "hasTemplates"
+    | "chooseAssets"
+    | null
   >(null);
   const [user, setUser] = useState<Auth_User_Profile_Response | null>(null);
-  const [flyerDesignOptions, setFlyerDesignOptions] = useState<{
+  const [currentFormOptions, setCurrentFormOptions] = useState<{
     getValues: UseFormGetValues<any>;
     setValue: UseFormSetValue<any>;
   } | null>(null);
@@ -122,6 +153,15 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   >(null);
   const [hasFlyerAtLocation, setHasFlyerAtLocation] = useState(false);
   const [isSelectingNewPlace, setIsSelectingNewPlace] = useState(false);
+  const [selectedFlyer, setSelectedFlyer] = useState<DB_Flyers_Response | null>(
+    null
+  );
+  const [selectedTemplate, setSelectedTemplate] = useState<DB_Template | null>(
+    null
+  );
+  const [showEditFlyerModal, setShowEditFlyerModal] = useState(false);
+  const [showDeleteFlyerTemplateModal, setShowDeleteFlyerTemplateModal] =
+    useState(false);
 
   const {
     getUserGeo,
@@ -134,6 +174,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   return (
     <GlobalContext.Provider
       value={{
+        // Location
         getUserGeo,
         isGettingLocation,
         coords,
@@ -141,30 +182,43 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         setIsGettingLocation,
         selectedPlace,
         setSelectedPlace,
-        isOpenFlyerDrawer,
-        setIsOpenFlyerDrawer,
-        drawerAction,
-        setDrawerAction,
-        showCloseSlideInModal,
-        setShowCloseSlideInModal,
-        isLoggedIn,
-        setIsLoggedIn,
-        showLoginModal,
-        setShowLoginModal,
-        isOpenBottomSlideIn,
-        setIsOpenBottomSlideIn,
-        bottomSlideInType,
-        setBottomSlideInType,
-        user,
-        setUser,
-        flyerDesignOptions,
-        setFlyerDesignOptions,
-        carouselImages,
-        setCarouselImages,
         hasFlyerAtLocation,
         setHasFlyerAtLocation,
         isSelectingNewPlace,
         setIsSelectingNewPlace,
+        // Drawers
+        isOpenFlyerDrawer,
+        setIsOpenFlyerDrawer,
+        drawerAction,
+        setDrawerAction,
+        // Modals
+        showCloseSlideInModal,
+        setShowCloseSlideInModal,
+        showLoginModal,
+        setShowLoginModal,
+        setShowEditFlyerModal,
+        showEditFlyerModal,
+        setShowDeleteFlyerTemplateModal,
+        showDeleteFlyerTemplateModal,
+        // Auth
+        isLoggedIn,
+        setIsLoggedIn,
+        user,
+        setUser,
+        // SlideIns
+        isOpenBottomSlideIn,
+        setIsOpenBottomSlideIn,
+        bottomSlideInType,
+        setBottomSlideInType,
+        //Flyer
+        selectedFlyer,
+        setSelectedFlyer,
+        selectedTemplate,
+        setSelectedTemplate,
+        currentFormOptions,
+        setCurrentFormOptions,
+        carouselImages,
+        setCarouselImages,
       }}
     >
       {children}

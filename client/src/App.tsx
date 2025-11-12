@@ -12,6 +12,7 @@ import FlyerSlideIn from "./ui/Flyer/FlyerSlideIn";
 import LoginModal from "./features/authentication/LoginModal";
 import SlideInBottom from "./ui/SlideIn/SlideInBottom";
 import MyArea from "./pages/MyArea";
+import MyTemplates from "./pages/MyTemplates";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,15 +36,18 @@ function App() {
         <GlobalContextProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/dashboard" element={<MainLayout />}>
+              <Route path="/dashboard/" element={<MainLayout />}>
                 <Route path="board/:id" element={<Board />} />
                 <Route path="my-area" element={<MyArea />} />
+                <Route path="my-templates" element={<MyTemplates />} />
               </Route>
 
               <Route path="/" index element={<Landing />} />
               <Route path="*" element={<div>Page not found</div>} />
             </Routes>
             <LoginModal />
+            <FlyerSlideIn />
+            <SlideInBottom />
           </BrowserRouter>
           <Toaster
             position="top-center"
@@ -70,9 +74,6 @@ function App() {
               },
             }}
           />
-          <FlyerSlideIn />
-
-          <SlideInBottom />
         </GlobalContextProvider>
       </QueryClientProvider>
     </div>

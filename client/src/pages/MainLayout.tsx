@@ -6,9 +6,11 @@ import { supabase } from "../services/supabase";
 import ActionMenu from "../ui/ActionMenu";
 import Sidebar from "../ui/Sidebar";
 import CloseSlideInModal from "../ui/Modals/CloseSlideInModal";
+import EditFlyerModal from "../ui/Modals/EditFlyerModal";
 
 import useLoginWithAccessToken from "../features/authentication/useLoginWithAccessToken";
 import { useGlobalContext } from "../context/GlobalContext";
+import DeleteFlyerTemplateModal from "../ui/Modals/DeleteFlyerTemplateModal";
 
 const StyledMainLayout = styled.main`
   height: 100vh;
@@ -57,6 +59,8 @@ export default function MainLayout() {
       </StyledMainContentContainer>
       <Sidebar></Sidebar>
       <CloseSlideInModal />
+      <EditFlyerModal />
+      <DeleteFlyerTemplateModal />
     </StyledMainLayout>
   );
 }

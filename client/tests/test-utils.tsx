@@ -3,6 +3,7 @@ import React from "react";
 import { renderHook, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
+import { APIProvider } from "@vis.gl/react-google-maps";
 
 const QueryClientProviderWrapper = () => {
   const queryClient = new QueryClient({
@@ -32,6 +33,19 @@ const QueryClientProviderWrapperWithBrowserRouter = () => {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>{children}</BrowserRouter>
       </QueryClientProvider>
+    );
+  };
+};
+
+const QueryClientProviderWrapperWithBrowserRouterAndGoogle = () => {
+  return ({ children: children }: { children: React.ReactNode }) => {
+    return (
+      <APIProvider
+        apiKey={import.meta.env.VITE_GOOGLE_MAP_API_KEY!}
+        libraries={["places"]}
+      >
+        {QueryClientProviderWrapperWithBrowserRouter()({ children })}
+      </APIProvider>
     );
   };
 };
@@ -150,6 +164,7 @@ export {
   renderHook,
   QueryClientProviderWrapper,
   QueryClientProviderWrapperWithBrowserRouter,
+  QueryClientProviderWrapperWithBrowserRouterAndGoogle,
   getInput,
   getSelect,
   getFieldError,

@@ -57,15 +57,15 @@ export interface DB_Flyer_Create {
     headline: string;
     instructions: string;
   };
-  lifespan?: string;
-  template?: string;
+  lifespan?: string | number | null;
+  template?: string | number | null;
   templateName?: string;
   hasComments?: boolean;
   placeInfo?: PlaceInfo;
 }
 
 interface DB_Flyer_Create_Unregistered extends DB_Flyer_Create {
-  typeOfUser: "individual" | "business" | "organization" | "anonymous";
+  typeOfUser: "individual" | "business" | "organization" | "anonymous" | null;
 }
 
 export interface DB_Flyer_Create_Unregistered_Anonymous
@@ -142,5 +142,5 @@ interface RemoveFlyerKeys {
 }
 export interface DB_Template
   extends Omit<DB_Flyer_Create, keyof RemoveFlyerKeys> {
-  id: string;
+  id: string | number;
 }

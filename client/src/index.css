@@ -7,3 +7,9 @@
 /* .carousel-item {
   background-color: var(--color-grey-100);
 } */
+
+.my-infowindow {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

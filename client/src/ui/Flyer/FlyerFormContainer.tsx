@@ -55,11 +55,24 @@ export default function FlyerFormContainer({
     setShowCloseSlideInModal(true);
   }
 
+  function setTitle() {
+    switch (action) {
+      case "create":
+        return `Create Flyer at ${name}`;
+      case "edit":
+        return `Edit Flyer at ${name}`;
+      case "editTemplate":
+        return "Edit Template";
+      case "createTemplate":
+        return "Create Template";
+    }
+  }
+
   return (
     <StyledFlyerFormContainer>
       <StyledTopSection>
         <Heading as="h2">
-          <span>{action}</span> Flyer @ {name}
+          <span>{setTitle()}</span>
         </Heading>
         <HiOutlineXMark onClick={handleClose} />
       </StyledTopSection>

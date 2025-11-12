@@ -3,7 +3,7 @@ import { UseFormSetValue } from "react-hook-form";
 import styled from "styled-components";
 import { UploadApiResponse } from "cloudinary";
 import { deleteFileOverTime } from "../../services/cloudinary";
-import ImagePreviewItem from "./ImagePreviewItem";
+import ImagePreviewItemTimed from "./ImagePreviewItemTimed";
 import toast from "react-hot-toast";
 
 const StyledImagePreview = styled.div`
@@ -18,13 +18,15 @@ export default function ImagePreview({
   setValue,
 }: {
   fileUrlArr: UploadApiResponse[];
+
   setValue: UseFormSetValue<any>;
 }) {
   async function handleDeleteImage(idx: number) {
     const imgToRemoveFromCloudinary = fileUrlArr.splice(idx, 1);
     try {
       // Delete image from cloudinary
-      const result = await deleteFileOverTime(imgToRemoveFromCloudinary[0]);
+      await deleteFileOverTime(imgToRemoveFromCloudinary[0]);
+
       // remove image from state
       setValue("fileUrlArr", fileUrlArr);
     } catch (error) {
@@ -32,17 +34,20 @@ export default function ImagePreview({
       toast.error("Error deleting image");
     }
   }
+
   return (
     <StyledImagePreview data-testid="image-preview">
       {fileUrlArr.length &&
-        fileUrlArr.map((imageUrl, idx: number) => (
-          <ImagePreviewItem
-            imageUrl={imageUrl}
-            idx={idx}
-            handleDeleteImage={handleDeleteImage}
-            key={imageUrl.public_id}
-          />
-        ))}
+        fileUrlArr.map((imageUrl, idx: number) => {
+          return (
+            <ImagePreviewItemTimed
+              imageUrl={imageUrl}
+              idx={idx}
+              handleDeleteImage={handleDeleteImage}
+              key={imageUrl.public_id}
+            />
+          );
+        })}
 
       <small>
         To save resources, each file will be deleted after 8 minutes of being

@@ -1,8 +1,4 @@
 import styled from "styled-components";
-import {
-  HiOutlineArrowRight,
-  HiOutlineExclamationCircle,
-} from "react-icons/hi2";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useGlobalContext } from "../../context/GlobalContext";
@@ -12,7 +8,7 @@ import Form from "../../ui/Form/Form";
 
 import Heading from "../../ui/Heading";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormProps } from "react-hook-form";
 import FormControlRow from "../../ui/Form/FormControlRow";
 import TitleInput from "../../ui/Form/TitleInput";
 import FormControl from "../../ui/Form/FormControl";
@@ -24,8 +20,6 @@ import {
   getSubcategoriesForSelect,
 } from "../../utils/GeneralUtils";
 import ContentInput from "../../ui/Form/ContentInput";
-import ImageInput from "../../ui/Form/ImageInput";
-import ImagePreview from "../../ui/Form/ImagePreview";
 import TagsInput from "../../ui/Form/TagsInput";
 import Button from "../../ui/Button";
 import Input from "../../ui/Input";
@@ -35,11 +29,11 @@ import LifespanInput from "../../ui/Form/LifespanInput";
 import { LIFESPAN, REGISTERED_FLYER_DESIGN_DEFAULT } from "../../constants";
 import CommentsInput from "../../ui/Form/CommentsInput";
 import useCreateRegisteredFlyer from "./useCreateRegisteredFlyer";
-import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import UpgradeText from "../../ui/UpgradeText";
 import FlyerDesignerInput from "../../ui/Form/FlyerDesignerInput";
 import FormInfoAlert from "../../ui/Form/FormInfoAlert";
+import { DB_Flyers_Response, DB_Template } from "../../interfaces/DB_Flyers";
+import AssetsPreviewList from "../assets/AssetSelection/AssetsPreview/AssetsPreviewList";
 
 const StyledRegisteredContainer = styled.div``;
 
@@ -79,9 +73,29 @@ const StyledCheckboxContainer = styled.div`
   gap: 0.8rem;
 `;
 
-export default function Registered() {
+export default function Registered({
+  flyerToEdit,
+  templateToEdit,
+  type = "create",
+}: {
+  flyerToEdit?: DB_Flyers_Response | null;
+  templateToEdit?: DB_Template | null;
+  type?: "create" | "edit" | "createTemplate" | "editTemplate";
+}) {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
+
+  const formOptions: UseFormProps = {
+    mode: "onBlur",
+  };
+
+  if (flyerToEdit) {
+    formOptions.defaultValues = flyerToEdit;
+  }
+
+  if (templateToEdit) {
+    formOptions.defaultValues = templateToEdit;
+  }
 
   const {
     register,
@@ -92,21 +106,24 @@ export default function Registered() {
     setValue,
     formState: { errors },
     control,
-  } = useForm({
-    mode: "onBlur",
-  });
+  } = useForm(formOptions);
   const {
     user,
+    setUser,
     setShowCloseSlideInModal,
     setIsOpenFlyerDrawer,
     setDrawerAction,
+    setSelectedFlyer,
     selectedPlace,
+    setBottomSlideInType,
+    setIsOpenBottomSlideIn,
+    setCurrentFormOptions,
   } = useGlobalContext();
   const planLimits = useGetUserLimits();
-  const { createFlyer } = useCreateRegisteredFlyer();
+  const { createFlyer, editFlyer, editTemplate, createTemplateFn } =
+    useCreateRegisteredFlyer();
 
   const queryClient = useQueryClient();
-  const { id: boardId } = useParams();
 
   const categoryWatch = watch("category");
   const subcategoryWatch = watch("subcategory");
@@ -115,7 +132,7 @@ export default function Registered() {
   const lifespanWatch = watch("lifespan");
 
   console.log("errors", errors);
-  console.log("getValules", getValues());
+  console.log("getValues", getValues());
 
   const onSubmit = async (data: any) => {
     setSubmitError("");
@@ -128,28 +145,118 @@ export default function Registered() {
 
     console.log("registered data", data);
     setShowSpinner(true);
-    createFlyer(data, {
-      onSuccess: () => {
-        setShowSpinner(false);
-        toast.success("Flyer created!");
-        setIsOpenFlyerDrawer(false);
-        setDrawerAction(null);
-        // queryClient.invalidateQueries({ queryKey: ["board", boardId] });
-        queryClient.refetchQueries({ queryKey: ["board", boardId] });
-      },
-      onError: (error: any) => {
-        setShowSpinner(false);
-        toast.error(error.message);
-        setSubmitError(error.message);
-        // set focus on error
-        document.querySelector("#form-error")?.scrollIntoView();
-      },
-    });
+
+    if (flyerToEdit) {
+      // action - Edit Existing Flyer
+      editFlyer(data, {
+        onSuccess: () => {
+          setShowSpinner(false);
+          toast.success("Flyer updated!");
+          setIsOpenFlyerDrawer(false);
+          setDrawerAction(null);
+          setSelectedFlyer(null);
+          queryClient.invalidateQueries({
+            queryKey: ["board", selectedPlace?.id],
+          });
+          // queryClient.refetchQueries({
+          //   queryKey: ["board", selectedPlace?.id],
+          //   stale: true,
+          // });
+        },
+        onError: (error: any) => {
+          setShowSpinner(false);
+          toast.error(error.message);
+          setSubmitError(error.message);
+          // set focus on error
+          document.querySelector("#form-error")?.scrollIntoView();
+        },
+      });
+    } else if (templateToEdit && type === "editTemplate") {
+      // remove the template property
+      delete data.template;
+      // action - Edit Existing Template
+      editTemplate(data, {
+        onSuccess: ({ user }: any) => {
+          setShowSpinner(false);
+          toast.success("Template updated!");
+          setIsOpenFlyerDrawer(false);
+          setDrawerAction(null);
+          setSelectedFlyer(null);
+          // update the user
+          setUser(user);
+        },
+        onError: (error: any) => {
+          setShowSpinner(false);
+          toast.error(error.message);
+          setSubmitError(error.message);
+          // set focus on error
+          document.querySelector("#form-error")?.scrollIntoView();
+        },
+      });
+    } else if (type === "createTemplate") {
+      // action - Create New Template
+      createTemplateFn(data, {
+        onSuccess: ({ user }: any) => {
+          setShowSpinner(false);
+          toast.success("Template created!");
+          setIsOpenFlyerDrawer(false);
+          setDrawerAction(null);
+          setSelectedFlyer(null);
+          // update the user
+          setUser(user);
+        },
+        onError: (error: any) => {
+          setShowSpinner(false);
+          toast.error(error.message);
+          setSubmitError(error.message);
+          // set focus on error
+          document.querySelector("#form-error")?.scrollIntoView();
+        },
+      });
+    } else {
+      // action - Create New Flyer
+      createFlyer(data, {
+        onSuccess: () => {
+          setShowSpinner(false);
+          toast.success("Flyer created!");
+          setIsOpenFlyerDrawer(false);
+          setDrawerAction(null);
+          queryClient.invalidateQueries({
+            queryKey: ["board", selectedPlace?.id],
+          });
+          // queryClient.refetchQueries({
+          //   queryKey: ["board", selectedPlace?.id],
+          // });
+        },
+        onError: (error: any) => {
+          setShowSpinner(false);
+          toast.error(error.message);
+          setSubmitError(error.message);
+          // set focus on error
+          document.querySelector("#form-error")?.scrollIntoView();
+        },
+      });
+    }
+
+    // navigate(".", { replace: true });
   };
 
   function handleCancel() {
     setShowCloseSlideInModal(true);
   }
+
+  function handleChooseAsset() {
+    setBottomSlideInType("chooseAssets");
+    setIsOpenBottomSlideIn(true);
+  }
+
+  useEffect(() => {
+    // give globalContext access to the form options
+    setCurrentFormOptions({
+      getValues: getValues,
+      setValue: setValue,
+    });
+  }, []);
 
   useEffect(() => {
     if (!templateWatch) {
@@ -205,18 +312,32 @@ export default function Registered() {
                             <Input type="file" id="image" />
                           </FormControl> */}
               <FormControl>
-                <ImageInput
+                {/* <ImageInput
                   register={register}
                   getValues={getValues}
                   setValue={setValue}
                   errors={errors}
                   level={user?.plan?.level || 0}
                 />
-                {fileUrlArrWatch && fileUrlArrWatch.length > 0 && (
+                 */}
+                {/* {fileUrlArrWatch && fileUrlArrWatch.length > 0 && (
                   <ImagePreview
                     fileUrlArr={fileUrlArrWatch}
                     setValue={setValue}
+                    isTimed={!flyerToEdit && !templateToEdit}
+                    isTemplate={!!templateToEdit}
                   />
+                )} */}
+                <StyledLabel htmlFor="image">Choose assets</StyledLabel>
+                <Button
+                  type="button"
+                  onClick={handleChooseAsset}
+                  data-testid="choose-asset-button"
+                >
+                  Open Assets Uploader
+                </Button>
+                {fileUrlArrWatch && fileUrlArrWatch.length > 0 && (
+                  <AssetsPreviewList fileUrlArr={fileUrlArrWatch} />
                 )}
               </FormControl>
             </FormControlRow>
@@ -245,40 +366,52 @@ export default function Registered() {
                 canUpgrade={planLimits.canUpgrade}
               />
               <FlyerDesignerInput
-                setValue={setValue}
-                getValues={getValues}
+                // setValue={setValue}
+                // getValues={getValues}
                 canUpgrade={!planLimits.paid}
               />
             </FormControlRow>
-            <FormControlRow>
-              <FormControl testId="template-container">
-                <StyledLabel>Create Reusable Template (Encouraged)</StyledLabel>
-                <p>
-                  Creating flyers from scratch each time you post can be
-                  tedious. Create a template to save you time and effort by
-                  reusing it for future flyers.
-                </p>
-                <StyledCheckboxContainer>
-                  <Input type="checkbox" {...register("template")} checked />{" "}
-                  Check this box to create a template
-                </StyledCheckboxContainer>
-                {templateWatch && (
-                  <>
-                    <FullNameInput
-                      register={register}
-                      registerName="templateName"
-                      name="Template"
-                      errors={errors}
-                    />
-                    <CommentsInput register={register} />
-                  </>
-                )}
-              </FormControl>
-              <FormControl>{/* Empty */}</FormControl>
-            </FormControlRow>
+            {!flyerToEdit && (
+              <FormControlRow>
+                <FormControl testId="template-container">
+                  <StyledLabel>
+                    Create Reusable Template (Encouraged)
+                  </StyledLabel>
+                  <p>
+                    Creating flyers from scratch each time you post can be
+                    tedious. Create a template to save you time and effort by
+                    reusing it for future flyers.
+                  </p>
+                  <StyledCheckboxContainer>
+                    <Input
+                      type="checkbox"
+                      {...register("template")}
+                      checked
+                      disabled={!!type.match(/template/i)}
+                    />{" "}
+                    Check this box to create a template
+                  </StyledCheckboxContainer>
+                  {(templateWatch || !!type.match(/template/i)) && (
+                    <>
+                      <FullNameInput
+                        register={register}
+                        registerName="templateName"
+                        name="Template"
+                        errors={errors}
+                        textLimit={30}
+                      />
+                      <CommentsInput register={register} />
+                    </>
+                  )}
+                </FormControl>
+                <FormControl>{/* Empty */}</FormControl>
+              </FormControlRow>
+            )}
 
             <StyledFormButtonContainer data-testid="form-button-container">
-              <Button type="submit">Create</Button>
+              <Button type="submit">
+                {flyerToEdit || templateToEdit ? "Update" : "Create"}
+              </Button>
               <Button
                 type="button"
                 variation="secondary"

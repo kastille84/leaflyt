@@ -18,11 +18,14 @@ const StyledMapContainer = styled.div`
   width: 100%;
   height: 80vh;
   position: relative;
+  & .gm-fullscreen-control {
+    z-index: 101;
+  }
 `;
 
 const StyledInputContainer = styled.div`
   position: absolute;
-  top: 2rem;
+  top: 3.5rem;
   z-index: 100;
   width: 100%;
   display: flex;
@@ -81,7 +84,7 @@ export default function MapContainer() {
   };
 
   return (
-    <StyledMapContainer>
+    <StyledMapContainer data-testid="map-container">
       <Map
         defaultCenter={{ lat: userLat, lng: userLng }}
         defaultZoom={determizeDefaultZoom()}

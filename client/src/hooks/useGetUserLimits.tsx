@@ -38,6 +38,7 @@ export default () => {
       limit: plan.templateLimit,
     },
     media: { limit: plan.numOfMedia },
+    // maxAssets:
     remotePosting: {
       isAllowed:
         (user?.flyers ? getPostingAmount(user.flyers, "remote") : 0) <=

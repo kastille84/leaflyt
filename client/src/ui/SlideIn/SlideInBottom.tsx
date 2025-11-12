@@ -5,13 +5,14 @@ import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import { useGlobalContext } from "../../context/GlobalContext";
 import RegistrationContainer from "../../features/authentication/SignupContainer";
-import { SIGNUP } from "../../constants";
 import styled from "styled-components";
 import { HiOutlineXMark } from "react-icons/hi2";
 import FlyerDesignerContainer from "../../features/createFlyer/FlyerDesigner/FlyerDesignerContainer";
 import { FlyerDesignerContextProvider } from "../../context/FlyerDesignerContext";
 import FullCarouselContainer from "../Flyer/FullCarouselContainer";
 import TemplateSelectionContainer from "../../features/template/TemplateSelectionContainer";
+import AssestSelectionContainer from "../../features/assets/AssetSelection/AssestSelectionContainer";
+import { AssetSelectionContextProvider } from "../../context/AssetSelectionContext";
 
 const StyledCloseContainer = styled.div`
   display: flex;
@@ -24,6 +25,7 @@ const StyledCloseContainer = styled.div`
 
 const StyledContentContainer = styled.div`
   height: 80rem;
+  overflow: auto;
 `;
 
 export default function SlideInBottom() {
@@ -51,6 +53,14 @@ export default function SlideInBottom() {
         );
       case "hasTemplates":
         return <TemplateSelectionContainer />;
+      case "chooseAssets":
+        return (
+          <AssetSelectionContextProvider>
+            <AssestSelectionContainer />
+          </AssetSelectionContextProvider>
+        );
+      default:
+        return null;
     }
   }
 
@@ -62,6 +72,14 @@ export default function SlideInBottom() {
     }
   }
 
+  function shouldShowXMark() {
+    switch (bottomSlideInType) {
+      case "chooseAssets":
+        return false;
+      default:
+        return true;
+    }
+  }
   return (
     <Drawer
       open={isOpenBottomSlideIn}
@@ -71,7 +89,7 @@ export default function SlideInBottom() {
       // style={{ position: "fixed", top: "auto", bottom: 0, right: 0, left: 0 }}
     >
       <StyledCloseContainer>
-        <HiOutlineXMark onClick={handleDrawerClose} />
+        {shouldShowXMark() && <HiOutlineXMark onClick={handleDrawerClose} />}
       </StyledCloseContainer>
       <StyledContentContainer>{determineSlideInType()} </StyledContentContainer>
     </Drawer>
