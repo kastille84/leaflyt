@@ -25,7 +25,7 @@ import { mockAssetsList } from "../../../../fixtures/assets/assets";
 vi.mock("../../../../../src/context/GlobalContext");
 vi.mock("../../../../../src/context/AssetSelectionContext");
 vi.mock(
-  "../../../../../src/features/assets/AssetSelection/ExistingAssetsList/ExistingAssetListItem"
+  "../../../../../src/features/assets/AssetSelection/ExistingAssetsList/ExistingAssetsListItem"
 );
 
 describe("ExistingAssetsList", () => {
