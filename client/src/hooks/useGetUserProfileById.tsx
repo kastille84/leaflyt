@@ -14,7 +14,7 @@ export default function useGetUserProfileById(enabled: boolean) {
 
   useEffect(() => {
     if (status === "success" && userProfile) {
-      setUser(userProfile);
+      setUser(userProfile.data);
     }
   }, [status, enabled]);
 

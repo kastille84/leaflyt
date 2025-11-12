@@ -1,10 +1,18 @@
 import { useGlobalContext } from "../../context/GlobalContext";
 import { useMutation } from "@tanstack/react-query";
-import { DB_Flyer_Create, DB_Template } from "../../interfaces/DB_Flyers";
+import {
+  DB_Flyer_Create,
+  DB_Flyers_Response,
+  DB_Template,
+} from "../../interfaces/DB_Flyers";
 import {
   createRegisteredFlyer,
   createFlyerFromTemplate,
   updateRegisteredFlyer,
+  updateTemplate,
+  createTemplate,
+  deleteFlyer,
+  deleteTemplate,
 } from "../../services/apiFlyers";
 
 export default function useCreateRegisteredFlyer() {
@@ -20,6 +28,10 @@ export default function useCreateRegisteredFlyer() {
       updateRegisteredFlyer(prepData, selectedPlace!),
   });
 
+  const { mutate: deleteFlyerFn, error: deleteFlyerFnError } = useMutation({
+    mutationFn: (prepData: DB_Flyers_Response) => deleteFlyer(prepData),
+  });
+
   const {
     mutate: createFlyerUsingTemplate,
     error: createFlyerUsingTemplateError,
@@ -28,12 +40,39 @@ export default function useCreateRegisteredFlyer() {
       createFlyerFromTemplate(prepData, selectedPlace!, user!),
   });
 
+  const { mutate: editTemplate, error: editTemplateError } = useMutation({
+    mutationFn: (prepData: DB_Template) => {
+      return updateTemplate(prepData);
+    },
+  });
+
+  const { mutate: createTemplateFn, error: createTemplateError } = useMutation({
+    mutationFn: (prepData: DB_Template) => {
+      return createTemplate(prepData);
+    },
+  });
+
+  const { mutate: deleteTemplateFn, error: deleteTemplateFnError } =
+    useMutation({
+      mutationFn: (prepData: DB_Template) => {
+        return deleteTemplate(prepData);
+      },
+    });
+
   return {
     createFlyer,
     createFlyerError,
     editFlyer,
     editFlyerError,
+    deleteFlyerFn,
+    deleteFlyerFnError,
     createFlyerUsingTemplate,
     createFlyerUsingTemplateError,
+    editTemplate,
+    editTemplateError,
+    createTemplateFn,
+    createTemplateError,
+    deleteTemplateFn,
+    deleteTemplateFnError,
   };
 }

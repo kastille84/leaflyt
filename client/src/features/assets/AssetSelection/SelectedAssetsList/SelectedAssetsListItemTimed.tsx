@@ -1,16 +1,16 @@
 import styled from "styled-components";
 
 import { UploadApiResponse } from "cloudinary";
-import { useAssetSelectionContext } from "../../../context/AssetSelectionContext";
+import { useAssetSelectionContext } from "../../../../context/AssetSelectionContext";
 import {
   HiOutlineArrowTopRightOnSquare,
   HiOutlineXCircle,
   HiOutlineXMark,
 } from "react-icons/hi2";
 import { useEffect, useState } from "react";
-import useAssetMutations from "../../../features/assets/useAssetMutations";
-import useGetUserProfileById from "../../../hooks/useGetUserProfileById";
-import { useGlobalContext } from "../../../context/GlobalContext";
+import useAssetMutations from "../../useAssetMutations";
+import useGetUserProfileById from "../../../../hooks/useGetUserProfileById";
+import { useGlobalContext } from "../../../../context/GlobalContext";
 import toast from "react-hot-toast";
 
 const StyledListItem = styled.li`
@@ -168,7 +168,7 @@ export default function SelectedAssetsListItemTimed({
   // }, [userProfile]);
 
   return (
-    <StyledListItem>
+    <StyledListItem data-testid="selected-assets-list-item-timed">
       <StyledFigure>
         <img
           src={

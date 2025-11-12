@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import AssetUpload from "../../AssetUpload/AssetUpload";
-import useGetUserLimits from "../../../hooks/useGetUserLimits";
+import useGetUserLimits from "../../../../hooks/useGetUserLimits";
 import { UploadApiResponse } from "cloudinary";
-import { useAssetSelectionContext } from "../../../context/AssetSelectionContext";
+import { useAssetSelectionContext } from "../../../../context/AssetSelectionContext";
 
 const StyledNewAssetContainer = styled.div`
   border: 2px solid var(--color-brand-600);
@@ -29,7 +29,7 @@ export default function NewAssetContainer() {
   }
 
   return (
-    <StyledNewAssetContainer>
+    <StyledNewAssetContainer data-testid="new-asset-container">
       <AssetUpload
         level={userLimits.level}
         onAssetAdded={handleAssetAdded}

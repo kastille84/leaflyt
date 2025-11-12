@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { UploadApiResponse } from "cloudinary";
 import AssetsPreviewListItem from "./AssetsPreviewListItem";
-import Heading from "../../Heading";
-import { deleteFileOverTime } from "../../../services/cloudinary";
+import Heading from "../../../../ui/Heading";
+import { deleteFileOverTime } from "../../../../services/cloudinary";
 import toast from "react-hot-toast";
 
 const StyledContainer = styled.div``;
@@ -44,7 +44,7 @@ export default function AssetsPreviewList({
   // }
 
   return (
-    <StyledContainer>
+    <StyledContainer data-testid="container-assets-preview-list">
       <Heading as={"h4"}>Selected Assets</Heading>
       {fileUrlArr.length === 0 && <p>No assets selected</p>}
       <StyledAssetsPreviewList>

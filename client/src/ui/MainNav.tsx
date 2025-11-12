@@ -12,6 +12,7 @@ import {
   HiOutlineMapPin,
   HiOutlineMap,
   HiOutlineChartPie,
+  HiOutlineDocumentDuplicate,
 } from "react-icons/hi2";
 import { useGlobalContext } from "../context/GlobalContext";
 import useGetUserLimits from "../hooks/useGetUserLimits";
@@ -80,6 +81,14 @@ export default function MainNav() {
           </StyledNavLink>
         </li>
 
+        <li>
+          <StyledNavLink
+            to="/dashboard/my-templates"
+            className={registered ? "" : "disabled"}
+          >
+            <HiOutlineDocumentDuplicate /> <span>My Templates</span>
+          </StyledNavLink>
+        </li>
         <li>
           <StyledNavLink
             to="/dashboard/my-flyers"

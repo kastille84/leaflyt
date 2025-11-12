@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { UploadApiResponse } from "cloudinary";
 import SelectedAssetsListItem from "./SelectedAssetsListItem";
 import SelectedAssetsListItemTimed from "./SelectedAssetsListItemTimed";
-import Heading from "../../Heading";
-import { useAssetSelectionContext } from "../../../context/AssetSelectionContext";
-import { deleteFileOverTime } from "../../../services/cloudinary";
+import Heading from "../../../../ui/Heading";
+import { useAssetSelectionContext } from "../../../../context/AssetSelectionContext";
+import { deleteFileOverTime } from "../../../../services/cloudinary";
 import toast from "react-hot-toast";
 
 const StyledContainer = styled.div``;
@@ -48,7 +48,7 @@ export default function SelectedAssetsList({
   }
 
   return (
-    <StyledContainer>
+    <StyledContainer data-testid="selected-assets-list-container">
       <Heading as={"h3"}>Selected Assets</Heading>
       {selectedAssets.length === 0 && <p>No assets selected</p>}
       <StyledSelectedAssetsList>

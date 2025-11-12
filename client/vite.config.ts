@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => {
       },
       coverage: {
         provider: "v8",
-        reporter: ["text", "lcov", "clover"],
+        reporter: ["text", "lcov", "clover", "html"],
         thresholds: {
           global: {
             statements: 90,

@@ -1,23 +1,21 @@
 import styled from "styled-components";
-import Button from "../Button";
-import { useAssetSelectionContext } from "../../context/AssetSelectionContext";
+import Button from "../../../ui/Button";
 import ExistingAssetsList from "./ExistingAssetsList/ExistingAssetsList";
 import SelectedAssetList from "./SelectedAssetsList/SelectedAssetsList";
 import NewAssetContainer from "./NewAsset/NewAssetContainer";
-import useGetUserLimits from "../../hooks/useGetUserLimits";
-import { useGlobalContext } from "../../context/GlobalContext";
+import { useAssetSelectionContext } from "../../../context/AssetSelectionContext";
+import useGetUserLimits from "../../../hooks/useGetUserLimits";
+import { useGlobalContext } from "../../../context/GlobalContext";
+import useAssetMutations from "../useAssetMutations";
+import useGetUserProfileById from "../../../hooks/useGetUserProfileById";
 import toast from "react-hot-toast";
-import useAssetMutations from "../../features/assets/useAssetMutations";
-import useGetUserProfileById from "../../hooks/useGetUserProfileById";
 import { useEffect } from "react";
-import { set } from "react-hook-form";
-import { deleteFileOverTime } from "../../services/cloudinary";
+import { deleteFileOverTime } from "../../../services/cloudinary";
 
 const StyledAssestSelectionContainer = styled.div`
   width: 70%;
   height: 100%;
   margin: auto;
-  /* background: red; */
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 8% 1fr 20% 5%;
@@ -65,6 +63,7 @@ export default function AssestSelectionContainer() {
       timedAssetsList.map((asset) => deleteFileOverTime(asset))
     );
   }
+
   function determineSelectionTypeToDisplay() {
     if (selectedOption === "existing") {
       return <ExistingAssetsList />;
@@ -79,6 +78,7 @@ export default function AssestSelectionContainer() {
         await Promise.all(timedAssetsList.map((asset) => addAssetFn(asset)));
       }
     } catch (error) {
+      toast.error("Error adding assets. Please try again.");
       return;
     }
     currentFormOptions.setValue("fileUrlArr", assetsList);
@@ -98,8 +98,8 @@ export default function AssestSelectionContainer() {
   }
 
   return (
-    <StyledAssestSelectionContainer>
-      <StyledTopButtonContainer>
+    <StyledAssestSelectionContainer data-testid="assets-selection-container">
+      <StyledTopButtonContainer data-testid="assets-top-buttons-container">
         <Button
           size="small"
           type="button"
@@ -132,11 +132,13 @@ export default function AssestSelectionContainer() {
           + Add New Asset
         </Button>
       </StyledTopButtonContainer>
+
       {determineSelectionTypeToDisplay()}
 
       <SelectedAssetList selectedAssets={assetsList} />
       <small>{userLimits.media.limit - assetsList.length} remaining</small>
-      <StyledButtonContainer>
+
+      <StyledButtonContainer data-testid="assets-buttons-container">
         <Button size="small" type="button" onClick={handleDone}>
           Done
         </Button>

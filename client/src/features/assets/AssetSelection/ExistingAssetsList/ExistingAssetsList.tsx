@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-import { useAssetSelectionContext } from "../../../context/AssetSelectionContext";
-import { useGlobalContext } from "../../../context/GlobalContext";
-import ExistingAssetListItem from "./ExistingAssetListItem";
+import { useAssetSelectionContext } from "../../../../context/AssetSelectionContext";
+import { useGlobalContext } from "../../../../context/GlobalContext";
+import ExistingAssetListItem from "./ExistingAssetsListItem";
 
 const StyledExistingAssetsListContainer = styled.ul`
   border: 2px solid var(--color-brand-600);
@@ -25,7 +25,6 @@ export default function ExistingAssetsList() {
   return (
     <StyledExistingAssetsListContainer>
       {user?.assets.map((asset) => (
-        // <li key={asset.id}>{asset.asset_info.original_filename}</li>
         <ExistingAssetListItem
           key={asset.id}
           asset={asset.asset_info}

@@ -20,8 +20,6 @@ import {
   getSubcategoriesForSelect,
 } from "../../utils/GeneralUtils";
 import ContentInput from "../../ui/Form/ContentInput";
-import ImageInput from "../../ui/Form/ImageInput";
-import ImagePreview from "../../ui/Form/ImagePreview";
 import TagsInput from "../../ui/Form/TagsInput";
 import Button from "../../ui/Button";
 import Input from "../../ui/Input";
@@ -31,13 +29,11 @@ import LifespanInput from "../../ui/Form/LifespanInput";
 import { LIFESPAN, REGISTERED_FLYER_DESIGN_DEFAULT } from "../../constants";
 import CommentsInput from "../../ui/Form/CommentsInput";
 import useCreateRegisteredFlyer from "./useCreateRegisteredFlyer";
-import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import UpgradeText from "../../ui/UpgradeText";
 import FlyerDesignerInput from "../../ui/Form/FlyerDesignerInput";
 import FormInfoAlert from "../../ui/Form/FormInfoAlert";
 import { DB_Flyers_Response, DB_Template } from "../../interfaces/DB_Flyers";
-import AssetsPreviewList from "../../ui/AssetSelection/AssetsPreview/AssetsPreviewList";
+import AssetsPreviewList from "../assets/AssetSelection/AssetsPreview/AssetsPreviewList";
 
 const StyledRegisteredContainer = styled.div``;
 
@@ -80,9 +76,11 @@ const StyledCheckboxContainer = styled.div`
 export default function Registered({
   flyerToEdit,
   templateToEdit,
+  type = "create",
 }: {
   flyerToEdit?: DB_Flyers_Response | null;
   templateToEdit?: DB_Template | null;
+  type?: "create" | "edit" | "createTemplate" | "editTemplate";
 }) {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -93,6 +91,10 @@ export default function Registered({
 
   if (flyerToEdit) {
     formOptions.defaultValues = flyerToEdit;
+  }
+
+  if (templateToEdit) {
+    formOptions.defaultValues = templateToEdit;
   }
 
   const {
@@ -107,21 +109,21 @@ export default function Registered({
   } = useForm(formOptions);
   const {
     user,
+    setUser,
     setShowCloseSlideInModal,
     setIsOpenFlyerDrawer,
     setDrawerAction,
-    setFlyerToEdit,
+    setSelectedFlyer,
     selectedPlace,
     setBottomSlideInType,
     setIsOpenBottomSlideIn,
     setCurrentFormOptions,
   } = useGlobalContext();
   const planLimits = useGetUserLimits();
-  const { createFlyer, editFlyer } = useCreateRegisteredFlyer();
+  const { createFlyer, editFlyer, editTemplate, createTemplateFn } =
+    useCreateRegisteredFlyer();
 
   const queryClient = useQueryClient();
-  // const { id: boardId } = useParams();
-  // const navigate = useNavigate();
 
   const categoryWatch = watch("category");
   const subcategoryWatch = watch("subcategory");
@@ -130,7 +132,7 @@ export default function Registered({
   const lifespanWatch = watch("lifespan");
 
   console.log("errors", errors);
-  console.log("getValules", getValues());
+  console.log("getValues", getValues());
 
   const onSubmit = async (data: any) => {
     setSubmitError("");
@@ -152,7 +154,7 @@ export default function Registered({
           toast.success("Flyer updated!");
           setIsOpenFlyerDrawer(false);
           setDrawerAction(null);
-          setFlyerToEdit(null);
+          setSelectedFlyer(null);
           queryClient.invalidateQueries({
             queryKey: ["board", selectedPlace?.id],
           });
@@ -169,8 +171,48 @@ export default function Registered({
           document.querySelector("#form-error")?.scrollIntoView();
         },
       });
-    } else if (templateToEdit) {
+    } else if (templateToEdit && type === "editTemplate") {
+      // remove the template property
+      delete data.template;
       // action - Edit Existing Template
+      editTemplate(data, {
+        onSuccess: ({ user }: any) => {
+          setShowSpinner(false);
+          toast.success("Template updated!");
+          setIsOpenFlyerDrawer(false);
+          setDrawerAction(null);
+          setSelectedFlyer(null);
+          // update the user
+          setUser(user);
+        },
+        onError: (error: any) => {
+          setShowSpinner(false);
+          toast.error(error.message);
+          setSubmitError(error.message);
+          // set focus on error
+          document.querySelector("#form-error")?.scrollIntoView();
+        },
+      });
+    } else if (type === "createTemplate") {
+      // action - Create New Template
+      createTemplateFn(data, {
+        onSuccess: ({ user }: any) => {
+          setShowSpinner(false);
+          toast.success("Template created!");
+          setIsOpenFlyerDrawer(false);
+          setDrawerAction(null);
+          setSelectedFlyer(null);
+          // update the user
+          setUser(user);
+        },
+        onError: (error: any) => {
+          setShowSpinner(false);
+          toast.error(error.message);
+          setSubmitError(error.message);
+          // set focus on error
+          document.querySelector("#form-error")?.scrollIntoView();
+        },
+      });
     } else {
       // action - Create New Flyer
       createFlyer(data, {
@@ -287,7 +329,11 @@ export default function Registered({
                   />
                 )} */}
                 <StyledLabel htmlFor="image">Choose assets</StyledLabel>
-                <Button type="button" onClick={handleChooseAsset}>
+                <Button
+                  type="button"
+                  onClick={handleChooseAsset}
+                  data-testid="choose-asset-button"
+                >
                   Open Assets Uploader
                 </Button>
                 {fileUrlArrWatch && fileUrlArrWatch.length > 0 && (
@@ -337,16 +383,22 @@ export default function Registered({
                     reusing it for future flyers.
                   </p>
                   <StyledCheckboxContainer>
-                    <Input type="checkbox" {...register("template")} checked />{" "}
+                    <Input
+                      type="checkbox"
+                      {...register("template")}
+                      checked
+                      disabled={!!type.match(/template/i)}
+                    />{" "}
                     Check this box to create a template
                   </StyledCheckboxContainer>
-                  {templateWatch && (
+                  {(templateWatch || !!type.match(/template/i)) && (
                     <>
                       <FullNameInput
                         register={register}
                         registerName="templateName"
                         name="Template"
                         errors={errors}
+                        textLimit={30}
                       />
                       <CommentsInput register={register} />
                     </>

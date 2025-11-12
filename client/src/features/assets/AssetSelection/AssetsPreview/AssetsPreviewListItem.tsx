@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { UploadApiResponse } from "cloudinary";
-import { useAssetSelectionContext } from "../../../context/AssetSelectionContext";
+import { useAssetSelectionContext } from "../../../../context/AssetSelectionContext";
 import { HiOutlineArrowTopRightOnSquare } from "react-icons/hi2";
 
 const StyledListItem = styled.li`
@@ -60,7 +60,7 @@ export default function AssetsPreviewListItem({
   asset: UploadApiResponse;
 }) {
   return (
-    <StyledListItem>
+    <StyledListItem data-testid="assets-preview-list-item">
       <StyledFigure>
         <img
           src={

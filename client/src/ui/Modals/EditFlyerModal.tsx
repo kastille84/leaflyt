@@ -14,6 +14,7 @@ const StyledButtonContainer = styled.div`
 
 export default function EditFlyerModal() {
   const {
+    user,
     showEditFlyerModal,
     setShowEditFlyerModal,
     setIsOpenFlyerDrawer,
@@ -42,8 +43,11 @@ export default function EditFlyerModal() {
     setDrawerAction(null);
   }
 
-  function handleStay() {
+  function handleEditTemplate() {
+    // find the template and set it
     setShowEditFlyerModal(false);
+    setIsOpenFlyerDrawer(true);
+    setDrawerAction("editTemplate");
   }
 
   function handleEditFlyer() {
@@ -66,12 +70,10 @@ export default function EditFlyerModal() {
       <p>Essentially, making it a stand-alone flyer.</p>
       <p>Stand-alone flyers lose the benefits of the template.</p>
       <Heading as={"h4"}>
-        It is suggested that you edit the template instead and repost the flyer
-        on this board.
+        It is suggested that you edit the template instead.
       </Heading>
       <StyledButtonContainer>
-        {/* #TODO: add the "edit template" functionality */}
-        <Button size="small" variation="primary" onClick={handleStay}>
+        <Button size="small" variation="primary" onClick={handleEditTemplate}>
           Edit Template
         </Button>
         <Button size="small" variation="secondary" onClick={handleEditFlyer}>

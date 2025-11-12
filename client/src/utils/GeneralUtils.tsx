@@ -1,3 +1,5 @@
+import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
+
 function shortenTitle(title: string, length: number) {
   if (title.length > length) {
     return title.substring(0, length) + "...";
@@ -60,6 +62,20 @@ export const debounce = (func: any, delay: number) => {
       func.apply(this, args);
     }, delay);
   };
+};
+
+export const groupFlyersToTemplates = (
+  user: Auth_User_Profile_Response | null
+) => {
+  const groupedFlyers: any = {};
+  user?.flyers.forEach((flyer: any) => {
+    if (groupedFlyers[flyer.template]) {
+      groupedFlyers[flyer.template].push(flyer);
+    } else {
+      groupedFlyers[flyer.template] = [flyer];
+    }
+  });
+  return groupedFlyers;
 };
 
 export {

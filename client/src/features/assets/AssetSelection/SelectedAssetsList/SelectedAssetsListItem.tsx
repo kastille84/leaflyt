@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { UploadApiResponse } from "cloudinary";
-import { useAssetSelectionContext } from "../../../context/AssetSelectionContext";
+import { useAssetSelectionContext } from "../../../../context/AssetSelectionContext";
 import { HiOutlineArrowTopRightOnSquare } from "react-icons/hi2";
 
 const StyledListItem = styled.li`
@@ -62,7 +62,7 @@ export default function SelectedAssetsListItem({
   const { setAssetsList } = useAssetSelectionContext();
 
   return (
-    <StyledListItem>
+    <StyledListItem data-testid="selected-assets-list-item">
       <StyledFigure>
         <img
           src={

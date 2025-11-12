@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 import { UploadApiResponse } from "cloudinary";
-import { useAssetSelectionContext } from "../../../context/AssetSelectionContext";
+import { useAssetSelectionContext } from "../../../../context/AssetSelectionContext";
 
-const StyledExistingAssetListItem = styled.figure`
+const StyledExistingAssetsListItem = styled.figure`
   position: relative;
   width: 150px;
   height: 150px;
@@ -28,7 +28,7 @@ const StyledCheckbox = styled.input`
   cursor: pointer;
 `;
 
-export default function ExistingAssetListItem({
+export default function ExistingAssetsListItem({
   asset,
   preChecked,
 }: {
@@ -48,7 +48,7 @@ export default function ExistingAssetListItem({
   }
 
   return (
-    <StyledExistingAssetListItem>
+    <StyledExistingAssetsListItem data-testid="existing-asset-list-item">
       <img
         src={asset.resource_type === "video" ? asset.thumbnail_url : asset.url}
         alt={asset.original_filename}
@@ -61,6 +61,6 @@ export default function ExistingAssetListItem({
         checked={preChecked}
       />
       {/* <p>{asset.original_filename}</p> */}
-    </StyledExistingAssetListItem>
+    </StyledExistingAssetsListItem>
   );
 }
