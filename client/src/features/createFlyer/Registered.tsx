@@ -28,7 +28,7 @@ import CtaInput from "../../ui/Form/CtaInput";
 import LifespanInput from "../../ui/Form/LifespanInput";
 import { LIFESPAN, REGISTERED_FLYER_DESIGN_DEFAULT } from "../../constants";
 import CommentsInput from "../../ui/Form/CommentsInput";
-import useCreateRegisteredFlyer from "./useCreateRegisteredFlyer";
+import useRegisteredFlyer from "./useRegisteredFlyer";
 import toast from "react-hot-toast";
 import FlyerDesignerInput from "../../ui/Form/FlyerDesignerInput";
 import FormInfoAlert from "../../ui/Form/FormInfoAlert";
@@ -121,7 +121,7 @@ export default function Registered({
   } = useGlobalContext();
   const planLimits = useGetUserLimits();
   const { createFlyer, editFlyer, editTemplate, createTemplateFn } =
-    useCreateRegisteredFlyer();
+    useRegisteredFlyer();
 
   const queryClient = useQueryClient();
 

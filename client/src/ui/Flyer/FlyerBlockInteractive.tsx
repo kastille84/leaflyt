@@ -29,6 +29,8 @@ import { Auth_User_Profile_Response } from "../../interfaces/Auth_User";
 import DropdownMenu from "../DropdownMenu";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { useNavigate } from "react-router-dom";
+import useRegisteredFlyer from "../../features/createFlyer/useRegisteredFlyer";
+import toast from "react-hot-toast";
 
 const common = {
   style: css`
@@ -255,6 +257,8 @@ export default function FlyerBlockInteractive({
     setIsOpenBottomSlideIn,
   } = useGlobalContext();
 
+  const { saveFlyerFn } = useRegisteredFlyer();
+
   const navigate = useNavigate();
 
   function hasFiles() {
@@ -403,6 +407,14 @@ export default function FlyerBlockInteractive({
     if (user) {
       setIsSaved(true);
       // #TODO: save flyer
+      saveFlyerFn(flyer.id!, {
+        onSuccess: () => {
+          toast.success("Flyer saved!");
+        },
+        onError: (err) => {
+          toast.error("Flyer save failed! Try again.");
+        },
+      });
     } else {
       setBottomSlideInType("signup");
       setIsOpenBottomSlideIn(true);
@@ -500,7 +512,7 @@ export default function FlyerBlockInteractive({
         {contentType === "cta" && <CTA flyer={flyer} />}
       </StyledinfoContentContainer>
       <StyledActionContainer>
-        {!isSaved && (
+        {!isSaved && !doesFlyerBelongToUser() && (
           <StyledActionIconContainer
             flyerDesign={flyerStyles}
             onClick={handleSaveClick}
@@ -509,7 +521,7 @@ export default function FlyerBlockInteractive({
           </StyledActionIconContainer>
         )}
 
-        {isSaved && (
+        {isSaved && !doesFlyerBelongToUser() && (
           <StyledActionIconContainer
             flyerDesign={flyerStyles}
             onClick={handleUnsaveClick}

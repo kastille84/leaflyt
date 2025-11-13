@@ -5,7 +5,7 @@ import Modal from "react-modal";
 import Heading from "../Heading";
 import Button from "../Button";
 import { useGlobalContext } from "../../context/GlobalContext";
-import useCreateRegisteredFlyer from "../../features/createFlyer/useCreateRegisteredFlyer";
+import useRegisteredFlyer from "../../features/createFlyer/useRegisteredFlyer";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -27,7 +27,7 @@ export default function DeleteFlyerTemplateModal() {
     showDeleteFlyerTemplateModal,
   } = useGlobalContext();
 
-  const { deleteFlyerFn, deleteTemplateFn } = useCreateRegisteredFlyer();
+  const { deleteFlyerFn, deleteTemplateFn } = useRegisteredFlyer();
   const { id } = useParams();
   const queryClient = useQueryClient();
 

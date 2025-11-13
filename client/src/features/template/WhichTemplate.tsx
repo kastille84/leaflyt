@@ -4,7 +4,7 @@ import TemplateList from "./TemplateList";
 import { DB_Template } from "../../interfaces/DB_Flyers";
 import { useGlobalContext } from "../../context/GlobalContext";
 import Button from "../../ui/Button";
-import useCreateRegisteredFlyer from "../createFlyer/useCreateRegisteredFlyer";
+import useRegisteredFlyer from "../createFlyer/useRegisteredFlyer";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import OverlaySpinner from "../../ui/OverlaySpinner";
@@ -67,7 +67,7 @@ export default function WhichTemplate({
     selectedPlace,
   } = useGlobalContext();
 
-  const { createFlyerUsingTemplate } = useCreateRegisteredFlyer();
+  const { createFlyerUsingTemplate } = useRegisteredFlyer();
 
   function handleScratchSelection() {
     setSelectedTemplate((prev) => null);

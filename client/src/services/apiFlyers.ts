@@ -417,6 +417,26 @@ export const deleteTemplate = async (template: DB_Template) => {
   }
 };
 
+export const saveFlyer = async (userId: number, flyerId: string) => {
+  try {
+    const { error } = await supabase.from("saved_flyers").insert([
+      {
+        user: userId,
+        flyer: flyerId,
+      },
+    ]);
+    if (error) {
+      console.error(error);
+      throw new Error("Error saving the flyer: " + error.message);
+    }
+    // return updated user
+    return await getLatestUserAfterChanges(userId, "saved flyer");
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error saving the flyer: " + error.message);
+  }
+};
+
 async function getLatestUserAfterChanges(userId: number, type: string) {
   // return updated user
   const { data: userData, error: getUserError } = await getUserProfile(userId);

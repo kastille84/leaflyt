@@ -13,9 +13,10 @@ import {
   createTemplate,
   deleteFlyer,
   deleteTemplate,
+  saveFlyer,
 } from "../../services/apiFlyers";
 
-export default function useCreateRegisteredFlyer() {
+export default function useRegisteredFlyer() {
   const { selectedPlace, user } = useGlobalContext();
 
   const { mutate: createFlyer, error: createFlyerError } = useMutation({
@@ -59,6 +60,10 @@ export default function useCreateRegisteredFlyer() {
       },
     });
 
+  const { mutate: saveFlyerFn, error: saveFlyerFnError } = useMutation({
+    mutationFn: (flyerId: string) => saveFlyer(user?.id!, flyerId),
+  });
+
   return {
     createFlyer,
     createFlyerError,
@@ -74,5 +79,7 @@ export default function useCreateRegisteredFlyer() {
     createTemplateError,
     deleteTemplateFn,
     deleteTemplateFnError,
+    saveFlyerFn,
+    saveFlyerFnError,
   };
 }
