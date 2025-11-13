@@ -1,6 +1,8 @@
 import styled, { css } from "styled-components";
 
 import {
+  HiOutlineBookmark,
+  HiOutlineBookmarkSlash,
   HiOutlineChatBubbleLeftEllipsis,
   HiOutlineEllipsisHorizontal,
   HiOutlineHandThumbUp,
@@ -119,6 +121,8 @@ const StyledActionContainer = styled.section`
 const StyledActionIconContainer = styled.div<{ flyerDesign: FlyerDesign }>`
   display: flex;
   align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
   & svg {
     color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
   }
@@ -235,6 +239,7 @@ export default function FlyerBlockInteractive({
     }
     return flyer.flyerDesign;
   });
+  const [isSaved, setIsSaved] = useState(false);
   const [contentType, setContentType] = useState<"info" | "contact" | "cta">(
     "info"
   );
@@ -246,6 +251,8 @@ export default function FlyerBlockInteractive({
     setIsOpenFlyerDrawer,
     setDrawerAction,
     setShowDeleteFlyerTemplateModal,
+    setBottomSlideInType,
+    setIsOpenBottomSlideIn,
   } = useGlobalContext();
 
   const navigate = useNavigate();
@@ -392,6 +399,22 @@ export default function FlyerBlockInteractive({
     setShowDeleteFlyerTemplateModal(true);
   }
 
+  async function handleSaveClick() {
+    if (user) {
+      setIsSaved(true);
+      // #TODO: save flyer
+    } else {
+      setBottomSlideInType("signup");
+      setIsOpenBottomSlideIn(true);
+    }
+  }
+
+  async function handleUnsaveClick() {
+    if (user) {
+      setIsSaved(false);
+      // #TODO: unsave flyer
+    }
+  }
   function doesFlyerBelongToUser() {
     if (user && (flyer.user as Auth_User_Profile_Response)?.id === user?.id) {
       return true;
@@ -443,14 +466,13 @@ export default function FlyerBlockInteractive({
         </StyledTopTextContainer>
       )}
       <StyledinfoContentContainer>
-        {/* TODO: Make this section dynamic (infoContent, contactContent, couponContent) */}
         <PillsContainer>
           <Pill
             contentType={contentType}
             type="info"
             onClick={() => setContentType("info")}
           >
-            info
+            main
           </Pill>
           {flyer.typeOfUser !== "anonymous" && (
             <Pill
@@ -478,14 +500,32 @@ export default function FlyerBlockInteractive({
         {contentType === "cta" && <CTA flyer={flyer} />}
       </StyledinfoContentContainer>
       <StyledActionContainer>
+        {!isSaved && (
+          <StyledActionIconContainer
+            flyerDesign={flyerStyles}
+            onClick={handleSaveClick}
+          >
+            <HiOutlineBookmark /> <small>Save</small>
+          </StyledActionIconContainer>
+        )}
+
+        {isSaved && (
+          <StyledActionIconContainer
+            flyerDesign={flyerStyles}
+            onClick={handleUnsaveClick}
+          >
+            <HiOutlineBookmarkSlash /> <small>Unsave</small>
+          </StyledActionIconContainer>
+        )}
         <StyledActionIconContainer flyerDesign={flyerStyles}>
           <HiOutlineHandThumbUp />
+          <small>0 Likes</small>
         </StyledActionIconContainer>
-        <StyledActionIconContainer flyerDesign={flyerStyles}>
+        {/* <StyledActionIconContainer flyerDesign={flyerStyles}>
           <HiOutlineChatBubbleLeftEllipsis />
-        </StyledActionIconContainer>
+        </StyledActionIconContainer> */}
         <StyledActionIconContainer flyerDesign={flyerStyles}>
-          <HiOutlineShare />
+          <HiOutlineShare /> <small>Share</small>
         </StyledActionIconContainer>
       </StyledActionContainer>
     </StyledFlyerBlock>

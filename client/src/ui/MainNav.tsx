@@ -94,7 +94,7 @@ export default function MainNav() {
             to="/dashboard/my-flyers"
             className={registered ? "" : "disabled"}
           >
-            <HiOutlinePaperAirplane /> <span>My Flyers</span>
+            <HiOutlinePaperAirplane /> <span>Saved Flyers</span>
           </StyledNavLink>
         </li>
         <li>
