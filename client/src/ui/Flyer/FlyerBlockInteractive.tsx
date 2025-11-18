@@ -250,6 +250,7 @@ export default function FlyerBlockInteractive({
     setSelectedFlyer,
     setShowEditFlyerModal,
     user,
+    setUser,
     setIsOpenFlyerDrawer,
     setDrawerAction,
     setShowDeleteFlyerTemplateModal,
@@ -408,7 +409,9 @@ export default function FlyerBlockInteractive({
       setIsSaved(true);
       // #TODO: save flyer
       saveFlyerFn(flyer.id!, {
-        onSuccess: () => {
+        onSuccess: ({ user }) => {
+          // update the user
+          setUser(user);
           toast.success("Flyer saved!");
         },
         onError: (err) => {

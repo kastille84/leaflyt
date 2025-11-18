@@ -10,7 +10,8 @@ export const getUserProfile = async (id: number) => {
           flyers(*, place(*)),
           templates(*),
           plan(*),
-          assets(*)
+          assets(*),
+          saved_flyers(*, flyer(*, place(*)))
           `
       )
       .eq("id", id)

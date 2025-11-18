@@ -100,6 +100,9 @@ export default function SavedFlyersList() {
 
   return (
     <StyledSavedFlyersListContainer>
+      {!user!["saved_flyers"].length && (
+        <StyledSmall as="h2">No saved flyers</StyledSmall>
+      )}
       <div data-testid="board" style={{ width: "100%", margin: "auto" }}>
         <ResponsiveMasonry
           columnsCountBreakPoints={{ 350: 1, 1096: 2, 1600: 3 }}
