@@ -1,5 +1,5 @@
 import { UploadApiResponse } from "cloudinary";
-import { DB_Flyers_Response, DB_Template } from "./DB_Flyers";
+import { DB_Flyers_Response, DB_Saved_Flyers, DB_Template } from "./DB_Flyers";
 import { Plan } from "./Plan";
 
 interface Individual {
@@ -142,6 +142,7 @@ export interface Auth_User_Profile_Response {
     asset_info: UploadApiResponse;
     created_at: string;
   }[];
+  saved_flyers: DB_Saved_Flyers[];
 }
 
 export interface LoginSubmitData {

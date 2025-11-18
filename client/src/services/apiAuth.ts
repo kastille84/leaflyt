@@ -28,7 +28,8 @@ export const loginUser = async (email: string, password: string) => {
         flyers(*, place(*)),
         templates(*),
         plan(*),
-        assets(*)
+        assets(*),
+        saved_flyers(*, flyer(*, place(*)))
         `
       )
       .eq("email", email)
@@ -59,7 +60,8 @@ export const loginUserWithAccessToken = async () => {
         flyers(*, place(*)),
         templates(*),
         plan(*),
-        assets(*)
+        assets(*),
+        saved_flyers(*, flyer(*, place(*)))
         `
       )
       .eq("email", data.user.email)

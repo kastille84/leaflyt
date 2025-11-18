@@ -91,7 +91,7 @@ export default function MainNav() {
         </li>
         <li>
           <StyledNavLink
-            to="/dashboard/my-flyers"
+            to="/dashboard/saved-flyers"
             className={registered ? "" : "disabled"}
           >
             <HiOutlinePaperAirplane /> <span>Saved Flyers</span>

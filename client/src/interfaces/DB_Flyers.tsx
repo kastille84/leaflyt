@@ -144,3 +144,9 @@ export interface DB_Template
   extends Omit<DB_Flyer_Create, keyof RemoveFlyerKeys> {
   id: string | number;
 }
+
+export interface DB_Saved_Flyers {
+  id: string;
+  flyer: DB_Flyers_Response;
+  user: string;
+}

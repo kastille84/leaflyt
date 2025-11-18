@@ -305,7 +305,7 @@ export default function FlyerBlockStatic({ flyer }: { flyer: DB_Template }) {
             type="info"
             onClick={() => setContentType("info")}
           >
-            info
+            main
           </Pill>
 
           <Pill
@@ -322,7 +322,7 @@ export default function FlyerBlockStatic({ flyer }: { flyer: DB_Template }) {
               type="cta"
               onClick={() => setContentType("cta")}
             >
-              {flyer.callToAction?.ctaType === "offer" ? "deal" : "ask"}
+              {flyer.callToAction?.ctaType === "offer" ? "deals" : "ask"}
             </Pill>
           )}
         </PillsContainer>

@@ -13,6 +13,7 @@ import LoginModal from "./features/authentication/LoginModal";
 import SlideInBottom from "./ui/SlideIn/SlideInBottom";
 import MyArea from "./pages/MyArea";
 import MyTemplates from "./pages/MyTemplates";
+import SavedFlyers from "./pages/SavedFlyers";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +41,7 @@ function App() {
                 <Route path="board/:id" element={<Board />} />
                 <Route path="my-area" element={<MyArea />} />
                 <Route path="my-templates" element={<MyTemplates />} />
+                <Route path="saved-flyers" element={<SavedFlyers />} />
               </Route>
 
               <Route path="/" index element={<Landing />} />
