@@ -14,6 +14,7 @@ import {
   deleteFlyer,
   deleteTemplate,
   saveFlyer,
+  removeSavedFlyer,
 } from "../../services/apiFlyers";
 
 export default function useRegisteredFlyer() {
@@ -64,6 +65,11 @@ export default function useRegisteredFlyer() {
     mutationFn: (flyerId: string) => saveFlyer(user?.id!, flyerId),
   });
 
+  const { mutate: removeSavedFlyerFn, error: removeSavedFlyerFnError } =
+    useMutation({
+      mutationFn: (flyerId: number) => removeSavedFlyer(user?.id!, flyerId),
+    });
+
   return {
     createFlyer,
     createFlyerError,
@@ -81,5 +87,7 @@ export default function useRegisteredFlyer() {
     deleteTemplateFnError,
     saveFlyerFn,
     saveFlyerFnError,
+    removeSavedFlyerFn,
+    removeSavedFlyerFnError,
   };
 }

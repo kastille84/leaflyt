@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import toast from "react-hot-toast";
 import { DB_Saved_Flyers } from "../../interfaces/DB_Flyers";
 import { useGlobalContext } from "../../context/GlobalContext";
 import FlyerBlockStatic from "../../ui/Flyer/FlyerBlockStatic";
@@ -7,6 +8,7 @@ import { HiOutlinePencilSquare, HiOutlineXMark } from "react-icons/hi2";
 import Heading from "../../ui/Heading";
 import { useEffect } from "react";
 import { DB_Flyers_Response } from "../../interfaces/DB_Flyers";
+import useRegisteredFlyer from "../createFlyer/useRegisteredFlyer";
 // import { groupFlyersToSavedFlyerss } from "../../utils/GeneralUtils";
 
 const StyledSavedFlyersListContainer = styled.div`
@@ -64,20 +66,25 @@ const StyledSavedFlyersListItem = styled.div`
   background-color: var(--color-grey-50);
 `;
 export default function SavedFlyersList() {
-  const { user } = useGlobalContext();
+  const { user, setUser } = useGlobalContext();
+  const { removeSavedFlyerFn } = useRegisteredFlyer();
 
-  async function removeSavedFlyer(
-    savedFlyer: DB_Saved_Flyers,
-    toastMessage: string
-  ) {
-    // TODO: remove from saved flyers
-    // TODO: update user
-    // TODO: show toast
+  async function removeSavedFlyer(id: number, toastMessage: string) {
+    removeSavedFlyerFn(id, {
+      onSuccess: ({ user }) => {
+        // update the user
+        setUser(user);
+        toast.success(toastMessage);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
   }
 
   return (
     <StyledSavedFlyersListContainer>
-      {!user!["saved_flyers"].length && (
+      {user && !user!["saved_flyers"].length && (
         <StyledSmall as="h2">No saved flyers</StyledSmall>
       )}
       <div data-testid="board" style={{ width: "100%", margin: "auto" }}>
@@ -97,7 +104,7 @@ export default function SavedFlyersList() {
                     <HiOutlineXMark
                       onClick={() =>
                         removeSavedFlyer(
-                          savedFlyer,
+                          savedFlyer.id,
                           "Flyer removed from saved flyers"
                         )
                       }
@@ -108,7 +115,7 @@ export default function SavedFlyersList() {
                     flyer={savedFlyer.flyer}
                     redeemable={true}
                     handleRedeem={() =>
-                      removeSavedFlyer(savedFlyer, "Flyer redeemed!")
+                      removeSavedFlyer(savedFlyer.id, "Flyer redeemed!")
                     }
                   />
                 </StyledSavedFlyersListItem>

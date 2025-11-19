@@ -437,6 +437,24 @@ export const saveFlyer = async (userId: number, flyerId: string) => {
   }
 };
 
+export const removeSavedFlyer = async (userId: number, flyerId: number) => {
+  try {
+    const { error } = await supabase
+      .from("saved_flyers")
+      .delete()
+      .eq("id", flyerId);
+    if (error) {
+      console.error(error);
+      throw new Error("Error removing the saved flyer: " + error.message);
+    }
+    // return updated user
+    return await getLatestUserAfterChanges(userId, "saved flyer");
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error removing the saved flyer: " + error.message);
+  }
+};
+
 async function getLatestUserAfterChanges(userId: number, type: string) {
   // return updated user
   const { data: userData, error: getUserError } = await getUserProfile(userId);

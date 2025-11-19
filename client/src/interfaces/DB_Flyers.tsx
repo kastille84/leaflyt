@@ -146,7 +146,7 @@ export interface DB_Template
 }
 
 export interface DB_Saved_Flyers {
-  id: string;
+  id: number;
   flyer: DB_Flyers_Response;
   user: string;
 }
