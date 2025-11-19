@@ -64,39 +64,16 @@ const StyledSavedFlyersListItem = styled.div`
   background-color: var(--color-grey-50);
 `;
 export default function SavedFlyersList() {
-  const {
-    user,
-    setDrawerAction,
-    setIsOpenFlyerDrawer,
-    // setSelectedSavedFlyers,
-    // setShowDeleteFlyerSavedFlyersModal,
-  } = useGlobalContext();
+  const { user } = useGlobalContext();
 
-  // const flyersBelongingToSavedFlyerss = groupFlyersToSavedFlyerss(user);
-  // console.log("flyersBelongingToSavedFlyerss", flyersBelongingToSavedFlyerss);
-
-  // function handleEdit(template: DB_SavedFlyers) {
-  //   // setSelectedSavedFlyers(template);
-  //   // setDrawerAction("editSavedFlyers");
-  //   setIsOpenFlyerDrawer((prev) => true);
-  // }
-
-  // function handleDelete(template: DB_SavedFlyers) {
-  //   // setSelectedSavedFlyers(template);
-  //   // setShowDeleteFlyerSavedFlyersModal(true);
-  // }
-
-  function handleRedeem() {}
-
-  function handleUnsave() {}
-
-  useEffect(() => {
-    // return () => {
-    //   setDrawerAction(null);
-    //   setSelectedSavedFlyers(null);
-    //   setIsOpenFlyerDrawer((prev) => false);
-    // };
-  }, []);
+  async function removeSavedFlyer(
+    savedFlyer: DB_Saved_Flyers,
+    toastMessage: string
+  ) {
+    // TODO: remove from saved flyers
+    // TODO: update user
+    // TODO: show toast
+  }
 
   return (
     <StyledSavedFlyersListContainer>
@@ -117,12 +94,22 @@ export default function SavedFlyersList() {
                     <StyledSmall>
                       <span>Saved @ {savedFlyer.flyer.place!.name!}</span>
                     </StyledSmall>
-                    <HiOutlineXMark onClick={() => handleUnsave()} />
+                    <HiOutlineXMark
+                      onClick={() =>
+                        removeSavedFlyer(
+                          savedFlyer,
+                          "Flyer removed from saved flyers"
+                        )
+                      }
+                    />
                   </StyledActionContainer>
                   <FlyerBlockStatic
                     key={savedFlyer.flyer.id}
                     flyer={savedFlyer.flyer}
                     redeemable={true}
+                    handleRedeem={() =>
+                      removeSavedFlyer(savedFlyer, "Flyer redeemed!")
+                    }
                   />
                 </StyledSavedFlyersListItem>
               ))}

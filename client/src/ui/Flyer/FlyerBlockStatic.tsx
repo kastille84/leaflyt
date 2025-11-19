@@ -16,6 +16,7 @@ import {
   DB_Flyer_Create_Unregistered_Business,
   DB_Flyer_Create_Unregistered_Individual,
   DB_Flyer_Create_Unregistered_Organization,
+  DB_Flyers_Response,
   DB_Template,
   FlyerDesign,
 } from "../../interfaces/DB_Flyers";
@@ -222,9 +223,11 @@ const Pill = styled.div<{
 export default function FlyerBlockStatic({
   flyer,
   redeemable = false,
+  handleRedeem,
 }: {
-  flyer: DB_Template;
+  flyer: DB_Template | DB_Flyers_Response;
   redeemable?: boolean;
+  handleRedeem?: () => void;
 }) {
   const { user } = useGlobalContext();
   const [flyerStyles, setFlyerStyles] = useState(() => {
@@ -434,7 +437,11 @@ export default function FlyerBlockStatic({
           <Contact flyer={flyer as DB_Template} user={user!} />
         )}
         {contentType === "cta" && (
-          <CTA flyer={flyer as DB_Template} redeemable />
+          <CTA
+            flyer={flyer as DB_Template}
+            redeemable={redeemable}
+            handleRedeem={handleRedeem}
+          />
         )}
       </StyledinfoContentContainer>
       <StyledActionContainer>

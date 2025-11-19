@@ -30,9 +30,11 @@ const StyledRedeemContainer = styled.div`
 export default function CTA({
   flyer,
   redeemable = false,
+  handleRedeem,
 }: {
   flyer: DB_Flyers_Response | DB_Template;
   redeemable?: boolean;
+  handleRedeem?: Function;
 }) {
   return (
     <>
@@ -46,20 +48,26 @@ export default function CTA({
         ></div>
       )}
 
-      {flyer.callToAction?.ctaType === "offer" && redeemable && (
-        <StyledRedeemContainer>
-          <small>
-            Only the person offering the deal can press redeem. <br />
-            You can only redeem this offer once per flyer.
-          </small>
-          {/* #TODO: add redeem button functionality */}
-          <Button size="medium">Redeem</Button>
-        </StyledRedeemContainer>
-      )}
+      {flyer.callToAction?.ctaType === "offer" &&
+        redeemable &&
+        handleRedeem && (
+          <StyledRedeemContainer>
+            <small>
+              If redeeming in person, then the person offering the deal can
+              press redeem. <br />
+              If redeeming online, then the person redeeming the deal can press
+              redeem.
+            </small>
+            {/* #TODO: add redeem button functionality */}
+            <Button size="medium" onClick={() => handleRedeem()}>
+              Redeem
+            </Button>
+          </StyledRedeemContainer>
+        )}
       {flyer.callToAction?.ctaType === "offer" && !redeemable && (
         <StyledRedeemContainer>
           <small>
-            Click on Save below to redeem your offer. <br />
+            Click on Save below to save this offer and redeem later. <br />
             Only one offer per flyer.
           </small>
         </StyledRedeemContainer>
