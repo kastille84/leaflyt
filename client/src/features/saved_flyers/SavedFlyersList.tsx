@@ -122,6 +122,7 @@ export default function SavedFlyersList() {
                   <FlyerBlockStatic
                     key={savedFlyer.flyer.id}
                     flyer={savedFlyer.flyer}
+                    redeemable={true}
                   />
                 </StyledSavedFlyersListItem>
               ))}

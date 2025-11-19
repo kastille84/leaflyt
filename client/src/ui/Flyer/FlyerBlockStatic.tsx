@@ -219,7 +219,13 @@ const Pill = styled.div<{
     `}
 `;
 
-export default function FlyerBlockStatic({ flyer }: { flyer: DB_Template }) {
+export default function FlyerBlockStatic({
+  flyer,
+  redeemable = false,
+}: {
+  flyer: DB_Template;
+  redeemable?: boolean;
+}) {
   const { user } = useGlobalContext();
   const [flyerStyles, setFlyerStyles] = useState(() => {
     if (!flyer.flyerDesign) {
@@ -245,27 +251,122 @@ export default function FlyerBlockStatic({ flyer }: { flyer: DB_Template }) {
   }
 
   function determineAvatarAndName() {
-    if ((user as Auth_User_Profile_Response)?.typeOfUser === "individual") {
-      return (
-        <>
-          <StyledAvatar flyerDesign={flyerStyles}>
-            {((user as Auth_User_Profile_Response).firstName as string)[0]}
-          </StyledAvatar>
-          <div>
-            {(user as Auth_User_Profile_Response).firstName} &nbsp;
-            {(user as Auth_User_Profile_Response).lastName}
-          </div>
-        </>
-      );
+    if (!flyer.user) {
+      // anonymous flyer
+      switch (flyer.typeOfUser) {
+        case "anonymous":
+          return (
+            <>
+              <StyledAvatar flyerDesign={flyerStyles}>A</StyledAvatar>
+              <div>Anonymous</div>
+            </>
+          );
+        case "individual":
+          return (
+            <>
+              <StyledAvatar flyerDesign={flyerStyles}>
+                {
+                  (flyer as DB_Flyer_Create_Unregistered_Individual).individual
+                    .name.firstName[0]
+                }
+              </StyledAvatar>
+              <div>
+                {
+                  (flyer as DB_Flyer_Create_Unregistered_Individual).individual
+                    .name.firstName
+                }{" "}
+                &nbsp;
+                {
+                  (flyer as DB_Flyer_Create_Unregistered_Individual).individual
+                    .name.lastName
+                }
+              </div>
+            </>
+          );
+        case "organization":
+          return (
+            <>
+              <StyledAvatar flyerDesign={flyerStyles}>
+                {
+                  (flyer as DB_Flyer_Create_Unregistered_Organization)
+                    .organization.name[0]
+                }
+              </StyledAvatar>
+              <div>
+                {
+                  (flyer as DB_Flyer_Create_Unregistered_Organization)
+                    .organization.name
+                }
+              </div>
+            </>
+          );
+        case "business":
+          return (
+            <>
+              <StyledAvatar flyerDesign={flyerStyles}>
+                {
+                  (flyer as DB_Flyer_Create_Unregistered_Business).business
+                    .name[0]
+                }
+              </StyledAvatar>
+              <div>
+                {(flyer as DB_Flyer_Create_Unregistered_Business).business.name}
+              </div>
+            </>
+          );
+      }
     } else {
-      return (
-        <>
-          <StyledAvatar flyerDesign={flyerStyles}>
-            {((user as Auth_User_Profile_Response).name as string)[0]}
-          </StyledAvatar>
-          <div>{(user as Auth_User_Profile_Response).name as string}</div>
-        </>
-      );
+      if (
+        ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
+          .typeOfUser === "individual"
+      ) {
+        return (
+          <>
+            <StyledAvatar flyerDesign={flyerStyles}>
+              {
+                (
+                  (
+                    (flyer as DB_Flyer_Create)
+                      .user as Auth_User_Profile_Response
+                  ).firstName as string
+                )[0]
+              }
+            </StyledAvatar>
+            <div>
+              {
+                ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
+                  .firstName
+              }{" "}
+              &nbsp;
+              {
+                ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
+                  .lastName
+              }
+            </div>
+          </>
+        );
+      } else {
+        return (
+          <>
+            <StyledAvatar flyerDesign={flyerStyles}>
+              {
+                (
+                  (
+                    (flyer as DB_Flyer_Create)
+                      .user as Auth_User_Profile_Response
+                  ).name as string
+                )[0]
+              }
+            </StyledAvatar>
+            <div>
+              {
+                ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
+                  .name as string
+              }
+            </div>
+          </>
+        );
+      }
     }
   }
 
@@ -332,7 +433,9 @@ export default function FlyerBlockStatic({ flyer }: { flyer: DB_Template }) {
         {contentType === "contact" && (
           <Contact flyer={flyer as DB_Template} user={user!} />
         )}
-        {contentType === "cta" && <CTA flyer={flyer as DB_Template} />}
+        {contentType === "cta" && (
+          <CTA flyer={flyer as DB_Template} redeemable />
+        )}
       </StyledinfoContentContainer>
       <StyledActionContainer>
         <StyledActionIconContainer flyerDesign={flyerStyles}>

@@ -49,11 +49,11 @@ export default function CTA({
       {flyer.callToAction?.ctaType === "offer" && redeemable && (
         <StyledRedeemContainer>
           <small>
-            Only press button once your offer has been redeemed. You can only
-            redeem this offer once per flyer.
+            Only the person offering the deal can press redeem. <br />
+            You can only redeem this offer once per flyer.
           </small>
           {/* #TODO: add redeem button functionality */}
-          <Button size="small">Redeemed</Button>
+          <Button size="medium">Redeem</Button>
         </StyledRedeemContainer>
       )}
       {flyer.callToAction?.ctaType === "offer" && !redeemable && (

@@ -407,7 +407,6 @@ export default function FlyerBlockInteractive({
   async function handleSaveClick() {
     if (user) {
       setIsSaved(true);
-      // #TODO: save flyer
       saveFlyerFn(flyer.id!, {
         onSuccess: ({ user }) => {
           // update the user
@@ -415,6 +414,7 @@ export default function FlyerBlockInteractive({
           toast.success("Flyer saved!");
         },
         onError: (err) => {
+          setIsSaved(false);
           toast.error("Flyer save failed! Try again.");
         },
       });
