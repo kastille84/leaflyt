@@ -113,7 +113,9 @@ export default function LoginModal() {
         setShowSpinner(false);
         // TODO: redirect user to dashboard
         navigate(
-          `/dashboard${selectedPlace?.id ? "/board/" + selectedPlace.id : ""}`
+          `/dashboard${
+            selectedPlace?.id ? "/board/" + selectedPlace.id : "/home"
+          }`
         );
       },
       onError: (error) => {
@@ -135,7 +137,7 @@ export default function LoginModal() {
       appElement={document.getElementById("root")!}
     >
       <StyledHeaderContainer>
-        <StyledName>Login to Leaflyt</StyledName>
+        <StyledName>Login to Leaflit</StyledName>
         <StyledSubHeader>Spread your message</StyledSubHeader>
       </StyledHeaderContainer>
       <StyledFormContainer>

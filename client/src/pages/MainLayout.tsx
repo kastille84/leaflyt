@@ -41,7 +41,7 @@ export default function MainLayout() {
             console.log("response", response);
             // set user in global context
             setUser(response.data);
-            navigate(`/dashboard${id ? "/board/" + id : ""}`);
+            navigate(`/dashboard${id ? "/board/" + id : "/home"}`);
           },
           onError: (error) => {
             console.log("error", error);

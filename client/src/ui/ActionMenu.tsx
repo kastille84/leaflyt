@@ -156,7 +156,7 @@ export default function ActionMenu() {
               getUserGeo();
             }}
           >
-            Open Board Near You
+            Find Community Boards Near You
           </Button>
         </div>
         {determineSelectedPlaceActions()}

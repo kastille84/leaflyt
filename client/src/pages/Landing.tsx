@@ -95,7 +95,7 @@ export default function Landing() {
             console.log("response", response);
             // set user in global context
             setUser(response.data);
-            navigate("/dashboard");
+            navigate("/dashboard/home");
           },
           onError: (error) => {
             console.log("error", error);

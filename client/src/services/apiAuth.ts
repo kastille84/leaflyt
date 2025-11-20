@@ -115,7 +115,7 @@ export const signupUser = async (prepData: SignupSubmitData) => {
     const { data, error } = await supabase.auth.signUp({
       ...dataForAuthSignup,
       options: {
-        emailRedirectTo: `${window.location.origin}/dashboard`,
+        emailRedirectTo: `${window.location.origin}/dashboard/home`,
       },
     });
     console.log("auth.signup", data);

@@ -14,6 +14,7 @@ import SlideInBottom from "./ui/SlideIn/SlideInBottom";
 import MyArea from "./pages/MyArea";
 import MyTemplates from "./pages/MyTemplates";
 import SavedFlyers from "./pages/SavedFlyers";
+import Home from "./pages/Home";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,6 +39,7 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/dashboard/" element={<MainLayout />}>
+                <Route path="home" element={<Home />} />
                 <Route path="board/:id" element={<Board />} />
                 <Route path="my-area" element={<MyArea />} />
                 <Route path="my-templates" element={<MyTemplates />} />

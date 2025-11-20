@@ -1,10 +1,10 @@
 export const templateMock = {
   id: 3,
-  tags: ["leaflyt", "app", "flyers"],
+  tags: ["leaflit", "app", "flyers"],
   user: 3,
-  title: "Welcome to Leaflyt",
+  title: "Welcome to Leaflit",
   content:
-    "<p>Hi welcome to leaflyt. This application is meant for you to spread your message in your community. Sign up and spread your message.</p>",
+    "<p>Hi welcome to leaflit. This application is meant for you to spread your message in your community. Sign up and spread your message.</p>",
   category: "Miscellaneous",
   lifespan: 2,
   created_at: "2025-08-20T22:18:52.848919+00:00",
