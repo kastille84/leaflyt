@@ -30,8 +30,13 @@ import DropdownMenu from "../DropdownMenu";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { useNavigate } from "react-router-dom";
 import useRegisteredFlyer from "../../features/createFlyer/useRegisteredFlyer";
+import useCreateUnregisteredFlyer from "../../features/createFlyer/useCreateUnregisteredFlyer";
 import toast from "react-hot-toast";
-import { checkIfCurrentFlyerIsSaved } from "../../utils/GeneralUtils";
+import {
+  checkIfCurrentFlyerIsSaved,
+  checkIfCurrentFlyerIsLiked,
+} from "../../utils/GeneralUtils";
+import { useSessionStorageState } from "../../hooks/useSessionStorageState";
 
 const common = {
   style: css`
@@ -255,16 +260,26 @@ export default function FlyerBlockInteractive({
     setIsOpenBottomSlideIn,
   } = useGlobalContext();
 
+  const { likeFlyerFn } = useCreateUnregisteredFlyer();
+
   const [contentType, setContentType] = useState<"info" | "contact" | "cta">(
     "info"
   );
+  const { saveFlyerFn, removeSavedFlyerFn } = useRegisteredFlyer();
+  const [likedSessionFlyers, setLikedSessionFlyers] = useSessionStorageState(
+    [],
+    "likedFlyers"
+  );
+
   // isSaved state depends on saved flyers on user object
   const [isSaved, setIsSaved] = useState(() => {
     const saved_flyers_arr = user?.saved_flyers! || [];
     return checkIfCurrentFlyerIsSaved(saved_flyers_arr, flyer);
   });
-
-  const { saveFlyerFn, removeSavedFlyerFn } = useRegisteredFlyer();
+  // isLiked state depends on likedSessionFlyers object
+  const [isLikedByUser, setIsLikedByUser] = useState(() => {
+    return checkIfCurrentFlyerIsLiked(likedSessionFlyers, flyer.id!);
+  });
 
   const navigate = useNavigate();
 
@@ -453,8 +468,18 @@ export default function FlyerBlockInteractive({
   }
 
   async function handleLikeClick() {
-    // only if flyer does not belongs to the user
-    if (!doesFlyerBelongToUser()) {
+    // only if flyer does not belongs to the user & isn't already liked by user
+    if (!doesFlyerBelongToUser() && !isLikedByUser) {
+      setIsLikedByUser(true);
+      likeFlyerFn(flyer, {
+        onSuccess: () => {
+          toast.success("Flyer liked!");
+        },
+        onError: (error) => {
+          setIsLikedByUser(false);
+          toast.error(error.message);
+        },
+      });
     }
   }
 

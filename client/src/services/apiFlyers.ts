@@ -462,6 +462,48 @@ export const removeSavedFlyer = async (
   }
 };
 
+export const likeFlyer = async (flyer: DB_Flyers_Response) => {
+  try {
+    const { error } = await supabase
+      .from("flyers")
+      .update({
+        likes: flyer?.likes! + 1,
+      })
+      .eq("id", flyer.id);
+    if (error) {
+      console.error(error);
+      throw new Error("Error liking the flyer: " + error.message);
+    }
+
+    // increment likes for all existing templates that use this flyer
+    if (flyer.template) {
+      // get likes from existing template and update it's likes value by 1
+      const { data: existingTemplate, error } = await supabase
+        .from("templates")
+        .select("likes")
+        .eq("id", flyer?.template)
+        .single();
+      if (error) {
+        console.error(error);
+        throw new Error("Error liking the template: " + error.message);
+      }
+      const { error: updateTemplateError } = await supabase
+        .from("templates")
+        .update({
+          likes: existingTemplate?.likes! + 1,
+        })
+        .eq("id", flyer?.template);
+      if (updateTemplateError) {
+        console.error(updateTemplateError);
+        throw new Error("Error liking the template: " + updateTemplateError);
+      }
+    }
+    return null;
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error liking the flyer: " + error.message);
+  }
+};
 async function getLatestUserAfterChanges(userId: number, type: string) {
   // return updated user
   const { data: userData, error: getUserError } = await getUserProfile(userId);

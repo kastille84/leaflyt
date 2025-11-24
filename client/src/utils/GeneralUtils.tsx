@@ -89,6 +89,15 @@ export const checkIfCurrentFlyerIsSaved = (
   });
 };
 
+export const checkIfCurrentFlyerIsLiked = (
+  likedFlyers: string[],
+  currentFlyerId: string
+) => {
+  return likedFlyers.some((likedFlyerId) => {
+    return likedFlyerId === currentFlyerId;
+  });
+};
+
 export {
   shortenTitle,
   accessNestedProperty,
