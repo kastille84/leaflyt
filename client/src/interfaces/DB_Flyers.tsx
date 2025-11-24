@@ -62,6 +62,7 @@ export interface DB_Flyer_Create {
   templateName?: string;
   hasComments?: boolean;
   placeInfo?: PlaceInfo;
+  likes?: number;
 }
 
 interface DB_Flyer_Create_Unregistered extends DB_Flyer_Create {
@@ -145,7 +146,7 @@ export interface DB_Template
   id: string | number;
 }
 
-export interface DB_Saved_Flyers {
+export interface DB_Saved_Flyer {
   id: number;
   flyer: DB_Flyers_Response;
   user: string;

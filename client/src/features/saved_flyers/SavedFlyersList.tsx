@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import toast from "react-hot-toast";
-import { DB_Saved_Flyers } from "../../interfaces/DB_Flyers";
+import { DB_Saved_Flyer } from "../../interfaces/DB_Flyers";
 import { useGlobalContext } from "../../context/GlobalContext";
 import FlyerBlockStatic from "../../ui/Flyer/FlyerBlockStatic";
 import { HiOutlinePencilSquare, HiOutlineXMark } from "react-icons/hi2";
@@ -95,7 +95,7 @@ export default function SavedFlyersList() {
         >
           <Masonry columnsCount={3} gutter="1.6rem">
             {user &&
-              user!["saved_flyers"].map((savedFlyer: DB_Saved_Flyers) => (
+              user!["saved_flyers"].map((savedFlyer: DB_Saved_Flyer) => (
                 <StyledSavedFlyersListItem key={savedFlyer.id}>
                   <StyledActionContainer>
                     <StyledSmall>

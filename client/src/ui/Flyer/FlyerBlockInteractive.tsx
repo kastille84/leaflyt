@@ -31,6 +31,7 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import { useNavigate } from "react-router-dom";
 import useRegisteredFlyer from "../../features/createFlyer/useRegisteredFlyer";
 import toast from "react-hot-toast";
+import { checkIfCurrentFlyerIsSaved } from "../../utils/GeneralUtils";
 
 const common = {
   style: css`
@@ -241,10 +242,6 @@ export default function FlyerBlockInteractive({
     }
     return flyer.flyerDesign;
   });
-  const [isSaved, setIsSaved] = useState(false);
-  const [contentType, setContentType] = useState<"info" | "contact" | "cta">(
-    "info"
-  );
 
   const {
     setSelectedFlyer,
@@ -258,7 +255,16 @@ export default function FlyerBlockInteractive({
     setIsOpenBottomSlideIn,
   } = useGlobalContext();
 
-  const { saveFlyerFn } = useRegisteredFlyer();
+  const [contentType, setContentType] = useState<"info" | "contact" | "cta">(
+    "info"
+  );
+  // isSaved state depends on saved flyers on user object
+  const [isSaved, setIsSaved] = useState(() => {
+    const saved_flyers_arr = user?.saved_flyers! || [];
+    return checkIfCurrentFlyerIsSaved(saved_flyers_arr, flyer);
+  });
+
+  const { saveFlyerFn, removeSavedFlyerFn } = useRegisteredFlyer();
 
   const navigate = useNavigate();
 
@@ -427,7 +433,16 @@ export default function FlyerBlockInteractive({
   async function handleUnsaveClick() {
     if (user) {
       setIsSaved(false);
-      // #TODO: unsave flyer
+      removeSavedFlyerFn(flyer.id!, {
+        onSuccess: ({ user }) => {
+          // update the user
+          setUser(user);
+          toast.success("Flyer unsaved!");
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      });
     }
   }
   function doesFlyerBelongToUser() {
@@ -435,6 +450,12 @@ export default function FlyerBlockInteractive({
       return true;
     }
     return false;
+  }
+
+  async function handleLikeClick() {
+    // only if flyer does not belongs to the user
+    if (!doesFlyerBelongToUser()) {
+    }
   }
 
   function renderTopContent() {
@@ -532,9 +553,12 @@ export default function FlyerBlockInteractive({
             <HiOutlineBookmarkSlash /> <small>Unsave</small>
           </StyledActionIconContainer>
         )}
-        <StyledActionIconContainer flyerDesign={flyerStyles}>
+        <StyledActionIconContainer
+          flyerDesign={flyerStyles}
+          onClick={handleLikeClick}
+        >
           <HiOutlineHandThumbUp />
-          <small>0 Likes</small>
+          <small>{flyer.likes! > 0 ? flyer.likes : ""} Likes</small>
         </StyledActionIconContainer>
         {/* <StyledActionIconContainer flyerDesign={flyerStyles}>
           <HiOutlineChatBubbleLeftEllipsis />

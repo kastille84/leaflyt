@@ -46,7 +46,7 @@ export const createUnregisteredFlyer = async (
   try {
     const { data: newFlyer, error } = await supabase
       .from("flyers")
-      .insert([{ ...flyerData, placeId: selectedPlace.id }]) // selectedPlace.id is the placeId of the board
+      .insert([{ ...flyerData, placeId: selectedPlace.id, likes: 0 }]) // selectedPlace.id is the placeId of the board
       .select("*")
       .single();
 
@@ -89,6 +89,7 @@ export const createRegisteredFlyer = async (
             fileUrlArr: flyerData.fileUrlArr,
             hasComments: flyerData.hasComments,
             lifespan: flyerData.lifespan,
+            likes: 0,
           },
         ])
         .select("*")
@@ -138,6 +139,7 @@ export const createRegisteredFlyer = async (
           fileUrlArr: flyerData.fileUrlArr,
           postingMethod: flyerData.postingMethod || "onLocation",
           lifespan: flyerData.lifespan,
+          likes: 0,
         },
       ])
       .select("*")
@@ -221,6 +223,7 @@ export const createFlyerFromTemplate = async (
     place: selectedPlace.id,
     user: user.id,
     template: templateData.id,
+    likes: 0,
     // placeInfo: {
     //   displayName: selectedPlace.displayName.text,
     //   formattedAddress: selectedPlace.formattedAddress,
@@ -365,6 +368,7 @@ export const createTemplate = async (templateData: DB_Template) => {
           fileUrlArr: templateData.fileUrlArr,
           hasComments: templateData.hasComments,
           lifespan: templateData.lifespan,
+          likes: 0,
         },
       ])
       .select("*")
@@ -437,12 +441,15 @@ export const saveFlyer = async (userId: number, flyerId: string) => {
   }
 };
 
-export const removeSavedFlyer = async (userId: number, flyerId: number) => {
+export const removeSavedFlyer = async (
+  userId: number,
+  flyerId: number | string
+) => {
   try {
     const { error } = await supabase
       .from("saved_flyers")
       .delete()
-      .eq("id", flyerId);
+      .eq(typeof flyerId === "string" ? "flyer" : "id", flyerId);
     if (error) {
       console.error(error);
       throw new Error("Error removing the saved flyer: " + error.message);

@@ -67,7 +67,8 @@ export default function useRegisteredFlyer() {
 
   const { mutate: removeSavedFlyerFn, error: removeSavedFlyerFnError } =
     useMutation({
-      mutationFn: (flyerId: number) => removeSavedFlyer(user?.id!, flyerId),
+      mutationFn: (flyerId: number | string) =>
+        removeSavedFlyer(user?.id!, flyerId),
     });
 
   return {

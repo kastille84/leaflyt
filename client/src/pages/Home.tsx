@@ -61,14 +61,16 @@ export default function Home() {
         <Heading as="h3">
           We make it easy for you to view and distribute flyers in your
           community. <br />
+          We are beta testing and looking for early adopters.
+          <br />
           There's more features to come, but for right now...
         </Heading>
       </StyledGreetingsContainer>
       <StyledStepsContainer>
         <div>
           <li>
-            Explore your neighborhood. -{" "}
-            <small>(In-person or virtual map)</small>
+            Explore Your Neighborhood. -{" "}
+            <small>(In-person or virtual via "My Area")</small>
           </li>
           <li>
             Find Community Boards. - <small>(Be In the Know)</small>
