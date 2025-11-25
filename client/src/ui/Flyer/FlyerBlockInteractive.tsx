@@ -470,6 +470,8 @@ export default function FlyerBlockInteractive({
   async function handleLikeClick() {
     // only if flyer does not belongs to the user & isn't already liked by user
     if (!doesFlyerBelongToUser() && !isLikedByUser) {
+      // save the liked flyer in the session
+      setLikedSessionFlyers((prev: string[]) => [...prev, flyer.id]);
       setIsLikedByUser(true);
       likeFlyerFn(flyer, {
         onSuccess: () => {
