@@ -266,6 +266,8 @@ export default function FlyerBlockInteractive({
     "info"
   );
   const { saveFlyerFn, removeSavedFlyerFn } = useRegisteredFlyer();
+  const [currentLikes, setCurrentLikes] = useState(() => flyer?.likes || 0);
+
   const [likedSessionFlyers, setLikedSessionFlyers] = useSessionStorageState(
     [],
     "likedFlyers"
@@ -470,18 +472,41 @@ export default function FlyerBlockInteractive({
   async function handleLikeClick() {
     // only if flyer does not belongs to the user & isn't already liked by user
     if (!doesFlyerBelongToUser() && !isLikedByUser) {
-      // save the liked flyer in the session
-      setLikedSessionFlyers((prev: string[]) => [...prev, flyer.id]);
-      setIsLikedByUser(true);
-      likeFlyerFn(flyer, {
-        onSuccess: () => {
-          toast.success("Flyer liked!");
-        },
-        onError: (error) => {
-          setIsLikedByUser(false);
-          toast.error(error.message);
-        },
-      });
+      likeFlyerFn(
+        { flyer, type: "inc" },
+        {
+          onSuccess: ({ newLikes }) => {
+            // save the liked flyer in the session
+            setLikedSessionFlyers((prev: string[]) => [...prev, flyer.id]);
+            setIsLikedByUser(true);
+            setCurrentLikes(newLikes);
+            toast.success("Flyer liked!");
+          },
+          onError: (error) => {
+            setIsLikedByUser(false);
+            toast.error(error.message);
+          },
+        }
+      );
+    } else if (!doesFlyerBelongToUser() && isLikedByUser) {
+      // unlike the flyer
+      likeFlyerFn(
+        { flyer, type: "dec" },
+        {
+          onSuccess: ({ newLikes }) => {
+            setLikedSessionFlyers((prev: string[]) =>
+              prev.filter((id) => id !== flyer.id)
+            );
+            setIsLikedByUser(false);
+            setCurrentLikes(newLikes);
+            toast.success("Flyer unliked!");
+          },
+          onError: (error) => {
+            setIsLikedByUser(true);
+            toast.error(error.message);
+          },
+        }
+      );
     }
   }
 
@@ -585,7 +610,7 @@ export default function FlyerBlockInteractive({
           onClick={handleLikeClick}
         >
           <HiOutlineHandThumbUp />
-          <small>{flyer.likes! > 0 ? flyer.likes : ""} Likes</small>
+          <small>{currentLikes! > 0 ? currentLikes : ""} Likes</small>
         </StyledActionIconContainer>
         {/* <StyledActionIconContainer flyerDesign={flyerStyles}>
           <HiOutlineChatBubbleLeftEllipsis />

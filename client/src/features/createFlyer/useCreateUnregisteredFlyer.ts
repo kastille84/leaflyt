@@ -16,7 +16,13 @@ export default function useCreateUnregisteredFlyer() {
 
   // like flyer
   const { mutate: likeFlyerFn, error: likeFlyerFnError } = useMutation({
-    mutationFn: (flyer: DB_Flyers_Response) => likeFlyer(flyer),
+    mutationFn: ({
+      flyer,
+      type,
+    }: {
+      flyer: DB_Flyers_Response;
+      type: "inc" | "dec";
+    }) => likeFlyer(flyer, type),
   });
 
   return { createFlyer, createFlyerError, likeFlyerFn, likeFlyerFnError };

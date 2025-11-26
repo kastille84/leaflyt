@@ -462,43 +462,82 @@ export const removeSavedFlyer = async (
   }
 };
 
-export const likeFlyer = async (flyer: DB_Flyers_Response) => {
-  try {
-    const { error } = await supabase
-      .from("flyers")
-      .update({
-        likes: flyer?.likes! + 1,
-      })
-      .eq("id", flyer.id);
-    if (error) {
-      console.error(error);
-      throw new Error("Error liking the flyer: " + error.message);
-    }
+// export const likeFlyer = async (
+//   flyer: DB_Flyers_Response,
+//   type: "inc" | "dec"
+// ) => {
+//   try {
+//     const { error } = await supabase
+//       .from("flyers")
+//       .update({
+//         likes: type === "inc" ? flyer?.likes! + 1 : flyer?.likes! - 1,
+//       })
+//       .eq("id", flyer.id);
+//     if (error) {
+//       console.error(error);
+//       throw new Error("Error liking the flyer: " + error.message);
+//     }
 
-    // increment likes for all existing templates that use this flyer
+//     // increment likes for all existing templates that use this flyer
+//     if (flyer.template) {
+//       // get likes from existing template and update it's likes value by 1
+//       const { data: existingTemplate, error } = await supabase
+//         .from("templates")
+//         .select("likes")
+//         .eq("id", flyer?.template)
+//         .single();
+//       if (error) {
+//         console.error(error);
+//         throw new Error("Error liking the template: " + error.message);
+//       }
+//       const { error: updateTemplateError } = await supabase
+//         .from("templates")
+//         .update({
+//           likes:
+//             type === "inc"
+//               ? existingTemplate?.likes! + 1
+//               : existingTemplate?.likes! - 1,
+//         })
+//         .eq("id", flyer?.template);
+//       if (updateTemplateError) {
+//         console.error(updateTemplateError);
+//         throw new Error("Error liking the template: " + updateTemplateError);
+//       }
+//     }
+//     return null;
+//   } catch (error: any) {
+//     console.error(error);
+//     throw new Error("Error liking the flyer: " + error.message);
+//   }
+// };
+export const likeFlyer = async (
+  flyer: DB_Flyers_Response,
+  type: "inc" | "dec"
+) => {
+  try {
     if (flyer.template) {
-      // get likes from existing template and update it's likes value by 1
-      const { data: existingTemplate, error } = await supabase
-        .from("templates")
-        .select("likes")
-        .eq("id", flyer?.template)
-        .single();
-      if (error) {
-        console.error(error);
-        throw new Error("Error liking the template: " + error.message);
-      }
-      const { error: updateTemplateError } = await supabase
-        .from("templates")
-        .update({
-          likes: existingTemplate?.likes! + 1,
-        })
-        .eq("id", flyer?.template);
-      if (updateTemplateError) {
-        console.error(updateTemplateError);
-        throw new Error("Error liking the template: " + updateTemplateError);
-      }
+      // update both flyer and template
+      const { data, error } = await supabase.rpc("increment_likes_combined", {
+        flyer_id_val: flyer.id, // Argument for the flyers table ID
+        template_id_val: flyer.template, // Argument for the templates table ID,
+        amount: type === "inc" ? 1 : -1,
+      });
+
+      return {
+        newLikes: data,
+        error: null,
+      };
+    } else {
+      // just update flyer
+      const { data, error } = await supabase.rpc("increment_likes_for_flyer", {
+        flyer_id_val: flyer.id, // Argument for the flyers table ID
+        amount: type === "inc" ? 1 : -1,
+      });
+      return {
+        newLikes: data,
+        error: null,
+      };
     }
-    return null;
   } catch (error: any) {
     console.error(error);
     throw new Error("Error liking the flyer: " + error.message);

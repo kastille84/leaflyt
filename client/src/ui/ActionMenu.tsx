@@ -8,6 +8,7 @@ import OverlaySpinner from "./OverlaySpinner";
 import LocationSelection from "../features/location/LocationSelection";
 import { supabase } from "../services/supabase";
 import CreateFlyerButton from "./Flyer/CreateFlyerButton";
+import { useSessionStorageState } from "../hooks/useSessionStorageState";
 
 const StyledActionMenu = styled.div`
   grid-column: 1 / -1;
@@ -65,6 +66,10 @@ export default function ActionMenu() {
   } = useGlobalContext();
 
   const navigate = useNavigate();
+  const [likedSessionFlyers, setLikedSessionFlyers] = useSessionStorageState(
+    [],
+    "likedFlyers"
+  );
 
   useEffect(() => {}, [selectedPlace]);
 
@@ -80,6 +85,8 @@ export default function ActionMenu() {
       setUser(null);
       setSelectedPlace(null);
       setCoords(null);
+      // clear session
+      setLikedSessionFlyers([]);
       // redirect to home
       navigate("/");
     });
