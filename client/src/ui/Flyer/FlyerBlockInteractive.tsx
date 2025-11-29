@@ -37,6 +37,7 @@ import {
   checkIfCurrentFlyerIsLiked,
 } from "../../utils/GeneralUtils";
 import { useSessionStorageState } from "../../hooks/useSessionStorageState";
+import { useLikeFlyers } from "../../hooks/useLikeFlyers";
 
 const common = {
   style: css`
@@ -258,6 +259,7 @@ export default function FlyerBlockInteractive({
     setShowDeleteFlyerTemplateModal,
     setBottomSlideInType,
     setIsOpenBottomSlideIn,
+    likedContextSessionFlyers,
   } = useGlobalContext();
 
   const { likeFlyerFn } = useCreateUnregisteredFlyer();
@@ -268,10 +270,12 @@ export default function FlyerBlockInteractive({
   const { saveFlyerFn, removeSavedFlyerFn } = useRegisteredFlyer();
   const [currentLikes, setCurrentLikes] = useState(() => flyer?.likes || 0);
 
-  const [likedSessionFlyers, setLikedSessionFlyers] = useSessionStorageState(
-    [],
-    "likedFlyers"
-  );
+  // const [likedSessionFlyers, setLikedSessionFlyers] = useSessionStorageState(
+  //   [],
+  //   "likedFlyers"
+  // );
+
+  const { setLikedFlyer } = useLikeFlyers(flyer.id!);
 
   // isSaved state depends on saved flyers on user object
   const [isSaved, setIsSaved] = useState(() => {
@@ -280,7 +284,10 @@ export default function FlyerBlockInteractive({
   });
   // isLiked state depends on likedSessionFlyers object
   const [isLikedByUser, setIsLikedByUser] = useState(() => {
-    return checkIfCurrentFlyerIsLiked(likedSessionFlyers, flyer.id!);
+    return checkIfCurrentFlyerIsLiked(
+      likedContextSessionFlyers || [],
+      flyer.id!
+    );
   });
 
   const navigate = useNavigate();
@@ -477,7 +484,8 @@ export default function FlyerBlockInteractive({
         {
           onSuccess: ({ newLikes }) => {
             // save the liked flyer in the session
-            setLikedSessionFlyers((prev: string[]) => [...prev, flyer.id]);
+            // setLikedSessionFlyers((prev: string[]) => [...prev, flyer.id]);
+            setLikedFlyer("add");
             setIsLikedByUser(true);
             setCurrentLikes(newLikes);
             toast.success("Flyer liked!");
@@ -494,9 +502,10 @@ export default function FlyerBlockInteractive({
         { flyer, type: "dec" },
         {
           onSuccess: ({ newLikes }) => {
-            setLikedSessionFlyers((prev: string[]) =>
-              prev.filter((id) => id !== flyer.id)
-            );
+            // setLikedSessionFlyers((prev: string[]) =>
+            //   prev.filter((id) => id !== flyer.id)
+            // );
+            setLikedFlyer("remove");
             setIsLikedByUser(false);
             setCurrentLikes(newLikes);
             toast.success("Flyer unliked!");

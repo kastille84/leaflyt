@@ -38,4 +38,6 @@ export const mockUseGlobalContextReturnObj = {
   showEditFlyerModal: false,
   setShowDeleteFlyerTemplateModal: () => {},
   showDeleteFlyerTemplateModal: false,
+  likedContextSessionFlyers: null,
+  setLikedContextSessionFlyers: () => {},
 };

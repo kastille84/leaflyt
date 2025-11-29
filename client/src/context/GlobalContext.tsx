@@ -5,6 +5,7 @@ import { LatLng, NearbySearchPlaceResult } from "../interfaces/Geo";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
 import { DB_Flyers_Response, DB_Template } from "../interfaces/DB_Flyers";
+import { useSessionStorageState } from "../hooks/useSessionStorageState";
 
 export type ContextType = {
   getUserGeo: () => void;
@@ -77,6 +78,10 @@ export type ContextType = {
     React.SetStateAction<boolean>
   >;
   showDeleteFlyerTemplateModal: boolean;
+  likedContextSessionFlyers: string[] | null;
+  setLikedContextSessionFlyers: React.Dispatch<
+    React.SetStateAction<string[] | null>
+  >;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -119,6 +124,8 @@ const GlobalContext = createContext<ContextType>({
   showEditFlyerModal: false,
   setShowDeleteFlyerTemplateModal: () => {},
   showDeleteFlyerTemplateModal: false,
+  likedContextSessionFlyers: null,
+  setLikedContextSessionFlyers: () => {},
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -171,6 +178,10 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
     setIsGettingLocation,
   } = useGetUserGeo();
 
+  const [likedContextSessionFlyers, setLikedContextSessionFlyers] = useState<
+    string[] | null
+  >(null);
+
   return (
     <GlobalContext.Provider
       value={{
@@ -219,6 +230,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         setCurrentFormOptions,
         carouselImages,
         setCarouselImages,
+        likedContextSessionFlyers,
+        setLikedContextSessionFlyers,
       }}
     >
       {children}
