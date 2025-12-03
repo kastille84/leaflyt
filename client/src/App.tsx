@@ -15,6 +15,7 @@ import MyArea from "./pages/MyArea";
 import MyTemplates from "./pages/MyTemplates";
 import SavedFlyers from "./pages/SavedFlyers";
 import Home from "./pages/Home";
+import MyAssets from "./pages/MyAssets";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,6 +45,7 @@ function App() {
                 <Route path="my-area" element={<MyArea />} />
                 <Route path="my-templates" element={<MyTemplates />} />
                 <Route path="saved-flyers" element={<SavedFlyers />} />
+                <Route path="my-assets" element={<MyAssets />} />
               </Route>
 
               <Route path="/" index element={<Landing />} />

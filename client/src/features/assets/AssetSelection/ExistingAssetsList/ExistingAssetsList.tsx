@@ -17,7 +17,11 @@ const StyledExistingAssetsListContainer = styled.ul`
   overflow: auto;
 `;
 
-export default function ExistingAssetsList() {
+export default function ExistingAssetsList({
+  enablePreview,
+}: {
+  enablePreview?: boolean;
+}) {
   // const { selectedOption, setSelectedOption } = useAssetSelectionContext();
   const { user } = useGlobalContext();
   const { assetsList } = useAssetSelectionContext();
@@ -27,6 +31,7 @@ export default function ExistingAssetsList() {
       {user?.assets.map((asset) => (
         <ExistingAssetListItem
           key={asset.id}
+          enablePreview={enablePreview}
           asset={asset.asset_info}
           preChecked={assetsList.some(
             (assetItem) => assetItem.public_id === asset.asset_info.public_id

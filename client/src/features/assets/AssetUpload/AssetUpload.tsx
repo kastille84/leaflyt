@@ -1,12 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  FieldErrors,
-  FieldValues,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
-import FormControl from "../../../ui/Form/FormControl";
+import { useRef } from "react";
 import Button from "../../../ui/Button";
 import styled from "styled-components";
 import { FILE_UPLOAD_OPTIONS } from "../../../constants";
