@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { addAsset } from "../../services/apiAssets";
+import { addAsset, deleteAssets } from "../../services/apiAssets";
 import { UploadApiResponse } from "cloudinary";
 import { useGlobalContext } from "../../context/GlobalContext";
 
@@ -11,16 +11,20 @@ export default function useAssetMutations() {
     retry: true,
     retryDelay: 10000,
   });
+  const { mutate: deleteAssetFn, error: deleteAssetFnError } = useMutation({
+    mutationFn: (asset: UploadApiResponse) => deleteAssets(asset, user?.id!),
+    retry: true,
+    retryDelay: 10000,
+  });
 
   const { mutate: updateAsset, error: updateAssetError } = useMutation({});
-  const { mutate: deleteAsset, error: deleteAssetError } = useMutation({});
 
   return {
     addAssetFn,
     addAssetFnError,
     updateAsset,
     updateAssetError,
-    deleteAsset,
-    deleteAssetError,
+    deleteAssetFn,
+    deleteAssetFnError,
   };
 }

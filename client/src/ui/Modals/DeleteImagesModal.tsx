@@ -8,6 +8,7 @@ import { useGlobalContext } from "../../context/GlobalContext";
 // import useRegisteredFlyer from "../../features/createFlyer/useRegisteredFlyer";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import useAssetMutations from "../../features/assets/useAssetMutations";
 
 const StyledButtonContainer = styled.div`
   margin-top: 2.4rem;
@@ -25,6 +26,7 @@ export default function DeleteImagesModal() {
   } = useGlobalContext();
 
   // const { deleteFlyerFn, deleteTemplateFn } = useRegisteredFlyer();
+  const { deleteAssetFn } = useAssetMutations();
   const { id } = useParams();
   const queryClient = useQueryClient();
 
@@ -52,17 +54,17 @@ export default function DeleteImagesModal() {
 
   async function handleDelete() {
     console.log("delete images", contextImages);
-    // deleteTemplateFn(selectedTemplate, {
-    //   onSuccess: ({ user }) => {
-    //     // update the user
-    //     setUser(user);
-    //     toast.success("Template deleted!");
-    //     handleCancel();
-    //   },
-    //   onError: (error) => {
-    //     toast.error("Flyer deletion failed! Try again.");
-    //   },
-    // });
+    deleteAssetFn(contextImages, {
+      onSuccess: ({ user }) => {
+        // update the user
+        // setUser(user);
+        toast.success("Template deleted!");
+        handleCancel();
+      },
+      onError: (error) => {
+        toast.error("Assets deletion failed! Try again.");
+      },
+    });
 
     // #TODO: delete images from contextImages
     // setContextImages(null);
@@ -75,7 +77,9 @@ export default function DeleteImagesModal() {
       isOpen={showDeleteImagesModal}
       style={customStyles}
     >
-      <Heading as="h2">Be careful, this action can&apos;t be undone!</Heading>
+      <Heading as="h2">
+        Warning: Deleting image(s) - this action can&apos;t be undone!
+      </Heading>
 
       <p>
         By deleting the image(s), all flyers & templates that use these image(s)
