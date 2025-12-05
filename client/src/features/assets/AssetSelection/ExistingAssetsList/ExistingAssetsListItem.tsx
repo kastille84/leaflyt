@@ -40,7 +40,7 @@ export default function ExistingAssetsListItem({
   enablePreview?: boolean;
 }) {
   const { setAssetsList } = useAssetSelectionContext();
-  const { setBottomSlideInType, setIsOpenBottomSlideIn, setCarouselImages } =
+  const { setBottomSlideInType, setIsOpenBottomSlideIn, setContextImages } =
     useGlobalContext();
 
   function handleAssetSelection(checkedVal: boolean) {
@@ -54,7 +54,7 @@ export default function ExistingAssetsListItem({
   }
 
   function handlePreview() {
-    setCarouselImages([asset]);
+    setContextImages([asset]);
     setBottomSlideInType("carousel");
     setIsOpenBottomSlideIn(true);
   }

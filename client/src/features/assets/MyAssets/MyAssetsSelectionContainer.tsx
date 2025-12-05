@@ -6,6 +6,8 @@ import NewAssetContainer from "../AssetSelection/NewAsset/NewAssetContainer";
 import Button from "../../../ui/Button";
 import useGetUserLimits from "../../../hooks/useGetUserLimits";
 import SelectedAssetsList from "../AssetSelection/SelectedAssetsList/SelectedAssetsList";
+import { HiOutlineTrash } from "react-icons/hi2";
+import { useGlobalContext } from "../../../context/GlobalContext";
 
 const StyledMyAssestsSelectionContainer = styled.div`
   width: 70%;
@@ -39,6 +41,7 @@ export default function MyAssetsSelectionContainer() {
   } = useAssetSelectionContext();
   const { addAssetFn } = useAssetMutations();
   const userLimits = useGetUserLimits();
+  const { setContextImages, setShowDeleteImagesModal } = useGlobalContext();
 
   function determineSelectionTypeToDisplay() {
     if (selectedOption === "existing") {
@@ -46,6 +49,11 @@ export default function MyAssetsSelectionContainer() {
     } else if (selectedOption === "new") {
       return <NewAssetContainer saveOnUpload />;
     }
+  }
+
+  function handleDeleteAssets() {
+    setContextImages(assetsList);
+    setShowDeleteImagesModal(true);
   }
 
   return (
@@ -82,6 +90,17 @@ export default function MyAssetsSelectionContainer() {
         >
           + Add New Asset
         </Button>
+        {assetsList.length > 0 && "|"}
+        {assetsList.length > 0 && (
+          <Button
+            size="small"
+            type="button"
+            variation="danger"
+            onClick={handleDeleteAssets}
+          >
+            <HiOutlineTrash /> Delete
+          </Button>
+        )}
       </StyledTopButtonContainer>
       {determineSelectionTypeToDisplay()}
       {timedAssetsList.length > 0 && (

@@ -58,8 +58,8 @@ export type ContextType = {
   >;
   currentFormOptions: any;
   setCurrentFormOptions: React.Dispatch<React.SetStateAction<any>>;
-  carouselImages: UploadApiResponse[] | null;
-  setCarouselImages: React.Dispatch<
+  contextImages: UploadApiResponse[] | null;
+  setContextImages: React.Dispatch<
     React.SetStateAction<UploadApiResponse[] | null>
   >;
   hasFlyerAtLocation: boolean;
@@ -78,6 +78,8 @@ export type ContextType = {
     React.SetStateAction<boolean>
   >;
   showDeleteFlyerTemplateModal: boolean;
+  setShowDeleteImagesModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showDeleteImagesModal: boolean;
   likedContextSessionFlyers: string[] | null;
   setLikedContextSessionFlyers: React.Dispatch<
     React.SetStateAction<string[] | null>
@@ -110,8 +112,8 @@ const GlobalContext = createContext<ContextType>({
   setUser: () => {},
   currentFormOptions: null,
   setCurrentFormOptions: () => {},
-  carouselImages: null,
-  setCarouselImages: () => {},
+  contextImages: null,
+  setContextImages: () => {},
   hasFlyerAtLocation: false,
   setHasFlyerAtLocation: () => {},
   isSelectingNewPlace: false,
@@ -124,6 +126,8 @@ const GlobalContext = createContext<ContextType>({
   showEditFlyerModal: false,
   setShowDeleteFlyerTemplateModal: () => {},
   showDeleteFlyerTemplateModal: false,
+  setShowDeleteImagesModal: () => {},
+  showDeleteImagesModal: false,
   likedContextSessionFlyers: null,
   setLikedContextSessionFlyers: () => {},
 });
@@ -155,7 +159,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
     getValues: UseFormGetValues<any>;
     setValue: UseFormSetValue<any>;
   } | null>(null);
-  const [carouselImages, setCarouselImages] = useState<
+  const [contextImages, setContextImages] = useState<
     UploadApiResponse[] | null
   >(null);
   const [hasFlyerAtLocation, setHasFlyerAtLocation] = useState(false);
@@ -169,6 +173,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [showEditFlyerModal, setShowEditFlyerModal] = useState(false);
   const [showDeleteFlyerTemplateModal, setShowDeleteFlyerTemplateModal] =
     useState(false);
+  const [showDeleteImagesModal, setShowDeleteImagesModal] = useState(false);
 
   const {
     getUserGeo,
@@ -211,6 +216,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         showEditFlyerModal,
         setShowDeleteFlyerTemplateModal,
         showDeleteFlyerTemplateModal,
+        setShowDeleteImagesModal,
+        showDeleteImagesModal,
         // Auth
         isLoggedIn,
         setIsLoggedIn,
@@ -228,8 +235,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         setSelectedTemplate,
         currentFormOptions,
         setCurrentFormOptions,
-        carouselImages,
-        setCarouselImages,
+        contextImages,
+        setContextImages,
         likedContextSessionFlyers,
         setLikedContextSessionFlyers,
       }}
