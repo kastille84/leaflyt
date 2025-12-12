@@ -11,6 +11,7 @@ import PasswordInput from "../../ui/Form/PasswordInput";
 import useLogin from "./useLogin";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import OverlaySpinner from "../../ui/OverlaySpinner";
 
 const StyledButtonContainer = styled.div`
   margin-top: 2.4rem;
@@ -140,6 +141,7 @@ export default function LoginModal() {
         <StyledName>Login to Leaflit</StyledName>
         <StyledSubHeader>Spread your message</StyledSubHeader>
       </StyledHeaderContainer>
+      {showSpinner && <OverlaySpinner message="Logging in..." />}
       <StyledFormContainer>
         <Form onSubmit={handleSubmit(onSubmit)}>
           {submitError && (

@@ -34,7 +34,7 @@ export default () => {
   const planLimits = {
     analytics: { isAllowed: !!plan.hasAnalytics, limit: plan.hasAnalytics },
     templates: {
-      isAllowed: (user?.templates.length || 0) < plan.templateLimit,
+      isAllowed: (user?.templates?.length || 0) < plan.templateLimit,
       limit: plan.templateLimit,
     },
     media: { limit: plan.numOfMedia },

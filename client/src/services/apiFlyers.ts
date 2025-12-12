@@ -9,6 +9,7 @@ import {
 import { NearbySearchPlaceResult } from "../interfaces/Geo";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
 import { getUserProfile } from "./apiUser";
+import { UploadApiResponse } from "cloudinary";
 
 const getOrCreateBoard = async (selectedPlace: NearbySearchPlaceResult) => {
   // make a call to get the latest board data
@@ -99,6 +100,7 @@ export const createRegisteredFlyer = async (
         throw new Error("Error creating a template: " + error.message);
       }
       createdTemplate = newTemplate;
+      // #TODO: keep track of assets being used in templates
     } catch (error: any) {
       console.error(error);
       throw new Error("Error creating a template: " + error.message);
@@ -543,6 +545,27 @@ export const likeFlyer = async (
     throw new Error("Error liking the flyer: " + error.message);
   }
 };
+
+async function addFAssetsUsedByFlyer(
+  assets: UploadApiResponse[],
+  flyer: DB_Flyers_Response
+) {
+  try {
+    const { error } = await supabase.from("assets").insert(assets);
+    if (error) {
+      console.error(error);
+      throw new Error("Error adding the flyer to assets: " + error.message);
+    }
+    // return updated user
+    return await getLatestUserAfterChanges(
+      (flyer?.user as Auth_User_Profile_Response).id,
+      "flyer"
+    );
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error adding the flyer to assets: " + error.message);
+  }
+}
 async function getLatestUserAfterChanges(userId: number, type: string) {
   // return updated user
   const { data: userData, error: getUserError } = await getUserProfile(userId);

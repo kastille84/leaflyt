@@ -41,13 +41,13 @@ export default function MyTemplates() {
         <StyledTemplateTitleContainer>
           <Heading as="h2">My Templates</Heading>
           <small>
-            {user?.templates.length} of {userLimits.templates.limit} templates
+            {user?.templates?.length} of {userLimits.templates.limit} templates
             created
           </small>
         </StyledTemplateTitleContainer>
         <Button
           size="small"
-          disabled={userLimits.templates.limit === user?.templates.length}
+          disabled={userLimits.templates.limit === user?.templates?.length}
           variation={
             userLimits.templates.limit === user?.templates.length
               ? "disabled"

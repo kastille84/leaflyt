@@ -8,11 +8,16 @@ exports.deleteAssets = async (req, res, next) => {
     const userId = Number(JSON.parse(req.headers.user));
 
     //  loop through all flyers and delete assets based on asset_id
-    const { data, error } = await supabase
+    const flyersToBeUpdated = [];
+    const { data: allFlyerRows, error: selectError } = await supabase
       .from("flyers")
-      .delete()
-      .match({ user: userId });
-    if (error) throw error;
+      .select("id, fileUrlArr")
+      .eq("user", userId);
+
+    if (selectError) throw selectError;
+    for (const flyerRow of allFlyerRows) {
+      const fileUrlArr = flyerRow.fileUrlArr;
+    }
     // loop through all templates and delete assets based on asset_id
     // find the asset in the assets table by looking in the asset_info column and finding by asset_id and deleting
 
