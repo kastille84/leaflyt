@@ -64,7 +64,7 @@ const customModalStyles = {
 };
 
 const StyledSubmitError = styled(Heading)`
-  color: var(--color-red-600);
+  color: var(--color-red-600) !important;
 `;
 
 export default function LoginModal() {

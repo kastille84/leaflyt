@@ -39,7 +39,7 @@ export default function MyAssetsSelectionContainer() {
     setAssetsList,
     timedAssetsList,
   } = useAssetSelectionContext();
-  const { addAssetFn } = useAssetMutations();
+
   const userLimits = useGetUserLimits();
   const { setContextImages, setShowDeleteImagesModal } = useGlobalContext();
 

@@ -420,7 +420,7 @@ export default function FlyerBlockStatic({
             contact
           </Pill>
 
-          {flyer.callToAction && (
+          {flyer.callToAction && flyer.callToAction.ctaType !== "none" && (
             <Pill
               contentType={contentType}
               type="cta"

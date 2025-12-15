@@ -1,7 +1,7 @@
 import { getBaseUrl } from "../utils/ServiceUtils";
 import { supabase } from "./supabase";
 
-export const getUserProfile = async (id: number) => {
+export const getUserProfile = async (id: string) => {
   try {
     const { data, error } = await supabase
       .from("profiles")

@@ -216,7 +216,7 @@ export default function Registered({
     } else {
       // action - Create New Flyer
       createFlyer(data, {
-        onSuccess: () => {
+        onSuccess: ({ user }: any) => {
           setShowSpinner(false);
           toast.success("Flyer created!");
           setIsOpenFlyerDrawer(false);
@@ -224,6 +224,8 @@ export default function Registered({
           queryClient.invalidateQueries({
             queryKey: ["board", selectedPlace?.id],
           });
+          // update the user
+          setUser(user);
           // queryClient.refetchQueries({
           //   queryKey: ["board", selectedPlace?.id],
           // });
@@ -386,7 +388,7 @@ export default function Registered({
                     <Input
                       type="checkbox"
                       {...register("template")}
-                      checked
+                      checked={templateWatch}
                       disabled={!!type.match(/template/i)}
                     />{" "}
                     Check this box to create a template

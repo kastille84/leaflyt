@@ -109,7 +109,7 @@ export interface Auth_User_Signup_Response {
 }
 
 export interface Auth_User_Profile_Response {
-  id: number;
+  id: number | string;
   created_at: string;
   user: string;
   name: string | null;
