@@ -170,7 +170,8 @@ export const createRegisteredFlyer = async (
 };
 export const updateRegisteredFlyer = async (
   flyerData: DB_Flyer_Create,
-  selectedPlace: NearbySearchPlaceResult
+  selectedPlace: NearbySearchPlaceResult,
+  initialAssets: UploadApiResponse[]
 ) => {
   const board = await getOrCreateBoard(selectedPlace);
 
@@ -184,33 +185,23 @@ export const updateRegisteredFlyer = async (
       .eq("id", flyerData.id)
       .select("*")
       .single();
-    // const { data: newFlyer, error } = await supabase
-    //   .from("flyers")
-    //   .insert([
-    //     {
-    //       template: createdTemplate?.id, // many to one with template table
-    //       place: selectedPlace.id, // many to one with board table
-    //       user: flyerData.user,
-    //       title: flyerData.title,
-    //       category: flyerData.category,
-    //       subcategory: flyerData.subcategory,
-    //       content: flyerData.content,
-    //       tags: flyerData.tags,
-    //       flyerDesign: flyerData.flyerDesign,
-    //       callToAction: flyerData.callToAction,
-    //       fileUrlArr: flyerData.fileUrlArr,
-    //       postingMethod: flyerData.postingMethod || "onLocation",
-    //       lifespan: flyerData.lifespan,
-    //     },
-    //   ])
-    //   .select("*")
-    //   .single();
 
     if (error) {
       console.error(error);
       throw new Error("Error updating the flyer: " + error.message);
     }
-    return updatedFlyer;
+
+    // keep track of assets being used in flyers
+    await assetUsageByFlyer(
+      initialAssets,
+      flyerData.fileUrlArr || [],
+      updatedFlyer.id
+    );
+
+    return await getLatestUserAfterChanges(
+      (updatedFlyer?.user as Auth_User_Profile_Response).id as string,
+      "flyer"
+    );
   } catch (error: any) {
     console.error(error);
     throw new Error("Error updating the flyer: " + error.message);
@@ -281,7 +272,7 @@ export const createFlyerFromTemplate = async (
     }
 
     // keep track of assets being used in flyers
-    assetUsageByFlyer([], flyerData.fileUrlArr || [], newFlyer.id);
+    await assetUsageByFlyer([], flyerData.fileUrlArr || [], newFlyer.id);
 
     // tie newFlyer to template
     // await supabase
@@ -301,6 +292,8 @@ export const createFlyerFromTemplate = async (
 export const deleteFlyer = async (flyer: DB_Flyers_Response) => {
   try {
     const { error } = await supabase.from("flyers").delete().eq("id", flyer.id);
+    // keep track of assets being used in flyers
+    await assetUsageByFlyer(flyer.fileUrlArr || [], [], flyer.id!);
     // return updated user
     return await getLatestUserAfterChanges(
       (flyer?.user as Auth_User_Profile_Response).id as string,
@@ -312,7 +305,10 @@ export const deleteFlyer = async (flyer: DB_Flyers_Response) => {
   }
 };
 
-export const updateTemplate = async (templateData: DB_Template) => {
+export const updateTemplate = async (
+  templateData: DB_Template,
+  initialAssets: UploadApiResponse[]
+) => {
   try {
     const { error } = await supabase
       .from("templates")
@@ -345,6 +341,13 @@ export const updateTemplate = async (templateData: DB_Template) => {
           updateFlyersError.message
       );
     }
+
+    // keep track of assets being used in templates
+    await assetUsageByTemplate(
+      initialAssets,
+      templateData.fileUrlArr || [],
+      templateData.id as string
+    );
     // return updated user
     return await getLatestUserAfterChanges(
       templateData?.user! as string,
@@ -394,6 +397,13 @@ export const createTemplate = async (templateData: DB_Template) => {
       console.error(error);
       throw new Error("Error creating a template: " + error.message);
     }
+
+    // keep track of assets being used in templates
+    await assetUsageByTemplate(
+      [],
+      templateData.fileUrlArr || [],
+      newTemplate.id
+    );
     // return updated user
     return await getLatestUserAfterChanges(
       templateData?.user! as string,
@@ -427,9 +437,15 @@ export const deleteTemplate = async (template: DB_Template) => {
       console.error(error);
       throw new Error("Error deleting the template: " + error.message);
     }
+    // keep track of assets being used in templates
+    await assetUsageByTemplate(
+      template.fileUrlArr || [],
+      [],
+      template.id as string
+    );
     // return updated user
     return await getLatestUserAfterChanges(
-      template?.user! as string,
+      (template?.user as Auth_User_Profile_Response)?.id! as string,
       "template"
     );
   } catch (error: any) {

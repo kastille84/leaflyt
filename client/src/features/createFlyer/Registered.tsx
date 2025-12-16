@@ -148,51 +148,55 @@ export default function Registered({
 
     if (flyerToEdit) {
       // action - Edit Existing Flyer
-      editFlyer(data, {
-        onSuccess: () => {
-          setShowSpinner(false);
-          toast.success("Flyer updated!");
-          setIsOpenFlyerDrawer(false);
-          setDrawerAction(null);
-          setSelectedFlyer(null);
-          queryClient.invalidateQueries({
-            queryKey: ["board", selectedPlace?.id],
-          });
-          // queryClient.refetchQueries({
-          //   queryKey: ["board", selectedPlace?.id],
-          //   stale: true,
-          // });
-        },
-        onError: (error: any) => {
-          setShowSpinner(false);
-          toast.error(error.message);
-          setSubmitError(error.message);
-          // set focus on error
-          document.querySelector("#form-error")?.scrollIntoView();
-        },
-      });
+      editFlyer(
+        { prepData: data, initialAssets: flyerToEdit.fileUrlArr },
+        {
+          onSuccess: ({ user }: any) => {
+            setShowSpinner(false);
+            toast.success("Flyer updated!");
+            setIsOpenFlyerDrawer(false);
+            setDrawerAction(null);
+            setSelectedFlyer(null);
+            queryClient.invalidateQueries({
+              queryKey: ["board", selectedPlace?.id],
+            });
+            // update the user
+            setUser(user);
+          },
+          onError: (error: any) => {
+            setShowSpinner(false);
+            toast.error(error.message);
+            setSubmitError(error.message);
+            // set focus on error
+            document.querySelector("#form-error")?.scrollIntoView();
+          },
+        }
+      );
     } else if (templateToEdit && type === "editTemplate") {
       // remove the template property
       delete data.template;
       // action - Edit Existing Template
-      editTemplate(data, {
-        onSuccess: ({ user }: any) => {
-          setShowSpinner(false);
-          toast.success("Template updated!");
-          setIsOpenFlyerDrawer(false);
-          setDrawerAction(null);
-          setSelectedFlyer(null);
-          // update the user
-          setUser(user);
-        },
-        onError: (error: any) => {
-          setShowSpinner(false);
-          toast.error(error.message);
-          setSubmitError(error.message);
-          // set focus on error
-          document.querySelector("#form-error")?.scrollIntoView();
-        },
-      });
+      editTemplate(
+        { prepData: data, initialAssets: templateToEdit.fileUrlArr },
+        {
+          onSuccess: ({ user }: any) => {
+            setShowSpinner(false);
+            toast.success("Template updated!");
+            setIsOpenFlyerDrawer(false);
+            setDrawerAction(null);
+            setSelectedFlyer(null);
+            // update the user
+            setUser(user);
+          },
+          onError: (error: any) => {
+            setShowSpinner(false);
+            toast.error(error.message);
+            setSubmitError(error.message);
+            // set focus on error
+            document.querySelector("#form-error")?.scrollIntoView();
+          },
+        }
+      );
     } else if (type === "createTemplate") {
       // action - Create New Template
       createTemplateFn(data, {

@@ -534,9 +534,7 @@ export default function FlyerBlockInteractive({
           )}
           {user && !doesFlyerBelongToUser() && <li>Save</li>}
           <hr />
-          {doesFlyerBelongToUser() && flyer.template && (
-            <li onClick={handleDelete}>Delete</li>
-          )}
+          {doesFlyerBelongToUser() && <li onClick={handleDelete}>Delete</li>}
           <li>Inappropriate</li>
         </DropdownMenu>
       </>

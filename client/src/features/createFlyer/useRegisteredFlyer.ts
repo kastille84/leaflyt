@@ -16,6 +16,7 @@ import {
   saveFlyer,
   removeSavedFlyer,
 } from "../../services/apiFlyers";
+import { UploadApiResponse } from "cloudinary";
 
 export default function useRegisteredFlyer() {
   const { selectedPlace, user } = useGlobalContext();
@@ -26,8 +27,13 @@ export default function useRegisteredFlyer() {
   });
 
   const { mutate: editFlyer, error: editFlyerError } = useMutation({
-    mutationFn: (prepData: DB_Flyer_Create) =>
-      updateRegisteredFlyer(prepData, selectedPlace!),
+    mutationFn: ({
+      prepData,
+      initialAssets,
+    }: {
+      prepData: DB_Flyer_Create;
+      initialAssets?: UploadApiResponse[];
+    }) => updateRegisteredFlyer(prepData, selectedPlace!, initialAssets || []),
   });
 
   const { mutate: deleteFlyerFn, error: deleteFlyerFnError } = useMutation({
@@ -43,8 +49,14 @@ export default function useRegisteredFlyer() {
   });
 
   const { mutate: editTemplate, error: editTemplateError } = useMutation({
-    mutationFn: (prepData: DB_Template) => {
-      return updateTemplate(prepData);
+    mutationFn: ({
+      prepData,
+      initialAssets,
+    }: {
+      prepData: DB_Template;
+      initialAssets?: UploadApiResponse[];
+    }) => {
+      return updateTemplate(prepData, initialAssets || []);
     },
   });
 
