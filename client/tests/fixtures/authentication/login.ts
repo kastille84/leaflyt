@@ -110,7 +110,7 @@ export const authUserProfileResponse = {
     level: 1,
     price: 0,
     lifespan: 1,
-    subtitle: "Get to know Leaflyt and post flyers with our generous free plan",
+    subtitle: "Get to know Leaflit and post flyers with our generous free plan",
     created_at: "2025-07-10T21:23:11.034689+00:00",
     numOfMedia: 2,
     hasAnalytics: null,
@@ -300,11 +300,11 @@ export const userFromContext = {
     },
     {
       id: "0094dd97-05cd-4c61-aae0-8f80f6295b78",
-      tags: ["leaflyt", "app", "flyers"],
+      tags: ["leaflit", "app", "flyers"],
       user: 3,
-      title: "Welcome to Leaflyt",
+      title: "Welcome to Leaflit",
       content:
-        "<p>Hi welcome to leaflyt. This application is meant for you to spread your message in your community. Sign up and spread your message.</p>",
+        "<p>Hi welcome to leaflit. This application is meant for you to spread your message in your community. Sign up and spread your message.</p>",
       placeId: "ChIJcclV5OUz3YkRXsJ6N7Jdf3U",
       business: null,
       category: "Miscellaneous",
@@ -439,11 +439,11 @@ export const userFromContext = {
     },
     {
       id: "212e49da-20ca-4726-9623-71293106221a",
-      tags: ["leaflyt", "app", "flyers"],
+      tags: ["leaflit", "app", "flyers"],
       user: 3,
-      title: "Welcome to Leaflyt",
+      title: "Welcome to Leaflit",
       content:
-        "<p>Hi welcome to leaflyt. This application is meant for you to spread your message in your community. Sign up and spread your message.</p>",
+        "<p>Hi welcome to leaflit. This application is meant for you to spread your message in your community. Sign up and spread your message.</p>",
       placeId: "ChIJxwr43AYy3YkRKU4MFvCE1Ik",
       business: null,
       category: "Miscellaneous",
@@ -628,11 +628,11 @@ export const userFromContext = {
     },
     {
       id: 3,
-      tags: ["leaflyt", "app", "flyers"],
+      tags: ["leaflit", "app", "flyers"],
       user: 3,
-      title: "Welcome to Leaflyt",
+      title: "Welcome to Leaflit",
       content:
-        "<p>Hi welcome to leaflyt. This application is meant for you to spread your message in your community. Sign up and spread your message.</p>",
+        "<p>Hi welcome to leaflit. This application is meant for you to spread your message in your community. Sign up and spread your message.</p>",
       category: "Miscellaneous",
       lifespan: 2,
       created_at: "2025-08-20T22:18:52.848919+00:00",

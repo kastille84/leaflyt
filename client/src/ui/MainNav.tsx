@@ -13,6 +13,7 @@ import {
   HiOutlineMap,
   HiOutlineChartPie,
   HiOutlineDocumentDuplicate,
+  HiOutlinePhoto,
 } from "react-icons/hi2";
 import { useGlobalContext } from "../context/GlobalContext";
 import useGetUserLimits from "../hooks/useGetUserLimits";
@@ -91,15 +92,23 @@ export default function MainNav() {
         </li>
         <li>
           <StyledNavLink
-            to="/dashboard/my-flyers"
+            to="/dashboard/saved-flyers"
             className={registered ? "" : "disabled"}
           >
-            <HiOutlinePaperAirplane /> <span>My Flyers</span>
+            <HiOutlinePaperAirplane /> <span>Saved Flyers</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink
-            to="/dashboard/post-from-home"
+            to="/dashboard/my-assets"
+            className={registered ? "" : "disabled"}
+          >
+            <HiOutlinePhoto /> <span>My Assets</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink
+            to="/dashboard/statistics"
             className={registered ? "" : "disabled"}
           >
             <HiOutlineChartPie /> <span>Statistics</span>

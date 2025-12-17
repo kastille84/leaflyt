@@ -28,7 +28,7 @@ import CtaInput from "../../ui/Form/CtaInput";
 import LifespanInput from "../../ui/Form/LifespanInput";
 import { LIFESPAN, REGISTERED_FLYER_DESIGN_DEFAULT } from "../../constants";
 import CommentsInput from "../../ui/Form/CommentsInput";
-import useCreateRegisteredFlyer from "./useCreateRegisteredFlyer";
+import useRegisteredFlyer from "./useRegisteredFlyer";
 import toast from "react-hot-toast";
 import FlyerDesignerInput from "../../ui/Form/FlyerDesignerInput";
 import FormInfoAlert from "../../ui/Form/FormInfoAlert";
@@ -121,7 +121,7 @@ export default function Registered({
   } = useGlobalContext();
   const planLimits = useGetUserLimits();
   const { createFlyer, editFlyer, editTemplate, createTemplateFn } =
-    useCreateRegisteredFlyer();
+    useRegisteredFlyer();
 
   const queryClient = useQueryClient();
 
@@ -148,51 +148,55 @@ export default function Registered({
 
     if (flyerToEdit) {
       // action - Edit Existing Flyer
-      editFlyer(data, {
-        onSuccess: () => {
-          setShowSpinner(false);
-          toast.success("Flyer updated!");
-          setIsOpenFlyerDrawer(false);
-          setDrawerAction(null);
-          setSelectedFlyer(null);
-          queryClient.invalidateQueries({
-            queryKey: ["board", selectedPlace?.id],
-          });
-          // queryClient.refetchQueries({
-          //   queryKey: ["board", selectedPlace?.id],
-          //   stale: true,
-          // });
-        },
-        onError: (error: any) => {
-          setShowSpinner(false);
-          toast.error(error.message);
-          setSubmitError(error.message);
-          // set focus on error
-          document.querySelector("#form-error")?.scrollIntoView();
-        },
-      });
+      editFlyer(
+        { prepData: data, initialAssets: flyerToEdit.fileUrlArr },
+        {
+          onSuccess: ({ user }: any) => {
+            setShowSpinner(false);
+            toast.success("Flyer updated!");
+            setIsOpenFlyerDrawer(false);
+            setDrawerAction(null);
+            setSelectedFlyer(null);
+            queryClient.invalidateQueries({
+              queryKey: ["board", selectedPlace?.id],
+            });
+            // update the user
+            setUser(user);
+          },
+          onError: (error: any) => {
+            setShowSpinner(false);
+            toast.error(error.message);
+            setSubmitError(error.message);
+            // set focus on error
+            document.querySelector("#form-error")?.scrollIntoView();
+          },
+        }
+      );
     } else if (templateToEdit && type === "editTemplate") {
       // remove the template property
       delete data.template;
       // action - Edit Existing Template
-      editTemplate(data, {
-        onSuccess: ({ user }: any) => {
-          setShowSpinner(false);
-          toast.success("Template updated!");
-          setIsOpenFlyerDrawer(false);
-          setDrawerAction(null);
-          setSelectedFlyer(null);
-          // update the user
-          setUser(user);
-        },
-        onError: (error: any) => {
-          setShowSpinner(false);
-          toast.error(error.message);
-          setSubmitError(error.message);
-          // set focus on error
-          document.querySelector("#form-error")?.scrollIntoView();
-        },
-      });
+      editTemplate(
+        { prepData: data, initialAssets: templateToEdit.fileUrlArr },
+        {
+          onSuccess: ({ user }: any) => {
+            setShowSpinner(false);
+            toast.success("Template updated!");
+            setIsOpenFlyerDrawer(false);
+            setDrawerAction(null);
+            setSelectedFlyer(null);
+            // update the user
+            setUser(user);
+          },
+          onError: (error: any) => {
+            setShowSpinner(false);
+            toast.error(error.message);
+            setSubmitError(error.message);
+            // set focus on error
+            document.querySelector("#form-error")?.scrollIntoView();
+          },
+        }
+      );
     } else if (type === "createTemplate") {
       // action - Create New Template
       createTemplateFn(data, {
@@ -216,7 +220,7 @@ export default function Registered({
     } else {
       // action - Create New Flyer
       createFlyer(data, {
-        onSuccess: () => {
+        onSuccess: ({ user }: any) => {
           setShowSpinner(false);
           toast.success("Flyer created!");
           setIsOpenFlyerDrawer(false);
@@ -224,6 +228,8 @@ export default function Registered({
           queryClient.invalidateQueries({
             queryKey: ["board", selectedPlace?.id],
           });
+          // update the user
+          setUser(user);
           // queryClient.refetchQueries({
           //   queryKey: ["board", selectedPlace?.id],
           // });
@@ -386,7 +392,7 @@ export default function Registered({
                     <Input
                       type="checkbox"
                       {...register("template")}
-                      checked
+                      checked={templateWatch}
                       disabled={!!type.match(/template/i)}
                     />{" "}
                     Check this box to create a template

@@ -60,19 +60,19 @@ export default function ImageCarousel({
   const {
     setIsOpenBottomSlideIn,
     setBottomSlideInType,
-    setCarouselImages,
-    carouselImages,
+    setContextImages,
+    contextImages,
   } = useGlobalContext();
 
   const handleImageClick = (fileUrlArr: UploadApiResponse[]) => {
     if (fromFlyerBlock) {
       setIsOpenBottomSlideIn(true);
       setBottomSlideInType("carousel");
-      setCarouselImages(images!);
+      setContextImages(images!);
     }
   };
 
-  const filesToUse = fromFlyerBlock ? images : carouselImages;
+  const filesToUse = fromFlyerBlock ? images : contextImages;
   const heightToUse = fromFlyerBlock ? 450 : 800;
 
   const determineImageWidth = (file: UploadApiResponse) => {

@@ -1,16 +1,17 @@
 import { getBaseUrl } from "../utils/ServiceUtils";
 import { supabase } from "./supabase";
 
-export const getUserProfile = async (id: number) => {
+export const getUserProfile = async (id: string) => {
   try {
     const { data, error } = await supabase
       .from("profiles")
       .select(
         `*,
           flyers(*, place(*)),
-          templates(*),
+          templates(*, user(*)),
           plan(*),
-          assets(*)
+          assets(*),
+          saved_flyers(*, flyer(*, place(*), user(*)))
           `
       )
       .eq("id", id)

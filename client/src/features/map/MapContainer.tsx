@@ -69,7 +69,7 @@ export default function MapContainer() {
   };
 
   const displayMyFlyers = () => {
-    const mappedFlyersToMarkers = user?.flyers.map((flyer) => (
+    const mappedFlyersToMarkers = user?.flyers?.map((flyer) => (
       <MarkerWithInfoWindow
         key={flyer.id}
         position={{

@@ -11,6 +11,7 @@ import EditFlyerModal from "../ui/Modals/EditFlyerModal";
 import useLoginWithAccessToken from "../features/authentication/useLoginWithAccessToken";
 import { useGlobalContext } from "../context/GlobalContext";
 import DeleteFlyerTemplateModal from "../ui/Modals/DeleteFlyerTemplateModal";
+import DeleteFilesModal from "../ui/Modals/DeleteFilesModal";
 
 const StyledMainLayout = styled.main`
   height: 100vh;
@@ -41,7 +42,7 @@ export default function MainLayout() {
             console.log("response", response);
             // set user in global context
             setUser(response.data);
-            navigate(`/dashboard${id ? "/board/" + id : ""}`);
+            navigate(`/dashboard${id ? "/board/" + id : "/home"}`);
           },
           onError: (error) => {
             console.log("error", error);
@@ -61,6 +62,7 @@ export default function MainLayout() {
       <CloseSlideInModal />
       <EditFlyerModal />
       <DeleteFlyerTemplateModal />
+      <DeleteFilesModal />
     </StyledMainLayout>
   );
 }

@@ -3,6 +3,10 @@ import AssetUpload from "../../AssetUpload/AssetUpload";
 import useGetUserLimits from "../../../../hooks/useGetUserLimits";
 import { UploadApiResponse } from "cloudinary";
 import { useAssetSelectionContext } from "../../../../context/AssetSelectionContext";
+import useAssetMutations from "../../useAssetMutations";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import useGetUserProfileById from "../../../../hooks/useGetUserProfileById";
 
 const StyledNewAssetContainer = styled.div`
   border: 2px solid var(--color-brand-600);
@@ -19,13 +23,39 @@ const StyledNewAssetContainer = styled.div`
   overflow: auto;
 `;
 
-export default function NewAssetContainer() {
+export default function NewAssetContainer({
+  saveOnUpload,
+}: {
+  saveOnUpload?: boolean;
+}) {
+  const [isAddedToAssets, setIsAddedToAssets] = useState<boolean>(false);
+  // will get userProfile and set to user after asset is added
+  useGetUserProfileById(isAddedToAssets);
+
   const userLimits = useGetUserLimits();
   const { setTimedAssetsList, setAssetsList, timedAssetsList } =
     useAssetSelectionContext();
+  const { addAssetFn } = useAssetMutations();
+
   function handleAssetAdded(addedAsset: UploadApiResponse) {
-    setTimedAssetsList((prev) => [...prev, addedAsset]);
-    setAssetsList((prev) => [...prev, addedAsset]);
+    if (saveOnUpload) {
+      addAssetFn(addedAsset, {
+        onSuccess: () => {
+          console.log("success");
+          toast.success("Asset added to assets library!");
+          // this flag, triggers useGetProfileById to get updated user
+          setIsAddedToAssets((prev) => !prev);
+        },
+        onError: () => {
+          toast.error(
+            "Could not add asset to assets library. Re-trying again.."
+          );
+        },
+      });
+    } else {
+      setTimedAssetsList((prev) => [...prev, addedAsset]);
+      setAssetsList((prev) => [...prev, addedAsset]);
+    }
   }
 
   return (
