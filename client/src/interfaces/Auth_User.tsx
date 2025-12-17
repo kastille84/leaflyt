@@ -137,10 +137,12 @@ export interface Auth_User_Profile_Response {
   flyers: any[]; // TODO: add flyer type
   templates: DB_Template[];
   assets: {
-    id: number;
+    id: number | string;
     user: number;
     asset_info: UploadApiResponse;
     created_at: string;
+    used_by_flyers: string[];
+    used_by_templates: string[];
   }[];
   saved_flyers: DB_Saved_Flyer[];
 }

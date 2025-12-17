@@ -1,4 +1,5 @@
 const { supabase } = require("../../supabase");
+const { cloudinary } = require("../../cloudinary");
 const { handleCatchError } = require("../utility/error");
 
 exports.deleteAssets = async (req, res, next) => {
@@ -7,25 +8,15 @@ exports.deleteAssets = async (req, res, next) => {
     const assets = JSON.parse(req.headers.assets);
     const userId = Number(JSON.parse(req.headers.user));
 
-    //  loop through all flyers and delete assets based on asset_id
-    const flyersToBeUpdated = [];
-    const { data: allFlyerRows, error: selectError } = await supabase
-      .from("flyers")
-      .select("id, fileUrlArr")
-      .eq("user", userId);
-
-    if (selectError) throw selectError;
-    for (const flyerRow of allFlyerRows) {
-      const fileUrlArr = flyerRow.fileUrlArr;
+    // delete assets from supabase
+    for (const asset of assets) {
+      const { data, error } = await supabase.rpc("delete_asset_by_public_id", {
+        p_public_id: asset.public_id,
+      });
+      if (error) throw error;
+      // cloudinary delete asset
+      await cloudinary.uploader.destroy(asset.public_id);
     }
-    // loop through all templates and delete assets based on asset_id
-    // find the asset in the assets table by looking in the asset_info column and finding by asset_id and deleting
-
-    // const { data, error } = await supabase
-    //   .from("assets")
-    //   .delete()
-    //   .match({ id: req.body.id });
-    // if (error) throw error;
     return res.status(200).json({ data: assets });
   } catch (err) {
     handleCatchError(next, err);

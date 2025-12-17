@@ -11,7 +11,7 @@ import EditFlyerModal from "../ui/Modals/EditFlyerModal";
 import useLoginWithAccessToken from "../features/authentication/useLoginWithAccessToken";
 import { useGlobalContext } from "../context/GlobalContext";
 import DeleteFlyerTemplateModal from "../ui/Modals/DeleteFlyerTemplateModal";
-import DeleteImagesModal from "../ui/Modals/DeleteImagesModal";
+import DeleteFilesModal from "../ui/Modals/DeleteFilesModal";
 
 const StyledMainLayout = styled.main`
   height: 100vh;
@@ -62,7 +62,7 @@ export default function MainLayout() {
       <CloseSlideInModal />
       <EditFlyerModal />
       <DeleteFlyerTemplateModal />
-      <DeleteImagesModal />
+      <DeleteFilesModal />
     </StyledMainLayout>
   );
 }

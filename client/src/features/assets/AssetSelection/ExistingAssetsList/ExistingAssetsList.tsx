@@ -19,8 +19,10 @@ const StyledExistingAssetsListContainer = styled.ul`
 
 export default function ExistingAssetsList({
   enablePreview,
+  onlySafeToDelete = false,
 }: {
   enablePreview?: boolean;
+  onlySafeToDelete?: boolean;
 }) {
   // const { selectedOption, setSelectedOption } = useAssetSelectionContext();
   const { user } = useGlobalContext();
@@ -28,16 +30,27 @@ export default function ExistingAssetsList({
 
   return (
     <StyledExistingAssetsListContainer>
-      {user?.assets.map((asset) => (
-        <ExistingAssetListItem
-          key={asset.id}
-          enablePreview={enablePreview}
-          asset={asset.asset_info}
-          preChecked={assetsList.some(
-            (assetItem) => assetItem.public_id === asset.asset_info.public_id
-          )}
-        ></ExistingAssetListItem>
-      ))}
+      {user?.assets.map((asset) => {
+        const onlySafeToDeleteProps = onlySafeToDelete
+          ? {
+              showCheckboxOnSafeDelete: true,
+              isBeingUsed:
+                asset.used_by_flyers.length > 0 ||
+                asset.used_by_templates.length > 0,
+            }
+          : {};
+        return (
+          <ExistingAssetListItem
+            key={asset.id}
+            enablePreview={enablePreview}
+            asset={asset.asset_info}
+            preChecked={assetsList.some(
+              (assetItem) => assetItem.public_id === asset.asset_info.public_id
+            )}
+            {...onlySafeToDeleteProps}
+          ></ExistingAssetListItem>
+        );
+      })}
     </StyledExistingAssetsListContainer>
   );
 }

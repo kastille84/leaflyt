@@ -34,10 +34,14 @@ export default function ExistingAssetsListItem({
   asset,
   preChecked,
   enablePreview = false,
+  showCheckboxOnSafeDelete = false,
+  isBeingUsed = false,
 }: {
   asset: UploadApiResponse;
   preChecked: boolean;
   enablePreview?: boolean;
+  showCheckboxOnSafeDelete?: boolean;
+  isBeingUsed?: boolean;
 }) {
   const { setAssetsList } = useAssetSelectionContext();
   const { setBottomSlideInType, setIsOpenBottomSlideIn, setContextImages } =
@@ -59,6 +63,13 @@ export default function ExistingAssetsListItem({
     setIsOpenBottomSlideIn(true);
   }
 
+  function shouldDisplayCheckbox() {
+    if (!showCheckboxOnSafeDelete) {
+      return true;
+    }
+    return !isBeingUsed ? true : false;
+  }
+
   return (
     <StyledExistingAssetsListItem data-testid="existing-asset-list-item">
       <img
@@ -66,13 +77,15 @@ export default function ExistingAssetsListItem({
         alt={asset.original_filename}
         onClick={() => enablePreview && handlePreview()}
       />
-      <StyledCheckbox
-        type="checkbox"
-        onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
-          handleAssetSelection(evt.target.checked)
-        }
-        checked={preChecked}
-      />
+      {shouldDisplayCheckbox() && (
+        <StyledCheckbox
+          type="checkbox"
+          onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
+            handleAssetSelection(evt.target.checked)
+          }
+          checked={preChecked}
+        />
+      )}
       {/* <p>{asset.original_filename}</p> */}
     </StyledExistingAssetsListItem>
   );

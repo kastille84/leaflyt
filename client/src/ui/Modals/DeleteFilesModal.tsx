@@ -17,16 +17,17 @@ const StyledButtonContainer = styled.div`
   gap: 1.6rem;
 `;
 
-export default function DeleteImagesModal() {
+export default function DeleteFilesModal() {
   const {
     contextImages,
     setContextImages,
-    setShowDeleteImagesModal,
-    showDeleteImagesModal,
+    setShowDeleteFilesModal,
+    showDeleteFilesModal,
+    setUser,
   } = useGlobalContext();
 
   // const { deleteFlyerFn, deleteTemplateFn } = useRegisteredFlyer();
-  const { deleteAssetFn } = useAssetMutations();
+  const { deleteAssetsFn } = useAssetMutations();
   const { id } = useParams();
   const queryClient = useQueryClient();
 
@@ -48,16 +49,16 @@ export default function DeleteImagesModal() {
   };
 
   function handleCancel() {
-    setShowDeleteImagesModal(false);
+    setShowDeleteFilesModal(false);
     setContextImages(null);
   }
 
   async function handleDelete() {
     console.log("delete images", contextImages);
-    deleteAssetFn(contextImages, {
-      onSuccess: ({ user }) => {
+    deleteAssetsFn(contextImages!, {
+      onSuccess: ({ user }: any) => {
         // update the user
-        // setUser(user);
+        setUser(user);
         toast.success("Template deleted!");
         handleCancel();
       },
@@ -65,32 +66,16 @@ export default function DeleteImagesModal() {
         toast.error("Assets deletion failed! Try again.");
       },
     });
-
-    // #TODO: delete images from contextImages
-    // setContextImages(null);
   }
 
   return (
     // https://www.npmjs.com/package/react-modal
     <Modal
       testId="close-slide-in-modal"
-      isOpen={showDeleteImagesModal}
+      isOpen={showDeleteFilesModal}
       style={customStyles}
     >
-      <Heading as="h2">
-        Warning: Deleting image(s) - this action can&apos;t be undone!
-      </Heading>
-
-      <p>
-        By deleting the image(s), all flyers & templates that use these image(s)
-        will have said image(s) removed.
-        <br />
-        It is best to only delete when you are sure that these images are no
-        longer being used.
-        <br />
-        As in, you've deleted all the flyers using the image(s) or the flyers
-        have out-lived their lifespan and are auto-deleted.
-      </p>
+      <Heading as="h2">Are you sure you want to delete the file(s)</Heading>
 
       <StyledButtonContainer>
         <Button size="small" variation="secondary" onClick={handleCancel}>

@@ -577,7 +577,7 @@ export const likeFlyer = async (
   }
 };
 
-async function getLatestUserAfterChanges(userId: string, type: string) {
+export async function getLatestUserAfterChanges(userId: string, type: string) {
   // return updated user
   const { data: userData, error: getUserError } = await getUserProfile(userId);
   if (getUserError) {

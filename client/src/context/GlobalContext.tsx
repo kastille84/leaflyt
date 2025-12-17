@@ -78,8 +78,8 @@ export type ContextType = {
     React.SetStateAction<boolean>
   >;
   showDeleteFlyerTemplateModal: boolean;
-  setShowDeleteImagesModal: React.Dispatch<React.SetStateAction<boolean>>;
-  showDeleteImagesModal: boolean;
+  setShowDeleteFilesModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showDeleteFilesModal: boolean;
   likedContextSessionFlyers: string[] | null;
   setLikedContextSessionFlyers: React.Dispatch<
     React.SetStateAction<string[] | null>
@@ -126,8 +126,8 @@ const GlobalContext = createContext<ContextType>({
   showEditFlyerModal: false,
   setShowDeleteFlyerTemplateModal: () => {},
   showDeleteFlyerTemplateModal: false,
-  setShowDeleteImagesModal: () => {},
-  showDeleteImagesModal: false,
+  setShowDeleteFilesModal: () => {},
+  showDeleteFilesModal: false,
   likedContextSessionFlyers: null,
   setLikedContextSessionFlyers: () => {},
 });
@@ -173,7 +173,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [showEditFlyerModal, setShowEditFlyerModal] = useState(false);
   const [showDeleteFlyerTemplateModal, setShowDeleteFlyerTemplateModal] =
     useState(false);
-  const [showDeleteImagesModal, setShowDeleteImagesModal] = useState(false);
+  const [showDeleteFilesModal, setShowDeleteFilesModal] = useState(false);
 
   const {
     getUserGeo,
@@ -216,8 +216,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         showEditFlyerModal,
         setShowDeleteFlyerTemplateModal,
         showDeleteFlyerTemplateModal,
-        setShowDeleteImagesModal,
-        showDeleteImagesModal,
+        setShowDeleteFilesModal,
+        showDeleteFilesModal,
         // Auth
         isLoggedIn,
         setIsLoggedIn,

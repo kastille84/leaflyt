@@ -1,6 +1,7 @@
 import { UploadApiResponse } from "cloudinary";
 import { getBaseUrl } from "../utils/ServiceUtils";
 import { supabase } from "./supabase";
+import { getLatestUserAfterChanges } from "./apiFlyers";
 
 export const addAsset = async (asset: any, id: string) => {
   try {
@@ -15,7 +16,7 @@ export const addAsset = async (asset: any, id: string) => {
   }
 };
 
-export const deleteAssets = async (assets: any, id: string) => {
+export const deleteAssets = async (assets: UploadApiResponse[], id: string) => {
   // #TODO:
   //  api call to delete assets
   try {
@@ -29,7 +30,7 @@ export const deleteAssets = async (assets: any, id: string) => {
     });
     const result = await response.json();
     console.log("result", result);
-    return result;
+    return await getLatestUserAfterChanges(id, "asset");
   } catch (error) {}
 };
 

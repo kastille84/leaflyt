@@ -7,12 +7,14 @@ export default function useAssetMutations() {
   const { user } = useGlobalContext();
 
   const { mutate: addAssetFn, error: addAssetFnError } = useMutation({
-    mutationFn: (asset: UploadApiResponse) => addAsset(asset, user?.id!),
+    mutationFn: (asset: UploadApiResponse) =>
+      addAsset(asset, user?.id! as string),
     retry: true,
     retryDelay: 10000,
   });
-  const { mutate: deleteAssetFn, error: deleteAssetFnError } = useMutation({
-    mutationFn: (asset: UploadApiResponse) => deleteAssets(asset, user?.id!),
+  const { mutate: deleteAssetsFn, error: deleteAssetsFnError } = useMutation({
+    mutationFn: (assets: UploadApiResponse[]) =>
+      deleteAssets(assets, user?.id! as string),
     retry: true,
     retryDelay: 10000,
   });
@@ -24,7 +26,7 @@ export default function useAssetMutations() {
     addAssetFnError,
     updateAsset,
     updateAssetError,
-    deleteAssetFn,
-    deleteAssetFnError,
+    deleteAssetsFn,
+    deleteAssetsFnError,
   };
 }
