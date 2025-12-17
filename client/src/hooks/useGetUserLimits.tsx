@@ -18,6 +18,7 @@ const defaultPlan: Plan = {
   remotePostingLimit: 0,
   onLocationPostingLimit: 10,
   virtualPostingDistance: null,
+  maxAssets: 4,
 };
 
 function getPostingAmount(flyers: DB_Flyers_Response[], type: string) {
@@ -61,6 +62,7 @@ export default () => {
     name: plan.name,
     canUpgrade: plan.level < 4,
     level: plan.level,
+    maxAssets: plan.maxAssets,
   };
 
   return planLimits;

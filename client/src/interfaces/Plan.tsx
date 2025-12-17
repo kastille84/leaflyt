@@ -14,4 +14,5 @@ export interface Plan {
   remotePostingLimit: number;
   onLocationPostingLimit: number;
   virtualPostingDistance: number | null;
+  maxAssets: number;
 }

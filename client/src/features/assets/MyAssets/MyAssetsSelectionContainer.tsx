@@ -41,7 +41,8 @@ export default function MyAssetsSelectionContainer() {
   } = useAssetSelectionContext();
 
   const userLimits = useGetUserLimits();
-  const { setContextImages, setShowDeleteImagesModal } = useGlobalContext();
+  const { setContextImages, setShowDeleteImagesModal, user } =
+    useGlobalContext();
 
   function determineSelectionTypeToDisplay() {
     if (selectedOption === "existing") {
@@ -79,14 +80,14 @@ export default function MyAssetsSelectionContainer() {
           size="small"
           type="button"
           variation={
-            assetsList.length >= userLimits.media.limit
+            (user?.assets?.length || 0) >= userLimits.maxAssets
               ? "disabled"
               : selectedOption === "new"
               ? "primary"
               : "secondary"
           }
           onClick={() => setSelectedOption("new")}
-          disabled={assetsList.length >= userLimits.media.limit}
+          disabled={(user?.assets?.length || 0) >= userLimits.maxAssets}
         >
           + Add New Asset
         </Button>
@@ -106,6 +107,10 @@ export default function MyAssetsSelectionContainer() {
       {timedAssetsList.length > 0 && (
         <SelectedAssetsList selectedAssets={timedAssetsList} />
       )}
+      <small>
+        {user?.assets?.length || 0} / {userLimits.maxAssets - assetsList.length}{" "}
+        assets usage in your account
+      </small>
     </StyledMyAssestsSelectionContainer>
   );
 }
