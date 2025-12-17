@@ -1,4 +1,5 @@
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
+import { DB_Flyers_Response, DB_Saved_Flyer } from "../interfaces/DB_Flyers";
 
 function shortenTitle(title: string, length: number) {
   if (title.length > length) {
@@ -76,6 +77,25 @@ export const groupFlyersToTemplates = (
     }
   });
   return groupedFlyers;
+};
+
+// check saved_flyers arr to see if current flyer has already been saved
+export const checkIfCurrentFlyerIsSaved = (
+  saved_flyers: DB_Saved_Flyer[],
+  currentFlyer: DB_Flyers_Response
+) => {
+  return saved_flyers.some((saved_flyer) => {
+    return saved_flyer.flyer.id === currentFlyer.id;
+  });
+};
+
+export const checkIfCurrentFlyerIsLiked = (
+  likedFlyers: string[],
+  currentFlyerId: string
+) => {
+  return likedFlyers.some((likedFlyerId) => {
+    return likedFlyerId === currentFlyerId;
+  });
 };
 
 export {

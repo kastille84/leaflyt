@@ -34,7 +34,7 @@ export default function SlideInBottom() {
     setIsOpenBottomSlideIn,
     bottomSlideInType,
     setBottomSlideInType,
-    setCarouselImages,
+    setContextImages,
   } = useGlobalContext();
 
   function determineSlideInType() {
@@ -68,7 +68,7 @@ export default function SlideInBottom() {
     setIsOpenBottomSlideIn(false);
     setBottomSlideInType(null);
     if (bottomSlideInType === "carousel") {
-      setCarouselImages(null);
+      setContextImages(null);
     }
   }
 

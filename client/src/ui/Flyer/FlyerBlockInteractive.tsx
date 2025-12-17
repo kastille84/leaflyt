@@ -1,6 +1,8 @@
 import styled, { css } from "styled-components";
 
 import {
+  HiOutlineBookmark,
+  HiOutlineBookmarkSlash,
   HiOutlineChatBubbleLeftEllipsis,
   HiOutlineEllipsisHorizontal,
   HiOutlineHandThumbUp,
@@ -27,6 +29,15 @@ import { Auth_User_Profile_Response } from "../../interfaces/Auth_User";
 import DropdownMenu from "../DropdownMenu";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { useNavigate } from "react-router-dom";
+import useRegisteredFlyer from "../../features/createFlyer/useRegisteredFlyer";
+import useCreateUnregisteredFlyer from "../../features/createFlyer/useCreateUnregisteredFlyer";
+import toast from "react-hot-toast";
+import {
+  checkIfCurrentFlyerIsSaved,
+  checkIfCurrentFlyerIsLiked,
+} from "../../utils/GeneralUtils";
+import { useSessionStorageState } from "../../hooks/useSessionStorageState";
+import { useLikeFlyers } from "../../hooks/useLikeFlyers";
 
 const common = {
   style: css`
@@ -119,6 +130,8 @@ const StyledActionContainer = styled.section`
 const StyledActionIconContainer = styled.div<{ flyerDesign: FlyerDesign }>`
   display: flex;
   align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
   & svg {
     color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
   }
@@ -235,18 +248,47 @@ export default function FlyerBlockInteractive({
     }
     return flyer.flyerDesign;
   });
-  const [contentType, setContentType] = useState<"info" | "contact" | "cta">(
-    "info"
-  );
 
   const {
     setSelectedFlyer,
     setShowEditFlyerModal,
     user,
+    setUser,
     setIsOpenFlyerDrawer,
     setDrawerAction,
     setShowDeleteFlyerTemplateModal,
+    setBottomSlideInType,
+    setIsOpenBottomSlideIn,
+    likedContextSessionFlyers,
   } = useGlobalContext();
+
+  const { likeFlyerFn } = useCreateUnregisteredFlyer();
+
+  const [contentType, setContentType] = useState<"info" | "contact" | "cta">(
+    "info"
+  );
+  const { saveFlyerFn, removeSavedFlyerFn } = useRegisteredFlyer();
+  const [currentLikes, setCurrentLikes] = useState(() => flyer?.likes || 0);
+
+  // const [likedSessionFlyers, setLikedSessionFlyers] = useSessionStorageState(
+  //   [],
+  //   "likedFlyers"
+  // );
+
+  const { setLikedFlyer } = useLikeFlyers(flyer.id!);
+
+  // isSaved state depends on saved flyers on user object
+  const [isSaved, setIsSaved] = useState(() => {
+    const saved_flyers_arr = user?.saved_flyers! || [];
+    return checkIfCurrentFlyerIsSaved(saved_flyers_arr, flyer);
+  });
+  // isLiked state depends on likedSessionFlyers object
+  const [isLikedByUser, setIsLikedByUser] = useState(() => {
+    return checkIfCurrentFlyerIsLiked(
+      likedContextSessionFlyers || [],
+      flyer.id!
+    );
+  });
 
   const navigate = useNavigate();
 
@@ -392,11 +434,89 @@ export default function FlyerBlockInteractive({
     setShowDeleteFlyerTemplateModal(true);
   }
 
+  async function handleSaveClick() {
+    if (user) {
+      setIsSaved(true);
+      saveFlyerFn(flyer.id!, {
+        onSuccess: ({ user }) => {
+          // update the user
+          setUser(user);
+          toast.success("Flyer saved!");
+        },
+        onError: (err) => {
+          setIsSaved(false);
+          toast.error("Flyer save failed! Try again.");
+        },
+      });
+    } else {
+      setBottomSlideInType("signup");
+      setIsOpenBottomSlideIn(true);
+    }
+  }
+
+  async function handleUnsaveClick() {
+    if (user) {
+      setIsSaved(false);
+      removeSavedFlyerFn(flyer.id!, {
+        onSuccess: ({ user }) => {
+          // update the user
+          setUser(user);
+          toast.success("Flyer unsaved!");
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      });
+    }
+  }
   function doesFlyerBelongToUser() {
     if (user && (flyer.user as Auth_User_Profile_Response)?.id === user?.id) {
       return true;
     }
     return false;
+  }
+
+  async function handleLikeClick() {
+    // only if flyer does not belongs to the user & isn't already liked by user
+    if (!doesFlyerBelongToUser() && !isLikedByUser) {
+      likeFlyerFn(
+        { flyer, type: "inc" },
+        {
+          onSuccess: ({ newLikes }) => {
+            // save the liked flyer in the session
+            // setLikedSessionFlyers((prev: string[]) => [...prev, flyer.id]);
+            setLikedFlyer("add");
+            setIsLikedByUser(true);
+            setCurrentLikes(newLikes);
+            toast.success("Flyer liked!");
+          },
+          onError: (error) => {
+            setIsLikedByUser(false);
+            toast.error(error.message);
+          },
+        }
+      );
+    } else if (!doesFlyerBelongToUser() && isLikedByUser) {
+      // unlike the flyer
+      likeFlyerFn(
+        { flyer, type: "dec" },
+        {
+          onSuccess: ({ newLikes }) => {
+            // setLikedSessionFlyers((prev: string[]) =>
+            //   prev.filter((id) => id !== flyer.id)
+            // );
+            setLikedFlyer("remove");
+            setIsLikedByUser(false);
+            setCurrentLikes(newLikes);
+            toast.success("Flyer unliked!");
+          },
+          onError: (error) => {
+            setIsLikedByUser(true);
+            toast.error(error.message);
+          },
+        }
+      );
+    }
   }
 
   function renderTopContent() {
@@ -414,9 +534,7 @@ export default function FlyerBlockInteractive({
           )}
           {user && !doesFlyerBelongToUser() && <li>Save</li>}
           <hr />
-          {doesFlyerBelongToUser() && flyer.template && (
-            <li onClick={handleDelete}>Delete</li>
-          )}
+          {doesFlyerBelongToUser() && <li onClick={handleDelete}>Delete</li>}
           <li>Inappropriate</li>
         </DropdownMenu>
       </>
@@ -443,14 +561,13 @@ export default function FlyerBlockInteractive({
         </StyledTopTextContainer>
       )}
       <StyledinfoContentContainer>
-        {/* TODO: Make this section dynamic (infoContent, contactContent, couponContent) */}
         <PillsContainer>
           <Pill
             contentType={contentType}
             type="info"
             onClick={() => setContentType("info")}
           >
-            info
+            main
           </Pill>
           {flyer.typeOfUser !== "anonymous" && (
             <Pill
@@ -461,13 +578,13 @@ export default function FlyerBlockInteractive({
               contact
             </Pill>
           )}
-          {flyer.callToAction && (
+          {flyer.callToAction && flyer.callToAction.ctaType !== "none" && (
             <Pill
               contentType={contentType}
               type="cta"
               onClick={() => setContentType("cta")}
             >
-              {flyer.callToAction?.ctaType === "offer" ? "deal" : "ask"}
+              {flyer.callToAction?.ctaType === "offer" ? "deals" : "ask"}
             </Pill>
           )}
         </PillsContainer>
@@ -478,14 +595,35 @@ export default function FlyerBlockInteractive({
         {contentType === "cta" && <CTA flyer={flyer} />}
       </StyledinfoContentContainer>
       <StyledActionContainer>
-        <StyledActionIconContainer flyerDesign={flyerStyles}>
+        {!isSaved && !doesFlyerBelongToUser() && (
+          <StyledActionIconContainer
+            flyerDesign={flyerStyles}
+            onClick={handleSaveClick}
+          >
+            <HiOutlineBookmark /> <small>Save</small>
+          </StyledActionIconContainer>
+        )}
+
+        {isSaved && !doesFlyerBelongToUser() && (
+          <StyledActionIconContainer
+            flyerDesign={flyerStyles}
+            onClick={handleUnsaveClick}
+          >
+            <HiOutlineBookmarkSlash /> <small>Unsave</small>
+          </StyledActionIconContainer>
+        )}
+        <StyledActionIconContainer
+          flyerDesign={flyerStyles}
+          onClick={handleLikeClick}
+        >
           <HiOutlineHandThumbUp />
+          <small>{currentLikes! > 0 ? currentLikes : ""} Likes</small>
         </StyledActionIconContainer>
-        <StyledActionIconContainer flyerDesign={flyerStyles}>
+        {/* <StyledActionIconContainer flyerDesign={flyerStyles}>
           <HiOutlineChatBubbleLeftEllipsis />
-        </StyledActionIconContainer>
+        </StyledActionIconContainer> */}
         <StyledActionIconContainer flyerDesign={flyerStyles}>
-          <HiOutlineShare />
+          <HiOutlineShare /> <small>Share</small>
         </StyledActionIconContainer>
       </StyledActionContainer>
     </StyledFlyerBlock>

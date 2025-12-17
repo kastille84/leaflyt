@@ -1,16 +1,17 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { UploadApiResponse } from "cloudinary";
 import { useAssetSelectionContext } from "../../../../context/AssetSelectionContext";
 import {
   HiOutlineArrowTopRightOnSquare,
+  HiOutlineCheckCircle,
   HiOutlineXCircle,
   HiOutlineXMark,
 } from "react-icons/hi2";
-import { useEffect, useState } from "react";
 import useAssetMutations from "../../useAssetMutations";
 import useGetUserProfileById from "../../../../hooks/useGetUserProfileById";
-import { useGlobalContext } from "../../../../context/GlobalContext";
+// import { useGlobalContext } from "../../../../context/GlobalContext";
 import toast from "react-hot-toast";
 
 const StyledListItem = styled.li`
@@ -99,7 +100,7 @@ export default function SelectedAssetsListItemTimed({
   idx: number;
   handleDeleteAsset: (idx: number) => void;
 }) {
-  const { setUser } = useGlobalContext();
+  // const { setUser } = useGlobalContext();
   const { setTimedAssetsList } = useAssetSelectionContext();
   const { addAssetFn } = useAssetMutations();
   const [isAddedToAssets, setIsAddedToAssets] = useState<boolean>(false);
@@ -107,6 +108,19 @@ export default function SelectedAssetsListItemTimed({
   const { status, userProfile } = useGetUserProfileById(isAddedToAssets);
 
   const [timeLeft, setTimeLeft] = useState<number>(8 * 60);
+
+  async function addAsset(asset: UploadApiResponse) {
+    addAssetFn(asset, {
+      onSuccess: () => {
+        console.log("success");
+        // this flag, triggers useGetProfileById to get updated user
+        setIsAddedToAssets((prev) => !prev);
+      },
+      onError: () => {
+        toast.error("Could not add asset to assets library. Re-trying again..");
+      },
+    });
+  }
 
   useEffect(() => {
     // Set up an interval to decrement the timeLeft every second.
@@ -118,18 +132,8 @@ export default function SelectedAssetsListItemTimed({
         // If time is 0 or less, clear the interval to stop the timer.
         clearInterval(timer);
         if (!isAddedToAssets) {
-          addAssetFn(asset, {
-            onSuccess: () => {
-              console.log("success");
-              // this flag, triggers useGetProfileById to get updated user
-              setIsAddedToAssets((prev) => !prev);
-            },
-            onError: () => {
-              toast.error(
-                "Could not add asset to assets library. Re-trying again.."
-              );
-            },
-          });
+          // if time runs out, save asset to assets library
+          addAsset(asset);
         }
       }
     }, 1000); // Update every 1000 milliseconds (1 second).
@@ -179,9 +183,11 @@ export default function SelectedAssetsListItemTimed({
         {timeLeft > 0 && <p>{formatTime(timeLeft)}</p>}
         {timeLeft <= 0 && <p>Added to Assets</p>}
 
-        <StyledIconContainer>
-          <HiOutlineArrowTopRightOnSquare />
-        </StyledIconContainer>
+        {/* {!isAddedToAssets && (
+          <StyledIconContainer>
+            <HiOutlineCheckCircle />
+          </StyledIconContainer>
+        )} */}
         {!isAddedToAssets && (
           <StyledCross onClick={() => handleDeleteAsset(idx)}>
             <HiOutlineXMark />

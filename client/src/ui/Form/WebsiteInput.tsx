@@ -37,7 +37,7 @@ export default function WebsiteInput({
         type="url"
         id="website"
         {...register(registerName)}
-        placeholder="https://www.leaflyt.com"
+        placeholder="https://www.leaflit.com"
         hasError={Boolean(errorObj)}
       />
     </FormControl>

@@ -23,7 +23,7 @@ export default function AttestationInput({
           Anonymous posting has a higher chance of getting flagged due to their
           uncontrolled nature.
           <br />
-          Leaflyt relies on the community to help flag inappropiate content.
+          Leaflit relies on the community to help flag inappropiate content.
           <br />
           You agree to "Post Responsibly".
         </p>

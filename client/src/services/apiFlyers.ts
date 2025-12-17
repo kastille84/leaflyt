@@ -9,6 +9,8 @@ import {
 import { NearbySearchPlaceResult } from "../interfaces/Geo";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
 import { getUserProfile } from "./apiUser";
+import { UploadApiResponse } from "cloudinary";
+import { assetUsageByFlyer, assetUsageByTemplate } from "./apiAssets";
 
 const getOrCreateBoard = async (selectedPlace: NearbySearchPlaceResult) => {
   // make a call to get the latest board data
@@ -46,7 +48,7 @@ export const createUnregisteredFlyer = async (
   try {
     const { data: newFlyer, error } = await supabase
       .from("flyers")
-      .insert([{ ...flyerData, placeId: selectedPlace.id }]) // selectedPlace.id is the placeId of the board
+      .insert([{ ...flyerData, placeId: selectedPlace.id, likes: 0 }]) // selectedPlace.id is the placeId of the board
       .select("*")
       .single();
 
@@ -89,6 +91,7 @@ export const createRegisteredFlyer = async (
             fileUrlArr: flyerData.fileUrlArr,
             hasComments: flyerData.hasComments,
             lifespan: flyerData.lifespan,
+            likes: 0,
           },
         ])
         .select("*")
@@ -98,6 +101,12 @@ export const createRegisteredFlyer = async (
         throw new Error("Error creating a template: " + error.message);
       }
       createdTemplate = newTemplate;
+      // keep track of assets being used in templates
+      await assetUsageByTemplate(
+        [],
+        flyerData.fileUrlArr || [],
+        newTemplate.id
+      );
     } catch (error: any) {
       console.error(error);
       throw new Error("Error creating a template: " + error.message);
@@ -138,6 +147,7 @@ export const createRegisteredFlyer = async (
           fileUrlArr: flyerData.fileUrlArr,
           postingMethod: flyerData.postingMethod || "onLocation",
           lifespan: flyerData.lifespan,
+          likes: 0,
         },
       ])
       .select("*")
@@ -147,7 +157,12 @@ export const createRegisteredFlyer = async (
       console.error(error);
       throw new Error("Error creating a flyer: " + error.message);
     }
-    return newFlyer;
+
+    // keep track of assets being used in flyers
+    await assetUsageByFlyer([], flyerData.fileUrlArr || [], newFlyer.id);
+
+    // return updated user
+    return await getLatestUserAfterChanges(newFlyer?.user! as string, "flyer");
   } catch (error: any) {
     console.error(error);
     throw new Error("Error creating a flyer: " + error.message);
@@ -155,7 +170,8 @@ export const createRegisteredFlyer = async (
 };
 export const updateRegisteredFlyer = async (
   flyerData: DB_Flyer_Create,
-  selectedPlace: NearbySearchPlaceResult
+  selectedPlace: NearbySearchPlaceResult,
+  initialAssets: UploadApiResponse[]
 ) => {
   const board = await getOrCreateBoard(selectedPlace);
 
@@ -169,33 +185,23 @@ export const updateRegisteredFlyer = async (
       .eq("id", flyerData.id)
       .select("*")
       .single();
-    // const { data: newFlyer, error } = await supabase
-    //   .from("flyers")
-    //   .insert([
-    //     {
-    //       template: createdTemplate?.id, // many to one with template table
-    //       place: selectedPlace.id, // many to one with board table
-    //       user: flyerData.user,
-    //       title: flyerData.title,
-    //       category: flyerData.category,
-    //       subcategory: flyerData.subcategory,
-    //       content: flyerData.content,
-    //       tags: flyerData.tags,
-    //       flyerDesign: flyerData.flyerDesign,
-    //       callToAction: flyerData.callToAction,
-    //       fileUrlArr: flyerData.fileUrlArr,
-    //       postingMethod: flyerData.postingMethod || "onLocation",
-    //       lifespan: flyerData.lifespan,
-    //     },
-    //   ])
-    //   .select("*")
-    //   .single();
 
     if (error) {
       console.error(error);
       throw new Error("Error updating the flyer: " + error.message);
     }
-    return updatedFlyer;
+
+    // keep track of assets being used in flyers
+    await assetUsageByFlyer(
+      initialAssets,
+      flyerData.fileUrlArr || [],
+      updatedFlyer.id
+    );
+
+    return await getLatestUserAfterChanges(
+      (updatedFlyer?.user as Auth_User_Profile_Response).id as string,
+      "flyer"
+    );
   } catch (error: any) {
     console.error(error);
     throw new Error("Error updating the flyer: " + error.message);
@@ -221,6 +227,7 @@ export const createFlyerFromTemplate = async (
     place: selectedPlace.id,
     user: user.id,
     template: templateData.id,
+    likes: 0,
     // placeInfo: {
     //   displayName: selectedPlace.displayName.text,
     //   formattedAddress: selectedPlace.formattedAddress,
@@ -248,6 +255,8 @@ export const createFlyerFromTemplate = async (
       default:
         flyerData.postingMethod = "onLocation";
     }
+  } else {
+    flyerData.postingMethod = "onLocation";
   }
 
   try {
@@ -261,6 +270,9 @@ export const createFlyerFromTemplate = async (
       console.error(error);
       throw new Error("Error creating a flyer: " + error.message);
     }
+
+    // keep track of assets being used in flyers
+    await assetUsageByFlyer([], flyerData.fileUrlArr || [], newFlyer.id);
 
     // tie newFlyer to template
     // await supabase
@@ -280,9 +292,11 @@ export const createFlyerFromTemplate = async (
 export const deleteFlyer = async (flyer: DB_Flyers_Response) => {
   try {
     const { error } = await supabase.from("flyers").delete().eq("id", flyer.id);
+    // keep track of assets being used in flyers
+    await assetUsageByFlyer(flyer.fileUrlArr || [], [], flyer.id!);
     // return updated user
     return await getLatestUserAfterChanges(
-      (flyer?.user as Auth_User_Profile_Response).id,
+      (flyer?.user as Auth_User_Profile_Response).id as string,
       "flyer"
     );
   } catch (error: any) {
@@ -291,7 +305,10 @@ export const deleteFlyer = async (flyer: DB_Flyers_Response) => {
   }
 };
 
-export const updateTemplate = async (templateData: DB_Template) => {
+export const updateTemplate = async (
+  templateData: DB_Template,
+  initialAssets: UploadApiResponse[]
+) => {
   try {
     const { error } = await supabase
       .from("templates")
@@ -324,10 +341,16 @@ export const updateTemplate = async (templateData: DB_Template) => {
           updateFlyersError.message
       );
     }
-    // return updated user
+
+    // keep track of assets being used in templates
+    await assetUsageByTemplate(
+      initialAssets,
+      templateData.fileUrlArr || [],
+      templateData.id as string
+    );
     // return updated user
     return await getLatestUserAfterChanges(
-      templateData?.user! as number,
+      templateData?.user! as string,
       "template"
     );
     // const { data: userData, error: getUserError } = await getUserProfile(
@@ -365,6 +388,7 @@ export const createTemplate = async (templateData: DB_Template) => {
           fileUrlArr: templateData.fileUrlArr,
           hasComments: templateData.hasComments,
           lifespan: templateData.lifespan,
+          likes: 0,
         },
       ])
       .select("*")
@@ -373,9 +397,16 @@ export const createTemplate = async (templateData: DB_Template) => {
       console.error(error);
       throw new Error("Error creating a template: " + error.message);
     }
+
+    // keep track of assets being used in templates
+    await assetUsageByTemplate(
+      [],
+      templateData.fileUrlArr || [],
+      newTemplate.id
+    );
     // return updated user
     return await getLatestUserAfterChanges(
-      templateData?.user! as number,
+      templateData?.user! as string,
       "template"
     );
     // const { data: userData, error: getUserError } = await getUserProfile(
@@ -406,9 +437,15 @@ export const deleteTemplate = async (template: DB_Template) => {
       console.error(error);
       throw new Error("Error deleting the template: " + error.message);
     }
+    // keep track of assets being used in templates
+    await assetUsageByTemplate(
+      template.fileUrlArr || [],
+      [],
+      template.id as string
+    );
     // return updated user
     return await getLatestUserAfterChanges(
-      template?.user! as number,
+      (template?.user as Auth_User_Profile_Response)?.id! as string,
       "template"
     );
   } catch (error: any) {
@@ -417,7 +454,130 @@ export const deleteTemplate = async (template: DB_Template) => {
   }
 };
 
-async function getLatestUserAfterChanges(userId: number, type: string) {
+export const saveFlyer = async (userId: number | string, flyerId: string) => {
+  try {
+    const { error } = await supabase.from("saved_flyers").insert([
+      {
+        user: userId,
+        flyer: flyerId,
+      },
+    ]);
+    if (error) {
+      console.error(error);
+      throw new Error("Error saving the flyer: " + error.message);
+    }
+    // return updated user
+    return await getLatestUserAfterChanges(userId as string, "saved flyer");
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error saving the flyer: " + error.message);
+  }
+};
+
+export const removeSavedFlyer = async (
+  userId: number | string,
+  flyerId: number | string
+) => {
+  try {
+    const { error } = await supabase
+      .from("saved_flyers")
+      .delete()
+      .eq(typeof flyerId === "string" ? "flyer" : "id", flyerId);
+    if (error) {
+      console.error(error);
+      throw new Error("Error removing the saved flyer: " + error.message);
+    }
+    // return updated user
+    return await getLatestUserAfterChanges(userId as string, "saved flyer");
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error removing the saved flyer: " + error.message);
+  }
+};
+
+// export const likeFlyer = async (
+//   flyer: DB_Flyers_Response,
+//   type: "inc" | "dec"
+// ) => {
+//   try {
+//     const { error } = await supabase
+//       .from("flyers")
+//       .update({
+//         likes: type === "inc" ? flyer?.likes! + 1 : flyer?.likes! - 1,
+//       })
+//       .eq("id", flyer.id);
+//     if (error) {
+//       console.error(error);
+//       throw new Error("Error liking the flyer: " + error.message);
+//     }
+
+//     // increment likes for all existing templates that use this flyer
+//     if (flyer.template) {
+//       // get likes from existing template and update it's likes value by 1
+//       const { data: existingTemplate, error } = await supabase
+//         .from("templates")
+//         .select("likes")
+//         .eq("id", flyer?.template)
+//         .single();
+//       if (error) {
+//         console.error(error);
+//         throw new Error("Error liking the template: " + error.message);
+//       }
+//       const { error: updateTemplateError } = await supabase
+//         .from("templates")
+//         .update({
+//           likes:
+//             type === "inc"
+//               ? existingTemplate?.likes! + 1
+//               : existingTemplate?.likes! - 1,
+//         })
+//         .eq("id", flyer?.template);
+//       if (updateTemplateError) {
+//         console.error(updateTemplateError);
+//         throw new Error("Error liking the template: " + updateTemplateError);
+//       }
+//     }
+//     return null;
+//   } catch (error: any) {
+//     console.error(error);
+//     throw new Error("Error liking the flyer: " + error.message);
+//   }
+// };
+export const likeFlyer = async (
+  flyer: DB_Flyers_Response,
+  type: "inc" | "dec"
+) => {
+  try {
+    if (flyer.template) {
+      // update both flyer and template
+      const { data, error } = await supabase.rpc("increment_likes_combined", {
+        flyer_id_val: flyer.id, // Argument for the flyers table ID
+        template_id_val: flyer.template, // Argument for the templates table ID,
+        amount: type === "inc" ? 1 : -1,
+      });
+
+      return {
+        newLikes: data,
+        error: null,
+      };
+    } else {
+      // just update flyer
+      const { data, error } = await supabase.rpc("increment_likes_for_flyer", {
+        flyer_id_val: flyer.id, // Argument for the flyers table ID
+        amount: type === "inc" ? 1 : -1,
+      });
+      return {
+        newLikes: data,
+        error: null,
+      };
+    }
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error liking the flyer: " + error.message);
+  }
+};
+
+export async function getLatestUserAfterChanges(userId: string, type: string) {
   // return updated user
   const { data: userData, error: getUserError } = await getUserProfile(userId);
   if (getUserError) {

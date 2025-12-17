@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import useCreateRegisteredFlyer from "../../../src/features/createFlyer/useCreateRegisteredFlyer";
+import useRegisteredFlyer from "../../../src/features/createFlyer/useRegisteredFlyer";
 import * as ReactQuery from "@tanstack/react-query";
 
 import * as GlobalContext from "../../../src/context/GlobalContext";
@@ -18,7 +18,7 @@ vi.mock("../../../src/services/apiFlyers");
 
 const mockPlace = responseData.places[0];
 
-describe("useCreateRegisteredFlyer", () => {
+describe("useRegisteredFlyer", () => {
   beforeEach(() => {
     vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
       ...mockUseGlobalContextReturnObj,
@@ -42,7 +42,7 @@ describe("useCreateRegisteredFlyer", () => {
   });
   describe("flyer", () => {
     it("should create a flyer", async () => {
-      const { result } = renderHook(() => useCreateRegisteredFlyer(), {
+      const { result } = renderHook(() => useRegisteredFlyer(), {
         wrapper: QueryClientProviderWrapper(),
       });
       const { createFlyer } = result.current;
@@ -58,7 +58,7 @@ describe("useCreateRegisteredFlyer", () => {
     });
 
     it("should edit a flyer", async () => {
-      const { result } = renderHook(() => useCreateRegisteredFlyer(), {
+      const { result } = renderHook(() => useRegisteredFlyer(), {
         wrapper: QueryClientProviderWrapper(),
       });
       const { editFlyer } = result.current;
@@ -72,7 +72,7 @@ describe("useCreateRegisteredFlyer", () => {
       expect(editFlyer).toBeDefined();
     });
     it("should delete a flyer", async () => {
-      const { result } = renderHook(() => useCreateRegisteredFlyer(), {
+      const { result } = renderHook(() => useRegisteredFlyer(), {
         wrapper: QueryClientProviderWrapper(),
       });
       const { deleteFlyerFn } = result.current;
@@ -82,7 +82,7 @@ describe("useCreateRegisteredFlyer", () => {
       expect(deleteFlyerFn).toBeDefined();
     });
     it("should create a flyer using template", async () => {
-      const { result } = renderHook(() => useCreateRegisteredFlyer(), {
+      const { result } = renderHook(() => useRegisteredFlyer(), {
         wrapper: QueryClientProviderWrapper(),
       });
       const { createFlyerUsingTemplate } = result.current;
@@ -99,7 +99,7 @@ describe("useCreateRegisteredFlyer", () => {
 
   describe("template", () => {
     it("should create a template", async () => {
-      const { result } = renderHook(() => useCreateRegisteredFlyer(), {
+      const { result } = renderHook(() => useRegisteredFlyer(), {
         wrapper: QueryClientProviderWrapper(),
       });
       const { createTemplateFn } = result.current;
@@ -114,7 +114,7 @@ describe("useCreateRegisteredFlyer", () => {
     });
 
     it("should edit a template", async () => {
-      const { result } = renderHook(() => useCreateRegisteredFlyer(), {
+      const { result } = renderHook(() => useRegisteredFlyer(), {
         wrapper: QueryClientProviderWrapper(),
       });
       const { editTemplate } = result.current;
@@ -129,7 +129,7 @@ describe("useCreateRegisteredFlyer", () => {
     });
 
     it("should delete a template", async () => {
-      const { result } = renderHook(() => useCreateRegisteredFlyer(), {
+      const { result } = renderHook(() => useRegisteredFlyer(), {
         wrapper: QueryClientProviderWrapper(),
       });
       const { deleteTemplateFn } = result.current;

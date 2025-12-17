@@ -1,5 +1,5 @@
 import { UploadApiResponse } from "cloudinary";
-import { DB_Flyers_Response, DB_Template } from "./DB_Flyers";
+import { DB_Flyers_Response, DB_Saved_Flyer, DB_Template } from "./DB_Flyers";
 import { Plan } from "./Plan";
 
 interface Individual {
@@ -109,7 +109,7 @@ export interface Auth_User_Signup_Response {
 }
 
 export interface Auth_User_Profile_Response {
-  id: number;
+  id: number | string;
   created_at: string;
   user: string;
   name: string | null;
@@ -137,11 +137,14 @@ export interface Auth_User_Profile_Response {
   flyers: any[]; // TODO: add flyer type
   templates: DB_Template[];
   assets: {
-    id: number;
+    id: number | string;
     user: number;
     asset_info: UploadApiResponse;
     created_at: string;
+    used_by_flyers: string[];
+    used_by_templates: string[];
   }[];
+  saved_flyers: DB_Saved_Flyer[];
 }
 
 export interface LoginSubmitData {

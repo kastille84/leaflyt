@@ -24,7 +24,7 @@ const StyledSidebar = styled.aside`
 export default function Sidebar() {
   return (
     <StyledSidebar>
-      <Heading as="h2">Leaflyt</Heading>
+      <Heading as="h2">Leaflit</Heading>
       <MainNav />
     </StyledSidebar>
   );

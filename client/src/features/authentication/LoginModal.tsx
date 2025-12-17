@@ -11,6 +11,7 @@ import PasswordInput from "../../ui/Form/PasswordInput";
 import useLogin from "./useLogin";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import OverlaySpinner from "../../ui/OverlaySpinner";
 
 const StyledButtonContainer = styled.div`
   margin-top: 2.4rem;
@@ -63,7 +64,7 @@ const customModalStyles = {
 };
 
 const StyledSubmitError = styled(Heading)`
-  color: var(--color-red-600);
+  color: var(--color-red-600) !important;
 `;
 
 export default function LoginModal() {
@@ -113,7 +114,9 @@ export default function LoginModal() {
         setShowSpinner(false);
         // TODO: redirect user to dashboard
         navigate(
-          `/dashboard${selectedPlace?.id ? "/board/" + selectedPlace.id : ""}`
+          `/dashboard${
+            selectedPlace?.id ? "/board/" + selectedPlace.id : "/home"
+          }`
         );
       },
       onError: (error) => {
@@ -135,9 +138,10 @@ export default function LoginModal() {
       appElement={document.getElementById("root")!}
     >
       <StyledHeaderContainer>
-        <StyledName>Login to Leaflyt</StyledName>
+        <StyledName>Login to Leaflit</StyledName>
         <StyledSubHeader>Spread your message</StyledSubHeader>
       </StyledHeaderContainer>
+      {showSpinner && <OverlaySpinner message="Logging in..." />}
       <StyledFormContainer>
         <Form onSubmit={handleSubmit(onSubmit)}>
           {submitError && (

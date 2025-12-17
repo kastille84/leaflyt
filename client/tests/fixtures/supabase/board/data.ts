@@ -9,7 +9,7 @@ export const dummyBoardData = {
     flyers: [
       {
         id: "0094dd97-05cd-4c61-aae0-8f80f6295b78",
-        tags: ["leaflyt", "app", "flyers"],
+        tags: ["leaflit", "app", "flyers"],
         user: {
           id: 3,
           name: "Test Bizness",
@@ -38,9 +38,9 @@ export const dummyBoardData = {
           created_at: "2025-07-11T20:11:51.810683+00:00",
           typeOfUser: "business",
         },
-        title: "Welcome to Leaflyt",
+        title: "Welcome to Leaflit",
         content:
-          "<p>Hi welcome to leaflyt. This application is meant for you to spread your message in your community. Sign up and spread your message.</p>",
+          "<p>Hi welcome to leaflit. This application is meant for you to spread your message in your community. Sign up and spread your message.</p>",
         placeId: "ChIJcclV5OUz3YkRXsJ6N7Jdf3U",
         business: null,
         category: "Miscellaneous",

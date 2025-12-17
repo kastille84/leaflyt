@@ -3,6 +3,7 @@ import Heading from "../Heading";
 import { DB_Flyers_Response, FlyerDesign } from "../../interfaces/DB_Flyers";
 
 import {
+  HiOutlineBookmark,
   HiOutlineChatBubbleLeftEllipsis,
   HiOutlineEllipsisHorizontal,
   HiOutlineHandThumbUp,
@@ -408,14 +409,20 @@ export default function FlyerBlockConfigurable({ flyer }: { flyer: any }) {
           flyerDesign={flyerDesign}
           selected={selectedSection === "top_backgroundColor"}
         >
-          <HiOutlineHandThumbUp />
+          <HiOutlineBookmark />
         </StyledActionIconContainer>
         <StyledActionIconContainer
           flyerDesign={flyerDesign}
           selected={selectedSection === "top_backgroundColor"}
         >
-          <HiOutlineChatBubbleLeftEllipsis />
+          <HiOutlineHandThumbUp />
         </StyledActionIconContainer>
+        {/* <StyledActionIconContainer
+          flyerDesign={flyerDesign}
+          selected={selectedSection === "top_backgroundColor"}
+        >
+          <HiOutlineChatBubbleLeftEllipsis />
+        </StyledActionIconContainer> */}
         <StyledActionIconContainer
           flyerDesign={flyerDesign}
           selected={selectedSection === "top_backgroundColor"}

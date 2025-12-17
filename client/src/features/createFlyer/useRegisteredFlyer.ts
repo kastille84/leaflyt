@@ -13,9 +13,12 @@ import {
   createTemplate,
   deleteFlyer,
   deleteTemplate,
+  saveFlyer,
+  removeSavedFlyer,
 } from "../../services/apiFlyers";
+import { UploadApiResponse } from "cloudinary";
 
-export default function useCreateRegisteredFlyer() {
+export default function useRegisteredFlyer() {
   const { selectedPlace, user } = useGlobalContext();
 
   const { mutate: createFlyer, error: createFlyerError } = useMutation({
@@ -24,8 +27,13 @@ export default function useCreateRegisteredFlyer() {
   });
 
   const { mutate: editFlyer, error: editFlyerError } = useMutation({
-    mutationFn: (prepData: DB_Flyer_Create) =>
-      updateRegisteredFlyer(prepData, selectedPlace!),
+    mutationFn: ({
+      prepData,
+      initialAssets,
+    }: {
+      prepData: DB_Flyer_Create;
+      initialAssets?: UploadApiResponse[];
+    }) => updateRegisteredFlyer(prepData, selectedPlace!, initialAssets || []),
   });
 
   const { mutate: deleteFlyerFn, error: deleteFlyerFnError } = useMutation({
@@ -41,8 +49,14 @@ export default function useCreateRegisteredFlyer() {
   });
 
   const { mutate: editTemplate, error: editTemplateError } = useMutation({
-    mutationFn: (prepData: DB_Template) => {
-      return updateTemplate(prepData);
+    mutationFn: ({
+      prepData,
+      initialAssets,
+    }: {
+      prepData: DB_Template;
+      initialAssets?: UploadApiResponse[];
+    }) => {
+      return updateTemplate(prepData, initialAssets || []);
     },
   });
 
@@ -57,6 +71,16 @@ export default function useCreateRegisteredFlyer() {
       mutationFn: (prepData: DB_Template) => {
         return deleteTemplate(prepData);
       },
+    });
+
+  const { mutate: saveFlyerFn, error: saveFlyerFnError } = useMutation({
+    mutationFn: (flyerId: string) => saveFlyer(user?.id!, flyerId),
+  });
+
+  const { mutate: removeSavedFlyerFn, error: removeSavedFlyerFnError } =
+    useMutation({
+      mutationFn: (flyerId: number | string) =>
+        removeSavedFlyer(user?.id!, flyerId),
     });
 
   return {
@@ -74,5 +98,9 @@ export default function useCreateRegisteredFlyer() {
     createTemplateError,
     deleteTemplateFn,
     deleteTemplateFnError,
+    saveFlyerFn,
+    saveFlyerFnError,
+    removeSavedFlyerFn,
+    removeSavedFlyerFnError,
   };
 }

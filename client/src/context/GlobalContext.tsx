@@ -5,6 +5,7 @@ import { LatLng, NearbySearchPlaceResult } from "../interfaces/Geo";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
 import { DB_Flyers_Response, DB_Template } from "../interfaces/DB_Flyers";
+import { useSessionStorageState } from "../hooks/useSessionStorageState";
 
 export type ContextType = {
   getUserGeo: () => void;
@@ -57,8 +58,8 @@ export type ContextType = {
   >;
   currentFormOptions: any;
   setCurrentFormOptions: React.Dispatch<React.SetStateAction<any>>;
-  carouselImages: UploadApiResponse[] | null;
-  setCarouselImages: React.Dispatch<
+  contextImages: UploadApiResponse[] | null;
+  setContextImages: React.Dispatch<
     React.SetStateAction<UploadApiResponse[] | null>
   >;
   hasFlyerAtLocation: boolean;
@@ -77,6 +78,12 @@ export type ContextType = {
     React.SetStateAction<boolean>
   >;
   showDeleteFlyerTemplateModal: boolean;
+  setShowDeleteFilesModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showDeleteFilesModal: boolean;
+  likedContextSessionFlyers: string[] | null;
+  setLikedContextSessionFlyers: React.Dispatch<
+    React.SetStateAction<string[] | null>
+  >;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -105,8 +112,8 @@ const GlobalContext = createContext<ContextType>({
   setUser: () => {},
   currentFormOptions: null,
   setCurrentFormOptions: () => {},
-  carouselImages: null,
-  setCarouselImages: () => {},
+  contextImages: null,
+  setContextImages: () => {},
   hasFlyerAtLocation: false,
   setHasFlyerAtLocation: () => {},
   isSelectingNewPlace: false,
@@ -119,6 +126,10 @@ const GlobalContext = createContext<ContextType>({
   showEditFlyerModal: false,
   setShowDeleteFlyerTemplateModal: () => {},
   showDeleteFlyerTemplateModal: false,
+  setShowDeleteFilesModal: () => {},
+  showDeleteFilesModal: false,
+  likedContextSessionFlyers: null,
+  setLikedContextSessionFlyers: () => {},
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -148,7 +159,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
     getValues: UseFormGetValues<any>;
     setValue: UseFormSetValue<any>;
   } | null>(null);
-  const [carouselImages, setCarouselImages] = useState<
+  const [contextImages, setContextImages] = useState<
     UploadApiResponse[] | null
   >(null);
   const [hasFlyerAtLocation, setHasFlyerAtLocation] = useState(false);
@@ -162,6 +173,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [showEditFlyerModal, setShowEditFlyerModal] = useState(false);
   const [showDeleteFlyerTemplateModal, setShowDeleteFlyerTemplateModal] =
     useState(false);
+  const [showDeleteFilesModal, setShowDeleteFilesModal] = useState(false);
 
   const {
     getUserGeo,
@@ -170,6 +182,10 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
     setCoords,
     setIsGettingLocation,
   } = useGetUserGeo();
+
+  const [likedContextSessionFlyers, setLikedContextSessionFlyers] = useState<
+    string[] | null
+  >(null);
 
   return (
     <GlobalContext.Provider
@@ -200,6 +216,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         showEditFlyerModal,
         setShowDeleteFlyerTemplateModal,
         showDeleteFlyerTemplateModal,
+        setShowDeleteFilesModal,
+        showDeleteFilesModal,
         // Auth
         isLoggedIn,
         setIsLoggedIn,
@@ -217,8 +235,10 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         setSelectedTemplate,
         currentFormOptions,
         setCurrentFormOptions,
-        carouselImages,
-        setCarouselImages,
+        contextImages,
+        setContextImages,
+        likedContextSessionFlyers,
+        setLikedContextSessionFlyers,
       }}
     >
       {children}

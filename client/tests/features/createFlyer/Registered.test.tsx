@@ -13,7 +13,7 @@ import {
   QueryClientProviderWrapper,
 } from "../../test-utils";
 import { resultInfo } from "../../fixtures/cloudinary/responses";
-import useCreateRegisteredFlyer from "../../../src/features/createFlyer/useCreateRegisteredFlyer";
+import useRegisteredFlyer from "../../../src/features/createFlyer/useRegisteredFlyer";
 
 import { getFieldError } from "../../test-utils";
 // import { useForm } from "react-hook-form";
@@ -26,7 +26,7 @@ import { templateMock } from "../../fixtures/template/template";
 
 // mocks
 vi.mock("../../../src/context/GlobalContext");
-vi.mock("../../../src/features/createFlyer/useCreateRegisteredFlyer");
+vi.mock("../../../src/features/createFlyer/useRegisteredFlyer");
 vi.mock("react-hot-toast");
 // vi.mock("react-hook-form", async () => {
 //   const actual = await vi.importActual("react-hook-form");
@@ -420,7 +420,7 @@ describe("Registered", () => {
           close: closeSpy.mockReturnValue(true),
         };
       });
-      vi.mocked(useCreateRegisteredFlyer).mockImplementation(() => {
+      vi.mocked(useRegisteredFlyer).mockImplementation(() => {
         return {
           createFlyer: createFlyerSpy,
           createFlyerError: null,

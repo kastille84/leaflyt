@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import WhichTemplate from "../../../src/features/template/WhichTemplate";
 
 import * as GlobalContext from "../../../src/context/GlobalContext";
-import useCreateRegisteredFlyer from "../../../src/features/createFlyer/useCreateRegisteredFlyer";
+import useRegisteredFlyer from "../../../src/features/createFlyer/useRegisteredFlyer";
 
 // fixtures
 import { mockUseGlobalContextReturnObj } from "../../fixtures/context/globalContext";
@@ -15,7 +15,7 @@ import { responseData } from "../../fixtures/nearbyPlaces";
 
 // mocks
 vi.mock("../../../src/context/GlobalContext");
-vi.mock("../../../src/features/createFlyer/useCreateRegisteredFlyer");
+vi.mock("../../../src/features/createFlyer/useRegisteredFlyer");
 vi.mock("react-hot-toast");
 
 const user = userEvent.setup();
@@ -32,7 +32,7 @@ describe("WhichTemplate", () => {
       user: userFromContext,
       selectedPlace: mockPlace,
     }));
-    vi.mocked(useCreateRegisteredFlyer).mockImplementation(() => {
+    vi.mocked(useRegisteredFlyer).mockImplementation(() => {
       return {
         createFlyer: vi.fn(),
         createFlyerError: null,

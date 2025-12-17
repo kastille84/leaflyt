@@ -35,8 +35,12 @@ const StyledButtonContainer = styled.div`
 `;
 
 export default function AssestSelectionContainer() {
-  const { currentFormOptions, setBottomSlideInType, setIsOpenBottomSlideIn } =
-    useGlobalContext();
+  const {
+    currentFormOptions,
+    setBottomSlideInType,
+    setIsOpenBottomSlideIn,
+    user,
+  } = useGlobalContext();
   const {
     selectedOption,
     setSelectedOption,
@@ -120,14 +124,20 @@ export default function AssestSelectionContainer() {
           size="small"
           type="button"
           variation={
-            assetsList.length >= userLimits.media.limit
+            assetsList.length >= userLimits.media.limit ||
+            timedAssetsList.length + (user?.assets?.length || 0) >=
+              userLimits.maxAssets
               ? "disabled"
               : selectedOption === "new"
               ? "primary"
               : "secondary"
           }
           onClick={() => setSelectedOption("new")}
-          disabled={assetsList.length >= userLimits.media.limit}
+          disabled={
+            assetsList.length >= userLimits.media.limit ||
+            timedAssetsList.length + (user?.assets?.length || 0) >=
+              userLimits.maxAssets
+          }
         >
           + Add New Asset
         </Button>
@@ -136,7 +146,9 @@ export default function AssestSelectionContainer() {
       {determineSelectionTypeToDisplay()}
 
       <SelectedAssetList selectedAssets={assetsList} />
-      <small>{userLimits.media.limit - assetsList.length} remaining</small>
+      <small>
+        {userLimits.media.limit - assetsList.length} remaining per flyer
+      </small>
 
       <StyledButtonContainer data-testid="assets-buttons-container">
         <Button size="small" type="button" onClick={handleDone}>

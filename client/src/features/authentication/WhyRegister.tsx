@@ -117,7 +117,7 @@ export default function WhyRegister() {
         </StyledContentContainer>
       </StyledArticleContainer>
 
-      <StyledArticleContainer>
+      {/* <StyledArticleContainer>
         <StyledIconContainer>
           <HiOutlineMap />
         </StyledIconContainer>
@@ -128,7 +128,7 @@ export default function WhyRegister() {
             posted, and it's done.
           </StyledText>
         </StyledContentContainer>
-      </StyledArticleContainer>
+      </StyledArticleContainer> */}
 
       <StyledArticleContainer>
         <StyledIconContainer>
