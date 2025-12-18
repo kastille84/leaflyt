@@ -8,6 +8,7 @@ import {
   HiOutlineMap,
   HiOutlinePhoto,
 } from "react-icons/hi2";
+import { useState } from "react";
 
 const StyledWhyRegisterContainer = styled.div`
   display: flex;
@@ -16,6 +17,54 @@ const StyledWhyRegisterContainer = styled.div`
   padding: 2.4rem;
   /* border: 1px solid var(--color-grey-100); */
   background-color: var(--color-brand-100);
+  position: relative;
+
+  @media (max-width: 75em) {
+    position: absolute;
+    top: 0;
+    left: -400px;
+    z-index: 2;
+    width: 400px;
+    transition: left 0.5s ease-in-out;
+
+    &.open {
+      left: 0;
+    }
+  }
+
+  @media (max-width: 34em) {
+    /* display: none; */
+    width: 250px;
+    left: -250px;
+  }
+`;
+
+const SlideOpener = styled.div`
+  position: absolute;
+  top: 60px;
+  right: -68px;
+  font-size: 1.2rem;
+  /* opacity: 0.8; */
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--color-grey-700);
+  background-color: var(--color-orange-500);
+  padding: 0.8rem 1.6rem;
+  cursor: pointer;
+  display: none;
+
+  @media (max-width: 75em) {
+    display: block;
+    transform: rotate(90deg);
+    right: -78px;
+  }
+  @media (max-width: 59em) {
+    right: -69px;
+  }
+
+  @media (max-width: 34em) {
+    right: -53px;
+  }
 `;
 
 const StyledIconContainer = styled.div`
@@ -56,8 +105,10 @@ const StyledText = styled.p`
   line-height: 1.4;
 `;
 export default function WhyRegister() {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <StyledWhyRegisterContainer>
+    <StyledWhyRegisterContainer className={isOpen ? "open" : ""}>
+      <SlideOpener onClick={() => setIsOpen(!isOpen)}>Why Register</SlideOpener>
       <div>
         <StyledTopHeading as="h2">Why Signup?</StyledTopHeading>
         <StyledText>
