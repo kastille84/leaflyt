@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useGlobalContext } from "../context/GlobalContext";
 import Button from "./Button";
 import { useEffect } from "react";
-import { useLocalStorageState } from "../hooks/useLocalStorageState";
+
 import { useNavigate } from "react-router-dom";
 import OverlaySpinner from "./OverlaySpinner";
 import LocationSelection from "../features/location/LocationSelection";

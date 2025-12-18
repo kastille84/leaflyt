@@ -19,6 +19,11 @@ const StyledMainLayout = styled.main`
   grid-template-columns: 25rem 1fr;
   grid-template-rows: auto 1fr;
   font-size: 1.8rem;
+  position: relative;
+
+  @media (max-width: 59em) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const StyledMainContentContainer = styled.div`
