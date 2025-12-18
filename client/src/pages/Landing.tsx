@@ -10,15 +10,18 @@ import { useNavigate } from "react-router-dom";
 import useLoginWithAccessToken from "../features/authentication/useLoginWithAccessToken";
 import { supabase } from "../services/supabase";
 
-const StyledHeroSection = styled.section`
+const StyledMainSection = styled.section`
   color: var(--color-blue-200);
   height: 100vh;
-  display: flex;
+  /* display: flex; */
   background-image: linear-gradient(
     to right,
     var(--color-blue-600) 5%,
     var(--color-blue-400) 50%
   );
+  @media (max-width: 59em) {
+    /* flex-direction: column-reverse; */
+  }
 
   & h2 {
     color: var(--color-blue-200);
@@ -31,17 +34,6 @@ const StyledHeroSection = styled.section`
   }
 `;
 
-const StyledFigure = styled.figure`
-  flex: 1;
-  /* background-image: linear-gradient(to right, var(--color-blue-400)); */
-  opacity: 0.8;
-
-  & img {
-    position: relative;
-    display: block;
-    z-index: -1;
-  }
-`;
 const StyledHeroArticle = styled.article`
   background-color: var(--color-blue-600);
   display: flex;
@@ -53,11 +45,86 @@ const StyledHeroArticle = styled.article`
   padding: 4.8rem;
 `;
 
+const StyledHeroSection = styled.section`
+  display: flex;
+  @media (max-width: 44em) {
+    flex-direction: column-reverse;
+  }
+
+  & button {
+    margin-top: 2.4rem;
+  }
+`;
+
+const StyledHeroContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 75em) {
+    flex: 2;
+  }
+  @media (max-width: 44em) {
+    margin-top: 2.4rem;
+
+    & h2 {
+      font-size: 1.5rem;
+    }
+  }
+`;
+
+const StyledFigure = styled.figure`
+  /* background-image: linear-gradient(to right, var(--color-blue-400)); */
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* @media (max-width: 59em) {
+  } */
+  @media (max-width: 75em) {
+    flex: 1;
+  }
+  & img {
+    position: relative;
+    display: block;
+    z-index: -1;
+    width: 80%;
+    height: 80%;
+    margin: auto;
+    margin-top: 0;
+
+    @media (max-width: 44em) {
+      width: 30%;
+      height: 30%;
+      object-fit: cover;
+      margin: auto;
+    }
+    @media (max-width: 34em) {
+      width: 50%;
+      height: 50%;
+      object-fit: cover;
+      margin: auto;
+    }
+  }
+`;
+
 const StyledHeroH1 = styled.h1`
-  font-size: 7.8rem;
+  font-size: 6.4rem;
   font-weight: 600;
   letter-spacing: 0.1rem;
   line-height: 1;
+
+  @media (max-width: 84em) {
+    font-size: 5rem;
+  }
+  @media (max-width: 59em) {
+    font-size: 4rem;
+  }
+  @media (max-width: 44em) {
+    font-size: 3rem;
+  }
 `;
 
 const StyledButtonContainer = styled.div`
@@ -112,17 +179,10 @@ export default function Landing() {
 
   return (
     <main>
-      <StyledHeroSection>
+      <StyledMainSection>
         <StyledHeroArticle>
-          <StyledHeroH1>
-            Making Community Boards Fun, Interactive & Useful Again
-          </StyledHeroH1>
-          <Heading as="h2">
-            Spread Your Message. <br />
-            See What Others are Discussing & Doing in Your{" "}
-            <span>Local Digital Community Board</span>
-          </Heading>
           <StyledButtonContainer>
+            <Button onClick={getUserGeo}>Boards Near You</Button>
             <StyledAuthButtonsContainer>
               <Button variation="secondary" onClick={handleSignUpClick}>
                 Signup
@@ -134,18 +194,32 @@ export default function Landing() {
                 Login
               </Button>
             </StyledAuthButtonsContainer>
-            <Button onClick={getUserGeo}>Search For a Board Near You</Button>
           </StyledButtonContainer>
+          <StyledHeroSection>
+            <StyledHeroContent>
+              <div>
+                <StyledHeroH1>
+                  Let's Make Community Boards Fun, Interactive & Useful Again
+                </StyledHeroH1>
+                <Heading as="h2">
+                  Spread Your Message. <br />
+                  See What Others are Posting in Your{" "}
+                  <span>Local Digital Community Board</span>
+                </Heading>
+              </div>
+              <Button onClick={getUserGeo}>Find a Board Near You</Button>
+            </StyledHeroContent>
+            <StyledFigure>
+              <img
+                src={"/images/flyer-hero-2.png"}
+                height={"100%"}
+                width={"100%"}
+                alt=""
+              />
+            </StyledFigure>
+          </StyledHeroSection>
         </StyledHeroArticle>
-        <StyledFigure>
-          <img
-            src={"/images/flyer-hero-2.png"}
-            height={"100%"}
-            width={"100%"}
-            alt=""
-          />
-        </StyledFigure>
-      </StyledHeroSection>
+      </StyledMainSection>
       {isGettingLocation && (
         <OverlaySpinner message="Getting Your Location based on your device's GPS, mobile or wifi signal" />
       )}

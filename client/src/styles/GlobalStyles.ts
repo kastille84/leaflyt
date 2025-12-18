@@ -147,6 +147,19 @@ img {
   max-width: 100%;
 }
 
+// media queries
+
+
+@media (max-width: 59em) {
+  html {
+    font-size: 55%;
+  }
+}
+@media (max-width: 34em) {
+  html {
+    font-size: 40%;
+  }
+}
 `;
 
 export default GlobalStyles;
