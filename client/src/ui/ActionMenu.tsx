@@ -46,7 +46,7 @@ const StyledAvatar = styled.div`
 `;
 
 const StyledAddress = styled.div`
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   line-height: 1.3;
   /* padding: 1rem 2.4rem; */
 `;

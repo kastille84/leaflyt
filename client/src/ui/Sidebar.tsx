@@ -37,7 +37,7 @@ const StyledSidebar = styled.aside`
     position: absolute;
     top: 0;
     left: -250px;
-    z-index: 2;
+    z-index: 100;
     width: 250px;
   }
 
