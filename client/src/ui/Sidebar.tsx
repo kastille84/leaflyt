@@ -39,6 +39,7 @@ const StyledSidebar = styled.aside`
     left: -250px;
     z-index: 100;
     width: 250px;
+    /* border-top: 1px solid var(--color-blue-200); */
   }
 
   @media (max-width: 34em) {

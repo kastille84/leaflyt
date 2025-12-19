@@ -52,6 +52,7 @@ const StyledAddress = styled.div`
   background-color: var(--color-blue-100);
   display: flex;
   justify-content: flex-end;
+  border-bottom: 1px solid var(--color-blue-200);
 
   & div {
     padding-left: 2.4rem;
