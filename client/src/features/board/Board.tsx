@@ -16,8 +16,13 @@ const StyledBoardContainer = styled.div``;
 export default function Board() {
   const { id } = useParams();
   const QueryClient = useQueryClient();
-  const { selectedPlace, user, hasFlyerAtLocation, setHasFlyerAtLocation } =
-    useGlobalContext();
+  const {
+    selectedPlace,
+    user,
+    hasFlyerAtLocation,
+    setHasFlyerAtLocation,
+    anonUserPostings,
+  } = useGlobalContext();
   const [shouldGetPlace, setShouldGetPlace] = useState(false);
 
   const { isLoadingBoard, board } = useGetBoard(user?.id!);
@@ -28,17 +33,20 @@ export default function Board() {
   }, [selectedPlace]);
 
   useEffect(() => {
-    if (user) {
+    if (user || anonUserPostings.length > 0) {
       checkIfUserHasFlyerHere();
     }
-  }, [user, selectedPlace, board, id]);
+  }, [user, selectedPlace, board, id, anonUserPostings]);
 
   async function checkIfUserHasFlyerHere() {
     const boardData = await QueryClient.getQueryData(["board", id]);
     // const boardData = await QueryClient.ensureQueryData({
     //   queryKey: ["board", id],
     // });
-    if ((boardData as any)?.data?.hasFlyerHere) {
+    if (
+      (boardData as any)?.data?.hasFlyerHere ||
+      anonUserPostings.includes(id!)
+    ) {
       setHasFlyerAtLocation(true);
     } else {
       setHasFlyerAtLocation(false);

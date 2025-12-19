@@ -76,6 +76,7 @@ export default function ActionMenu() {
     hasFlyerAtLocation,
     isSelectingNewPlace,
     setIsSelectingNewPlace,
+    anonUserPostings,
   } = useGlobalContext();
 
   const navigate = useNavigate();
