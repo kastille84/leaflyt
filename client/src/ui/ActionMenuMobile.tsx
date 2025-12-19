@@ -50,6 +50,13 @@ const StyledAddress = styled.div`
   padding: 1rem 2.4rem;
   line-height: 1.3;
   background-color: var(--color-blue-100);
+  display: flex;
+  justify-content: flex-end;
+
+  & div {
+    padding-left: 2.4rem;
+    border-left: 1px dashed var(--color-brand-500);
+  }
 `;
 
 const VerySmall = styled.p`
@@ -173,7 +180,7 @@ export default function ActionMenuMobile() {
                 getUserGeo();
               }}
             >
-              Find Boards Near You
+              Find Boards
             </Button>
           </div>
           {determineSelectedPlaceActions()}
@@ -185,11 +192,14 @@ export default function ActionMenuMobile() {
           {determineAuthActions()}
         </StyledActionMenu>
         <StyledAddress>
-          <p>{selectedPlace?.displayName.text}</p>
-          <p>{selectedPlace?.formattedAddress}</p>
-          <VerySmall>
-            * Establishment is not directly involved with this board
-          </VerySmall>
+          <div>
+            {" "}
+            <p>{selectedPlace?.displayName.text}</p>
+            <p>{selectedPlace?.formattedAddress}</p>
+            <VerySmall>
+              * Establishment is not directly involved with this board
+            </VerySmall>
+          </div>
         </StyledAddress>
       </div>
       {!selectedPlace && isGettingLocation && (

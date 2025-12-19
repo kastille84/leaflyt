@@ -51,6 +51,11 @@ const common = {
     flex-direction: column;
     justify-content: space-between;
     margin-bottom: 2.4rem;
+
+    @media (max-width: 59em) {
+      /* margin: auto; */
+      margin: 0 auto 2.4rem auto;
+    }
   `,
 };
 

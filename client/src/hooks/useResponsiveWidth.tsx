@@ -43,8 +43,10 @@ export function useResponsiveWidth() {
     return "m_tablet";
   } else if (width <= max_width.l_tablet) {
     return "l_tablet";
-  } else {
+  } else if (width <= max_width.s_desktop) {
     return "s_desktop";
+  } else {
+    return "l_desktop";
   }
   // return width > max_width.s_desktop
   //   ? "s_desktop"

@@ -8,8 +8,10 @@ import CreateFlyer from "../../features/createFlyer/CreateFlyer";
 import FlyerFormContainer from "./FlyerFormContainer";
 import { JSX } from "react";
 import Registered from "../../features/createFlyer/Registered";
+import { useResponsiveWidth } from "../../hooks/useResponsiveWidth";
 
 export default function FlyerSlideIn() {
+  const responsiveVal = useResponsiveWidth();
   const {
     user,
     isOpenFlyerDrawer,
@@ -61,7 +63,15 @@ export default function FlyerSlideIn() {
         open={isOpenFlyerDrawer}
         onClose={handleDrawerClose}
         direction="right"
-        size={"50vw"}
+        size={
+          ["s_mobile", "l_mobile"].includes(responsiveVal)
+            ? "100%"
+            : ["m_tablet", "s_tablet"].includes(responsiveVal)
+            ? "80%"
+            : ["l_tablet", "s_desktop"].includes(responsiveVal)
+            ? "70%"
+            : "50vw"
+        }
       >
         <FlyerFormContainer
           action={drawerAction!}

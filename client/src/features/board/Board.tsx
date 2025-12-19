@@ -10,10 +10,12 @@ import styled from "styled-components";
 import { useGlobalContext } from "../../context/GlobalContext";
 import useGetPlaceByPlaceId from "../../hooks/useGetPlaceByPlaceId";
 import InfoAlert from "../../ui/InfoAlert";
+import { useResponsiveWidth } from "../../hooks/useResponsiveWidth";
 
 const StyledBoardContainer = styled.div``;
 
 export default function Board() {
+  const responsiveVal = useResponsiveWidth();
   const { id } = useParams();
   const QueryClient = useQueryClient();
   const {
@@ -68,7 +70,7 @@ export default function Board() {
             <InfoAlert text="You already have a flyer posted here" />
           )}
           <ResponsiveMasonry
-            columnsCountBreakPoints={{ 350: 1, 1096: 2, 1600: 3 }}
+            columnsCountBreakPoints={{ 350: 1, 940: 2, 1600: 3 }}
 
             // gutterBreakpoints={{ 350: "12px", 750: "16px", 900: "24px" }}
           >
