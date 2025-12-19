@@ -34,7 +34,7 @@ export function useResponsiveWidth() {
   // }
 
   if (width <= max_width.s_mobile) {
-    return "s_mobile";
+    return "s_mobile" as string;
   } else if (width <= max_width.l_mobile) {
     return "l_mobile";
   } else if (width <= max_width.s_tablet) {

@@ -10,6 +10,7 @@ import {
 } from "react-icons/hi2";
 
 const StyledSidebar = styled.aside`
+  height: 100%;
   background-color: var(--color-blue-100);
   grid-column: 1/2;
   grid-row: 2/-1;
@@ -38,7 +39,6 @@ const StyledSidebar = styled.aside`
     left: -250px;
     z-index: 2;
     width: 250px;
-    height: 100vh;
   }
 
   @media (max-width: 34em) {
@@ -60,6 +60,7 @@ const StyledMenuOpenButton = styled.div`
     top: 5px;
     right: -3.5rem;
     z-index: 2;
+    padding-bottom: 0;
   }
 `;
 
@@ -67,7 +68,10 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <StyledSidebar className={isOpen ? "open" : ""}>
+    <StyledSidebar
+      className={isOpen ? "open" : ""}
+      onMouseLeave={() => setIsOpen(false)}
+    >
       <StyledMenuOpenButton onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? (
           <HiOutlineChevronDoubleLeft />

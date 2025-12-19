@@ -4,6 +4,7 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 import { supabase } from "../services/supabase";
 import ActionMenu from "../ui/ActionMenu";
+import ActionMenuMobile from "../ui/ActionMenuMobile";
 import Sidebar from "../ui/Sidebar";
 import CloseSlideInModal from "../ui/Modals/CloseSlideInModal";
 import EditFlyerModal from "../ui/Modals/EditFlyerModal";
@@ -12,6 +13,7 @@ import useLoginWithAccessToken from "../features/authentication/useLoginWithAcce
 import { useGlobalContext } from "../context/GlobalContext";
 import DeleteFlyerTemplateModal from "../ui/Modals/DeleteFlyerTemplateModal";
 import DeleteFilesModal from "../ui/Modals/DeleteFilesModal";
+import { useResponsiveWidth } from "../hooks/useResponsiveWidth";
 
 const StyledMainLayout = styled.main`
   height: 100vh;
@@ -34,6 +36,8 @@ const StyledMainContentContainer = styled.div`
 `;
 
 export default function MainLayout() {
+  const responsiveVal = useResponsiveWidth();
+
   const { setUser } = useGlobalContext();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -59,7 +63,12 @@ export default function MainLayout() {
 
   return (
     <StyledMainLayout data-testid="main-layout">
-      <ActionMenu></ActionMenu>
+      {["s_tablet", "l_mobile", "s_mobile"].includes(responsiveVal) ? (
+        <ActionMenuMobile></ActionMenuMobile>
+      ) : (
+        <ActionMenu></ActionMenu>
+      )}
+
       <StyledMainContentContainer>
         <Outlet />
       </StyledMainContentContainer>
