@@ -11,13 +11,12 @@ const StyledTemplateListContainer = styled.div`
   height: 100%;
   overflow-y: auto;
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
   gap: 2.4rem;
   padding-bottom: 2.4rem;
 
   @media (max-width: 59em) {
-    height: 100%;
+    justify-content: center;
   }
 `;
 
