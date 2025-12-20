@@ -41,14 +41,14 @@ const StyledWhichTemplateContainer = styled.div`
 
 const SlideOpener = styled.div`
   position: absolute;
-  top: 60px;
+  top: 25px;
   right: -68px;
-  font-size: 1.2rem;
+  /* font-size: 1.2rem; */
   /* opacity: 0.8; */
   font-weight: 600;
   letter-spacing: 1px;
   color: var(--color-grey-700);
-  background-color: var(--color-orange-500);
+  background-color: var(--color-orange-400);
   padding: 0.8rem 1.6rem;
   cursor: pointer;
   display: none;
