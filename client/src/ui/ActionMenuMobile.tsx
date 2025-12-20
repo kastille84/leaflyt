@@ -192,16 +192,17 @@ export default function ActionMenuMobile() {
           </StyledActionContainer>
           {determineAuthActions()}
         </StyledActionMenu>
-        <StyledAddress>
-          <div>
-            {" "}
-            <p>{selectedPlace?.displayName.text}</p>
-            <p>{selectedPlace?.formattedAddress}</p>
-            <VerySmall>
-              * Establishment is not directly involved with this board
-            </VerySmall>
-          </div>
-        </StyledAddress>
+        {selectedPlace && (
+          <StyledAddress>
+            <div>
+              <p>{selectedPlace?.displayName.text}</p>
+              <p>{selectedPlace?.formattedAddress}</p>
+              <VerySmall>
+                * Establishment is not directly involved with this board
+              </VerySmall>
+            </div>
+          </StyledAddress>
+        )}
       </div>
       {!selectedPlace && isGettingLocation && (
         <OverlaySpinner message="Getting Your Location based on your device's GPS, mobile or wifi signal" />

@@ -167,9 +167,11 @@ export default function ActionMenu() {
         <StyledAddress>
           <p>{selectedPlace?.displayName.text}</p>
           <p>{selectedPlace?.formattedAddress}</p>
-          <VerySmall>
-            * Establishment is not directly involved with this board
-          </VerySmall>
+          {selectedPlace && (
+            <VerySmall>
+              * Establishment is not directly involved with this board
+            </VerySmall>
+          )}
         </StyledAddress>
         <div>
           <Button
