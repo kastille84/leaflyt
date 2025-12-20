@@ -10,6 +10,10 @@ import { useState } from "react";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 import { useQueryClient } from "@tanstack/react-query";
 import { loginUserWithAccessToken } from "../../services/apiAuth";
+import {
+  HiOutlineChevronDoubleLeft,
+  HiOutlineChevronDoubleRight,
+} from "react-icons/hi2";
 
 const StyledWhichTemplateContainer = styled.div`
   display: flex;
@@ -18,6 +22,48 @@ const StyledWhichTemplateContainer = styled.div`
   padding: 2.4rem;
   /* border: 1px solid var(--color-grey-100); */
   background-color: var(--color-brand-100);
+  position: relative;
+
+  @media (max-width: 44em) {
+    position: absolute;
+    top: 0;
+    left: -300px;
+    z-index: 1000;
+    width: 300px;
+    height: 100%;
+    transition: left 0.5s ease-in-out;
+
+    &.open {
+      left: 0;
+    }
+  }
+`;
+
+const SlideOpener = styled.div`
+  position: absolute;
+  top: 60px;
+  right: -68px;
+  font-size: 1.2rem;
+  /* opacity: 0.8; */
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--color-grey-700);
+  background-color: var(--color-orange-500);
+  padding: 0.8rem 1.6rem;
+  cursor: pointer;
+  display: none;
+
+  @media (max-width: 44em) {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    border-radius: var(--border-radius-sm);
+    right: -35px;
+  }
+
+  @media (max-width: 34em) {
+    right: -25px;
+  }
 `;
 
 const StyledTopHeading = styled(Heading)`
@@ -48,6 +94,12 @@ const StyledScratchOption = styled.p`
   }
 `;
 
+const StyledButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.2rem;
+`;
+
 export default function WhichTemplate({
   setSelectedTemplate,
   selectedTemplate,
@@ -56,6 +108,7 @@ export default function WhichTemplate({
   selectedTemplate: DB_Template | null;
 }) {
   const [showSpinner, setShowSpinner] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const queryClient = useQueryClient();
 
   const {
@@ -104,13 +157,23 @@ export default function WhichTemplate({
   }
 
   return (
-    <StyledWhichTemplateContainer data-testid="which-template-container">
+    <StyledWhichTemplateContainer
+      data-testid="which-template-container"
+      className={isOpen ? "open" : ""}
+    >
+      <SlideOpener onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? (
+          <HiOutlineChevronDoubleLeft />
+        ) : (
+          <HiOutlineChevronDoubleRight />
+        )}
+      </SlideOpener>
       <div>
         <StyledTopHeading as="h2">
           Select a Template for Quick Posting
         </StyledTopHeading>
-        <StyledText>Don't create a flyer from scratch.</StyledText>
-        <StyledText>Select one of your templates to post quickly:</StyledText>
+        <StyledText>Don't create flyers from scratch everytime.</StyledText>
+        <StyledText>Use one of your templates & save time!</StyledText>
       </div>
       <TemplateList
         setSelectedTemplate={setSelectedTemplate}
@@ -124,7 +187,7 @@ export default function WhichTemplate({
           Or Create From Scratch
         </StyledScratchOption>
       </div>
-      <div data-testid="form-button-container">
+      <StyledButtonContainer data-testid="form-button-container">
         <Button
           type="button"
           size="medium"
@@ -134,7 +197,7 @@ export default function WhichTemplate({
           Done
         </Button>
         {showSpinner && <OverlaySpinner message={"Creating your flyer..."} />}
-      </div>
+      </StyledButtonContainer>
     </StyledWhichTemplateContainer>
   );
 }
