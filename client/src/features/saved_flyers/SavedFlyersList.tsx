@@ -9,6 +9,7 @@ import Heading from "../../ui/Heading";
 import { useEffect } from "react";
 import { DB_Flyers_Response } from "../../interfaces/DB_Flyers";
 import useRegisteredFlyer from "../createFlyer/useRegisteredFlyer";
+import { useResponsiveWidth } from "../../hooks/useResponsiveWidth";
 // import { groupFlyersToSavedFlyerss } from "../../utils/GeneralUtils";
 
 const StyledSavedFlyersListContainer = styled.div`
@@ -64,10 +65,23 @@ const StyledSavedFlyersListItem = styled.div`
   border-radius: var(--border-radius-md);
   padding: 2.4rem;
   background-color: var(--color-grey-50);
+
+  /* @media (max-width: 59em) {
+    align-self: center;
+  } */
 `;
 export default function SavedFlyersList() {
   const { user, setUser } = useGlobalContext();
   const { removeSavedFlyerFn } = useRegisteredFlyer();
+  const responsiveVal = useResponsiveWidth();
+
+  const responsiveItemStyle = {
+    alignItems: ["s_tablet", "m_tablet", "l_mobile", "s_mobile"].includes(
+      responsiveVal
+    )
+      ? "center"
+      : "start",
+  };
 
   async function removeSavedFlyer(id: number, toastMessage: string) {
     removeSavedFlyerFn(id, {
@@ -87,13 +101,17 @@ export default function SavedFlyersList() {
       {user && !user!["saved_flyers"].length && (
         <StyledSmall as="h2">No saved flyers</StyledSmall>
       )}
-      <div data-testid="board" style={{ width: "100%", margin: "auto" }}>
+      <div data-testid="saved-flyers" style={{ width: "100%" }}>
         <ResponsiveMasonry
-          columnsCountBreakPoints={{ 350: 1, 1096: 2, 1600: 3 }}
+          columnsCountBreakPoints={{ 350: 1, 1200: 2, 1600: 3 }}
 
           // gutterBreakpoints={{ 350: "12px", 750: "16px", 900: "24px" }}
         >
-          <Masonry columnsCount={3} gutter="1.6rem">
+          <Masonry
+            columnsCount={3}
+            gutter="1.6rem"
+            itemStyle={responsiveItemStyle}
+          >
             {user &&
               user!["saved_flyers"].map((savedFlyer: DB_Saved_Flyer) => (
                 <StyledSavedFlyersListItem key={savedFlyer.id}>
