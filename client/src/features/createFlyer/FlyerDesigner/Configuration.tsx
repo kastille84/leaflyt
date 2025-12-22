@@ -7,24 +7,48 @@ import FormControl from "../../../ui/Form/FormControl";
 import SelectInput from "../../../ui/Form/SelectInput";
 import { useFlyerDesignerContext } from "../../../context/FlyerDesignerContext";
 import ColorInput from "../../../ui/Form/ColorInput";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import BorderRadiusInput from "../../../ui/Form/BorderRadiusInput";
 import Button from "../../../ui/Button";
 import { useGlobalContext } from "../../../context/GlobalContext";
 import { REGISTERED_FLYER_DESIGN_DEFAULT } from "../../../constants";
 import toast from "react-hot-toast";
+import {
+  HiOutlineChevronDoubleLeft,
+  HiOutlineChevronDoubleRight,
+} from "react-icons/hi2";
 
 const StyledConfigurationContainer = styled.div`
   width: 100%;
   height: 100%;
   padding: 2.4rem;
-  background-color: var(--color-grey-50);
+  background-color: var(--color-blue-100);
   display: flex;
-  /* justify-content: center; */
-  /* align-items: center; */
   flex-direction: column;
-  /* border-left: 1px solid var(--color-grey-200); */
-  /* border-left: none; */
+
+  @media (max-width: 59em) {
+    width: 500px;
+  }
+  @media (max-width: 44em) {
+    width: 300px;
+  }
+
+  /* 
+  position: relative;
+
+  @media (max-width: 59em) {
+    position: absolute;
+    top: 0;
+    right: -300px;
+    z-index: 1000;
+    width: 300px;
+    height: 100%;
+    transition: right 0.5s ease-in-out;
+
+    &.open {
+      right: 0;
+    }
+  } */
 `;
 const StyledFormButtonContainer = styled.div`
   width: 100%;
@@ -32,7 +56,36 @@ const StyledFormButtonContainer = styled.div`
   justify-content: flex-end;
   gap: 2.4rem;
 `;
+
+// const SlideOpener = styled.div`
+//   position: absolute;
+//   top: 25px;
+//   left: -68px;
+//   /* font-size: 1.2rem; */
+//   /* opacity: 0.8; */
+//   font-weight: 600;
+//   letter-spacing: 1px;
+//   color: var(--color-grey-700);
+//   background-color: var(--color-orange-400);
+//   padding: 0.8rem 1.6rem;
+//   cursor: pointer;
+//   display: none;
+
+//   @media (max-width: 59em) {
+//     display: flex;
+//     align-items: center;
+//     gap: 0.8rem;
+//     border-radius: var(--border-radius-sm);
+//     left: -35px;
+//   }
+
+//   @media (max-width: 34em) {
+//     left: -25px;
+//   }
+// `;
 export default function Configuration() {
+  // const [isOpen, setIsOpen] = useState(false);
+
   const { setBottomSlideInType, setIsOpenBottomSlideIn, currentFormOptions } =
     useGlobalContext();
   const { selectedSection, selectedFlyer, setSelectedFlyer } =
@@ -58,7 +111,7 @@ export default function Configuration() {
 
   useEffect(() => {
     setSelectedFlyer({ ...selectedFlyer, flyerDesign: getValues() });
-  }, [formValuesWatch]);
+  }, [formValuesWatch, getValues, setSelectedFlyer, selectedFlyer]);
 
   function handleReset() {
     reset(REGISTERED_FLYER_DESIGN_DEFAULT);
@@ -74,7 +127,17 @@ export default function Configuration() {
   }
 
   return (
-    <StyledConfigurationContainer data-testid="configuration-container">
+    <StyledConfigurationContainer
+      data-testid="configuration-container"
+      // className={isOpen ? "open" : ""}
+    >
+      {/* <SlideOpener onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? (
+          <HiOutlineChevronDoubleRight />
+        ) : (
+          <HiOutlineChevronDoubleLeft />
+        )}
+      </SlideOpener> */}
       <Heading as="h2">Controls</Heading>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <FormControlRow>
@@ -103,7 +166,7 @@ export default function Configuration() {
           <BorderRadiusInput register={register} getValues={getValues} />
         </FormControlRow>
         <StyledFormButtonContainer data-testid="form-button-container">
-          <Button type="submit">Done</Button>
+          <Button type="submit">All Done With Design</Button>
           <Button type="button" variation="secondary" onClick={handleReset}>
             Reset
           </Button>

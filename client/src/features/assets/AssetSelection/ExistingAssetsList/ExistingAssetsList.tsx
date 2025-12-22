@@ -16,6 +16,10 @@ const StyledExistingAssetsListContainer = styled.ul`
   gap: 1.6rem;
   overflow: auto;
   align-content: flex-start;
+
+  @media (max-width: 59em) {
+    height: 500px;
+  }
 `;
 
 export default function ExistingAssetsList({

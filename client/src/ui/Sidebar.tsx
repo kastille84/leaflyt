@@ -66,7 +66,7 @@ const StyledMenuOpenButton = styled.div`
 `;
 
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <StyledSidebar
