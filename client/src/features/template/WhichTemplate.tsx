@@ -184,7 +184,7 @@ export default function WhichTemplate({
           onClick={handleScratchSelection}
           className={selectedTemplate === null ? "selected" : ""}
         >
-          Or Create From Scratch
+          Create From Scratch
         </StyledScratchOption>
       </div>
       <StyledButtonContainer data-testid="form-button-container">

@@ -14,6 +14,7 @@ const StyledTemplateListContainer = styled.div`
   flex-wrap: wrap;
   gap: 2.4rem;
   padding-bottom: 2.4rem;
+  align-content: flex-start;
 
   @media (max-width: 59em) {
     justify-content: center;

@@ -15,6 +15,7 @@ const StyledExistingAssetsListContainer = styled.ul`
   /* flex-direction: column; */
   gap: 1.6rem;
   overflow: auto;
+  align-content: flex-start;
 `;
 
 export default function ExistingAssetsList({
