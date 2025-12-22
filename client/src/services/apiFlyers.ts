@@ -48,7 +48,7 @@ export const createUnregisteredFlyer = async (
   try {
     const { data: newFlyer, error } = await supabase
       .from("flyers")
-      .insert([{ ...flyerData, placeId: selectedPlace.id, likes: 0 }]) // selectedPlace.id is the placeId of the board
+      .insert([{ ...flyerData, place: selectedPlace.id, likes: 0 }]) // selectedPlace.id is the placeId of the board
       .select("*")
       .single();
 

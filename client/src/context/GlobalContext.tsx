@@ -84,6 +84,8 @@ export type ContextType = {
   setLikedContextSessionFlyers: React.Dispatch<
     React.SetStateAction<string[] | null>
   >;
+  anonUserPostings: string[];
+  setAnonUserPostings: React.Dispatch<React.SetStateAction<string[] | []>>;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -130,6 +132,8 @@ const GlobalContext = createContext<ContextType>({
   showDeleteFilesModal: false,
   likedContextSessionFlyers: null,
   setLikedContextSessionFlyers: () => {},
+  anonUserPostings: [],
+  setAnonUserPostings: () => {},
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -174,6 +178,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [showDeleteFlyerTemplateModal, setShowDeleteFlyerTemplateModal] =
     useState(false);
   const [showDeleteFilesModal, setShowDeleteFilesModal] = useState(false);
+  const [anonUserPostings, setAnonUserPostings] = useState<string[] | []>([]);
 
   const {
     getUserGeo,
@@ -223,6 +228,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         setIsLoggedIn,
         user,
         setUser,
+        anonUserPostings,
+        setAnonUserPostings,
         // SlideIns
         isOpenBottomSlideIn,
         setIsOpenBottomSlideIn,

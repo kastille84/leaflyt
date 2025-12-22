@@ -11,6 +11,19 @@ const StyledTemplateContainer = styled.div`
   /* background: red; */
   display: grid;
   grid-template-columns: 35% 1fr;
+
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: 59em) {
+    width: 100%;
+  }
+
+  @media (max-width: 44em) {
+    /* display: flex;
+    flex-direction: column; */
+    grid-template-columns: 1fr;
+  }
 `;
 
 export default function TemplateSelectionContainer() {

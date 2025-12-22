@@ -28,6 +28,10 @@ const StyledFormContainer = styled.div`
   flex-direction: column;
   border: 1px solid var(--color-brand-100);
   padding: 2.4rem 0 2.4rem 2.4rem;
+
+  @media (max-width: 75em) {
+    padding: 4rem;
+  }
 `;
 
 const StyledForm = styled.form`
@@ -38,6 +42,10 @@ const StyledForm = styled.form`
   padding-top: 2.4rem;
   padding-right: 2.4rem;
   overflow-y: auto;
+
+  @media (max-width: 59em) {
+    height: 100%;
+  }
 `;
 
 const StyledSubmitError = styled(Heading)`

@@ -58,9 +58,9 @@ export default function FlyerFormContainer({
   function setTitle() {
     switch (action) {
       case "create":
-        return `Create Flyer at ${name}`;
+        return `Create Flyer near ${name}`;
       case "edit":
-        return `Edit Flyer at ${name}`;
+        return `Edit Flyer near ${name}`;
       case "editTemplate":
         return "Edit Template";
       case "createTemplate":

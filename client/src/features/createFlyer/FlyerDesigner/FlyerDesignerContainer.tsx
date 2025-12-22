@@ -13,6 +13,16 @@ const StyledContainer = styled.div`
   /* background: red; */
   display: grid;
   grid-template-columns: 1fr 35%;
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: 75em) {
+    width: 100%;
+  }
+  @media (max-width: 59em) {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
 `;
 
 export default function FlyerDesignerContainer() {

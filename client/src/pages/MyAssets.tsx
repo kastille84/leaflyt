@@ -14,6 +14,10 @@ const StyledHeadingContainer = styled.div`
   display: flex;
   align-items: start;
   gap: 2.4rem;
+
+  @media (max-width: 59em) {
+    justify-content: center;
+  }
 `;
 
 const StyledAssetsTitleContainer = styled.div``;

@@ -36,8 +36,8 @@ const StyledAvatar = styled.div`
   background-color: var(--color-grey-50);
   /* opacity: 0.65; */
   color: var(--color-brand-700);
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   padding: 1rem;
   display: flex;
   justify-content: center;
@@ -46,19 +46,27 @@ const StyledAvatar = styled.div`
 `;
 
 const StyledAddress = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  padding: 1rem 2.4rem;
   line-height: 1.3;
-  /* padding: 1rem 2.4rem; */
+  background-color: var(--color-blue-100);
+  display: flex;
+  justify-content: flex-end;
+  border-bottom: 1px solid var(--color-blue-200);
+
+  & div {
+    padding-left: 2.4rem;
+    border-left: 1px dashed var(--color-brand-500);
+  }
 `;
 
 const VerySmall = styled.p`
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   color: var(--color-grey-400);
   font-style: italic;
   font-weight: 400;
 `;
-
-export default function ActionMenu() {
+export default function ActionMenuMobile() {
   const {
     selectedPlace,
     setSelectedPlace,
@@ -76,7 +84,6 @@ export default function ActionMenu() {
     hasFlyerAtLocation,
     isSelectingNewPlace,
     setIsSelectingNewPlace,
-    anonUserPostings,
   } = useGlobalContext();
 
   const navigate = useNavigate();
@@ -163,36 +170,40 @@ export default function ActionMenu() {
 
   return (
     <>
-      <StyledActionMenu>
-        <StyledAddress>
-          <p>{selectedPlace?.displayName.text}</p>
-          <p>{selectedPlace?.formattedAddress}</p>
-          {selectedPlace && (
-            <VerySmall>
-              * Establishment is not directly involved with this board
-            </VerySmall>
-          )}
-        </StyledAddress>
-        <div>
-          <Button
-            size="small"
-            variation="secondary"
-            onClick={() => {
-              setIsSelectingNewPlace(true);
-              getUserGeo();
-            }}
-          >
-            Find Boards Near You
-          </Button>
-        </div>
-        {determineSelectedPlaceActions()}
-        <StyledActionContainer>
-          {/* <p>filter</p>
-          <p>search</p>
-          <p>grid</p> */}
-        </StyledActionContainer>
-        {determineAuthActions()}
-      </StyledActionMenu>
+      <div>
+        <StyledActionMenu>
+          <div>
+            <Button
+              size="small"
+              variation="secondary"
+              onClick={() => {
+                setIsSelectingNewPlace(true);
+                getUserGeo();
+              }}
+            >
+              Find Boards
+            </Button>
+          </div>
+          {determineSelectedPlaceActions()}
+          <StyledActionContainer>
+            {/* <p>filter</p>
+            <p>search</p>
+            <p>grid</p> */}
+          </StyledActionContainer>
+          {determineAuthActions()}
+        </StyledActionMenu>
+        {selectedPlace && (
+          <StyledAddress>
+            <div>
+              <p>{selectedPlace?.displayName.text}</p>
+              <p>{selectedPlace?.formattedAddress}</p>
+              <VerySmall>
+                * Establishment is not directly involved with this board
+              </VerySmall>
+            </div>
+          </StyledAddress>
+        )}
+      </div>
       {!selectedPlace && isGettingLocation && (
         <OverlaySpinner message="Getting Your Location based on your device's GPS, mobile or wifi signal" />
       )}

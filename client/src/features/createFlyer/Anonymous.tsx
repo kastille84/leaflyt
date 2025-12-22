@@ -48,7 +48,7 @@ import { useParams } from "react-router-dom";
 const StyledAnonymousContainer = styled.div``;
 
 const StyledSubmitError = styled(Heading)`
-  color: var(--color-red-600);
+  color: var(--color-red-600) !important;
 `;
 const StyledFormContainer = styled.div`
   padding: 1.6rem 2.4rem;
@@ -85,14 +85,17 @@ export default function Anonymous() {
   });
 
   const queryClient = useQueryClient();
-  const { id: boardId } = useParams();
 
   const {
     setIsOpenFlyerDrawer,
     setDrawerAction,
     setShowCloseSlideInModal,
     setCurrentFormOptions,
+    anonUserPostings,
+    setAnonUserPostings,
+    selectedPlace,
   } = useGlobalContext();
+
   const { createFlyer } = useCreateUnregisteredFlyer();
   const typeOfUserWatch = watch("typeOfUser");
   const typeOfUser = getValues("typeOfUser");
@@ -135,11 +138,14 @@ export default function Anonymous() {
     createFlyer(prepData, {
       onSuccess: () => {
         setShowSpinner(false);
+        setAnonUserPostings([...anonUserPostings, selectedPlace!.id!]);
         toast.success("Flyer created!");
         setIsOpenFlyerDrawer(false);
         setDrawerAction(null);
-        // queryClient.invalidateQueries({ queryKey: ["board", boardId] });
-        queryClient.refetchQueries({ queryKey: ["board", boardId] });
+        queryClient.invalidateQueries({
+          queryKey: ["board", selectedPlace?.id],
+        });
+        // queryClient.refetchQueries({ queryKey: ["board", boardId] });
       },
       onError: (error: any) => {
         setShowSpinner(false);

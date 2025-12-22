@@ -4,7 +4,7 @@ import Drawer from "react-modern-drawer";
 //import styles 👇
 import "react-modern-drawer/dist/index.css";
 import { useGlobalContext } from "../../context/GlobalContext";
-import RegistrationContainer from "../../features/authentication/SignupContainer";
+import SignupContainer from "../../features/authentication/SignupContainer";
 import styled from "styled-components";
 import { HiOutlineXMark } from "react-icons/hi2";
 import FlyerDesignerContainer from "../../features/createFlyer/FlyerDesigner/FlyerDesignerContainer";
@@ -26,6 +26,10 @@ const StyledCloseContainer = styled.div`
 const StyledContentContainer = styled.div`
   height: 80rem;
   overflow: auto;
+
+  @media (max-width: 59em) {
+    height: 100vh;
+  }
 `;
 
 export default function SlideInBottom() {
@@ -40,7 +44,7 @@ export default function SlideInBottom() {
   function determineSlideInType() {
     switch (bottomSlideInType) {
       case "signup":
-        return <RegistrationContainer />;
+        return <SignupContainer />;
       case "upgrade":
         return <p>Upgrade</p>;
       case "carousel":

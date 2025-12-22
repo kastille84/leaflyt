@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import * as routerDom from "react-router-dom";
 
-import Landing from "../../src/pages/Landing";
+import Landing from "../../src/pages/Landing_orig";
 import * as GlobalContext from "../../src/context/GlobalContext";
 
 // fixtures

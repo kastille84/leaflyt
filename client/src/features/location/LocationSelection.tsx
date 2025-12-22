@@ -89,7 +89,7 @@ export default function LocationSelection({ coords }: { coords: LatLng }) {
           </span>
         </p>
         <Heading as="h2">
-          Based on your location, we found the following boards at:
+          Based on your location, we found the following boards near you:
         </Heading>
         {places && places?.length > 0 && <BoardListing places={places} />}
         {places && places?.length === 0 && !error && (
