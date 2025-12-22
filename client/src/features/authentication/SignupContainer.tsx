@@ -9,6 +9,13 @@ const StyledRegistrationContainer = styled.div`
   /* background: red; */
   display: grid;
   grid-template-columns: 35% 1fr;
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: 75em) {
+    width: 90%;
+    grid-template-columns: 1fr;
+  }
 `;
 
 export default function SignupContainer() {

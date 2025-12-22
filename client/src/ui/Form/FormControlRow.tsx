@@ -4,6 +4,10 @@ const StyledFormControlRow = styled.div`
   display: flex;
   gap: 2.4rem;
 
+  @media (max-width: 34em) {
+    flex-direction: column;
+  }
+
   /* & label {
     font-weight: 600;
     color: var(--color-brand-600);

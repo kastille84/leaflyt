@@ -15,6 +15,7 @@ const StyledSelectedAssetsList = styled.ul`
   flex-wrap: wrap;
   gap: 1.6rem;
   overflow: auto;
+  align-content: flex-start;
 `;
 
 export default function SelectedAssetsList({

@@ -23,7 +23,6 @@ import {
 import ImageCarousel from "./SubComponents/ImageCarousel";
 import { Auth_User_Profile_Response } from "../../interfaces/Auth_User";
 import { useGlobalContext } from "../../context/GlobalContext";
-import DropdownMenu from "../DropdownMenu";
 
 const common = {
   style: css`

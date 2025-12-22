@@ -59,13 +59,14 @@ export default function ImageCarousel({
 
   const {
     setIsOpenBottomSlideIn,
+    bottomSlideInType,
     setBottomSlideInType,
     setContextImages,
     contextImages,
   } = useGlobalContext();
 
   const handleImageClick = (fileUrlArr: UploadApiResponse[]) => {
-    if (fromFlyerBlock) {
+    if (fromFlyerBlock && bottomSlideInType !== "hasTemplates") {
       setIsOpenBottomSlideIn(true);
       setBottomSlideInType("carousel");
       setContextImages(images!);

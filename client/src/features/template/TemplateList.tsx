@@ -7,6 +7,7 @@ const StyledTemplateListContainer = styled.ul`
   overflow-y: auto;
   flex-direction: column;
   gap: 2.4rem;
+  max-height: 400px;
 `;
 
 const StyledListItem = styled.li`

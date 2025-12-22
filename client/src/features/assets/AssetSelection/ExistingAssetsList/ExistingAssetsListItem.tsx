@@ -71,22 +71,26 @@ export default function ExistingAssetsListItem({
   }
 
   return (
-    <StyledExistingAssetsListItem data-testid="existing-asset-list-item">
-      <img
-        src={asset.resource_type === "video" ? asset.thumbnail_url : asset.url}
-        alt={asset.original_filename}
-        onClick={() => enablePreview && handlePreview()}
-      />
-      {shouldDisplayCheckbox() && (
-        <StyledCheckbox
-          type="checkbox"
-          onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
-            handleAssetSelection(evt.target.checked)
+    <li>
+      <StyledExistingAssetsListItem data-testid="existing-asset-list-item">
+        <img
+          src={
+            asset.resource_type === "video" ? asset.thumbnail_url : asset.url
           }
-          checked={preChecked}
+          alt={asset.original_filename}
+          onClick={() => enablePreview && handlePreview()}
         />
-      )}
-      {/* <p>{asset.original_filename}</p> */}
-    </StyledExistingAssetsListItem>
+        {shouldDisplayCheckbox() && (
+          <StyledCheckbox
+            type="checkbox"
+            onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
+              handleAssetSelection(evt.target.checked)
+            }
+            checked={preChecked}
+          />
+        )}
+        {/* <p>{asset.original_filename}</p> */}
+      </StyledExistingAssetsListItem>
+    </li>
   );
 }

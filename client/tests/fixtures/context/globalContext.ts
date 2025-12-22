@@ -42,4 +42,6 @@ export const mockUseGlobalContextReturnObj = {
   showDeleteImagesModal: false,
   likedContextSessionFlyers: null,
   setLikedContextSessionFlyers: () => {},
+  anonUserPostings: [],
+  setAnonUserPostings: () => {},
 };

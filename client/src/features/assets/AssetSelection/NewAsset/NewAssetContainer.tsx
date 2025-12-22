@@ -21,6 +21,10 @@ const StyledNewAssetContainer = styled.div`
   /* flex-direction: column; */
   gap: 1.6rem;
   overflow: auto;
+
+  @media (max-width: 59em) {
+    height: 500px;
+  }
 `;
 
 export default function NewAssetContainer({

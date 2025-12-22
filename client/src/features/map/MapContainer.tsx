@@ -13,6 +13,7 @@ import PlaceSearchInput from "../../ui/Form/PlaceSearchInput";
 import { getPlaceDetails } from "../../services/googleMaps";
 import { useNavigate } from "react-router-dom";
 import MarkerWithInfoWindow from "./MarkerWithInfoWindow";
+import { useResponsiveWidth } from "../../hooks/useResponsiveWidth";
 
 const StyledMapContainer = styled.div`
   width: 100%;
@@ -21,18 +22,57 @@ const StyledMapContainer = styled.div`
   & .gm-fullscreen-control {
     z-index: 101;
   }
+
+  @media (max-width: 59em) {
+    /* full screen */
+    & .gm-fullscreen-control {
+      width: 25px !important;
+      height: 25px !important;
+      top: -5px !important;
+
+      & img {
+        height: 10px !important;
+        width: 10px !important;
+      }
+    }
+    /* zoom controls */
+    & .gm-control-active,
+    & .gm-svpc {
+      width: 30px !important;
+      height: 30px !important;
+
+      & img {
+        height: 20px !important;
+        width: 20px !important;
+      }
+    }
+    /* map / satelite */
+    & .gmnoprint.gm-style-mtc-bbw {
+      margin-top: 2px !important;
+    }
+
+    & .gmnoprint.gm-style-mtc-bbw button {
+      font-size: 1.2rem !important;
+      height: 20px !important;
+    }
+  }
 `;
 
 const StyledInputContainer = styled.div`
   position: absolute;
-  top: 3.5rem;
+  top: 5.5rem;
   z-index: 100;
   width: 100%;
   display: flex;
   justify-content: center;
+
+  @media (max-width: 59em) {
+    top: 6.5rem;
+  }
 `;
 
 export default function MapContainer() {
+  const responsiveVal = useResponsiveWidth();
   const navigate = useNavigate();
   const { user, setSelectedPlace } = useGlobalContext();
   const planLimits = useGetUserLimits();
@@ -58,11 +98,23 @@ export default function MapContainer() {
   const determizeDefaultZoom = () => {
     switch (planLimits.distance.limit!) {
       case 0.05:
-        return 13;
+        return ["m_tablet", "s_tablet", "l_mobile", "s_mobile"].includes(
+          responsiveVal
+        )
+          ? 11
+          : 12;
       case 0.1:
-        return 12;
+        return ["m_tablet", "s_tablet", "l_mobile", "s_mobile"].includes(
+          responsiveVal
+        )
+          ? 10
+          : 11;
       case 0.25:
-        return 11;
+        return ["m_tablet", "s_tablet", "l_mobile", "s_mobile"].includes(
+          responsiveVal
+        )
+          ? 9
+          : 10;
       default:
         return 12;
     }

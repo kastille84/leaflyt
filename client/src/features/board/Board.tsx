@@ -10,14 +10,21 @@ import styled from "styled-components";
 import { useGlobalContext } from "../../context/GlobalContext";
 import useGetPlaceByPlaceId from "../../hooks/useGetPlaceByPlaceId";
 import InfoAlert from "../../ui/InfoAlert";
+import { useResponsiveWidth } from "../../hooks/useResponsiveWidth";
 
 const StyledBoardContainer = styled.div``;
 
 export default function Board() {
+  const responsiveVal = useResponsiveWidth();
   const { id } = useParams();
   const QueryClient = useQueryClient();
-  const { selectedPlace, user, hasFlyerAtLocation, setHasFlyerAtLocation } =
-    useGlobalContext();
+  const {
+    selectedPlace,
+    user,
+    hasFlyerAtLocation,
+    setHasFlyerAtLocation,
+    anonUserPostings,
+  } = useGlobalContext();
   const [shouldGetPlace, setShouldGetPlace] = useState(false);
 
   const { isLoadingBoard, board } = useGetBoard(user?.id!);
@@ -28,17 +35,20 @@ export default function Board() {
   }, [selectedPlace]);
 
   useEffect(() => {
-    if (user) {
+    if (user || anonUserPostings.length > 0) {
       checkIfUserHasFlyerHere();
     }
-  }, [user, selectedPlace, board, id]);
+  }, [user, selectedPlace, board, id, anonUserPostings]);
 
   async function checkIfUserHasFlyerHere() {
     const boardData = await QueryClient.getQueryData(["board", id]);
     // const boardData = await QueryClient.ensureQueryData({
     //   queryKey: ["board", id],
     // });
-    if ((boardData as any)?.data?.hasFlyerHere) {
+    if (
+      (boardData as any)?.data?.hasFlyerHere ||
+      anonUserPostings.includes(id!)
+    ) {
       setHasFlyerAtLocation(true);
     } else {
       setHasFlyerAtLocation(false);
@@ -60,7 +70,7 @@ export default function Board() {
             <InfoAlert text="You already have a flyer posted here" />
           )}
           <ResponsiveMasonry
-            columnsCountBreakPoints={{ 350: 1, 1096: 2, 1600: 3 }}
+            columnsCountBreakPoints={{ 350: 1, 940: 2, 1600: 3 }}
 
             // gutterBreakpoints={{ 350: "12px", 750: "16px", 900: "24px" }}
           >

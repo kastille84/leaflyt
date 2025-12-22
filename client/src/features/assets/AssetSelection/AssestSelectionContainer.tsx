@@ -20,6 +20,15 @@ const StyledAssestSelectionContainer = styled.div`
   grid-template-columns: 1fr;
   grid-template-rows: 8% 1fr 20% 5%;
   grid-gap: 2.4rem;
+
+  @media (max-width: 59em) {
+    width: 100%;
+    padding: 0 2.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    align-items: space-between;
+  }
 `;
 
 const StyledTopButtonContainer = styled.div`
