@@ -11,11 +11,7 @@ import {
 } from "react-icons/hi2";
 import { shortenTitle } from "../../utils/GeneralUtils";
 import { useEffect, useState } from "react";
-import useGetUserLimits from "../../hooks/useGetUserLimits";
-import {
-  UNREGISTERED_FLYER_DESIGN_DEFAULT,
-  REGISTERED_FLYER_DESIGN_DEFAULT,
-} from "../../constants";
+
 import { useGlobalContext } from "../../context/GlobalContext";
 import { useFlyerDesignerContext } from "../../context/FlyerDesignerContext";
 
@@ -238,16 +234,18 @@ const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
   background-color: ${({ flyerDesign }) => flyerDesign.top.color};
   /* opacity: 0.65; */
   color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   padding: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 100%;
+  font-size: 1.4rem;
 `;
 
 const StyledAvatarName = styled.div<{ selected: boolean }>`
+  font-size: 1.4rem;
   ${({ selected }) =>
     selected &&
     css`
@@ -327,7 +325,7 @@ export default function FlyerBlockConfigurable({ flyer }: { flyer: any }) {
 
   return (
     <StyledFlyerBlock flyerDesign={flyerDesign}>
-      {hasFiles() && (
+      {/* {hasFiles() && (
         <StyledFigure flyerDesign={flyerDesign}>
           <img
             src={flyer!.fileUrlArr![0].secure_url}
@@ -351,8 +349,24 @@ export default function FlyerBlockConfigurable({ flyer }: { flyer: any }) {
         >
           {renderTopContent()}
         </StyledTopTextContainer>
-      )}
+      )} */}
+      <StyledTopTextContainer
+        flyerDesign={flyerDesign}
+        onClick={() => setSelectionSection("top_backgroundColor")}
+        selected={selectedSection === "top_backgroundColor"}
+      >
+        {renderTopContent()}
+      </StyledTopTextContainer>
       <StyledMainContentContainer>
+        {hasFiles() && (
+          <StyledFigure flyerDesign={flyerDesign}>
+            <img
+              src={flyer!.fileUrlArr![0].secure_url}
+              width={"100%"}
+              height={"auto"}
+            />
+          </StyledFigure>
+        )}
         {/* TODO: Make this section dynamic (mainContent, infoContent, couponContent) */}
         <StyledSubcategory
           flyerDesign={flyerDesign}

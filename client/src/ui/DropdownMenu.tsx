@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { HiEllipsisHorizontal } from "react-icons/hi2";
+import { HiEllipsisHorizontal, HiEllipsisVertical } from "react-icons/hi2";
 import styled from "styled-components";
 
 const StyledDropdownContainer = styled.div`
   position: relative;
 `;
 const StyledActionButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
   cursor: pointer;
 `;
 const StyledDropdownMenuContainer = styled.div`
@@ -17,7 +19,7 @@ const StyledDropdownMenuContainer = styled.div`
   color: var(--color-grey-900);
   opacity: 1 !important;
   border: 1px solid var(--color-grey-200);
-  z-index: 1002;
+  z-index: 5;
   /* border-radius: var(--border-radius-sm); */
   /* padding: 0.8rem 1.2rem; */
 `;
@@ -51,7 +53,8 @@ export default function DropdownMenu(props: any) {
   return (
     <StyledDropdownContainer>
       <StyledActionButtonContainer>
-        <HiEllipsisHorizontal onClick={handleClick} />
+        {/* <HiEllipsisHorizontal onClick={handleClick} /> */}
+        <HiEllipsisVertical onClick={handleClick} />
       </StyledActionButtonContainer>
       {isOpen && (
         <StyledDropdownMenuContainer onMouseLeave={() => setIsOpen(false)}>

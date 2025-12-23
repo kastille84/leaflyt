@@ -9,10 +9,12 @@ import Heading from "../../Heading";
 import { shortenTitle } from "../../../utils/GeneralUtils";
 
 const StyledSubcategory = styled.small<{ flyerDesign: FlyerDesign }>`
+  display: block;
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 1px;
   color: ${({ flyerDesign }) => flyerDesign.subcategory.color};
+  margin-top: 1.4rem;
 `;
 
 const StyledHeading = styled(Heading)<{ flyerDesign: FlyerDesign }>`

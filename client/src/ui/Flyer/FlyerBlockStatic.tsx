@@ -2,7 +2,6 @@ import styled, { css } from "styled-components";
 
 import {
   HiOutlineChatBubbleLeftEllipsis,
-  HiOutlineEllipsisHorizontal,
   HiOutlineHandThumbUp,
   HiOutlineShare,
 } from "react-icons/hi2";
@@ -97,9 +96,10 @@ const StyledTopTextContainer = styled.div<{ flyerDesign: FlyerDesign }>`
     flyerDesign.borderTopRightRadius}px;
 `;
 
-const StyledinfoContentContainer = styled.div`
+const StyledInfoContentContainer = styled.div`
   padding: 1rem 2.4rem;
   font-size: 1.4rem;
+  background-color: #fff;
 `;
 
 const StyledActionContainer = styled.section`
@@ -109,11 +109,13 @@ const StyledActionContainer = styled.section`
   gap: 2.4rem;
   border-top: 1px solid var(--color-grey-200);
   padding: 1rem 2.4rem;
+  background-color: #fff;
 `;
 
 const StyledActionIconContainer = styled.div<{ flyerDesign: FlyerDesign }>`
   display: flex;
   align-items: center;
+  gap: 0.8rem;
   & svg {
     color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
   }
@@ -128,13 +130,17 @@ const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
   background-color: ${({ flyerDesign }) => flyerDesign.top.color};
   /* opacity: 0.65; */
   color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   padding: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 100%;
+  font-size: 1.4rem;
+`;
+const StyledAvatarName = styled.div`
+  font-size: 1.4rem;
 `;
 
 const PillsContainer = styled.div`
@@ -145,7 +151,7 @@ const PillsContainer = styled.div`
 `;
 const pillStyle = {
   infoOutline: css`
-    background-color: var(--color-grey-50);
+    background-color: #fff;
     color: var(--color-brand-600);
     border: 1px solid var(--color-brand-600);
   `,
@@ -155,7 +161,7 @@ const pillStyle = {
     border: 1px solid var(--color-brand-600);
   `,
   contactOutline: css`
-    background-color: var(--color-grey-50);
+    background-color: #fff;
     color: var(--color-brand-600);
     border: 1px solid var(--color-brand-600);
   `,
@@ -165,7 +171,7 @@ const pillStyle = {
     border: 1px solid var(--color-brand-600);
   `,
   ctaOutline: css`
-    background-color: var(--color-grey-50);
+    background-color: #fff;
     color: var(--color-red-600);
     border: 1px solid var(--color-red-600);
   `,
@@ -182,7 +188,7 @@ const Pill = styled.div<{
   ${({ contentType, type }) =>
     contentType === type ? pillStyle[type] : pillStyle[`${type}Outline`]}
   padding: 0.05rem 0.8rem;
-  border-radius: 10px;
+  border-radius: 5px;
   letter-spacing: 1.2px;
   text-transform: capitalize;
   font-size: 1rem;
@@ -260,7 +266,7 @@ export default function FlyerBlockStatic({
           return (
             <>
               <StyledAvatar flyerDesign={flyerStyles}>A</StyledAvatar>
-              <div>Anonymous</div>
+              <StyledAvatarName>Anonymous</StyledAvatarName>
             </>
           );
         case "individual":
@@ -272,7 +278,7 @@ export default function FlyerBlockStatic({
                     .name.firstName[0]
                 }
               </StyledAvatar>
-              <div>
+              <StyledAvatarName>
                 {
                   (flyer as DB_Flyer_Create_Unregistered_Individual).individual
                     .name.firstName
@@ -282,7 +288,7 @@ export default function FlyerBlockStatic({
                   (flyer as DB_Flyer_Create_Unregistered_Individual).individual
                     .name.lastName
                 }
-              </div>
+              </StyledAvatarName>
             </>
           );
         case "organization":
@@ -294,12 +300,12 @@ export default function FlyerBlockStatic({
                     .organization.name[0]
                 }
               </StyledAvatar>
-              <div>
+              <StyledAvatarName>
                 {
                   (flyer as DB_Flyer_Create_Unregistered_Organization)
                     .organization.name
                 }
-              </div>
+              </StyledAvatarName>
             </>
           );
         case "business":
@@ -311,9 +317,9 @@ export default function FlyerBlockStatic({
                     .name[0]
                 }
               </StyledAvatar>
-              <div>
+              <StyledAvatarName>
                 {(flyer as DB_Flyer_Create_Unregistered_Business).business.name}
-              </div>
+              </StyledAvatarName>
             </>
           );
       }
@@ -334,7 +340,7 @@ export default function FlyerBlockStatic({
                 )[0]
               }
             </StyledAvatar>
-            <div>
+            <StyledAvatarName>
               {
                 ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
                   .firstName
@@ -344,7 +350,7 @@ export default function FlyerBlockStatic({
                 ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
                   .lastName
               }
-            </div>
+            </StyledAvatarName>
           </>
         );
       } else {
@@ -360,12 +366,12 @@ export default function FlyerBlockStatic({
                 )[0]
               }
             </StyledAvatar>
-            <div>
+            <StyledAvatarName>
               {
                 ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
                   .name as string
               }
-            </div>
+            </StyledAvatarName>
           </>
         );
       }
@@ -384,7 +390,7 @@ export default function FlyerBlockStatic({
 
   return (
     <StyledFlyerBlock flyerDesign={flyerStyles}>
-      {hasFiles() && (
+      {/* {hasFiles() && (
         <StyledImageSection flyerDesign={flyerStyles}>
           <ImageCarousel
             images={flyer.fileUrlArr || []}
@@ -400,8 +406,11 @@ export default function FlyerBlockStatic({
         <StyledTopTextContainer flyerDesign={flyerStyles}>
           {renderTopContent()}
         </StyledTopTextContainer>
-      )}
-      <StyledinfoContentContainer>
+        )} */}
+      <StyledTopTextContainer flyerDesign={flyerStyles}>
+        {renderTopContent()}
+      </StyledTopTextContainer>
+      <StyledInfoContentContainer>
         <PillsContainer>
           <Pill
             contentType={contentType}
@@ -430,7 +439,16 @@ export default function FlyerBlockStatic({
           )}
         </PillsContainer>
         {contentType === "info" && (
-          <Info flyer={flyer as DB_Template} flyerStyles={flyerStyles} />
+          <>
+            {hasFiles() && (
+              <ImageCarousel
+                images={flyer.fileUrlArr || []}
+                fromFlyerBlock
+                bgColor={flyerStyles.top.backgroundColor}
+              />
+            )}
+            <Info flyer={flyer as DB_Template} flyerStyles={flyerStyles} />
+          </>
         )}
         {contentType === "contact" && (
           <Contact flyer={flyer as DB_Template} user={user!} />
@@ -442,16 +460,16 @@ export default function FlyerBlockStatic({
             handleRedeem={handleRedeem}
           />
         )}
-      </StyledinfoContentContainer>
+      </StyledInfoContentContainer>
       <StyledActionContainer>
         <StyledActionIconContainer flyerDesign={flyerStyles}>
-          <HiOutlineHandThumbUp />
+          <HiOutlineHandThumbUp /> <small>Likes</small>
         </StyledActionIconContainer>
-        <StyledActionIconContainer flyerDesign={flyerStyles}>
+        {/* <StyledActionIconContainer flyerDesign={flyerStyles}>
           <HiOutlineChatBubbleLeftEllipsis />
-        </StyledActionIconContainer>
+        </StyledActionIconContainer> */}
         <StyledActionIconContainer flyerDesign={flyerStyles}>
-          <HiOutlineShare />
+          <HiOutlineShare /> <small>Share</small>
         </StyledActionIconContainer>
       </StyledActionContainer>
     </StyledFlyerBlock>
