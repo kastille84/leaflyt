@@ -151,18 +151,13 @@ const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
   background-color: ${({ flyerDesign }) => flyerDesign.top.color};
   /* opacity: 0.65; */
   color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   padding: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 100%;
-  font-size: 1.4rem;
-`;
-
-const StyledAvatarName = styled.div`
-  font-size: 1.4rem;
 `;
 
 const PillsContainer = styled.div`
@@ -280,6 +275,11 @@ export default function FlyerBlockInteractive({
   const { saveFlyerFn, removeSavedFlyerFn } = useRegisteredFlyer();
   const [currentLikes, setCurrentLikes] = useState(() => flyer?.likes || 0);
 
+  // const [likedSessionFlyers, setLikedSessionFlyers] = useSessionStorageState(
+  //   [],
+  //   "likedFlyers"
+  // );
+
   const { setLikedFlyer } = useLikeFlyers(flyer.id!);
 
   // isSaved state depends on saved flyers on user object
@@ -312,7 +312,7 @@ export default function FlyerBlockInteractive({
           return (
             <>
               <StyledAvatar flyerDesign={flyerStyles}>A</StyledAvatar>
-              <StyledAvatarName>Anonymous</StyledAvatarName>
+              <div>Anonymous</div>
             </>
           );
         case "individual":
@@ -324,7 +324,7 @@ export default function FlyerBlockInteractive({
                     .name.firstName[0]
                 }
               </StyledAvatar>
-              <StyledAvatarName>
+              <div>
                 {
                   (flyer as DB_Flyer_Create_Unregistered_Individual).individual
                     .name.firstName
@@ -334,7 +334,7 @@ export default function FlyerBlockInteractive({
                   (flyer as DB_Flyer_Create_Unregistered_Individual).individual
                     .name.lastName
                 }
-              </StyledAvatarName>
+              </div>
             </>
           );
         case "organization":
@@ -346,12 +346,12 @@ export default function FlyerBlockInteractive({
                     .organization.name[0]
                 }
               </StyledAvatar>
-              <StyledAvatarName>
+              <div>
                 {
                   (flyer as DB_Flyer_Create_Unregistered_Organization)
                     .organization.name
                 }
-              </StyledAvatarName>
+              </div>
             </>
           );
         case "business":
@@ -363,9 +363,9 @@ export default function FlyerBlockInteractive({
                     .name[0]
                 }
               </StyledAvatar>
-              <StyledAvatarName>
+              <div>
                 {(flyer as DB_Flyer_Create_Unregistered_Business).business.name}
-              </StyledAvatarName>
+              </div>
             </>
           );
       }
@@ -386,7 +386,7 @@ export default function FlyerBlockInteractive({
                 )[0]
               }
             </StyledAvatar>
-            <StyledAvatarName>
+            <div>
               {
                 ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
                   .firstName
@@ -396,7 +396,7 @@ export default function FlyerBlockInteractive({
                 ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
                   .lastName
               }
-            </StyledAvatarName>
+            </div>
           </>
         );
       } else {
@@ -412,12 +412,12 @@ export default function FlyerBlockInteractive({
                 )[0]
               }
             </StyledAvatar>
-            <StyledAvatarName>
+            <div>
               {
                 ((flyer as DB_Flyer_Create).user as Auth_User_Profile_Response)
                   .name as string
               }
-            </StyledAvatarName>
+            </div>
           </>
         );
       }
@@ -548,7 +548,7 @@ export default function FlyerBlockInteractive({
 
   return (
     <StyledFlyerBlock flyerDesign={flyerStyles}>
-      {/* {hasFiles() && (
+      {hasFiles() && (
         <StyledImageSection flyerDesign={flyerStyles}>
           <ImageCarousel
             images={flyer.fileUrlArr || []}
@@ -564,10 +564,7 @@ export default function FlyerBlockInteractive({
         <StyledTopTextContainer flyerDesign={flyerStyles}>
           {renderTopContent()}
         </StyledTopTextContainer>
-      )} */}
-      <StyledTopTextContainer flyerDesign={flyerStyles}>
-        {renderTopContent()}
-      </StyledTopTextContainer>
+      )}
       <StyledinfoContentContainer>
         <PillsContainer>
           <Pill
@@ -597,21 +594,10 @@ export default function FlyerBlockInteractive({
           )}
         </PillsContainer>
         {contentType === "info" && (
-          <>
-            {hasFiles() && (
-              <ImageCarousel
-                images={flyer.fileUrlArr || []}
-                fromFlyerBlock
-                bgColor={flyerStyles.top.backgroundColor}
-              />
-            )}
-            <Info flyer={flyer} flyerStyles={flyerStyles} />
-          </>
+          <Info flyer={flyer} flyerStyles={flyerStyles} />
         )}
         {contentType === "contact" && <Contact flyer={flyer} />}
-        {contentType === "cta" && (
-          <CTA flyer={flyer} belongsToUser={doesFlyerBelongToUser()} />
-        )}
+        {contentType === "cta" && <CTA flyer={flyer} />}
       </StyledinfoContentContainer>
       <StyledActionContainer>
         {!isSaved && !doesFlyerBelongToUser() && (

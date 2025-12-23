@@ -10,7 +10,8 @@ const StyledFigure = styled.figure<{
 }>`
   width: 100%;
   height: ${(props) => props.height}px;
-  background-color: ${(props) => props.backgroundColor};
+  background-color: ${(props) =>
+    props.backgroundColor ? props.backgroundColor : "#fff"};
   /* opacity: 0.85; */
   display: flex;
   justify-content: center;
@@ -74,7 +75,7 @@ export default function ImageCarousel({
   };
 
   const filesToUse = fromFlyerBlock ? images : contextImages;
-  const heightToUse = fromFlyerBlock ? 450 : 800;
+  const heightToUse = fromFlyerBlock ? 250 : 800;
 
   const determineImageWidth = (file: UploadApiResponse) => {
     if (file.height > heightToUse) {

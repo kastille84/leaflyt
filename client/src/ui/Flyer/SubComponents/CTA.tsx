@@ -31,10 +31,12 @@ export default function CTA({
   flyer,
   redeemable = false,
   handleRedeem,
+  belongsToUser = false,
 }: {
   flyer: DB_Flyers_Response | DB_Template;
   redeemable?: boolean;
   handleRedeem?: Function;
+  belongsToUser?: boolean;
 }) {
   return (
     <>
@@ -64,14 +66,16 @@ export default function CTA({
             </Button>
           </StyledRedeemContainer>
         )}
-      {flyer.callToAction?.ctaType === "offer" && !redeemable && (
-        <StyledRedeemContainer>
-          <small>
-            Click on Save below to save this offer and redeem later. <br />
-            Only one offer per flyer.
-          </small>
-        </StyledRedeemContainer>
-      )}
+      {flyer.callToAction?.ctaType === "offer" &&
+        !redeemable &&
+        !belongsToUser && (
+          <StyledRedeemContainer>
+            <small>
+              Click on Save below to save this offer and redeem later. <br />
+              Only one offer per flyer.
+            </small>
+          </StyledRedeemContainer>
+        )}
     </>
   );
 }
