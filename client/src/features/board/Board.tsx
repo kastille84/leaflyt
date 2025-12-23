@@ -26,7 +26,6 @@ export default function Board() {
     anonUserPostings,
   } = useGlobalContext();
   const [shouldGetPlace, setShouldGetPlace] = useState(false);
-
   const { isLoadingBoard, board } = useGetBoard(user?.id!);
   useGetPlaceByPlaceId(id!, shouldGetPlace);
 
@@ -38,13 +37,11 @@ export default function Board() {
     if (user || anonUserPostings.length > 0) {
       checkIfUserHasFlyerHere();
     }
-  }, [user, selectedPlace, board, id, anonUserPostings]);
+  }, [user, user?.flyers, selectedPlace, board, id, anonUserPostings]);
 
   async function checkIfUserHasFlyerHere() {
     const boardData = await QueryClient.getQueryData(["board", id]);
-    // const boardData = await QueryClient.ensureQueryData({
-    //   queryKey: ["board", id],
-    // });
+
     if (
       (boardData as any)?.data?.hasFlyerHere ||
       anonUserPostings.includes(id!)
@@ -71,7 +68,6 @@ export default function Board() {
           )}
           <ResponsiveMasonry
             columnsCountBreakPoints={{ 350: 1, 940: 2, 1600: 3 }}
-
             // gutterBreakpoints={{ 350: "12px", 750: "16px", 900: "24px" }}
           >
             <Masonry columnsCount={3} gutter="1.6rem">

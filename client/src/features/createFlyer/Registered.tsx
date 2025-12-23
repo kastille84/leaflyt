@@ -159,6 +159,7 @@ export default function Registered({
             setSelectedFlyer(null);
             queryClient.invalidateQueries({
               queryKey: ["board", selectedPlace?.id],
+              refetchType: "all",
             });
             // update the user
             setUser(user);

@@ -199,7 +199,7 @@ export const updateRegisteredFlyer = async (
     );
 
     return await getLatestUserAfterChanges(
-      (updatedFlyer?.user as Auth_User_Profile_Response).id as string,
+      updatedFlyer?.user as string,
       "flyer"
     );
   } catch (error: any) {
