@@ -550,23 +550,6 @@ export default function FlyerBlockInteractive({
 
   return (
     <StyledFlyerBlock flyerDesign={flyerStyles}>
-      {/* {hasFiles() && (
-        <StyledImageSection flyerDesign={flyerStyles}>
-          <ImageCarousel
-            images={flyer.fileUrlArr || []}
-            fromFlyerBlock
-            bgColor={flyerStyles.top.backgroundColor}
-          />
-          <StyledTopImageContainer flyerDesign={flyerStyles}>
-            {renderTopContent()}
-          </StyledTopImageContainer>
-        </StyledImageSection>
-      )}
-      {!hasFiles() && (
-        <StyledTopTextContainer flyerDesign={flyerStyles}>
-          {renderTopContent()}
-        </StyledTopTextContainer>
-      )} */}
       <StyledTopTextContainer flyerDesign={flyerStyles}>
         {renderTopContent()}
       </StyledTopTextContainer>
