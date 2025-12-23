@@ -121,6 +121,7 @@ const StyledTopTextContainer = styled.div<{ flyerDesign: FlyerDesign }>`
 const StyledinfoContentContainer = styled.div`
   padding: 1rem 2.4rem;
   font-size: 1.4rem;
+  background-color: #fff;
 `;
 
 const StyledActionContainer = styled.section`
@@ -130,6 +131,7 @@ const StyledActionContainer = styled.section`
   gap: 2.4rem;
   border-top: 1px solid var(--color-grey-200);
   padding: 1rem 2.4rem;
+  background-color: #fff;
 `;
 
 const StyledActionIconContainer = styled.div<{ flyerDesign: FlyerDesign }>`
@@ -173,7 +175,7 @@ const PillsContainer = styled.div`
 `;
 const pillStyle = {
   infoOutline: css`
-    background-color: var(--color-grey-50);
+    background-color: #fff;
     color: var(--color-brand-600);
     border: 1px solid var(--color-brand-600);
   `,
@@ -183,7 +185,7 @@ const pillStyle = {
     border: 1px solid var(--color-brand-600);
   `,
   contactOutline: css`
-    background-color: var(--color-grey-50);
+    background-color: #fff;
     color: var(--color-brand-600);
     border: 1px solid var(--color-brand-600);
   `,
@@ -193,7 +195,7 @@ const pillStyle = {
     border: 1px solid var(--color-brand-600);
   `,
   ctaOutline: css`
-    background-color: var(--color-grey-50);
+    background-color: #fff;
     color: var(--color-red-600);
     border: 1px solid var(--color-red-600);
   `,
@@ -210,7 +212,7 @@ const Pill = styled.div<{
   ${({ contentType, type }) =>
     contentType === type ? pillStyle[type] : pillStyle[`${type}Outline`]}
   padding: 0.05rem 0.8rem;
-  border-radius: 10px;
+  border-radius: 5px;
   letter-spacing: 1.2px;
   text-transform: capitalize;
   font-size: 1rem;
