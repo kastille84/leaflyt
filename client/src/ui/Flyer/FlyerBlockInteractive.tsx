@@ -3,16 +3,11 @@ import styled, { css } from "styled-components";
 import {
   HiOutlineBookmark,
   HiOutlineBookmarkSlash,
-  HiOutlineChatBubbleLeftEllipsis,
-  HiOutlineEllipsisHorizontal,
   HiOutlineHandThumbUp,
   HiOutlineShare,
 } from "react-icons/hi2";
-import { useState } from "react";
-import {
-  UNREGISTERED_FLYER_DESIGN_DEFAULT,
-  REGISTERED_FLYER_DESIGN_DEFAULT,
-} from "../../constants";
+import { useEffect, useState } from "react";
+import { UNREGISTERED_FLYER_DESIGN_DEFAULT } from "../../constants";
 import Info from "./SubComponents/Info";
 import CTA from "./SubComponents/CTA";
 import Contact from "./SubComponents/Contact";
@@ -36,7 +31,6 @@ import {
   checkIfCurrentFlyerIsSaved,
   checkIfCurrentFlyerIsLiked,
 } from "../../utils/GeneralUtils";
-import { useSessionStorageState } from "../../hooks/useSessionStorageState";
 import { useLikeFlyers } from "../../hooks/useLikeFlyers";
 
 const common = {
@@ -118,7 +112,7 @@ const StyledTopTextContainer = styled.div<{ flyerDesign: FlyerDesign }>`
     flyerDesign.borderTopRightRadius}px;
 `;
 
-const StyledinfoContentContainer = styled.div`
+const StyledInfoContentContainer = styled.div`
   padding: 1rem 2.4rem;
   font-size: 1.4rem;
   background-color: #fff;
@@ -260,6 +254,12 @@ export default function FlyerBlockInteractive({
     }
     return flyer.flyerDesign;
   });
+
+  useEffect(() => {
+    if (flyer.flyerDesign) {
+      setFlyerStyles(flyer.flyerDesign);
+    }
+  }, [flyer.flyerDesign]);
 
   const {
     setSelectedFlyer,
@@ -570,7 +570,7 @@ export default function FlyerBlockInteractive({
       <StyledTopTextContainer flyerDesign={flyerStyles}>
         {renderTopContent()}
       </StyledTopTextContainer>
-      <StyledinfoContentContainer>
+      <StyledInfoContentContainer>
         <PillsContainer>
           <Pill
             contentType={contentType}
@@ -614,7 +614,7 @@ export default function FlyerBlockInteractive({
         {contentType === "cta" && (
           <CTA flyer={flyer} belongsToUser={doesFlyerBelongToUser()} />
         )}
-      </StyledinfoContentContainer>
+      </StyledInfoContentContainer>
       <StyledActionContainer>
         {!isSaved && !doesFlyerBelongToUser() && (
           <StyledActionIconContainer
