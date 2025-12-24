@@ -59,6 +59,7 @@ const StyledFilterOptionContainer = styled.div`
   align-items: center;
   gap: 0.8rem;
   cursor: pointer;
+  font-size: 1.4rem;
 `;
 
 const StyledFilterSelectContainer = styled.div`
