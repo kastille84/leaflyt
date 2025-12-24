@@ -37,6 +37,10 @@ const StyledBoardContainer = styled.div`
 const StyledForm = styled.form`
   display: flex;
   gap: 0.8rem;
+
+  @media (max-width: 59em) {
+    justify-content: center;
+  }
 `;
 
 const StyledFilterContainer = styled.div`
@@ -44,12 +48,27 @@ const StyledFilterContainer = styled.div`
   align-items: center;
   gap: 0.8rem;
   margin-bottom: 1.6rem;
+
+  @media (max-width: 59em) {
+    /* flex-direction: column; */
+    justify-content: center;
+  }
 `;
 const StyledFilterOptionContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0.8rem;
   cursor: pointer;
+`;
+
+const StyledFilterSelectContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  @media (max-width: 59em) {
+    flex-direction: column;
+    align-items: normal;
+  }
 `;
 
 const StyledSmall = styled.small`
@@ -174,28 +193,30 @@ export default function Board() {
                       placeholder="Filter:"
                     />
                   </StyledFilterOptionContainer>
-                  {filterOnWatch && (
-                    <CategoryInput
-                      register={register}
-                      options={getCategoriesForSelect(categoriesObj, "All")}
-                      value={categoryWatch}
-                      errors={errors}
-                      showLabel={false}
-                    />
-                  )}
+                  <StyledFilterSelectContainer>
+                    {filterOnWatch && (
+                      <CategoryInput
+                        register={register}
+                        options={getCategoriesForSelect(categoriesObj, "All")}
+                        value={categoryWatch}
+                        errors={errors}
+                        showLabel={false}
+                      />
+                    )}
 
-                  {filterOnWatch && categoryWatch && (
-                    <SubcategoryInput
-                      register={register}
-                      options={getSubcategoriesForSelect(
-                        categoriesObj,
-                        categoryWatch
-                      )}
-                      value={subcategoryWatch}
-                      errors={errors}
-                      showLabel={false}
-                    />
-                  )}
+                    {filterOnWatch && categoryWatch && (
+                      <SubcategoryInput
+                        register={register}
+                        options={getSubcategoriesForSelect(
+                          categoriesObj,
+                          categoryWatch
+                        )}
+                        value={subcategoryWatch}
+                        errors={errors}
+                        showLabel={false}
+                      />
+                    )}
+                  </StyledFilterSelectContainer>
                 </StyledFilterContainer>
               </StyledForm>
               <ResponsiveMasonry

@@ -7,12 +7,10 @@ import { DB_Saved_Flyer } from "../../interfaces/DB_Flyers";
 import { useGlobalContext } from "../../context/GlobalContext";
 import FlyerBlockStatic from "../../ui/Flyer/FlyerBlockStatic";
 import { HiOutlinePencilSquare, HiOutlineXMark } from "react-icons/hi2";
-import Heading from "../../ui/Heading";
+
 import { useEffect } from "react";
-import { DB_Flyers_Response } from "../../interfaces/DB_Flyers";
 import useRegisteredFlyer from "../createFlyer/useRegisteredFlyer";
 import { useResponsiveWidth } from "../../hooks/useResponsiveWidth";
-// import { groupFlyersToSavedFlyerss } from "../../utils/GeneralUtils";
 
 import CategoryInput from "../../ui/Form/CategoryInput";
 import SubcategoryInput from "../../ui/Form/SubcategoryInput";
@@ -46,6 +44,10 @@ const StyledSavedFlyersListContainer = styled.div`
 const StyledForm = styled.form`
   display: flex;
   gap: 0.8rem;
+
+  @media (max-width: 59em) {
+    justify-content: center;
+  }
 `;
 
 const StyledFilterContainer = styled.div`
@@ -53,12 +55,27 @@ const StyledFilterContainer = styled.div`
   align-items: center;
   gap: 0.8rem;
   margin-bottom: 1.6rem;
+
+  @media (max-width: 59em) {
+    /* flex-direction: column; */
+    justify-content: center;
+  }
 `;
 const StyledFilterOptionContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0.8rem;
   cursor: pointer;
+`;
+
+const StyledFilterSelectContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  @media (max-width: 59em) {
+    flex-direction: column;
+    align-items: normal;
+  }
 `;
 
 const StyledActionContainer = styled.div`
@@ -183,28 +200,30 @@ export default function SavedFlyersList() {
                   placeholder="Filter:"
                 />
               </StyledFilterOptionContainer>
-              {filterOnWatch && (
-                <CategoryInput
-                  register={register}
-                  options={getCategoriesForSelect(categoriesObj, "All")}
-                  value={categoryWatch}
-                  errors={errors}
-                  showLabel={false}
-                />
-              )}
-
-              {filterOnWatch && categoryWatch && (
-                <SubcategoryInput
-                  register={register}
-                  options={getSubcategoriesForSelect(
-                    categoriesObj,
-                    categoryWatch
-                  )}
-                  value={subcategoryWatch}
-                  errors={errors}
-                  showLabel={false}
-                />
-              )}
+              <StyledFilterSelectContainer>
+                {" "}
+                {filterOnWatch && (
+                  <CategoryInput
+                    register={register}
+                    options={getCategoriesForSelect(categoriesObj, "All")}
+                    value={categoryWatch}
+                    errors={errors}
+                    showLabel={false}
+                  />
+                )}
+                {filterOnWatch && categoryWatch && (
+                  <SubcategoryInput
+                    register={register}
+                    options={getSubcategoriesForSelect(
+                      categoriesObj,
+                      categoryWatch
+                    )}
+                    value={subcategoryWatch}
+                    errors={errors}
+                    showLabel={false}
+                  />
+                )}
+              </StyledFilterSelectContainer>
             </StyledFilterContainer>
           </StyledForm>
           <ResponsiveMasonry
