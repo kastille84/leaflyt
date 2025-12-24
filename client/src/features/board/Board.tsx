@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { useForm, UseFormProps } from "react-hook-form";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 import useGetBoard from "./useGetBoard";
 import NoFlyers from "./NoFlyers";
@@ -11,13 +12,65 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import useGetPlaceByPlaceId from "../../hooks/useGetPlaceByPlaceId";
 import InfoAlert from "../../ui/InfoAlert";
 import { useResponsiveWidth } from "../../hooks/useResponsiveWidth";
+import FormControlRow from "../../ui/Form/FormControlRow";
+import FormControl from "../../ui/Form/FormControl";
+import CategoryInput from "../../ui/Form/CategoryInput";
+import SubcategoryInput from "../../ui/Form/SubcategoryInput";
+import {
+  getCategoriesForSelect,
+  getSubcategoriesForSelect,
+} from "../../utils/GeneralUtils";
+import categoriesObj from "../../data/categories";
+import Checkbox from "../../ui/Checkbox";
+import Input from "../../ui/Input";
 
-const StyledBoardContainer = styled.div``;
+const StyledBoardContainer = styled.div`
+  & .category,
+  & .subcategory {
+    font-size: 1.4rem;
+    padding: 0;
+    margin-bottom: 0;
+  }
+  & .category select,
+  & .subcategory select {
+    padding: 0.4rem 1rem;
+  }
+`;
+
+const StyledForm = styled.form`
+  display: flex;
+  gap: 0.8rem;
+`;
+
+const StyledFilterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.6rem;
+`;
+const StyledFilterOptionContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+`;
 
 export default function Board() {
   const responsiveVal = useResponsiveWidth();
   const { id } = useParams();
   const QueryClient = useQueryClient();
+  const {
+    register,
+    unregister,
+    handleSubmit,
+    watch,
+    getValues,
+    setValue,
+    formState: { errors },
+  } = useForm();
+  const categoryWatch = watch("category");
+  const subcategoryWatch = watch("subcategory");
+  const filterOnWatch = watch("filter");
   const {
     selectedPlace,
     user,
@@ -26,7 +79,28 @@ export default function Board() {
     anonUserPostings,
   } = useGlobalContext();
   const [shouldGetPlace, setShouldGetPlace] = useState(false);
+
+  // const filterOptions = {
+  //   category: categoryWatch,
+  //   subcategory: subcategoryWatch,
+  // };
+  console.log(filterOnWatch);
   const { isLoadingBoard, board } = useGetBoard(user?.id!);
+
+  const originalFlyers = board?.data?.flyers || [];
+  // filter flyers based on categoryWatch and subcategoryWatch
+  let filteredFlyers = originalFlyers.filter((flyer) => {
+    if (categoryWatch && flyer.category !== categoryWatch) return false;
+    if (subcategoryWatch && flyer.subcategory !== subcategoryWatch)
+      return false;
+    return true;
+  });
+
+  function determineWhichFlyersToUse() {
+    if (categoryWatch || subcategoryWatch) return filteredFlyers;
+    return originalFlyers;
+  }
+
   useGetPlaceByPlaceId(id!, shouldGetPlace);
 
   useEffect(() => {
@@ -34,10 +108,21 @@ export default function Board() {
   }, [selectedPlace]);
 
   useEffect(() => {
+    setValue("subcategory", "");
+  }, [categoryWatch]);
+
+  useEffect(() => {
+    if (!filterOnWatch) {
+      setValue("category", "");
+      setValue("subcategory", "");
+    }
+  }, [filterOnWatch]);
+
+  useEffect(() => {
     if (user || anonUserPostings.length > 0) {
       checkIfUserHasFlyerHere();
     }
-  }, [user, user?.flyers, selectedPlace, board, id, anonUserPostings]);
+  }, [user, selectedPlace, board, id, anonUserPostings]);
 
   async function checkIfUserHasFlyerHere() {
     const boardData = await QueryClient.getQueryData(["board", id]);
@@ -54,9 +139,9 @@ export default function Board() {
 
   if (isLoadingBoard) return <OverlaySpinner message="Loading Board" />;
   // if no flyers, then show "NoFlyers" component which has a button to create a new flyer
-  if (!isLoadingBoard && (board?.data?.flyers?.length === 0 || board?.error)) {
-    return <NoFlyers />;
-  }
+  // if (!isLoadingBoard && (board?.data?.flyers?.length === 0 || board?.error)) {
+  //   return <NoFlyers />;
+  // }
 
   // if flyers, then show a list of flyers
   return (
@@ -66,17 +151,59 @@ export default function Board() {
           {hasFlyerAtLocation && (
             <InfoAlert text="You already have a flyer posted here" />
           )}
-          <ResponsiveMasonry
-            columnsCountBreakPoints={{ 350: 1, 940: 2, 1600: 3 }}
-            // gutterBreakpoints={{ 350: "12px", 750: "16px", 900: "24px" }}
-          >
-            <Masonry columnsCount={3} gutter="1.6rem">
-              {board?.data!.flyers?.length &&
-                board?.data!.flyers.map((flyer) => (
-                  <FlyerBlockInteractive key={flyer!.id} flyer={flyer} />
-                ))}
-            </Masonry>
-          </ResponsiveMasonry>
+
+          {!isLoadingBoard && (originalFlyers.length === 0 || board?.error) ? (
+            <NoFlyers />
+          ) : (
+            <>
+              <StyledForm>
+                <StyledFilterContainer>
+                  <StyledFilterOptionContainer>
+                    <label htmlFor="filter">Filter: </label>
+                    <Input
+                      id="filter"
+                      type="checkbox"
+                      {...register("filter")}
+                      placeholder="Filter:"
+                    />
+                  </StyledFilterOptionContainer>
+                  {filterOnWatch && (
+                    <CategoryInput
+                      register={register}
+                      options={getCategoriesForSelect(categoriesObj, "All")}
+                      value={categoryWatch}
+                      errors={errors}
+                      showLabel={false}
+                    />
+                  )}
+
+                  {filterOnWatch && categoryWatch && (
+                    <SubcategoryInput
+                      register={register}
+                      options={getSubcategoriesForSelect(
+                        categoriesObj,
+                        categoryWatch
+                      )}
+                      value={subcategoryWatch}
+                      errors={errors}
+                      showLabel={false}
+                    />
+                  )}
+                </StyledFilterContainer>
+              </StyledForm>
+              <ResponsiveMasonry
+                columnsCountBreakPoints={{ 350: 1, 940: 2, 1600: 3 }}
+                // gutterBreakpoints={{ 350: "12px", 750: "16px", 900: "24px" }}
+              >
+                <Masonry columnsCount={3} gutter="1.6rem">
+                  {determineWhichFlyersToUse().length &&
+                    determineWhichFlyersToUse().map((flyer) => (
+                      <FlyerBlockInteractive key={flyer!.id} flyer={flyer} />
+                    ))}
+                </Masonry>
+              </ResponsiveMasonry>
+            </>
+          )}
         </div>
       </StyledBoardContainer>
     </>

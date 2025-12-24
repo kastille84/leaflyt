@@ -28,13 +28,19 @@ function accessNestedProperty(obj: any, path: string) {
 function getCategories(categories: any[]) {
   return categories.map((categoryObj: any) => categoryObj.category);
 }
-function getCategoriesForSelect(categories: any[]) {
+function getCategoriesForSelect(
+  categories: any[],
+  defaultCategoryText?: string
+) {
   const categoriesForSelect = [...categories].map((categoryObj: any) => ({
     value: categoryObj.category,
     label: categoryObj.category,
   }));
 
-  categoriesForSelect.unshift({ value: "", label: "Choose a category" });
+  categoriesForSelect.unshift({
+    value: "",
+    label: defaultCategoryText ? defaultCategoryText : "Choose a category",
+  });
   return categoriesForSelect;
 }
 
