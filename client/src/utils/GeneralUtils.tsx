@@ -50,14 +50,23 @@ function getSubcategories(categories: any[], categoryToFind: string) {
   ).subcategories;
 }
 
-function getSubcategoriesForSelect(categories: any, categoryToFind: string) {
+function getSubcategoriesForSelect(
+  categories: any,
+  categoryToFind: string,
+  defaultSubcategoryText?: string
+) {
   const subcategories = categories
     .find((categoryObj: any) => categoryObj.category === categoryToFind)
     .subcategories.map((subcategory: any) => ({
       value: subcategory,
       label: subcategory,
     }));
-  subcategories.unshift({ value: "", label: "Choose a subcategory" });
+  subcategories.unshift({
+    value: "",
+    label: defaultSubcategoryText
+      ? defaultSubcategoryText
+      : "Choose a subcategory",
+  });
   return subcategories;
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { useForm, UseFormProps } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 import useGetBoard from "./useGetBoard";
 import NoFlyers from "./NoFlyers";
@@ -12,8 +12,6 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import useGetPlaceByPlaceId from "../../hooks/useGetPlaceByPlaceId";
 import InfoAlert from "../../ui/InfoAlert";
 import { useResponsiveWidth } from "../../hooks/useResponsiveWidth";
-import FormControlRow from "../../ui/Form/FormControlRow";
-import FormControl from "../../ui/Form/FormControl";
 import CategoryInput from "../../ui/Form/CategoryInput";
 import SubcategoryInput from "../../ui/Form/SubcategoryInput";
 import {
@@ -21,7 +19,6 @@ import {
   getSubcategoriesForSelect,
 } from "../../utils/GeneralUtils";
 import categoriesObj from "../../data/categories";
-import Checkbox from "../../ui/Checkbox";
 import Input from "../../ui/Input";
 
 const StyledBoardContainer = styled.div`
@@ -55,16 +52,26 @@ const StyledFilterOptionContainer = styled.div`
   cursor: pointer;
 `;
 
+const StyledSmall = styled.small`
+  color: var(--color-orange-600);
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  text-align: right;
+
+  & span {
+    font-weight: 600;
+    text-decoration: underline;
+  }
+`;
+
 export default function Board() {
   const responsiveVal = useResponsiveWidth();
   const { id } = useParams();
   const QueryClient = useQueryClient();
   const {
     register,
-    unregister,
-    handleSubmit,
     watch,
-    getValues,
     setValue,
     formState: { errors },
   } = useForm();
@@ -200,6 +207,10 @@ export default function Board() {
                     determineWhichFlyersToUse().map((flyer) => (
                       <FlyerBlockInteractive key={flyer!.id} flyer={flyer} />
                     ))}
+
+                  {determineWhichFlyersToUse().length === 0 && (
+                    <StyledSmall as="h2">No flyers found</StyledSmall>
+                  )}
                 </Masonry>
               </ResponsiveMasonry>
             </>
