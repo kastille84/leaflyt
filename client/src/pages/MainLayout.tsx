@@ -30,7 +30,7 @@ const StyledMainLayout = styled.main`
 
 const StyledMainContentContainer = styled.div`
   background-color: var(--color-grey-50);
-  padding: 4.8rem 2.4rem 2.4rem 2.4rem;
+  padding: 2.4rem 2.4rem 2.4rem 2.4rem;
   position: relative;
   overflow-y: auto;
 `;

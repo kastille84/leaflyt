@@ -7,8 +7,8 @@ const StyledInfoAlertContainer = styled.div`
   gap: 2.4rem;
   align-items: center;
   background-color: var(--color-orange-200);
-  padding: 1.6rem 2.4rem;
-  margin-bottom: 2.4rem;
+  padding: 1.2rem 1.6rem;
+  margin-bottom: 1.4rem;
 
   & h4 {
     color: var(--color-orange-600);

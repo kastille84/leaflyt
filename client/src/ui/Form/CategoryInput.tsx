@@ -17,20 +17,24 @@ export default function CategoryInput({
   options,
   value,
   errors,
+  showLabel = true,
 }: {
   register: UseFormRegister<any>;
   options: { value: string; label: string }[];
   value: string;
   errors: FieldErrors<FieldValues>;
+  showLabel?: boolean;
 }) {
   return (
     <FormControl className="category" testId="category-container">
-      <StyledLabel
-        htmlFor="category"
-        className={`${errors["category"] && "error"}`}
-      >
-        Category
-      </StyledLabel>
+      {showLabel && (
+        <StyledLabel
+          htmlFor="category"
+          className={`${errors["category"] && "error"}`}
+        >
+          Category
+        </StyledLabel>
+      )}
       <Select
         options={options}
         value={value}
