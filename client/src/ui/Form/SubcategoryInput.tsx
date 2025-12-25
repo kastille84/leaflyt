@@ -17,20 +17,24 @@ export default function SubcategoryInput({
   options,
   value,
   errors,
+  showLabel = true,
 }: {
   register: UseFormRegister<any>;
   options: { value: string; label: string }[];
   value: string;
   errors: FieldErrors<FieldValues>;
+  showLabel?: boolean;
 }) {
   return (
     <FormControl className="subcategory" testId="subcategory-container">
-      <StyledLabel
-        htmlFor="subcategory"
-        className={`${errors["subcategory"] && "error"}`}
-      >
-        Subcategory
-      </StyledLabel>
+      {showLabel && (
+        <StyledLabel
+          htmlFor="subcategory"
+          className={`${errors["subcategory"] && "error"}`}
+        >
+          Subcategory
+        </StyledLabel>
+      )}
       <Select
         options={options}
         value={value}
