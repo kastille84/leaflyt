@@ -61,7 +61,7 @@ const StyledTemplateListItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
-  border: 2px dashed var(--color-brand-700);
+  border: 1px dashed var(--color-brand-700);
   border-radius: var(--border-radius-md);
   padding: 2.4rem;
   background-color: var(--color-grey-50);

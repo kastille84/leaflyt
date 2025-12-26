@@ -10,6 +10,8 @@ import {
 } from "../utils/FlyerUtils";
 import DoughnutStat from "../ui/Statistics/DoughnutStat";
 import NumberStat from "../ui/Statistics/NumberStat";
+import { useState } from "react";
+import Usage from "../features/statistics/usage/Usage";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -30,87 +32,34 @@ const StyledHeadingContainer = styled.div`
   }
 `;
 
-const AllStatsContainer = styled.div`
+const StyledActionPillsContainer = styled.div`
   display: flex;
-  gap: 2.4rem;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+`;
 
-  @media (max-width: 59em) {
-    /* flex-direction: column;
-    align-items: center; */
-    flex-wrap: wrap;
-  }
-  @media (max-width: 34em) {
-    justify-content: center;
-  }
+const Pill = styled.div<{ active?: boolean }>`
+  padding: 0.4rem 0.8rem;
+  border-radius: 1.2rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--color-brand-600);
+  border: 1px solid var(--color-brand-600);
+
+  ${(props) =>
+    props.active &&
+    `
+    background-color: var(--color-brand-600);
+    color: var(--color-grey-50);
+  `}
 `;
 
 const StyledStatisticsTitleContainer = styled.div``;
 
 export default function Statistics() {
-  const { user } = useGlobalContext();
-  const userLimits = useGetUserLimits();
-  const groupedFlyers = groupFlyersBasedOnPostingMethod(user?.flyers || []);
-  console.log("groupedFlyers", groupedFlyers);
-  console.log("userLimits", userLimits.onLocationPosting.limit);
-  let likesData = null;
-  let totalLikes = totalNumberOfFlyerLikes(user?.flyers || []);
-
-  // if (groupedFlyers?.onLocation?.length) {
-  const onLocationData = {
-    statNum: `${groupedFlyers?.onLocation?.length || 0}/${
-      userLimits.onLocationPosting.limit
-    }`,
-    title: "On-location Posting",
-    // labels: ["Used", "Remaining"],
-    datasets: [
-      {
-        label: "Flyer",
-        data: [
-          groupedFlyers?.onLocation?.length || 0,
-          userLimits.onLocationPosting.limit -
-            (groupedFlyers?.onLocation?.length || 0),
-        ],
-        backgroundColor: ["#2B8A40", "#e9e9e9"],
-        borderColor: ["#2B8A40", "#808080"],
-        borderWidth: 1,
-      },
-    ],
-  };
-  // }
-
-  // if (groupedFlyers?.remote?.length) {
-  const remoteData = {
-    statNum: `${groupedFlyers?.remote?.length || 0}/${
-      userLimits.remotePosting.limit
-    }`,
-    title: "Remote Posting",
-    // labels: ["Used", "Remaining"],
-    datasets: [
-      {
-        label: "Flyer",
-        data: [
-          groupedFlyers?.remote?.length || 0,
-          userLimits.remotePosting.limit - (groupedFlyers?.remote?.length || 0),
-        ],
-        backgroundColor: ["#2B8A40", "#e9e9e9"],
-        borderColor: ["#2B8A40", "#808080"],
-        borderWidth: 1,
-      },
-    ],
-  };
-  // }
-
-  if (totalLikes) {
-    likesData = {
-      statNum: `${totalLikes}`,
-      title: "Total Likes",
-    };
-  }
-
-  const totalFlyersData = {
-    statNum: `${user?.flyers?.length || 0}`,
-    title: "Total Flyers",
-  };
+  const [activeTab, setActiveTab] = useState<"usage" | "analytics">("usage");
 
   return (
     <StyledStatisticsPage>
@@ -118,14 +67,27 @@ export default function Statistics() {
         <StyledStatisticsTitleContainer>
           <Heading as="h2">Statistics</Heading>
         </StyledStatisticsTitleContainer>
+        <StyledActionPillsContainer>
+          <Pill
+            active={activeTab === "usage"}
+            onClick={() => setActiveTab("usage")}
+          >
+            Usage
+          </Pill>
+          <Pill
+            active={activeTab === "analytics"}
+            onClick={() => setActiveTab("analytics")}
+          >
+            Analytics
+          </Pill>
+        </StyledActionPillsContainer>
       </StyledHeadingContainer>
-      <AllStatsContainer>
-        <DoughnutStat data={onLocationData} />
-
-        <DoughnutStat data={remoteData} />
-        <NumberStat data={totalFlyersData} />
-        {likesData && <NumberStat data={likesData} />}
-      </AllStatsContainer>
+      <div>
+        {activeTab === "usage" && <Usage />}
+        {activeTab === "analytics" && (
+          <p style={{ textAlign: "center" }}>Analytics Coming Soon.</p>
+        )}
+      </div>
     </StyledStatisticsPage>
   );
 }
