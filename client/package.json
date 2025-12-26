@@ -23,11 +23,13 @@
     "@types/googlemaps": "^3.43.3",
     "@vis.gl/react-google-maps": "^1.5.2",
     "@vitejs/plugin-basic-ssl": "^2.0.0",
+    "chart.js": "^4.5.1",
     "cloudinary": "^2.7.0",
     "date-fns": "^4.1.0",
     "quill": "^2.0.3",
     "react": "^19.1.0",
     "react-autocomplete-tagbox": "^1.0.1",
+    "react-chartjs-2": "^5.3.1",
     "react-color-palette": "^7.3.0",
     "react-dom": "^19.1.0",
     "react-error-boundary": "^6.0.0",
@@ -42,7 +44,6 @@
     "react-quill-new": "^3.4.6",
     "react-responsive-masonry": "^2.7.1",
     "react-router-dom": "^7.6.0",
-    "recharts": "^2.15.3",
     "styled-components": "^6.1.18"
   },
   "devDependencies": {

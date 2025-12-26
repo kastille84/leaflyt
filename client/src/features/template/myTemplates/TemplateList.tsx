@@ -5,7 +5,7 @@ import FlyerBlockStatic from "../../../ui/Flyer/FlyerBlockStatic";
 import { HiOutlinePencilSquare, HiOutlineXMark } from "react-icons/hi2";
 import Heading from "../../../ui/Heading";
 import { useEffect } from "react";
-import { groupFlyersToTemplates } from "../../../utils/GeneralUtils";
+import { groupFlyersToTemplates } from "../../../utils/FlyerUtils";
 
 const StyledTemplateListContainer = styled.div`
   height: 100%;

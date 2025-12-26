@@ -16,6 +16,7 @@ import MyTemplates from "./pages/MyTemplates";
 import SavedFlyers from "./pages/SavedFlyers";
 import Home from "./pages/Home";
 import MyAssets from "./pages/MyAssets";
+import Statistics from "./pages/Statistics";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,6 +47,7 @@ function App() {
                 <Route path="my-templates" element={<MyTemplates />} />
                 <Route path="saved-flyers" element={<SavedFlyers />} />
                 <Route path="my-assets" element={<MyAssets />} />
+                <Route path="statistics" element={<Statistics />} />
               </Route>
 
               <Route path="/" index element={<Landing />} />
