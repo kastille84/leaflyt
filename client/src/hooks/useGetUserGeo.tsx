@@ -58,8 +58,8 @@ export default () => {
       // https://www.reddit.com/r/AndroidQuestions/comments/1epu2m6/why_do_android_phones_give_incorrect_location/#:~:text=With%20the%20location%20permission%20granted,exactly%20the%20location%20of%20you.
       navigator.geolocation.watchPosition(onSuccess, onReject, {
         enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0,
+        timeout: 10000, // 10 seconds
+        maximumAge: 500,
       })
     );
     // });

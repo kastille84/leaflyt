@@ -33,6 +33,7 @@ const StyledAddress = styled.p`
   padding: 1.2rem;
 `;
 const ButtonContainer = styled.div`
+  text-align: right;
   padding: 1.2rem;
 `;
 
