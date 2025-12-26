@@ -18,8 +18,8 @@ const StyledHeadingContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--color-brand-100);
-  color: var(--color-grey-700);
+  background: var(--color-brand-600);
+  color: var(--color-grey-50);
   /* border: 1px solid var(--color-brand-600); */
   border-radius: var(--border-radius-lg);
   padding: 3.6rem;

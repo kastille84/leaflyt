@@ -30,7 +30,7 @@ import toast from "react-hot-toast";
 import {
   checkIfCurrentFlyerIsSaved,
   checkIfCurrentFlyerIsLiked,
-} from "../../utils/GeneralUtils";
+} from "../../utils/FlyerUtils";
 import { useLikeFlyers } from "../../hooks/useLikeFlyers";
 
 const common = {

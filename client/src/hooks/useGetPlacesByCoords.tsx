@@ -42,8 +42,8 @@ export default (coords: LatLng) => {
             //  40.7568384 | -73.9803136
             // 40.7732224 | -73.9147776
           },
-          radius: 125,
-          // radius: 250,
+          // radius: 125,
+          radius: 250,
         },
       },
     };
