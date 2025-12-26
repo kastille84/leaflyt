@@ -15,6 +15,11 @@ const StatsBlockContainer = styled.div`
   border: 1px solid var(--color-grey-200);
   border-radius: var(--border-radius-md);
   padding: 1.4rem;
+
+  @media (max-width: 59em) {
+    width: 200px;
+    height: 200px;
+  }
 `;
 
 const DoughnutStatContainer = styled.div`
@@ -25,18 +30,20 @@ const DoughnutStatContainer = styled.div`
   justify-content: center;
 
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: 90%;
+  height: 90%;
 `;
 
 const StatsNum = styled.p`
   position: absolute;
-  top: 50%;
+  top: 52%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -52%);
 `;
 
-const StatText = styled.p``;
+const StatText = styled.p`
+  margin-top: 1rem;
+`;
 
 export default function DoughnutStat({ data }: any) {
   const configuredData = {

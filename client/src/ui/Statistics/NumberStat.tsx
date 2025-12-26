@@ -10,6 +10,11 @@ const StyledNumberStatContainer = styled.div`
   border: 1px solid var(--color-grey-200);
   border-radius: var(--border-radius-md);
   padding: 1.4rem;
+
+  @media (max-width: 59em) {
+    width: 200px;
+    height: 200px;
+  }
 `;
 
 const StyledNumber = styled.div`

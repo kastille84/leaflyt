@@ -30,22 +30,18 @@ const StyledHeadingContainer = styled.div`
   }
 `;
 
-const StatsBlockContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2.4rem;
-  align-items: center;
-  justify-content: center;
-  width: 200px;
-  height: 200px;
-  border: 1px solid var(--color-grey-200);
-  border-radius: var(--border-radius-md);
-  padding: 1.2rem;
-`;
-
 const AllStatsContainer = styled.div`
   display: flex;
   gap: 2.4rem;
+
+  @media (max-width: 59em) {
+    /* flex-direction: column;
+    align-items: center; */
+    flex-wrap: wrap;
+  }
+  @media (max-width: 34em) {
+    justify-content: center;
+  }
 `;
 
 const StyledStatisticsTitleContainer = styled.div``;
@@ -64,7 +60,7 @@ export default function Statistics() {
     statNum: `${groupedFlyers?.onLocation?.length || 0}/${
       userLimits.onLocationPosting.limit
     }`,
-    title: "On Location",
+    title: "On-location Posting",
     // labels: ["Used", "Remaining"],
     datasets: [
       {
@@ -87,7 +83,7 @@ export default function Statistics() {
     statNum: `${groupedFlyers?.remote?.length || 0}/${
       userLimits.remotePosting.limit
     }`,
-    title: "Remote",
+    title: "Remote Posting",
     // labels: ["Used", "Remaining"],
     datasets: [
       {
@@ -111,6 +107,11 @@ export default function Statistics() {
     };
   }
 
+  const totalFlyersData = {
+    statNum: `${user?.flyers?.length || 0}`,
+    title: "Total Flyers",
+  };
+
   return (
     <StyledStatisticsPage>
       <StyledHeadingContainer>
@@ -122,6 +123,7 @@ export default function Statistics() {
         <DoughnutStat data={onLocationData} />
 
         <DoughnutStat data={remoteData} />
+        <NumberStat data={totalFlyersData} />
         {likesData && <NumberStat data={likesData} />}
       </AllStatsContainer>
     </StyledStatisticsPage>
