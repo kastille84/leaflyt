@@ -5,7 +5,6 @@ import { LatLng, NearbySearchPlaceResult } from "../interfaces/Geo";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
 import { DB_Flyers_Response, DB_Template } from "../interfaces/DB_Flyers";
-import { useSessionStorageState } from "../hooks/useSessionStorageState";
 
 export type ContextType = {
   getUserGeo: () => void;
@@ -40,6 +39,7 @@ export type ContextType = {
     | "carousel"
     | "hasTemplates"
     | "chooseAssets"
+    | "editAccountInfo"
     | null;
   setBottomSlideInType: React.Dispatch<
     React.SetStateAction<
@@ -49,6 +49,7 @@ export type ContextType = {
       | "carousel"
       | "hasTemplates"
       | "chooseAssets"
+      | "editAccountInfo"
       | null
     >
   >;
@@ -156,6 +157,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
     | "carousel"
     | "hasTemplates"
     | "chooseAssets"
+    | "editAccountInfo"
     | null
   >(null);
   const [user, setUser] = useState<Auth_User_Profile_Response | null>(null);

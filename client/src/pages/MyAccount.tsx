@@ -1,13 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Heading from "../ui/Heading";
-// import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import AccountInfo from "../features/account/AccountInfo";
 
-import Usage from "../features/statistics/usage/Usage";
-
-// ChartJS.register(ArcElement, Tooltip, Legend);
-
-const StyledStatisticsPage = styled.div`
+const StyledMyAccountPage = styled.div`
   /* height: 100%; */
   display: flex;
   flex-direction: column;
@@ -28,7 +24,6 @@ const StyledActionPillsContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 0.8rem;
-  margin-bottom: 1.2rem;
 `;
 
 const Pill = styled.div<{ active?: boolean }>`
@@ -48,38 +43,49 @@ const Pill = styled.div<{ active?: boolean }>`
   `}
 `;
 
-const StyledStatisticsTitleContainer = styled.div``;
+const StyledTitleContainer = styled.div``;
 
-export default function Statistics() {
-  const [activeTab, setActiveTab] = useState<"usage" | "analytics">("usage");
+export default function MyAccount() {
+  const [activeTab, setActiveTab] = useState<"account" | "plan" | "billing">(
+    "account"
+  );
 
   return (
-    <StyledStatisticsPage>
+    <StyledMyAccountPage>
       <StyledHeadingContainer>
-        <StyledStatisticsTitleContainer>
-          <Heading as="h2">Statistics</Heading>
-        </StyledStatisticsTitleContainer>
+        <StyledTitleContainer>
+          <Heading as="h2">Account</Heading>
+        </StyledTitleContainer>
         <StyledActionPillsContainer>
           <Pill
-            active={activeTab === "usage"}
-            onClick={() => setActiveTab("usage")}
+            active={activeTab === "account"}
+            onClick={() => setActiveTab("account")}
           >
-            Usage
+            Account
           </Pill>
           <Pill
-            active={activeTab === "analytics"}
-            onClick={() => setActiveTab("analytics")}
+            active={activeTab === "plan"}
+            onClick={() => setActiveTab("plan")}
           >
-            Analytics
+            Plan
+          </Pill>
+          <Pill
+            active={activeTab === "billing"}
+            onClick={() => setActiveTab("billing")}
+          >
+            Billing
           </Pill>
         </StyledActionPillsContainer>
       </StyledHeadingContainer>
       <div>
-        {activeTab === "usage" && <Usage />}
-        {activeTab === "analytics" && (
-          <p style={{ textAlign: "center" }}>Analytics Coming Soon.</p>
+        {activeTab === "account" && <AccountInfo />}
+        {activeTab === "plan" && (
+          <p style={{ textAlign: "center" }}>Plan Coming Soon.</p>
+        )}
+        {activeTab === "billing" && (
+          <p style={{ textAlign: "center" }}>Billing Coming Soon.</p>
         )}
       </div>
-    </StyledStatisticsPage>
+    </StyledMyAccountPage>
   );
 }
