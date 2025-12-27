@@ -13,6 +13,7 @@ import FullCarouselContainer from "../Flyer/FullCarouselContainer";
 import TemplateSelectionContainer from "../../features/template/TemplateSelectionContainer";
 import AssestSelectionContainer from "../../features/assets/AssetSelection/AssestSelectionContainer";
 import { AssetSelectionContextProvider } from "../../context/AssetSelectionContext";
+import EditAccountInfo from "../../features/account/EditAccountInfo";
 
 const StyledCloseContainer = styled.div`
   display: flex;
@@ -63,6 +64,8 @@ export default function SlideInBottom() {
             <AssestSelectionContainer />
           </AssetSelectionContextProvider>
         );
+      case "editAccountInfo":
+        return <EditAccountInfo />;
       default:
         return null;
     }
