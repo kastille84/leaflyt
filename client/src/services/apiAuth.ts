@@ -148,6 +148,31 @@ export const signupUser = async (prepData: SignupSubmitData) => {
   }
 };
 
+export const forgotPassword = async (email: string) => {
+  try {
+    const { error, data } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/dashboard/update-password`, // Change to your actual update password page URL
+    });
+    if (error) {
+      throw error;
+    }
+    return data;
+  } catch (error) {
+    return { data: null, error };
+  }
+};
+
+export const updatePassword = async (password: string) => {
+  try {
+    const { error, data } = await supabase.auth.updateUser({ password });
+    if (error) {
+      throw error;
+    }
+    return data;
+  } catch (error) {
+    return { data: null, error };
+  }
+};
 // export const getUser = async () => {
 //   try {
 //     const { data, error } = await supabase.auth.getUser();

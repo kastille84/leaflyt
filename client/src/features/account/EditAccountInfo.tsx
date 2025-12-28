@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useForm, UseFormProps } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import Form from "../../ui/Form/Form";
 import FormControlRow from "../../ui/Form/FormControlRow";
 import FormControl from "../../ui/Form/FormControl";
 
@@ -121,9 +120,7 @@ export default function EditAccountInfo() {
 
   const {
     register,
-
     handleSubmit,
-
     getValues,
     setValue,
     formState: { errors },
@@ -306,7 +303,7 @@ export default function EditAccountInfo() {
           </Button>
         </StyledFormButtonContainer>
       </StyledForm>
-      {showSpinner && <OverlaySpinner message={"Creating your account..."} />}
+      {showSpinner && <OverlaySpinner message={"Updating your account..."} />}
     </StyledFormContainer>
   );
 }

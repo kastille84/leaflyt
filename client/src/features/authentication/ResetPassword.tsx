@@ -11,6 +11,7 @@ import Button from "../../ui/Button";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 import { useGlobalContext } from "../../context/GlobalContext";
 import useLogin from "./useLogin";
+import PasswordInput from "../../ui/Form/PasswordInput";
 
 const StyledForgotPassword = styled.div`
   display: flex;
@@ -68,12 +69,12 @@ const StyledFormButtonContainer = styled.div`
   gap: 2.4rem;
 `;
 
-export default function ForgotPassword() {
+export default function ResetPassword() {
   const [submitError, setSubmitError] = useState("");
   const [showSpinner, setShowSpinner] = useState(false);
-  const { user } = useGlobalContext();
+  // const { user } = useGlobalContext();
 
-  const { forgotPasswordFn } = useLogin();
+  const { updatePasswordFn } = useLogin();
 
   const formOptions: UseFormProps = {
     mode: "onBlur",
@@ -93,11 +94,10 @@ export default function ForgotPassword() {
     setShowSpinner(true);
 
     try {
-      forgotPasswordFn(data.email, {
+      updatePasswordFn(data.password, {
         onSuccess: (response) => {
-          console.log("response", response);
           setShowSpinner(false);
-          toast.success("Password reset link sent successfully!", {
+          toast.success("Password Updated! Try to login now!", {
             duration: 6000,
           });
         },
@@ -121,7 +121,7 @@ export default function ForgotPassword() {
   return (
     <StyledForgotPassword>
       <StyledHeadingContainer>
-        <Heading as="h2">Forgot Password</Heading>
+        <Heading as="h2">Reset Password</Heading>
       </StyledHeadingContainer>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         {submitError && (
@@ -130,15 +130,15 @@ export default function ForgotPassword() {
           </StyledSubmitError>
         )}
         <Heading as="h3">
-          Please provide your email address registered with this account.
+          Please provide your new password for this account.
         </Heading>
-        <p>We will send you a link to reset your password</p>
 
         <FormControlRow>
-          <EmailInput
+          <PasswordInput
             register={register}
-            registerName="email"
+            registerName="password"
             errors={errors}
+            shouldShow={true}
           />
           <FormControl>{/* placeholder */}</FormControl>
         </FormControlRow>
@@ -146,13 +146,13 @@ export default function ForgotPassword() {
         <FormControlRow>
           <FormControl>
             <StyledFormButtonContainer data-testid="form-button-container">
-              <Button type="submit">Reset Password</Button>
+              <Button type="submit">Update Password</Button>
             </StyledFormButtonContainer>
           </FormControl>
           <FormControl>{/* placeholder */}</FormControl>
         </FormControlRow>
       </StyledForm>
-      {showSpinner && <OverlaySpinner message={"Updating your account..."} />}
+      {showSpinner && <OverlaySpinner message={"Updating your password..."} />}
     </StyledForgotPassword>
   );
 }
