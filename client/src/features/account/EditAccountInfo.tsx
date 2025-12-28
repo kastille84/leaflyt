@@ -17,6 +17,10 @@ import PhoneInput from "../../ui/Form/PhoneInput";
 import AddressInput from "../../ui/Form/AddressInput";
 import WebsiteInput from "../../ui/Form/WebsiteInput";
 import FullNameInput from "../../ui/Form/FullNameInput";
+import OverlaySpinner from "../../ui/OverlaySpinner";
+import Button from "../../ui/Button";
+
+import useAccount from "./useAccount";
 
 const StyledEditAccountInfoContainer = styled.div``;
 
@@ -66,9 +70,11 @@ const StyledFormButtonContainer = styled.div`
 `;
 
 export default function EditAccountInfo() {
+  const [submitError, setSubmitError] = useState("");
+  const [showSpinner, setShowSpinner] = useState(false);
   const { user, setUser, setBottomSlideInType, setIsOpenBottomSlideIn } =
     useGlobalContext();
-  const [submitError, setSubmitError] = useState("");
+  const { updateProfile } = useAccount();
   const formOptions: UseFormProps = {
     mode: "onBlur",
   };
@@ -131,6 +137,42 @@ export default function EditAccountInfo() {
   const onSubmit = async (data: any) => {
     setSubmitError("");
     console.log("submit - data", data);
+    setShowSpinner(true);
+
+    try {
+      const response = await updateProfile(
+        {
+          profile: data,
+          typeOfUser: user!.typeOfUser,
+          userId: user!.id as string,
+        },
+        {
+          onSuccess: ({ user }: any) => {
+            console.log("response", response);
+            // set user in global context
+            setUser(user);
+            toast.success("Account info updated successfully!", {
+              duration: 6000,
+            });
+            setShowSpinner(false);
+            handleCancel();
+          },
+          onError: (error) => {
+            console.log("onError", error.message);
+            setSubmitError(error.message);
+            // set focus on error
+            document.querySelector("#form-error")?.scrollIntoView();
+            setShowSpinner(false);
+          },
+        }
+      );
+    } catch (error: any) {
+      console.log("error", error);
+      setSubmitError(error.message);
+      // set focus on error
+      document.querySelector("#form-error")?.scrollIntoView();
+      setShowSpinner(false);
+    }
   };
 
   function handleCancel() {
@@ -175,7 +217,6 @@ export default function EditAccountInfo() {
                 setValue={setValue}
                 registerName="individual.contact.address"
                 errors={errors}
-                shouldSaveAddressObj
                 disabled
                 cantUpdate
               />
@@ -206,7 +247,6 @@ export default function EditAccountInfo() {
                 setValue={setValue}
                 registerName="business.contact.address"
                 errors={errors}
-                shouldSaveAddressObj
                 disabled
                 cantUpdate
               />
@@ -241,7 +281,6 @@ export default function EditAccountInfo() {
                 setValue={setValue}
                 registerName="organization.contact.address"
                 errors={errors}
-                shouldSaveAddressObj
                 disabled
                 cantUpdate
               />
@@ -260,7 +299,14 @@ export default function EditAccountInfo() {
             </FormControlRow>
           </>
         )}
+        <StyledFormButtonContainer data-testid="form-button-container">
+          <Button type="submit">Update</Button>
+          <Button type="button" variation="secondary" onClick={handleCancel}>
+            Cancel
+          </Button>
+        </StyledFormButtonContainer>
       </StyledForm>
+      {showSpinner && <OverlaySpinner message={"Creating your account..."} />}
     </StyledFormContainer>
   );
 }
