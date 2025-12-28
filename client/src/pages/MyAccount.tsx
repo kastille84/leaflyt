@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import Heading from "../ui/Heading";
 import AccountInfo from "../features/account/AccountInfo";
+import MyPlan from "../features/account/MyPlan";
 
 const StyledMyAccountPage = styled.div`
   /* height: 100%; */
@@ -79,9 +80,7 @@ export default function MyAccount() {
       </StyledHeadingContainer>
       <div>
         {activeTab === "account" && <AccountInfo />}
-        {activeTab === "plan" && (
-          <p style={{ textAlign: "center" }}>Plan Coming Soon.</p>
-        )}
+        {activeTab === "plan" && <MyPlan />}
         {activeTab === "billing" && (
           <p style={{ textAlign: "center" }}>Billing Coming Soon.</p>
         )}
