@@ -18,6 +18,7 @@ import Home from "./pages/Home";
 import MyAssets from "./pages/MyAssets";
 import Statistics from "./pages/Statistics";
 import MyAccount from "./pages/MyAccount";
+import ForgotPassword from "./features/authentication/ForgotPassword";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,6 +51,11 @@ function App() {
                 <Route path="assets" element={<MyAssets />} />
                 <Route path="statistics" element={<Statistics />} />
                 <Route path="account" element={<MyAccount />} />
+                <Route path="forgot-password" element={<ForgotPassword />} />
+                <Route
+                  path="update-password"
+                  element={<p>Update Password</p>}
+                />
               </Route>
 
               <Route path="/" index element={<Landing />} />
