@@ -43,7 +43,7 @@ import useCreateUnregisteredFlyer from "./useCreateUnregisteredFlyer";
 import toast from "react-hot-toast";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 import AttestationInput from "../../ui/Form/AttestationInput";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const StyledAnonymousContainer = styled.div``;
 

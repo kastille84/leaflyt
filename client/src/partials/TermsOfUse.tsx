@@ -164,8 +164,7 @@ export default function TermsOfUse() {
       <h2>10. Governing Law</h2>
       <p>
         These Terms are governed by the laws of
-        <em>[Insert Your Jurisdiction/State]</em>, without regard to conflict of
-        law principles.
+        <em>New York State</em>, without regard to conflict of law principles.
       </p>
     </StyledMain>
   );

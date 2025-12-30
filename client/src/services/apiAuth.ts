@@ -131,6 +131,7 @@ export const signupUser = async (prepData: SignupSubmitData) => {
       address: prepData.addressObjToSave,
       typeOfUser: prepData.typeOfUser,
       user: data.user?.id,
+      termsAccepted: prepData.terms,
     };
 
     const response = await fetch(`${getBaseUrl()}/api/auth/signup`, {

@@ -155,7 +155,7 @@ export default function SignupForm() {
         toast.success(
           `Signup successful! You must verify your email: ${response.data.email} before logging in.`,
           {
-            duration: 6000,
+            duration: 8000,
           }
         );
         setShowSpinner(false);
