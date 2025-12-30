@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import Heading from "../../ui/Heading";
 import Button from "../../ui/Button";
 import styled from "styled-components";
@@ -10,7 +10,7 @@ import EmailInput from "../../ui/Form/EmailInput";
 import PasswordInput from "../../ui/Form/PasswordInput";
 import useLogin from "./useLogin";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 
 const StyledButtonContainer = styled.div`
@@ -22,6 +22,10 @@ const StyledButtonContainer = styled.div`
 
 const StyledFormContainer = styled.div`
   padding: 1.6rem 2.4rem;
+
+  & form {
+    margin-bottom: 2.4rem;
+  }
 `;
 
 const StyledHeaderContainer = styled.div`
@@ -67,11 +71,26 @@ const StyledSubmitError = styled(Heading)`
   color: var(--color-red-600) !important;
 `;
 
+const LinkContainer = styled.div`
+  margin-top: 1rem;
+  text-align: right;
+  & a {
+    color: var(--color-brand-600);
+    text-decoration: underline;
+  }
+`;
+
 export default function LoginModal() {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const { showLoginModal, setShowLoginModal, setUser, selectedPlace } =
-    useGlobalContext();
+  const {
+    showLoginModal,
+    setShowLoginModal,
+    setUser,
+    selectedPlace,
+    setBottomSlideInType,
+    setIsOpenBottomSlideIn,
+  } = useGlobalContext();
 
   const { login } = useLogin();
   const navigate = useNavigate();
@@ -93,6 +112,13 @@ export default function LoginModal() {
   function handleClose() {
     setShowLoginModal(false);
     reset();
+  }
+
+  function handleRegister(event?: React.MouseEvent<HTMLAnchorElement>) {
+    event?.preventDefault();
+    setShowLoginModal(false);
+    setIsOpenBottomSlideIn(true);
+    setBottomSlideInType("signup");
   }
 
   const onSubmit = async (data: any) => {
@@ -178,6 +204,16 @@ export default function LoginModal() {
             </Button>
           </StyledButtonContainer>
         </Form>
+        <LinkContainer>
+          <Link to="/dashboard/forgot-password" onClick={handleClose}>
+            Forgot your password?
+          </Link>
+        </LinkContainer>
+        <LinkContainer>
+          <Link to="/register" onClick={(e) => handleRegister(e)}>
+            Don't have an account? Register
+          </Link>
+        </LinkContainer>
       </StyledFormContainer>
     </Modal>
   );

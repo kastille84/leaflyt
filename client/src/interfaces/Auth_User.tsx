@@ -63,6 +63,7 @@ interface BaseSignupSubmitData {
   typeOfUser: "individual" | "business" | "organization";
   password: string;
   addressObjToSave: AddressToSave;
+  terms: boolean;
 }
 
 export type SignupSubmitData = BaseSignupSubmitData &
@@ -145,6 +146,7 @@ export interface Auth_User_Profile_Response {
     used_by_templates: string[];
   }[];
   saved_flyers: DB_Saved_Flyer[];
+  termsAccepted: boolean;
 }
 
 export interface LoginSubmitData {

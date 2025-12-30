@@ -17,6 +17,10 @@ import SavedFlyers from "./pages/SavedFlyers";
 import Home from "./pages/Home";
 import MyAssets from "./pages/MyAssets";
 import Statistics from "./pages/Statistics";
+import MyAccount from "./pages/MyAccount";
+import ForgotPassword from "./features/authentication/ForgotPassword";
+import ResetPassword from "./features/authentication/ResetPassword";
+import TermsModal from "./ui/Modals/TermsModal";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,16 +48,20 @@ function App() {
                 <Route path="home" element={<Home />} />
                 <Route path="board/:id" element={<Board />} />
                 <Route path="my-area" element={<MyArea />} />
-                <Route path="my-templates" element={<MyTemplates />} />
+                <Route path="templates" element={<MyTemplates />} />
                 <Route path="saved-flyers" element={<SavedFlyers />} />
-                <Route path="my-assets" element={<MyAssets />} />
+                <Route path="assets" element={<MyAssets />} />
                 <Route path="statistics" element={<Statistics />} />
+                <Route path="account" element={<MyAccount />} />
+                <Route path="forgot-password" element={<ForgotPassword />} />
+                <Route path="update-password" element={<ResetPassword />} />
               </Route>
 
               <Route path="/" index element={<Landing />} />
               <Route path="*" element={<div>Page not found</div>} />
             </Routes>
             <LoginModal />
+            <TermsModal />
             <FlyerSlideIn />
             <SlideInBottom />
           </BrowserRouter>

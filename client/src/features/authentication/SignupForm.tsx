@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 
 import Heading from "../../ui/Heading";
 import FormControlRow from "../../ui/Form/FormControlRow";
@@ -21,7 +21,7 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import { SignupSubmitData } from "../../interfaces/Auth_User";
 import useSignup from "./useSignup";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const StyledFormContainer = styled.div`
   display: flex;
@@ -37,7 +37,7 @@ const StyledFormContainer = styled.div`
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 2.4rem;
+  /* gap: 2.4rem; */
   height: 70rem;
   padding-top: 2.4rem;
   padding-right: 2.4rem;
@@ -64,6 +64,27 @@ const StyledFormButtonContainer = styled.div`
   gap: 2.4rem;
 `;
 
+const StyledCheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+`;
+
+const StyledCheckbox = styled.input`
+  width: 1.6rem;
+  height: 1.6rem;
+`;
+
+const StyledCheckboxLabel = styled.label`
+  font-size: 1.4rem;
+  color: var(--color-grey-600);
+
+  & a {
+    color: var(--color-brand-500);
+    text-decoration: underline;
+  }
+`;
+
 export default function SignupForm() {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -82,7 +103,12 @@ export default function SignupForm() {
     mode: "all",
   });
 
-  const { setBottomSlideInType, setIsOpenBottomSlideIn } = useGlobalContext();
+  const {
+    setBottomSlideInType,
+    setIsOpenBottomSlideIn,
+    setTermsModalType,
+    setShowTermsModal,
+  } = useGlobalContext();
 
   const typeOfUserWatch = watch("typeOfUser");
   const typeOfUser = getValues("typeOfUser");
@@ -105,6 +131,11 @@ export default function SignupForm() {
     setBottomSlideInType(null);
   }
 
+  function handleLinkClick(type: "terms" | "privacy" | "guidelines" | null) {
+    setShowTermsModal(true);
+    setTermsModalType(type);
+  }
+
   function onSubmit(data: any) {
     setSubmitError("");
     console.log("data", data);
@@ -124,7 +155,7 @@ export default function SignupForm() {
         toast.success(
           `Signup successful! You must verify your email: ${response.data.email} before logging in.`,
           {
-            duration: 6000,
+            duration: 8000,
           }
         );
         setShowSpinner(false);
@@ -149,7 +180,7 @@ export default function SignupForm() {
           </StyledSubmitError>
         )}
         {/* <StyledContentContainer> */}
-        <Heading as="h3">Tell us a bit about yourself.</Heading>
+        {/* <Heading as="h3">Tell us a bit about yourself.</Heading> */}
         <FormControlRow>
           <TypeOfUserInput
             title="How do you want to post as?"
@@ -286,6 +317,47 @@ export default function SignupForm() {
                 shouldShow
               />
             </FormControlRow>
+            <div>
+              <StyledCheckboxContainer>
+                <StyledCheckbox
+                  id="terms"
+                  type="checkbox"
+                  {...register("terms", { required: true })}
+                />
+                <StyledCheckboxLabel htmlFor="terms">
+                  I agree to the{" "}
+                  <Link
+                    to="/terms"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLinkClick("terms");
+                    }}
+                  >
+                    Terms and Conditions
+                  </Link>
+                  ,{" "}
+                  <Link
+                    to="/privacy"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLinkClick("privacy");
+                    }}
+                  >
+                    Privacy Policy
+                  </Link>
+                  ,{" & "}
+                  <Link
+                    to="/guidelines"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLinkClick("guidelines");
+                    }}
+                  >
+                    Community Guidelines
+                  </Link>
+                </StyledCheckboxLabel>
+              </StyledCheckboxContainer>
+            </div>
             <StyledFormButtonContainer data-testid="form-button-container">
               <Button type="submit">Sign up</Button>
               <Button type="button" variation="secondary" onClick={handleClose}>

@@ -44,4 +44,8 @@ export const mockUseGlobalContextReturnObj = {
   setLikedContextSessionFlyers: () => {},
   anonUserPostings: [],
   setAnonUserPostings: () => {},
+  setShowTermsModal: () => {},
+  showTermsModal: false,
+  setTermsModalType: () => {},
+  termsModalType: null,
 };

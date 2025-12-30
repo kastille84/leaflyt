@@ -1,6 +1,7 @@
 import FormControl from "./FormControl";
 import Input from "../Input";
 import type { UseFormRegister } from "react-hook-form";
+import { Link } from "react-router-dom";
 
 export default function AttestationInput({
   register,
@@ -20,12 +21,8 @@ export default function AttestationInput({
           {...register("attestation", { required: true })}
         />
         <p>
-          Anonymous posting has a higher chance of getting flagged due to their
-          uncontrolled nature.
-          <br />
-          Leaflit relies on the community to help flag inappropiate content.
-          <br />
-          You agree to "Post Responsibly".
+          As an anonymous user, I attest that I have read and agree to the terms
+          of use, privacy policy, and community guidelines.
         </p>
       </div>
     </FormControl>

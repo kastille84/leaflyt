@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import styled from "styled-components";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useParams, useLocation } from "react-router-dom";
 
 import { supabase } from "../services/supabase";
 import ActionMenu from "../ui/ActionMenu";
@@ -41,9 +41,13 @@ export default function MainLayout() {
   const { setUser } = useGlobalContext();
   const navigate = useNavigate();
   const { id } = useParams();
+  const location = useLocation();
 
   const { autoLogin } = useLoginWithAccessToken();
   useEffect(() => {
+    // don't auto login on password page
+    if (location.pathname.includes("password")) return;
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         autoLogin(session.access_token, {
