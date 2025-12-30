@@ -84,10 +84,10 @@ export default function MainNav() {
 
         <li>
           <StyledNavLink
-            to="/dashboard/my-templates"
+            to="/dashboard/templates"
             className={registered ? "" : "disabled"}
           >
-            <HiOutlineDocumentDuplicate /> <span>My Templates</span>
+            <HiOutlineDocumentDuplicate /> <span>Templates</span>
           </StyledNavLink>
         </li>
         <li>
@@ -100,10 +100,10 @@ export default function MainNav() {
         </li>
         <li>
           <StyledNavLink
-            to="/dashboard/my-assets"
+            to="/dashboard/assets"
             className={registered ? "" : "disabled"}
           >
-            <HiOutlinePhoto /> <span>My Assets</span>
+            <HiOutlinePhoto /> <span>Assets</span>
           </StyledNavLink>
         </li>
         <li>
@@ -119,7 +119,7 @@ export default function MainNav() {
             to="/dashboard/account"
             className={registered ? "" : "disabled"}
           >
-            <HiOutlineUsers /> <span>My Account</span>
+            <HiOutlineUsers /> <span>Account</span>
           </StyledNavLink>
         </li>
 

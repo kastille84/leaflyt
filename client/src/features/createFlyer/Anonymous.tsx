@@ -43,7 +43,7 @@ import useCreateUnregisteredFlyer from "./useCreateUnregisteredFlyer";
 import toast from "react-hot-toast";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 import AttestationInput from "../../ui/Form/AttestationInput";
-import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const StyledAnonymousContainer = styled.div``;
 
@@ -56,6 +56,16 @@ const StyledFormContainer = styled.div`
 
 const StyledFormContent = styled.div`
   /* margin-bottom: 4.8rem; */
+`;
+
+const StyledTerms = styled.label`
+  font-size: 1.4rem;
+  color: var(--color-grey-600);
+
+  & a {
+    color: var(--color-brand-500);
+    text-decoration: underline;
+  }
 `;
 
 const StyledFormButtonContainer = styled.div`
@@ -94,6 +104,8 @@ export default function Anonymous() {
     anonUserPostings,
     setAnonUserPostings,
     selectedPlace,
+    setShowTermsModal,
+    setTermsModalType,
   } = useGlobalContext();
 
   const { createFlyer } = useCreateUnregisteredFlyer();
@@ -159,6 +171,11 @@ export default function Anonymous() {
 
   function handleCancel() {
     setShowCloseSlideInModal(true);
+  }
+
+  function handleLinkClick(type: "terms" | "privacy" | "guidelines" | null) {
+    setShowTermsModal(true);
+    setTermsModalType(type);
   }
 
   return (
@@ -367,6 +384,38 @@ export default function Anonymous() {
               </>
             )}
           </StyledFormContent>
+          <StyledTerms>
+            By creating a flyer, you agree to our{" "}
+            <Link
+              to="/terms"
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick("terms");
+              }}
+            >
+              Terms and Conditions
+            </Link>
+            ,{" "}
+            <Link
+              to="/privacy"
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick("privacy");
+              }}
+            >
+              Privacy Policy
+            </Link>
+            ,{" & "}
+            <Link
+              to="/guidelines"
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick("guidelines");
+              }}
+            >
+              Community Guidelines
+            </Link>
+          </StyledTerms>
           <StyledFormButtonContainer data-testid="form-button-container">
             <Button type="submit">Create</Button>
             <Button type="button" variation="secondary" onClick={handleCancel}>

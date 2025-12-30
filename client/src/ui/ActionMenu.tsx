@@ -111,9 +111,7 @@ export default function ActionMenu() {
       return (
         <StyledLoginContainer>
           <StyledAvatar>
-            {user.name
-              ? user.name[0]
-              : `${user.firstName![0]} ${user.lastName![0]}`}
+            {user.name ? user.name[0] : `${user.firstName![0]}`}
           </StyledAvatar>
           <Button size="small" onClick={handleLogout}>
             Logout

@@ -59,6 +59,8 @@ export default function AddressInput({
   errors,
   locationAdvisory = false,
   shouldSaveAddressObj = false,
+  disabled = false,
+  cantUpdate = false,
 }: {
   register: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
@@ -67,6 +69,8 @@ export default function AddressInput({
   errors: FieldErrors<FieldValues>;
   locationAdvisory?: boolean;
   shouldSaveAddressObj?: boolean;
+  disabled?: boolean;
+  cantUpdate?: boolean;
 }) {
   const [addressSelected, setAddressSelected] = useState<boolean>(false);
   if (shouldSaveAddressObj) {
@@ -111,6 +115,7 @@ export default function AddressInput({
             },
           })}
           hasError={Boolean(errorObj)}
+          disabled={disabled}
         />
         {placePredictions.length > 0 && addressSelected === false && (
           <StyledAddressResultContainer data-testid="address-results">
@@ -156,6 +161,13 @@ export default function AddressInput({
         <small>
           The address will be used as the center point to determine your
           community and the boards in your area
+        </small>
+      )}
+      {cantUpdate && (
+        <small>
+          Address can't be updated because you are a member of a community.
+          Please email our support team if you need to update your address. -
+          <i>leaflitflyers@gmail.com</i>
         </small>
       )}
     </FormControl>

@@ -7,6 +7,7 @@ const cors = require("cors");
 // routes
 const authRoutes = require("./server/routes/auth");
 const assetRoutes = require("./server/routes/assets");
+const moderateRoutes = require("./server/routes/moderate");
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/assets", assetRoutes);
+app.use("/api/moderate", moderateRoutes);
 
 // general error handling
 // catches whenever an error is thrown or forwarded with next()

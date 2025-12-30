@@ -27,7 +27,7 @@ export default function MyAssets() {
     <StyledMyAssets>
       <StyledHeadingContainer>
         <StyledAssetsTitleContainer>
-          <Heading as="h2">My Assets</Heading>
+          <Heading as="h2">Assets</Heading>
           <small>Manage Your Assets</small>
         </StyledAssetsTitleContainer>
       </StyledHeadingContainer>

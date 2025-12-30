@@ -25,6 +25,8 @@ export default function CloseSlideInModal() {
     setSelectedTemplate,
     setCurrentFormOptions,
     currentFormOptions,
+    setShowTermsModal,
+    setTermsModalType,
     user,
   } = useGlobalContext();
   const customStyles = {
@@ -55,6 +57,8 @@ export default function CloseSlideInModal() {
     setIsOpenFlyerDrawer(false);
     setDrawerAction(null);
     setCurrentFormOptions(null);
+    setShowTermsModal(false);
+    setTermsModalType(null);
   }
 
   function handleStay() {

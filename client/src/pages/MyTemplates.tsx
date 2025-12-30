@@ -43,7 +43,7 @@ export default function MyTemplates() {
     <StyledMyTemplates>
       <StyledHeadingContainer>
         <StyledTemplateTitleContainer>
-          <Heading as="h2">My Templates</Heading>
+          <Heading as="h2">Templates</Heading>
           <small>
             {user?.templates?.length} of {userLimits.templates.limit} templates
             created
