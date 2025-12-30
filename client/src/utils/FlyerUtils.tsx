@@ -3,6 +3,7 @@ import {
   DB_Flyer_Create,
   DB_Flyers_Response,
   DB_Saved_Flyer,
+  DB_Template,
 } from "../interfaces/DB_Flyers";
 
 export const groupFlyersToTemplates = (
@@ -61,7 +62,7 @@ export const totalNumberOfFlyerLikes = (flyers: DB_Flyers_Response[]) => {
 };
 
 export const checkFlyerDataForAppropriateness = (
-  flyerData: DB_Flyer_Create
+  flyerData: DB_Flyer_Create | DB_Template
 ) => {
   // first check if content is appropriate
   let messageToCheck = `\n${flyerData.title}\n${flyerData.content}`;

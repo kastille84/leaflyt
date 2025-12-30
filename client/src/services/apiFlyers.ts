@@ -44,6 +44,8 @@ export const createUnregisteredFlyer = async (
   flyerData: DB_Flyer_Create,
   selectedPlace: NearbySearchPlaceResult
 ) => {
+  // make sure content is appropriate
+  await moderateContent(flyerData);
   const board = await getOrCreateBoard(selectedPlace);
   // at this point, board is either the existing board or the newly created board with flyers array that may be empty
   // create the flyer
@@ -69,31 +71,8 @@ export const createRegisteredFlyer = async (
   flyerData: DB_Flyer_Create,
   selectedPlace: NearbySearchPlaceResult
 ) => {
-  const { messageToCheck, fileUrlsToCheck } =
-    checkFlyerDataForAppropriateness(flyerData);
-  try {
-    const response = await fetch(`${getBaseUrl()}/api/moderate`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        flyer: JSON.stringify(flyerData),
-      },
-      body: JSON.stringify({
-        message: messageToCheck,
-        fileUrls: fileUrlsToCheck,
-      }),
-    });
-    const result = await response.json();
-    console.log("result", result);
-    // .then((res) => res.json())
-    // .catch((error) => {
-    //   console.error(error);
-    //   throw new Error("Error checking content: " + error.message);
-    // });
-  } catch (error: any) {
-    console.error(error);
-    throw new Error("Error checking content: " + error.message);
-  }
+  // make sure content is appropriate
+  await moderateContent(flyerData);
 
   const board = await getOrCreateBoard(selectedPlace);
   let createdTemplate;
@@ -201,6 +180,9 @@ export const updateRegisteredFlyer = async (
   selectedPlace: NearbySearchPlaceResult,
   initialAssets: UploadApiResponse[]
 ) => {
+  // make sure content is appropriate
+  await moderateContent(flyerData);
+
   const board = await getOrCreateBoard(selectedPlace);
 
   // Flyer is made to be Stand-alone, if once belonging to a template, remove reference
@@ -241,6 +223,9 @@ export const createFlyerFromTemplate = async (
   selectedPlace: NearbySearchPlaceResult,
   user: Auth_User_Profile_Response
 ) => {
+  // make sure content is appropriate
+  await moderateContent(templateData);
+
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const pt = urlParams.get("pt");
@@ -337,6 +322,9 @@ export const updateTemplate = async (
   templateData: DB_Template,
   initialAssets: UploadApiResponse[]
 ) => {
+  // make sure content is appropriate
+  await moderateContent(templateData);
+
   try {
     const { error } = await supabase
       .from("templates")
@@ -399,6 +387,8 @@ export const updateTemplate = async (
 };
 
 export const createTemplate = async (templateData: DB_Template) => {
+  // make sure content is appropriate
+  await moderateContent(templateData);
   try {
     const { data: newTemplate, error } = await supabase
       .from("templates")
@@ -523,54 +513,6 @@ export const removeSavedFlyer = async (
   }
 };
 
-// export const likeFlyer = async (
-//   flyer: DB_Flyers_Response,
-//   type: "inc" | "dec"
-// ) => {
-//   try {
-//     const { error } = await supabase
-//       .from("flyers")
-//       .update({
-//         likes: type === "inc" ? flyer?.likes! + 1 : flyer?.likes! - 1,
-//       })
-//       .eq("id", flyer.id);
-//     if (error) {
-//       console.error(error);
-//       throw new Error("Error liking the flyer: " + error.message);
-//     }
-
-//     // increment likes for all existing templates that use this flyer
-//     if (flyer.template) {
-//       // get likes from existing template and update it's likes value by 1
-//       const { data: existingTemplate, error } = await supabase
-//         .from("templates")
-//         .select("likes")
-//         .eq("id", flyer?.template)
-//         .single();
-//       if (error) {
-//         console.error(error);
-//         throw new Error("Error liking the template: " + error.message);
-//       }
-//       const { error: updateTemplateError } = await supabase
-//         .from("templates")
-//         .update({
-//           likes:
-//             type === "inc"
-//               ? existingTemplate?.likes! + 1
-//               : existingTemplate?.likes! - 1,
-//         })
-//         .eq("id", flyer?.template);
-//       if (updateTemplateError) {
-//         console.error(updateTemplateError);
-//         throw new Error("Error liking the template: " + updateTemplateError);
-//       }
-//     }
-//     return null;
-//   } catch (error: any) {
-//     console.error(error);
-//     throw new Error("Error liking the flyer: " + error.message);
-//   }
-// };
 export const likeFlyer = async (
   flyer: DB_Flyers_Response,
   type: "inc" | "dec"
@@ -605,6 +547,7 @@ export const likeFlyer = async (
   }
 };
 
+//  REUSABLE UTILITY CALLS
 export async function getLatestUserAfterChanges(userId: string, type: string) {
   // return updated user
   const { data: userData, error: getUserError } = await getUserProfile(userId);
@@ -616,4 +559,35 @@ export async function getLatestUserAfterChanges(userId: string, type: string) {
     user: userData,
     error: null,
   };
+}
+
+export async function moderateContent(
+  flyerData: DB_Flyer_Create | DB_Template
+) {
+  const { messageToCheck, fileUrlsToCheck } =
+    checkFlyerDataForAppropriateness(flyerData);
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/moderate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: messageToCheck,
+        fileUrls: fileUrlsToCheck,
+      }),
+    });
+    const result = await response.json();
+
+    if (result.data.results[0].flagged) {
+      throw new Error(
+        "Flagged content and/or image. Please abide by our guidelines. If you feel this is an error, please contact us. (leaflit.flyers@gmail.com) "
+      );
+    }
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error Checking Content: " + error.message);
+  }
+
+  return true;
 }

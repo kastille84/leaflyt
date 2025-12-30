@@ -1,4 +1,4 @@
-export const moderateResponse = {
+export const moderateTextResponse = {
   id: "modr-5598",
   model: "omni-moderation-latest",
   results: [
@@ -108,8 +108,8 @@ export const moderateFlaggedFalseResponse = {
   ],
 };
 
-export const moderateWithImageResponse = {
-  id: "modr-8100",
+export const moderateImageResponse = {
+  id: "modr-4488",
   model: "omni-moderation-latest",
   results: [
     {
@@ -118,7 +118,7 @@ export const moderateWithImageResponse = {
         harassment: false,
         "harassment/threatening": false,
         sexual: false,
-        hate: true,
+        hate: false,
         "hate/threatening": false,
         illicit: false,
         "illicit/violent": false,
@@ -126,23 +126,23 @@ export const moderateWithImageResponse = {
         "self-harm/instructions": false,
         "self-harm": false,
         "sexual/minors": false,
-        violence: false,
-        "violence/graphic": false,
+        violence: true,
+        "violence/graphic": true,
       },
       category_scores: {
-        harassment: 0.00008040859356292355,
-        "harassment/threatening": 0.000013342001090985438,
-        sexual: 0.000006605214485464791,
-        hate: 0.00007916296072837432,
-        "hate/threatening": 0.000004331903899346328,
-        illicit: 0.000031015598671268335,
-        "illicit/violent": 0.000018814207550495463,
-        "self-harm/intent": 0.0000026688529572628562,
-        "self-harm/instructions": 0.0000012029639084557005,
-        "self-harm": 0.000016603846953733614,
-        "sexual/minors": 0.0000018925148246037342,
-        violence: 0.0005323933551511255,
-        "violence/graphic": 0.000008220189478350845,
+        harassment: 0.0008467140935902613,
+        "harassment/threatening": 0.0009495258846083402,
+        sexual: 0.00011513995656772139,
+        hate: 0.000028240807799315707,
+        "hate/threatening": 0.00001177445922838707,
+        illicit: 0.0000461905832902385,
+        "illicit/violent": 0.000021654404989510328,
+        "self-harm/intent": 0.00023889724921321938,
+        "self-harm/instructions": 0.0002150452538166087,
+        "self-harm": 0.040972273209362496,
+        "sexual/minors": 0.0000036478537675800286,
+        violence: 0.7668157557636021,
+        "violence/graphic": 0.9495492773581666,
       },
       category_applied_input_types: {
         harassment: ["text"],
