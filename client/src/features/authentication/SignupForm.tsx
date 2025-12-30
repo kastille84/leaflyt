@@ -149,7 +149,7 @@ export default function SignupForm() {
           </StyledSubmitError>
         )}
         {/* <StyledContentContainer> */}
-        <Heading as="h3">Tell us a bit about yourself.</Heading>
+        {/* <Heading as="h3">Tell us a bit about yourself.</Heading> */}
         <FormControlRow>
           <TypeOfUserInput
             title="How do you want to post as?"
