@@ -87,6 +87,12 @@ export type ContextType = {
   >;
   anonUserPostings: string[];
   setAnonUserPostings: React.Dispatch<React.SetStateAction<string[] | []>>;
+  setShowTermsModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showTermsModal: boolean;
+  setTermsModalType: React.Dispatch<
+    React.SetStateAction<"terms" | "privacy" | "guidelines" | null>
+  >;
+  termsModalType: "terms" | "privacy" | "guidelines" | null;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -135,6 +141,10 @@ const GlobalContext = createContext<ContextType>({
   setLikedContextSessionFlyers: () => {},
   anonUserPostings: [],
   setAnonUserPostings: () => {},
+  setShowTermsModal: () => {},
+  showTermsModal: false,
+  setTermsModalType: () => {},
+  termsModalType: null,
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -181,6 +191,10 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
     useState(false);
   const [showDeleteFilesModal, setShowDeleteFilesModal] = useState(false);
   const [anonUserPostings, setAnonUserPostings] = useState<string[] | []>([]);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [termsModalType, setTermsModalType] = useState<
+    "terms" | "privacy" | "guidelines" | null
+  >(null);
 
   const {
     getUserGeo,
@@ -225,6 +239,10 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         showDeleteFlyerTemplateModal,
         setShowDeleteFilesModal,
         showDeleteFilesModal,
+        setShowTermsModal,
+        showTermsModal,
+        setTermsModalType,
+        termsModalType,
         // Auth
         isLoggedIn,
         setIsLoggedIn,

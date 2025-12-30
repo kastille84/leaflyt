@@ -20,6 +20,7 @@ import Statistics from "./pages/Statistics";
 import MyAccount from "./pages/MyAccount";
 import ForgotPassword from "./features/authentication/ForgotPassword";
 import ResetPassword from "./features/authentication/ResetPassword";
+import TermsModal from "./ui/Modals/TermsModal";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -60,6 +61,7 @@ function App() {
               <Route path="*" element={<div>Page not found</div>} />
             </Routes>
             <LoginModal />
+            <TermsModal />
             <FlyerSlideIn />
             <SlideInBottom />
           </BrowserRouter>
