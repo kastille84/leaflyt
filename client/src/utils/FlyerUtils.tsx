@@ -1,5 +1,9 @@
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
-import { DB_Flyers_Response, DB_Saved_Flyer } from "../interfaces/DB_Flyers";
+import {
+  DB_Flyer_Create,
+  DB_Flyers_Response,
+  DB_Saved_Flyer,
+} from "../interfaces/DB_Flyers";
 
 export const groupFlyersToTemplates = (
   user: Auth_User_Profile_Response | null
@@ -54,4 +58,26 @@ export const totalNumberOfFlyerLikes = (flyers: DB_Flyers_Response[]) => {
     totalLikes += flyer.likes;
   });
   return totalLikes;
+};
+
+export const checkFlyerDataForAppropriateness = (
+  flyerData: DB_Flyer_Create
+) => {
+  // first check if content is appropriate
+  let messageToCheck = `\n${flyerData.title}\n${flyerData.content}`;
+  if (flyerData.callToAction)
+    messageToCheck += `\n${flyerData.callToAction.headline}\n${flyerData.callToAction.instructions}`;
+  // map the flyerData.fileUrlArr to an array of urls
+  let fileUrlsToCheck: any[] = [];
+  if (flyerData.fileUrlArr && flyerData.fileUrlArr.length > 0) {
+    flyerData.fileUrlArr.forEach((fileUrl) => {
+      if (fileUrl.resource_type === "image") {
+        fileUrlsToCheck.push({
+          image_url: { url: fileUrl.url },
+          type: "image_url",
+        });
+      }
+    });
+  }
+  return { messageToCheck, fileUrlsToCheck };
 };

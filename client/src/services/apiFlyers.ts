@@ -11,6 +11,8 @@ import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
 import { getUserProfile } from "./apiUser";
 import { UploadApiResponse } from "cloudinary";
 import { assetUsageByFlyer, assetUsageByTemplate } from "./apiAssets";
+import { getBaseUrl } from "../utils/ServiceUtils";
+import { checkFlyerDataForAppropriateness } from "../utils/FlyerUtils";
 
 const getOrCreateBoard = async (selectedPlace: NearbySearchPlaceResult) => {
   // make a call to get the latest board data
@@ -67,6 +69,32 @@ export const createRegisteredFlyer = async (
   flyerData: DB_Flyer_Create,
   selectedPlace: NearbySearchPlaceResult
 ) => {
+  const { messageToCheck, fileUrlsToCheck } =
+    checkFlyerDataForAppropriateness(flyerData);
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/moderate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        flyer: JSON.stringify(flyerData),
+      },
+      body: JSON.stringify({
+        message: messageToCheck,
+        fileUrls: fileUrlsToCheck,
+      }),
+    });
+    const result = await response.json();
+    console.log("result", result);
+    // .then((res) => res.json())
+    // .catch((error) => {
+    //   console.error(error);
+    //   throw new Error("Error checking content: " + error.message);
+    // });
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error checking content: " + error.message);
+  }
+
   const board = await getOrCreateBoard(selectedPlace);
   let createdTemplate;
   // check if user wants to create template

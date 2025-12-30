@@ -22,6 +22,7 @@
     "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
     "nodemailer": "^6.9.1",
+    "openai": "^6.15.0",
     "stripe": "^12.4.0",
     "uuid": "^9.0.0",
     "uuidv4": "^6.2.13"
