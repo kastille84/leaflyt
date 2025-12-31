@@ -14,6 +14,7 @@ import { useGlobalContext } from "../context/GlobalContext";
 import DeleteFlyerTemplateModal from "../ui/Modals/DeleteFlyerTemplateModal";
 import DeleteFilesModal from "../ui/Modals/DeleteFilesModal";
 import { useResponsiveWidth } from "../hooks/useResponsiveWidth";
+import FlaggedModal from "../ui/Modals/FlaggedModal";
 
 const StyledMainLayout = styled.main`
   height: 100vh;
@@ -81,6 +82,7 @@ export default function MainLayout() {
       <EditFlyerModal />
       <DeleteFlyerTemplateModal />
       <DeleteFilesModal />
+      <FlaggedModal />
     </StyledMainLayout>
   );
 }

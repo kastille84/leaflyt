@@ -4,7 +4,11 @@ import {
   DB_Flyers_Create_Unregistered,
   DB_Flyers_Response,
 } from "../../interfaces/DB_Flyers";
-import { createUnregisteredFlyer, likeFlyer } from "../../services/apiFlyers";
+import {
+  createUnregisteredFlyer,
+  likeFlyer,
+  flagFlyer,
+} from "../../services/apiFlyers";
 
 export default function useCreateUnregisteredFlyer() {
   const { selectedPlace } = useGlobalContext();
@@ -25,5 +29,24 @@ export default function useCreateUnregisteredFlyer() {
     }) => likeFlyer(flyer, type),
   });
 
-  return { createFlyer, createFlyerError, likeFlyerFn, likeFlyerFnError };
+  // flag flyer
+  const { mutate: flagFlyerFn, error: flagFlyerFnError } = useMutation({
+    mutationFn: ({
+      flyerId,
+      reason,
+      userId,
+    }: {
+      flyerId: string;
+      reason: string;
+      userId: string | null;
+    }) => flagFlyer({ flyerId, reason, userId }),
+  });
+  return {
+    createFlyer,
+    createFlyerError,
+    likeFlyerFn,
+    likeFlyerFnError,
+    flagFlyerFn,
+    flagFlyerFnError,
+  };
 }

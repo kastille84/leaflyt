@@ -63,6 +63,11 @@ export interface DB_Flyer_Create {
   hasComments?: boolean;
   placeInfo?: PlaceInfo;
   likes?: number;
+  flagged?: boolean;
+  flaggedReason?: {
+    reason: string;
+    user: string;
+  };
 }
 
 interface DB_Flyer_Create_Unregistered extends DB_Flyer_Create {
