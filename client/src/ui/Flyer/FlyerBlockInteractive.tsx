@@ -272,6 +272,7 @@ export default function FlyerBlockInteractive({
     setBottomSlideInType,
     setIsOpenBottomSlideIn,
     likedContextSessionFlyers,
+    setShowFlaggedModal,
   } = useGlobalContext();
 
   const { likeFlyerFn } = useCreateUnregisteredFlyer();
@@ -441,6 +442,11 @@ export default function FlyerBlockInteractive({
     setShowDeleteFlyerTemplateModal(true);
   }
 
+  function handleInappropriate() {
+    setShowFlaggedModal(true);
+    setSelectedFlyer(flyer);
+  }
+
   async function handleSaveClick() {
     if (user) {
       setIsSaved(true);
@@ -540,9 +546,11 @@ export default function FlyerBlockInteractive({
             </li>
           )}
           {user && !doesFlyerBelongToUser() && <li>Save</li>}
-          <hr />
+
           {doesFlyerBelongToUser() && <li onClick={handleDelete}>Delete</li>}
-          <li>Inappropriate</li>
+          {!doesFlyerBelongToUser() && (
+            <li onClick={handleInappropriate}>Inappropriate</li>
+          )}
         </DropdownMenu>
       </>
     );

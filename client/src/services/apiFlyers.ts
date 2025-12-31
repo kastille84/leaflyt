@@ -547,6 +547,51 @@ export const likeFlyer = async (
   }
 };
 
+// flag flyers
+export const flagFlyer = async ({
+  flyer,
+  reason,
+  userId,
+}: {
+  flyer: DB_Flyers_Response;
+  reason: string;
+  userId: string | null;
+}) => {
+  try {
+    const { data: updatedFlyer, error } = await supabase
+      .from("flyers")
+      .update({
+        place: null,
+        flagged: true,
+        flaggedReason: {
+          reason,
+          user: userId || "anonymous",
+          place: flyer.place,
+          timestamp: new Date().toISOString(),
+        },
+      })
+      .eq("id", flyer.id)
+      .select("*")
+      .single();
+
+    if (error) {
+      console.error(error);
+      throw new Error("Error reporting the flyer: " + error.message);
+    }
+
+    //  TODO: EMAIL USER that flyer was reported if user exists
+
+    // return await getLatestUserAfterChanges(
+    //   updatedFlyer?.user as string,
+    //   "flyer"
+    // );
+    return updatedFlyer;
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error flagging the flyer: " + error.message);
+  }
+};
+
 //  REUSABLE UTILITY CALLS
 export async function getLatestUserAfterChanges(userId: string, type: string) {
   // return updated user
