@@ -84,7 +84,7 @@ export default function FlaggedModal() {
     setShowSpinner(true);
     flagFlyerFn(
       {
-        flyerId: selectedFlyer!.id!,
+        flyer: selectedFlyer!,
         reason: data.reason,
         userId: user ? (user!.id as string) : null,
       },

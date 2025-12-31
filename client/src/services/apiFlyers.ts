@@ -549,11 +549,11 @@ export const likeFlyer = async (
 
 // flag flyers
 export const flagFlyer = async ({
-  flyerId,
+  flyer,
   reason,
   userId,
 }: {
-  flyerId: string;
+  flyer: DB_Flyers_Response;
   reason: string;
   userId: string | null;
 }) => {
@@ -561,13 +561,16 @@ export const flagFlyer = async ({
     const { data: updatedFlyer, error } = await supabase
       .from("flyers")
       .update({
+        place: null,
         flagged: true,
         flaggedReason: {
           reason,
           user: userId || "anonymous",
+          place: flyer.place,
+          timestamp: new Date().toISOString(),
         },
       })
-      .eq("id", flyerId)
+      .eq("id", flyer.id)
       .select("*")
       .single();
 
@@ -575,6 +578,8 @@ export const flagFlyer = async ({
       console.error(error);
       throw new Error("Error reporting the flyer: " + error.message);
     }
+
+    //  TODO: EMAIL USER that flyer was reported if user exists
 
     // return await getLatestUserAfterChanges(
     //   updatedFlyer?.user as string,

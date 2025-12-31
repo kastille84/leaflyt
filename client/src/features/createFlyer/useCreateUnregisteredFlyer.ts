@@ -32,14 +32,14 @@ export default function useCreateUnregisteredFlyer() {
   // flag flyer
   const { mutate: flagFlyerFn, error: flagFlyerFnError } = useMutation({
     mutationFn: ({
-      flyerId,
+      flyer,
       reason,
       userId,
     }: {
-      flyerId: string;
+      flyer: DB_Flyers_Response;
       reason: string;
       userId: string | null;
-    }) => flagFlyer({ flyerId, reason, userId }),
+    }) => flagFlyer({ flyer, reason, userId }),
   });
   return {
     createFlyer,
