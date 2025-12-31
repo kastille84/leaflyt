@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import Heading from "../../ui/Heading";
 import FormControlRow from "../../ui/Form/FormControlRow";
@@ -49,7 +49,7 @@ const StyledForm = styled.form`
 `;
 
 const StyledSubmitError = styled(Heading)`
-  color: var(--color-red-600);
+  color: var(--color-red-600) !important;
 `;
 const StyledHeading = styled(Heading)`
   color: var(--color-brand-600);
