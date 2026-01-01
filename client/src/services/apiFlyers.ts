@@ -95,7 +95,7 @@ export const createRegisteredFlyer = async (
             tags: flyerData.tags,
             flyerDesign: flyerData.flyerDesign,
             callToAction: flyerData.callToAction,
-            fileUrlArr: flyerData.fileUrlArr,
+            fileUrlArr: flyerData.fileUrlArr || [],
             hasComments: flyerData.hasComments,
             lifespan: flyerData.lifespan,
             likes: 0,
@@ -151,7 +151,7 @@ export const createRegisteredFlyer = async (
           tags: flyerData.tags,
           flyerDesign: flyerData.flyerDesign,
           callToAction: flyerData.callToAction,
-          fileUrlArr: flyerData.fileUrlArr,
+          fileUrlArr: flyerData.fileUrlArr || [],
           postingMethod: flyerData.postingMethod || "onLocation",
           lifespan: flyerData.lifespan,
           likes: 0,
@@ -168,6 +168,16 @@ export const createRegisteredFlyer = async (
     // keep track of assets being used in flyers
     await assetUsageByFlyer([], flyerData.fileUrlArr || [], newFlyer.id);
 
+    // send test email
+    const emailResponse = await fetch(`${getBaseUrl()}/api/email/test`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: "kastille84@gmail.com" }),
+    });
+    const result = await emailResponse.json();
+    console.log("result", result);
     // return updated user
     return await getLatestUserAfterChanges(newFlyer?.user! as string, "flyer");
   } catch (error: any) {
@@ -624,7 +634,7 @@ export async function moderateContent(
     });
     const result = await response.json();
 
-    if (result.data.results[0].flagged) {
+    if (result.data?.results[0].flagged) {
       throw new Error(
         "Flagged content and/or image. Please abide by our guidelines. If you feel this is an error, please contact us. (leaflit.flyers@gmail.com) "
       );
