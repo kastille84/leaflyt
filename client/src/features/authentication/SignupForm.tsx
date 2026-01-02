@@ -68,6 +68,8 @@ const StyledCheckboxContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  margin-top: 1.4rem;
+  margin-bottom: 1.4rem;
 `;
 
 const StyledCheckbox = styled.input`
@@ -153,7 +155,7 @@ export default function SignupForm() {
         /* v8 ignore end */
         handleClose();
         toast.success(
-          `Signup successful! You must verify your email: ${response.data.email} before logging in.`,
+          `Signup successful! You must verify your email: ${response.data.email} before logging in. Make sure to check your SPAM folder.`,
           {
             duration: 8000,
           }

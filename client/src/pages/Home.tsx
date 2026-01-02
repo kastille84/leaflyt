@@ -1,7 +1,10 @@
+import { useEffect } from "react";
 import styled from "styled-components";
+import { useSearchParams } from "react-router-dom";
 
 import { useGlobalContext } from "../context/GlobalContext";
 import Heading from "../ui/Heading";
+import useSignup from "../features/authentication/useSignup";
 
 const StyledHome = styled.div``;
 
@@ -47,12 +50,39 @@ const StyledStepsContainer = styled.ol`
 
 export default function Home() {
   const { user } = useGlobalContext();
+  const [searchParams] = useSearchParams();
+  const { sendWelcomeEmailFn } = useSignup();
+
+  const verified = searchParams.get("verified");
+  const email = searchParams.get("email");
+  const typeOfUser = searchParams.get("typeOfUser");
+  const name = searchParams.get("name") || "";
+  const firstName = searchParams.get("firstName") || "";
+  const lastName = searchParams.get("lastName") || "";
+
+  function showName() {
+    if (user?.name) {
+      return `, ${user?.name}`;
+    } else if (user?.firstName) {
+      return `, ${user?.firstName}`;
+    }
+    return "";
+  }
+
+  useEffect(() => {
+    if (verified === "true" && email && typeOfUser) {
+      console.log("welcomeEmail", { verified, email, typeOfUser });
+      sendWelcomeEmailFn({ email, typeOfUser, name, firstName, lastName });
+    }
+  }, []);
+
   return (
     <StyledHome>
       <StyledAnnouncementSection>
         <StyledHeadingContainer>
           <Heading as="h1">
-            Welcome to Leaflit, {user?.name ? user?.name : user?.firstName}
+            Welcome to Leaflit
+            {showName()}
           </Heading>
           <p>We're a Flyer Distribution Platform for Your Community</p>
         </StyledHeadingContainer>

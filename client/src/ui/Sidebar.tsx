@@ -19,7 +19,8 @@ const StyledSidebar = styled.aside`
 
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: space-between;
   gap: 2.4rem;
   transition: left 0.5s ease-in-out;
 
@@ -46,6 +47,12 @@ const StyledSidebar = styled.aside`
     width: 165px;
     left: -165px;
   }
+`;
+
+const StyledFigure = styled.figure`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StyledMenuOpenButton = styled.div`
@@ -80,8 +87,15 @@ export default function Sidebar() {
           <HiOutlineChevronDoubleRight />
         )}
       </StyledMenuOpenButton>
-      <Heading as="h2">Leaflit</Heading>
       <MainNav />
+      <StyledFigure>
+        <img
+          src={"/images/logo/logo_transparent_no-space_new.png"}
+          alt="logo"
+          height={"60px"}
+          width={"60px"}
+        />
+      </StyledFigure>
     </StyledSidebar>
   );
 }
