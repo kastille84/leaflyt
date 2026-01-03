@@ -20,7 +20,7 @@ const StyledSidebar = styled.aside`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   gap: 2.4rem;
   transition: left 0.5s ease-in-out;
 
@@ -53,6 +53,16 @@ const StyledFigure = styled.figure`
   display: flex;
   justify-content: center;
   align-items: center;
+  align-self: flex-start;
+  margin-left: 2rem;
+  & img {
+    height: 4.5rem;
+    width: 10rem;
+  }
+
+  @media (max-width: 59em) {
+    margin-left: 3.5rem;
+  }
 `;
 
 const StyledMenuOpenButton = styled.div`
@@ -87,15 +97,21 @@ export default function Sidebar() {
           <HiOutlineChevronDoubleRight />
         )}
       </StyledMenuOpenButton>
-      <MainNav />
       <StyledFigure>
         <img
-          src={"/images/logo/logo_transparent_no-space_new.png"}
+          // src={"/images/logo/logo_removebg-preview.png"}
+          // src={"/images/logo/logo_chatgpt.png"}
+          src={"/images/logo/logo_chatgpt_resized-removebg-preview.png"}
           alt="logo"
-          height={"60px"}
-          width={"60px"}
+          // height={"600px"}
+          // width={"600px"}
+          // height={"150px"}
+          // width={"150px"}
+          // height={"5rem"}
+          // width={"10rem"}
         />
       </StyledFigure>
+      <MainNav />
     </StyledSidebar>
   );
 }
