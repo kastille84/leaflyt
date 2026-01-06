@@ -19,7 +19,8 @@ const StyledSidebar = styled.aside`
 
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  /* justify-content: space-between; */
   gap: 2.4rem;
   transition: left 0.5s ease-in-out;
 
@@ -45,6 +46,22 @@ const StyledSidebar = styled.aside`
   @media (max-width: 34em) {
     width: 165px;
     left: -165px;
+  }
+`;
+
+const StyledFigure = styled.figure`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: flex-start;
+  margin-left: 2rem;
+  & img {
+    height: 4.5rem;
+    width: 10rem;
+  }
+
+  @media (max-width: 59em) {
+    margin-left: 3.5rem;
   }
 `;
 
@@ -80,7 +97,20 @@ export default function Sidebar() {
           <HiOutlineChevronDoubleRight />
         )}
       </StyledMenuOpenButton>
-      <Heading as="h2">Leaflit</Heading>
+      <StyledFigure>
+        <img
+          // src={"/images/logo/logo_removebg-preview.png"}
+          // src={"/images/logo/logo_chatgpt.png"}
+          src={"/images/logo/logo_chatgpt_resized-removebg-preview.png"}
+          alt="logo"
+          // height={"600px"}
+          // width={"600px"}
+          // height={"150px"}
+          // width={"150px"}
+          // height={"5rem"}
+          // width={"10rem"}
+        />
+      </StyledFigure>
       <MainNav />
     </StyledSidebar>
   );
