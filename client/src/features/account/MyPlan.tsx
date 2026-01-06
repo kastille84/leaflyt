@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import Heading from "../../ui/Heading";
 import { useGlobalContext } from "../../context/GlobalContext";
+import PlanItem from "../../ui/Plan/PlanItem";
 
 const MyPlanContainer = styled.div`
   display: flex;
@@ -147,6 +148,7 @@ export default function MyPlan() {
           <span>Analytics</span> <span>{user?.plan.hasAnalytics}</span>
         </PlanDatum> */}
       </StyledPlanDatumContainer>
+      <PlanItem plan={user!.plan!} selected={true} />
     </MyPlanContainer>
   );
 }
