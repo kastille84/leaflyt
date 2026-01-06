@@ -115,7 +115,15 @@ export const signupUser = async (prepData: SignupSubmitData) => {
     const { data, error } = await supabase.auth.signUp({
       ...dataForAuthSignup,
       options: {
-        emailRedirectTo: `${window.location.origin}/dashboard`,
+        emailRedirectTo: `${
+          window.location.origin
+        }/dashboard/home?verified=true&email=${
+          dataForAuthSignup.email
+        }&typeOfUser=${prepData.typeOfUser}&name=${
+          typeof name === "string" ? name : null
+        }&firstName=${
+          typeof name === "object" ? name.firstName : null
+        }&lastName=${typeof name === "object" ? name.lastName : null}`,
       },
     });
     console.log("auth.signup", data);
@@ -143,6 +151,9 @@ export const signupUser = async (prepData: SignupSubmitData) => {
     });
     const result = await response.json();
     console.log("result", result);
+    if (result.error) {
+      throw result.error;
+    }
     return result;
   } catch (error) {
     return { data: null, error };
@@ -170,6 +181,41 @@ export const updatePassword = async (password: string) => {
       throw error;
     }
     return data;
+  } catch (error) {
+    return { data: null, error };
+  }
+};
+
+export const sendWelcomeEmail = async ({
+  email,
+  typeOfUser,
+  name,
+  firstName,
+  lastName,
+}: {
+  email: string;
+  typeOfUser: string;
+  name: string;
+  firstName: string;
+  lastName: string;
+}) => {
+  try {
+    const response = await fetch(
+      `${getBaseUrl()}/api/email/send-welcome-email`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, typeOfUser, name, firstName, lastName }),
+      }
+    );
+    const result = await response.json();
+    console.log("result", result);
+    if (result.error) {
+      throw result.error;
+    }
+    return result;
   } catch (error) {
     return { data: null, error };
   }
