@@ -148,7 +148,7 @@ export default function MyPlan() {
           <span>Analytics</span> <span>{user?.plan.hasAnalytics}</span>
         </PlanDatum> */}
       </StyledPlanDatumContainer>
-      <PlanItem plan={user!.plan!} selected={true} />
+      {/* <PlanItem plan={user!.plan!} selected={true} action={() => {}} /> */}
     </MyPlanContainer>
   );
 }

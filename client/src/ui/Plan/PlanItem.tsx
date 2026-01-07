@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Plan } from "../../interfaces/Plan";
+import Button from "../Button";
 
 const StyledPlanItem = styled.div`
   width: 300px;
@@ -11,7 +12,11 @@ const StyledPlanItem = styled.div`
   background-color: var(--color-grey-50);
 `;
 
-const StyledPlanName = styled.div``;
+const StyledPlanName = styled.div`
+  color: var(--color-brand-600);
+  font-weight: 600;
+  font-size: 2.4rem;
+`;
 const StyledPlanSubtitle = styled.p`
   font-size: 1.4rem;
 `;
@@ -52,12 +57,25 @@ const StyledDatumLabel = styled.p`
   font-size: 1.2rem;
 `;
 
+const StyledActionContainer = styled.div`
+  padding: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & button {
+    flex-grow: 1;
+  }
+`;
+
 export default function PlanItem({
   plan,
   selected,
+  action,
 }: {
   plan: Plan;
   selected: boolean;
+  action: () => void;
 }) {
   return (
     <StyledPlanItem>
@@ -144,6 +162,11 @@ export default function PlanItem({
           <StyledDatumLabel>weeks lifespan</StyledDatumLabel>
         </StyledDatum>
       </StyledPlanItemSection>
+      <StyledActionContainer>
+        <Button size="large" onClick={action}>
+          Select
+        </Button>
+      </StyledActionContainer>
     </StyledPlanItem>
   );
 }

@@ -8,7 +8,7 @@ export default function useGetUserProfileById(enabled: boolean) {
 
   const { status, data: userProfile } = useQuery({
     queryKey: ["getUserProfileById", user?.id],
-    queryFn: () => getUserProfile(user?.id!),
+    queryFn: () => getUserProfile(user?.id! as string),
     enabled: enabled,
   });
 
