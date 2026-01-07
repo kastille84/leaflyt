@@ -21,6 +21,7 @@ import MyAccount from "./pages/MyAccount";
 import ForgotPassword from "./features/authentication/ForgotPassword";
 import ResetPassword from "./features/authentication/ResetPassword";
 import TermsModal from "./ui/Modals/TermsModal";
+import PlansModal from "./ui/Modals/PlansModal";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -62,6 +63,7 @@ function App() {
             </Routes>
             <LoginModal />
             <TermsModal />
+            <PlansModal />
             <FlyerSlideIn />
             <SlideInBottom />
           </BrowserRouter>

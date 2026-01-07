@@ -50,4 +50,6 @@ export const mockUseGlobalContextReturnObj = {
   termsModalType: null,
   setShowFlaggedModal: () => {},
   showFlaggedModal: false,
+  setShowPlansModal: () => {},
+  showPlansModal: false,
 };

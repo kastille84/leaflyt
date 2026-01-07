@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
+import { get, useForm } from "react-hook-form";
 
 import Heading from "../../ui/Heading";
 import FormControlRow from "../../ui/Form/FormControlRow";
@@ -22,7 +22,7 @@ import { SignupSubmitData } from "../../interfaces/Auth_User";
 import useSignup from "./useSignup";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import PlansContainer from "../../ui/Plan/PlansContainer";
+import PlansInputContainer from "../../ui/Plan/PlansInputContainer";
 
 const StyledFormContainer = styled.div`
   display: flex;
@@ -123,6 +123,7 @@ export default function SignupForm() {
 
   const typeOfUserWatch = watch("typeOfUser");
   const typeOfUser = getValues("typeOfUser");
+  const planWatch = getValues("plan");
 
   console.log("getValues", getValues());
   console.log("errors", errors);
@@ -312,12 +313,7 @@ export default function SignupForm() {
             </FormControlRow>
           </>
         )}
-        {typeOfUser && (
-          <StyledPlanSection>
-            <Heading as="h3">Plans</Heading>
-            <PlansContainer register={register} errors={errors} value="1" />
-          </StyledPlanSection>
-        )}
+
         {typeOfUserWatch && (
           <>
             <Heading as="h3">Credentials</Heading>
@@ -334,6 +330,22 @@ export default function SignupForm() {
                 shouldShow
               />
             </FormControlRow>
+          </>
+        )}
+        {typeOfUser && (
+          <StyledPlanSection>
+            <Heading as="h3">Plans</Heading>
+            <PlansInputContainer
+              register={register}
+              setValue={setValue}
+              getValues={getValues}
+              errors={errors}
+              // value={planWatch}
+            />
+          </StyledPlanSection>
+        )}
+        {typeOfUserWatch && (
+          <>
             <div>
               <StyledCheckboxContainer>
                 <StyledCheckbox

@@ -15,13 +15,13 @@ const StyledLabel = styled.label`
 export default function PlanInput({
   register,
   options,
-  value,
+  // value,
   errors,
   showLabel = true,
 }: {
   register: UseFormRegister<any>;
   options: { value: string; label: string }[];
-  value: string;
+  // value: string;
   errors: FieldErrors<FieldValues>;
   showLabel?: boolean;
 }) {
@@ -34,8 +34,8 @@ export default function PlanInput({
       )}
       <Select
         options={options}
-        value={value}
-        defaultValue={""}
+        // value={value}
+        defaultValue={"1"}
         {...register("plan", {
           required: { value: true, message: "plan is required" },
         })}

@@ -1,5 +1,11 @@
 import styled from "styled-components";
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
+import {
+  FieldErrors,
+  FieldValues,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 
 import useGetPlans from "../../hooks/useGetPlans";
 import OverlaySpinner from "../OverlaySpinner";
@@ -11,30 +17,44 @@ import FormControlRow from "../Form/FormControlRow";
 import FormControl from "../Form/FormControl";
 import { useState } from "react";
 import Button from "../Button";
+import { useGlobalContext } from "../../context/GlobalContext";
 
 const StyledPlansContainer = styled.div``;
-const StyledPlansItemsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.2rem;
-  margin-top: 1.2rem;
-  max-height: 700px;
-  overflow-y: auto;
-`;
+// const StyledPlansItemsContainer = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: center;
+//   gap: 1.2rem;
+//   margin-top: 1.2rem;
+//   max-height: 700px;
+//   overflow-y: auto;
+// `;
 
-export default function PlansContainer({
+export default function PlansInputContainer({
   register,
-  value,
+  setValue,
+  getValues,
+  // value,
   errors,
 }: {
   register: UseFormRegister<any>;
-  value: string;
+  setValue: UseFormSetValue<any>;
+  getValues: UseFormGetValues<any>;
+  // value: string;
   errors: FieldErrors<FieldValues>;
 }) {
-  const [showPlans, setShowPlans] = useState(false);
+  const { showPlansModal, setShowPlansModal, setCurrentFormOptions } =
+    useGlobalContext();
   const { isLoading, plans, error } = useGetPlans();
   console.log("plans", plans);
+
+  function handleShowPlansClick() {
+    setCurrentFormOptions({
+      setValue: setValue,
+      getValues: getValues,
+    });
+    setShowPlansModal(!showPlansModal);
+  }
 
   if (isLoading)
     return <OverlaySpinner message="Getting Plans"></OverlaySpinner>;
@@ -47,19 +67,15 @@ export default function PlansContainer({
         <PlanInput
           register={register}
           options={getPlansForSelect(plans!.data!)}
-          value={value}
+          // value={value}
           errors={errors}
         />
         <FormControl>{/* Placeholder */}</FormControl>
       </FormControlRow>
-      <Button
-        type="button"
-        size="small"
-        onClick={() => setShowPlans(!showPlans)}
-      >
+      <Button type="button" size="small" onClick={handleShowPlansClick}>
         Show Plans
       </Button>
-      {showPlans && (
+      {/* {showPlans && (
         <StyledPlansItemsContainer>
           {plans &&
             sortPlansByLevel(plans.data!).map((plan: Plan) => (
@@ -71,7 +87,7 @@ export default function PlansContainer({
               />
             ))}
         </StyledPlansItemsContainer>
-      )}
+      )} */}
     </StyledPlansContainer>
   );
 }

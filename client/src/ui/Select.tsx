@@ -26,7 +26,7 @@ type Option = {
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   type?: "white" | "default";
   options?: Option[];
-  value: string;
+  value?: string;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   // children: React.ReactNode;
   hasError: boolean;

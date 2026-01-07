@@ -2,18 +2,20 @@ import styled from "styled-components";
 import { Plan } from "../../interfaces/Plan";
 import Button from "../Button";
 
-const StyledPlanItem = styled.div`
+const StyledPlanItem = styled.div<{ selected: boolean }>`
   width: 300px;
   padding: 1.2rem;
   border: 1px solid var(--color-grey-200);
   box-shadow: var(--shadow-lg);
-  border-top: 5px solid var(--color-brand-600);
-  border-radius: var(--border-radius-md);
-  /* background-color: var(--color-grey-50); */
+  border-top: 5px solid
+    ${(props) =>
+      props.selected ? "var(--color-blue-600)" : "var(--color-brand-600)"};
+  position: relative;
 `;
 
-const StyledPlanName = styled.div`
-  color: var(--color-brand-600);
+const StyledPlanName = styled.div<{ selected: boolean }>`
+  color: ${(props) =>
+    props.selected ? "var(--color-blue-600)" : "var(--color-brand-600)"};
   font-weight: 600;
   font-size: 2.4rem;
 `;
@@ -32,10 +34,11 @@ const StyledPlanPrice = styled.div`
   gap: 0.8rem;
 `;
 
-const StyledPriceValue = styled.p`
+const StyledPriceValue = styled.p<{ selected: boolean }>`
   font-weight: 600;
   font-size: 4.8rem;
-  color: var(--color-brand-600);
+  color: ${(props) =>
+    props.selected ? "var(--color-blue-600)" : "var(--color-brand-600)"};
 `;
 
 const StyledPlanDescription = styled.p`
@@ -46,10 +49,11 @@ const StyledPlanDescription = styled.p`
   text-align: right;
 `;
 
-const StyledFeatureText = styled.p`
+const StyledFeatureText = styled.p<{ selected: boolean }>`
   font-size: 1.4rem;
   font-weight: 600;
-  color: var(--color-brand-600);
+  color: ${(props) =>
+    props.selected ? "var(--color-blue-600)" : "var(--color-brand-600)"};
 `;
 
 const StyledPlanItemSection = styled.div`
@@ -62,10 +66,11 @@ const StyledDatum = styled.div`
   align-items: center;
   gap: 0.4rem;
 `;
-const StyledDatumValue = styled.p`
+const StyledDatumValue = styled.p<{ selected: boolean }>`
   font-size: 1.6rem;
   font-weight: 600;
-  color: var(--color-brand-600);
+  color: ${(props) =>
+    props.selected ? "var(--color-blue-600)" : "var(--color-brand-600)"};
 `;
 const StyledDatumLabel = styled.p`
   color: var(--color-grey-600);
@@ -84,6 +89,17 @@ const StyledActionContainer = styled.div`
   }
 `;
 
+const StyledRecommended = styled.p`
+  position: absolute;
+  top: -5px;
+  right: 0;
+  background-color: var(--color-orange-500);
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+`;
+
 export default function PlanItem({
   plan,
   selected,
@@ -94,23 +110,24 @@ export default function PlanItem({
   action: () => void;
 }) {
   return (
-    <StyledPlanItem>
+    <StyledPlanItem selected={selected}>
+      {plan.level === 3 && <StyledRecommended>Recommended</StyledRecommended>}
       <StyledPlanItemSection>
-        <StyledPlanName>{plan.name}</StyledPlanName>
+        <StyledPlanName selected={selected}>{plan.name}</StyledPlanName>
         <StyledPlanSubtitle>{plan.subtitle}</StyledPlanSubtitle>
       </StyledPlanItemSection>
       <StyledPlanPriceSection>
         <StyledPlanPrice>
-          <StyledPriceValue>${plan.price}</StyledPriceValue>
+          <StyledPriceValue selected={selected}>${plan.price}</StyledPriceValue>
           <p>/ month</p>
         </StyledPlanPrice>
         <StyledPlanDescription>{plan.priceDescription}</StyledPlanDescription>
       </StyledPlanPriceSection>
-      <StyledFeatureText>Features</StyledFeatureText>
+      <StyledFeatureText selected={selected}>Features</StyledFeatureText>
       {/* Max Flyers */}
       <StyledPlanItemSection>
         <StyledDatum>
-          <StyledDatumValue>
+          <StyledDatumValue selected={selected}>
             {plan.onLocationPostingLimit + plan.remotePostingLimit}
           </StyledDatumValue>
           <StyledDatumLabel>max flyers posted at any moment</StyledDatumLabel>
@@ -119,14 +136,18 @@ export default function PlanItem({
       {/* On Location */}
       <StyledPlanItemSection>
         <StyledDatum>
-          <StyledDatumValue>{plan.onLocationPostingLimit}</StyledDatumValue>
+          <StyledDatumValue selected={selected}>
+            {plan.onLocationPostingLimit}
+          </StyledDatumValue>
           <StyledDatumLabel>of those posted on location</StyledDatumLabel>
         </StyledDatum>
       </StyledPlanItemSection>
       {/* Remote */}
       <StyledPlanItemSection>
         <StyledDatum>
-          <StyledDatumValue>{plan.remotePostingLimit}</StyledDatumValue>
+          <StyledDatumValue selected={selected}>
+            {plan.remotePostingLimit}
+          </StyledDatumValue>
           <StyledDatumLabel>of those posted from home/office</StyledDatumLabel>
         </StyledDatum>
       </StyledPlanItemSection>
@@ -134,7 +155,7 @@ export default function PlanItem({
       <StyledPlanItemSection>
         <StyledDatum>
           <StyledDatumLabel>Post up to</StyledDatumLabel>
-          <StyledDatumValue>
+          <StyledDatumValue selected={selected}>
             {(plan!.virtualPostingDistance! * 100 * 0.621371).toFixed(2)}
           </StyledDatumValue>
           <StyledDatumLabel>Miles away</StyledDatumLabel>
@@ -144,19 +165,23 @@ export default function PlanItem({
       <StyledPlanItemSection>
         <StyledDatum>
           <StyledDatumLabel>Create up to</StyledDatumLabel>
-          <StyledDatumValue>{plan.templateLimit}</StyledDatumValue>
+          <StyledDatumValue selected={selected}>
+            {plan.templateLimit}
+          </StyledDatumValue>
           <StyledDatumLabel>Templates for fast posting</StyledDatumLabel>
         </StyledDatum>
       </StyledPlanItemSection>
       {/* Max Assets */}
       <StyledPlanItemSection>
         <StyledDatum>
-          <StyledDatumValue>{plan.maxAssets}</StyledDatumValue>
+          <StyledDatumValue selected={selected}>
+            {plan.maxAssets}
+          </StyledDatumValue>
           <StyledDatumLabel>Max total assets </StyledDatumLabel>
         </StyledDatum>
         <StyledDatum>
           <StyledDatumLabel>Type</StyledDatumLabel>
-          <StyledDatumValue>
+          <StyledDatumValue selected={selected}>
             {plan.level === 1 ? "Images only" : "Images & Videos"}
           </StyledDatumValue>
         </StyledDatum>
@@ -164,7 +189,9 @@ export default function PlanItem({
       {/* Assets Per Flyer */}
       <StyledPlanItemSection>
         <StyledDatum>
-          <StyledDatumValue>{plan.numOfMedia}</StyledDatumValue>
+          <StyledDatumValue selected={selected}>
+            {plan.numOfMedia}
+          </StyledDatumValue>
           <StyledDatumLabel>Max assets per flyer</StyledDatumLabel>
         </StyledDatum>
       </StyledPlanItemSection>
@@ -172,7 +199,9 @@ export default function PlanItem({
       <StyledPlanItemSection>
         <StyledDatum>
           <StyledDatumLabel>Up to</StyledDatumLabel>
-          <StyledDatumValue>{plan.lifespan}</StyledDatumValue>
+          <StyledDatumValue selected={selected}>
+            {plan.lifespan}
+          </StyledDatumValue>
           <StyledDatumLabel>weeks lifespan</StyledDatumLabel>
         </StyledDatum>
       </StyledPlanItemSection>

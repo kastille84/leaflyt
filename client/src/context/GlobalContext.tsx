@@ -95,6 +95,8 @@ export type ContextType = {
   termsModalType: "terms" | "privacy" | "guidelines" | null;
   setShowFlaggedModal: React.Dispatch<React.SetStateAction<boolean>>;
   showFlaggedModal: boolean;
+  setShowPlansModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showPlansModal: boolean;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -149,6 +151,8 @@ const GlobalContext = createContext<ContextType>({
   termsModalType: null,
   setShowFlaggedModal: () => {},
   showFlaggedModal: false,
+  setShowPlansModal: () => {},
+  showPlansModal: false,
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -200,6 +204,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
     "terms" | "privacy" | "guidelines" | null
   >(null);
   const [showFlaggedModal, setShowFlaggedModal] = useState(false);
+  const [showPlansModal, setShowPlansModal] = useState(false);
 
   const {
     getUserGeo,
@@ -250,6 +255,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         termsModalType,
         setShowFlaggedModal,
         showFlaggedModal,
+        setShowPlansModal,
+        showPlansModal,
         // Auth
         isLoggedIn,
         setIsLoggedIn,
