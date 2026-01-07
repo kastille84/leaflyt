@@ -1,3 +1,5 @@
+import { Plan } from "../interfaces/Plan";
+
 function shortenTitle(title: string, length: number) {
   if (title.length > length) {
     return title.substring(0, length) + "...";
@@ -75,6 +77,17 @@ export const debounce = (func: any, delay: number) => {
       func.apply(this, args);
     }, delay);
   };
+};
+
+export const sortPlansByLevel = (plans: Plan[]) => {
+  return plans.sort((a, b) => a.level - b.level);
+};
+
+export const getPlansForSelect = (plans: Plan[]) => {
+  return plans.map((plan: Plan) => ({
+    value: plan.id.toString(),
+    label: plan.name,
+  }));
 };
 
 export {

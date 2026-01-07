@@ -1,10 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPlans } from "../services/apiPlans";
 export default function useGetPlans() {
-  const { status, data } = useQuery({
+  const {
+    isLoading,
+    data: plans,
+    error,
+  } = useQuery({
     queryKey: ["getPlans"],
     queryFn: () => getPlans(),
+    staleTime: Infinity,
+    gcTime: 5 * 60 * 1000,
   });
 
-  return { status, data };
+  return { isLoading, plans, error };
 }

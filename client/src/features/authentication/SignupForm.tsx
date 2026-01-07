@@ -22,6 +22,7 @@ import { SignupSubmitData } from "../../interfaces/Auth_User";
 import useSignup from "./useSignup";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import PlansContainer from "../../ui/Plan/PlansContainer";
 
 const StyledFormContainer = styled.div`
   display: flex;
@@ -85,6 +86,14 @@ const StyledCheckboxLabel = styled.label`
     color: var(--color-brand-500);
     text-decoration: underline;
   }
+`;
+
+const StyledPlanSection = styled.div`
+  margin-top: 2.4rem;
+  margin-bottom: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 
 export default function SignupForm() {
@@ -302,6 +311,12 @@ export default function SignupForm() {
               />
             </FormControlRow>
           </>
+        )}
+        {typeOfUser && (
+          <StyledPlanSection>
+            <Heading as="h3">Plans</Heading>
+            <PlansContainer register={register} errors={errors} value="1" />
+          </StyledPlanSection>
         )}
         {typeOfUserWatch && (
           <>

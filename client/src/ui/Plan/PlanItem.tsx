@@ -9,7 +9,7 @@ const StyledPlanItem = styled.div`
   box-shadow: var(--shadow-lg);
   border-top: 5px solid var(--color-brand-600);
   border-radius: var(--border-radius-md);
-  background-color: var(--color-grey-50);
+  /* background-color: var(--color-grey-50); */
 `;
 
 const StyledPlanName = styled.div`
@@ -20,6 +20,7 @@ const StyledPlanName = styled.div`
 const StyledPlanSubtitle = styled.p`
   font-size: 1.4rem;
 `;
+
 const StyledPlanPriceSection = styled.div`
   padding: 1.2rem;
 `;
@@ -37,6 +38,20 @@ const StyledPriceValue = styled.p`
   color: var(--color-brand-600);
 `;
 
+const StyledPlanDescription = styled.p`
+  font-size: 1.4rem;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--color-orange-600);
+  text-align: right;
+`;
+
+const StyledFeatureText = styled.p`
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--color-brand-600);
+`;
+
 const StyledPlanItemSection = styled.div`
   border-bottom: 1px solid var(--color-grey-200);
   padding: 1.2rem;
@@ -48,7 +63,7 @@ const StyledDatum = styled.div`
   gap: 0.4rem;
 `;
 const StyledDatumValue = styled.p`
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 600;
   color: var(--color-brand-600);
 `;
@@ -65,6 +80,7 @@ const StyledActionContainer = styled.div`
 
   & button {
     flex-grow: 1;
+    align-self: flex-end;
   }
 `;
 
@@ -88,11 +104,9 @@ export default function PlanItem({
           <StyledPriceValue>${plan.price}</StyledPriceValue>
           <p>/ month</p>
         </StyledPlanPrice>
-        <StyledPlanSubtitle style={{ textAlign: "right" }}>
-          {plan.priceDescription}
-        </StyledPlanSubtitle>
+        <StyledPlanDescription>{plan.priceDescription}</StyledPlanDescription>
       </StyledPlanPriceSection>
-      <p>Features</p>
+      <StyledFeatureText>Features</StyledFeatureText>
       {/* Max Flyers */}
       <StyledPlanItemSection>
         <StyledDatum>
