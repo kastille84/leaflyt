@@ -114,3 +114,29 @@ export const getContactInfoFromUser = (user: Auth_User_Profile_Response) => {
   contactInfo.addres = user.address.formatted_address;
   return contactInfo;
 };
+
+/**
+ * Parses a Google Places adr_address string into a structured object.
+ * @param {string} adrString - The HTML-formatted address string.
+ * @returns {object} Structured address object.
+ */
+export function parseAdrAddress(adrString: string) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(adrString, "text/html");
+
+  // Helper to extract text by class name
+  const getVal = (className: string) => {
+    const el = doc.querySelector(`.${className}`);
+    return el ? el.textContent.trim() : "";
+  };
+
+  return {
+    line1: getVal("street-address"),
+    city: getVal("locality"),
+    state: getVal("region"),
+    postal_code: getVal("postal-code"),
+    country: getVal("country-name"),
+    // Note: 'county' is typically not included in the standard adr_address microformat string.
+    county: "",
+  };
+}

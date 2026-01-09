@@ -100,6 +100,17 @@ const StyledRecommended = styled.p`
   font-weight: 600;
 `;
 
+const StyledSelected = styled.p`
+  position: absolute;
+  top: -5px;
+  left: 0;
+  background-color: var(--color-blue-600);
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+`;
+
 export default function PlanItem({
   plan,
   selected,
@@ -111,6 +122,7 @@ export default function PlanItem({
 }) {
   return (
     <StyledPlanItem selected={selected}>
+      {selected && <StyledSelected>Selected</StyledSelected>}
       {plan.level === 3 && <StyledRecommended>Recommended</StyledRecommended>}
       <StyledPlanItemSection>
         <StyledPlanName selected={selected}>{plan.name}</StyledPlanName>

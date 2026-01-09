@@ -29,9 +29,12 @@ const StyledFormContainer = styled.div`
   flex-direction: column;
   border: 1px solid var(--color-brand-100);
   padding: 2.4rem 0 2.4rem 2.4rem;
+  height: 100%;
+  overflow-y: auto;
 
   @media (max-width: 75em) {
     padding: 4rem;
+    height: 80%;
   }
 `;
 
@@ -40,7 +43,7 @@ const StyledForm = styled.form`
   flex-direction: column;
   /* gap: 2.4rem; */
   height: 70rem;
-  padding-top: 2.4rem;
+  /* padding-top: 2.4rem; */
   padding-right: 2.4rem;
   overflow-y: auto;
 
@@ -96,7 +99,11 @@ const StyledPlanSection = styled.div`
   gap: 1rem;
 `;
 
-export default function SignupForm() {
+export default function SignupForm({
+  setSignedUpUser,
+}: {
+  setSignedUpUser: (user: any) => void;
+}) {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
@@ -123,7 +130,7 @@ export default function SignupForm() {
 
   const typeOfUserWatch = watch("typeOfUser");
   const typeOfUser = getValues("typeOfUser");
-  const planWatch = getValues("plan");
+  const planWatch = watch("plan");
 
   console.log("getValues", getValues());
   console.log("errors", errors);
@@ -163,14 +170,21 @@ export default function SignupForm() {
           throw response.error;
         }
         /* v8 ignore end */
-        handleClose();
-        toast.success(
+        // handleClose();
+        // toast.success(
+        //   `Signup successful! You must verify your email: ${response.data.email} before logging in. Make sure to check your SPAM folder.`,
+        //   {
+        //     duration: 10000,
+        //   }
+        // );
+        toast.custom(
           `Signup successful! You must verify your email: ${response.data.email} before logging in. Make sure to check your SPAM folder.`,
           {
-            duration: 8000,
+            duration: 10000,
           }
         );
         setShowSpinner(false);
+        setSignedUpUser(response.data);
       },
       onError: (error) => {
         console.log("onError", error.message);

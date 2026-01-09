@@ -22,7 +22,7 @@ const StyledPlansItemsContainer = styled.div`
   justify-content: center;
   gap: 1.2rem;
   margin-top: 1.2rem;
-  max-height: 700px;
+  max-height: 800px;
   overflow-y: auto;
 `;
 

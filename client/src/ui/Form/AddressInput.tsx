@@ -61,6 +61,7 @@ export default function AddressInput({
   shouldSaveAddressObj = false,
   disabled = false,
   cantUpdate = false,
+  fieldName = "Address",
 }: {
   register: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
@@ -71,6 +72,7 @@ export default function AddressInput({
   shouldSaveAddressObj?: boolean;
   disabled?: boolean;
   cantUpdate?: boolean;
+  fieldName?: string;
 }) {
   const [addressSelected, setAddressSelected] = useState<boolean>(false);
   if (shouldSaveAddressObj) {
@@ -98,7 +100,7 @@ export default function AddressInput({
   return (
     <FormControl testId="address-container">
       <StyledLabel htmlFor="address" className={`${errorObj && "error"}`}>
-        Address
+        {fieldName}
       </StyledLabel>
       <StyledInputContainer>
         <Input

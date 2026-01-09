@@ -73,7 +73,7 @@ export default function PlansInputContainer({
         <FormControl>{/* Placeholder */}</FormControl>
       </FormControlRow>
       <Button type="button" size="small" onClick={handleShowPlansClick}>
-        Show Plans
+        View All Plans
       </Button>
       {/* {showPlans && (
         <StyledPlansItemsContainer>
