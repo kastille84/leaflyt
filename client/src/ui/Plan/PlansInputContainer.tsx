@@ -75,19 +75,6 @@ export default function PlansInputContainer({
       <Button type="button" size="small" onClick={handleShowPlansClick}>
         View All Plans
       </Button>
-      {/* {showPlans && (
-        <StyledPlansItemsContainer>
-          {plans &&
-            sortPlansByLevel(plans.data!).map((plan: Plan) => (
-              <PlanItem
-                key={plan.id}
-                plan={plan}
-                selected={false}
-                action={() => {}}
-              />
-            ))}
-        </StyledPlansItemsContainer>
-      )} */}
     </StyledPlansContainer>
   );
 }

@@ -28,6 +28,8 @@ import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import PlansInputContainer from "../../ui/Plan/PlansInputContainer";
 import { parseAdrAddress } from "../../utils/ServiceUtils";
+import { PickPlanInfo } from "./SignupContainer";
+import useStripe from "../../hooks/useStripe";
 
 const StyledFormContainer = styled.div`
   display: flex;
@@ -106,16 +108,17 @@ const StyledPlanSection = styled.div`
 
 export default function PickPlanForm({
   signedUpUser,
+  setPickPlanInfo,
 }: {
   signedUpUser: Auth_User_Signup_Response | null;
+  setPickPlanInfo: React.Dispatch<React.SetStateAction<PickPlanInfo | null>>;
 }) {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  const { signup } = useSignup();
+  const { createCustomerFn } = useStripe();
   const {
     register,
-    unregister,
     handleSubmit,
     watch,
     getValues,
@@ -165,14 +168,40 @@ export default function PickPlanForm({
   function onSubmit(data: any) {
     setSubmitError("");
     console.log("data", data);
-    console.log(
-      "addressObj",
-      parseAdrAddress(data.addressObjToSave.adr_address)
-    );
+
+    const addressObj = parseAdrAddress(data.addressObjToSave.adr_address);
+
     // set full addressObj to address field
     // data[typeOfUser].contact.address = data.addressObjToSave;
-    // setShowSpinner(true);
-    // action
+    setShowSpinner(true);
+    // create customer
+    createCustomerFn(
+      {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: signedUpUser?.email,
+        address: addressObj,
+      },
+      {
+        onSuccess: (customer) => {
+          console.log("customer", customer);
+          // action
+          setPickPlanInfo({
+            plan: data.plan,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            address: parseAdrAddress(data.addressObjToSave.adr_address),
+            customerId: customer.id,
+          });
+          setShowSpinner(false);
+        },
+        onError: (error) => {
+          console.log("error", error);
+          setShowSpinner(false);
+          setSubmitError(error.message);
+        },
+      }
+    );
   }
 
   return (

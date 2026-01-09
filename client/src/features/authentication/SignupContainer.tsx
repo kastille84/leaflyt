@@ -17,6 +17,7 @@ export type PickPlanInfo = {
     postal_code: string;
     state: string;
   };
+  customerId?: string | null;
 };
 const StyledRegistrationContainer = styled.div`
   width: 90%;
@@ -74,7 +75,10 @@ export default function SignupContainer() {
       <WhyRegister />
       {!signedUpUser && <SignupForm setSignedUpUser={setSignedUpUser} />}
       {signedUpUser && !pickPlanInfo && (
-        <PickPlanForm signedUpUser={signedUpUser} />
+        <PickPlanForm
+          signedUpUser={signedUpUser}
+          setPickPlanInfo={setPickPlanInfo}
+        />
       )}
       {signedUpUser && pickPlanInfo && (
         <PaymentForm signedUpUser={signedUpUser} pickPlanInfo={pickPlanInfo} />

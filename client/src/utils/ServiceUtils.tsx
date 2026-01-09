@@ -136,7 +136,5 @@ export function parseAdrAddress(adrString: string) {
     state: getVal("region"),
     postal_code: getVal("postal-code"),
     country: getVal("country-name"),
-    // Note: 'county' is typically not included in the standard adr_address microformat string.
-    county: "",
   };
 }
