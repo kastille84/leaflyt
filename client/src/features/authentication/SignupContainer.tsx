@@ -3,7 +3,7 @@ import WhyRegister from "./WhyRegister";
 import SignupForm from "./SignupForm";
 import { useState } from "react";
 import { Auth_User_Signup_Response } from "../../interfaces/Auth_User";
-import PaymentForm from "./PaymentForm";
+import PaymentFormContainer from "./PaymentFormContainer";
 import PickPlanForm from "./PickPlanForm";
 
 export type PickPlanInfo = {
@@ -81,7 +81,10 @@ export default function SignupContainer() {
         />
       )}
       {signedUpUser && pickPlanInfo && (
-        <PaymentForm signedUpUser={signedUpUser} pickPlanInfo={pickPlanInfo} />
+        <PaymentFormContainer
+          signedUpUser={signedUpUser}
+          pickPlanInfo={pickPlanInfo}
+        />
       )}
     </StyledRegistrationContainer>
   );

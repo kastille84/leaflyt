@@ -21,3 +21,24 @@ export async function createCustomer({
   const responseJson = await response.json();
   return responseJson.data;
 }
+
+export async function createCheckoutSession({
+  plan,
+  customerId,
+}: {
+  plan: string;
+  customerId: string;
+}) {
+  const response = await fetch(
+    `${getBaseUrl()}/api/stripe/create-checkout-session`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ plan, customerId }),
+    }
+  );
+  const responseJson = await response.json();
+  return responseJson; // {clientSecret: ...}
+}

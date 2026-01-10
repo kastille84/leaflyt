@@ -270,7 +270,7 @@ export default function PickPlanForm({
 
         {/* </StyledContentContainer> */}
       </StyledForm>
-      {showSpinner && <OverlaySpinner message={"Creating your account..."} />}
+      {showSpinner && <OverlaySpinner message={"Configuring your plan..."} />}
     </StyledFormContainer>
   );
 }
