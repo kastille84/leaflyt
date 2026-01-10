@@ -349,18 +349,6 @@ export default function SignupForm({
             </FormControlRow>
           </>
         )}
-        {typeOfUser && (
-          <StyledPlanSection>
-            <Heading as="h3">Plans</Heading>
-            <PlansInputContainer
-              register={register}
-              setValue={setValue}
-              getValues={getValues}
-              errors={errors}
-              // value={planWatch}
-            />
-          </StyledPlanSection>
-        )}
         {typeOfUserWatch && (
           <>
             <div>

@@ -43,7 +43,9 @@ exports.createCheckoutSession = async (req, res, next) => {
       ],
       mode: "subscription",
       // return_url: `${YOUR_DOMAIN}/return?session_id={CHECKOUT_SESSION_ID}`,
-      return_url: "https://localhost:5173/",
+      return_url:
+        "https://localhost:5173/?session_id={CHECKOUT_SESSION_ID}&customerId=" +
+        req.body.customerId,
     });
     console.log("session", session);
     return res.status(200).json({ clientSecret: session.client_secret });

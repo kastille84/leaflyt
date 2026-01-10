@@ -67,7 +67,7 @@ const testSignedUpUser = {
 
 export default function SignupContainer() {
   const [signedUpUser, setSignedUpUser] =
-    useState<Auth_User_Signup_Response | null>(testSignedUpUser);
+    useState<Auth_User_Signup_Response | null>(null);
   const [pickPlanInfo, setPickPlanInfo] = useState<PickPlanInfo | null>(null);
 
   return (

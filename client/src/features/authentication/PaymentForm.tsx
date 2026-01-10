@@ -48,7 +48,7 @@ export default function PaymentForm({
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  const { setBottomSlideInType, setIsOpenBottomSlideIn } = useGlobalContext();
+  // const { setBottomSlideInType, setIsOpenBottomSlideIn } = useGlobalContext();
 
   const checkoutState = useCheckout();
 
@@ -58,20 +58,21 @@ export default function PaymentForm({
   }
 
   function handlePay() {
+    setSubmitError("");
     setShowSpinner(true);
-    checkoutState.checkout.confirm().then((result: any) => {
-      console.log("result", result);
-      if (result.error) {
-        setShowSpinner(false);
-        setSubmitError(result.error.message);
-      }
-      toast.success(
-        "Payment successful! Please sign in to access your dashboard."
-      );
+    try {
+      checkoutState.checkout.confirm().then((result: any) => {
+        // will never reach here
+      });
+    } catch (error: any) {
+      // This point will only be reached if there is an immediate error when
+      // confirming the payment. Otherwise, your customer will be redirected to
+      // your `return_url`. For some payment methods like iDEAL, your customer will
+      // be redirected to an intermediate site first to authorize the payment, then
+      // redirected to the `return_url`.
       setShowSpinner(false);
-      // setBottomSlideInType(null);
-      // setIsOpenBottomSlideIn(false);
-    });
+      setSubmitError(error.message);
+    }
   }
 
   switch (checkoutState.type) {
@@ -90,10 +91,15 @@ export default function PaymentForm({
           <StyledHeading as="h2">
             Lastly, We'll Collect Payment Information.
           </StyledHeading>
+          {submitError && (
+            <StyledSubmitError as={"h4"} id="form-error">
+              Error: {submitError}
+            </StyledSubmitError>
+          )}
           <PaymentElement />
           <StyledFormButtonContainer data-testid="form-button-container">
             <Button type="button" onClick={handlePay}>
-              Pay
+              Pay ${checkoutState.checkout.total.total.amount}
             </Button>
             <Button type="button" variation="secondary" onClick={handleClose}>
               Cancel
