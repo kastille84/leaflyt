@@ -171,18 +171,18 @@ export default function SignupForm({
         }
         /* v8 ignore end */
         // handleClose();
-        // toast.success(
-        //   `Signup successful! You must verify your email: ${response.data.email} before logging in. Make sure to check your SPAM folder.`,
-        //   {
-        //     duration: 10000,
-        //   }
-        // );
-        toast.custom(
+        toast.success(
           `Signup successful! You must verify your email: ${response.data.email} before logging in. Make sure to check your SPAM folder.`,
           {
             duration: 10000,
           }
         );
+        // toast.custom(
+        //   `Signup successful! You must verify your email: ${response.data.email} before logging in. Make sure to check your SPAM folder.`,
+        //   {
+        //     duration: 10000,
+        //   }
+        // );
         setShowSpinner(false);
         setSignedUpUser(response.data);
       },

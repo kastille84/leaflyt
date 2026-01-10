@@ -8,6 +8,10 @@ import { Auth_User_Signup_Response } from "../../interfaces/Auth_User";
 import { PickPlanInfo } from "./SignupContainer";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 import Heading from "../../ui/Heading";
+import Button from "../../ui/Button";
+import { useGlobalContext } from "../../context/GlobalContext";
+import { set } from "react-hook-form";
+import toast from "react-hot-toast";
 
 const StyledForm = styled.form`
   display: flex;
@@ -28,7 +32,12 @@ const StyledSubmitError = styled(Heading)`
 const StyledHeading = styled(Heading)`
   color: var(--color-brand-600);
 `;
-
+const StyledFormButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 2.4rem;
+`;
 export default function PaymentForm({
   signedUpUser,
   pickPlanInfo,
@@ -36,7 +45,34 @@ export default function PaymentForm({
   signedUpUser: Auth_User_Signup_Response | null;
   pickPlanInfo: PickPlanInfo;
 }) {
+  const [showSpinner, setShowSpinner] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  const { setBottomSlideInType, setIsOpenBottomSlideIn } = useGlobalContext();
+
   const checkoutState = useCheckout();
+
+  function handleClose() {
+    setShowSpinner(true);
+    // remove Customer from Stripe
+  }
+
+  function handlePay() {
+    setShowSpinner(true);
+    checkoutState.checkout.confirm().then((result: any) => {
+      console.log("result", result);
+      if (result.error) {
+        setShowSpinner(false);
+        setSubmitError(result.error.message);
+      }
+      toast.success(
+        "Payment successful! Please sign in to access your dashboard."
+      );
+      setShowSpinner(false);
+      // setBottomSlideInType(null);
+      // setIsOpenBottomSlideIn(false);
+    });
+  }
 
   switch (checkoutState.type) {
     case "loading":
@@ -55,6 +91,15 @@ export default function PaymentForm({
             Lastly, We'll Collect Payment Information.
           </StyledHeading>
           <PaymentElement />
+          <StyledFormButtonContainer data-testid="form-button-container">
+            <Button type="button" onClick={handlePay}>
+              Pay
+            </Button>
+            <Button type="button" variation="secondary" onClick={handleClose}>
+              Cancel
+            </Button>
+          </StyledFormButtonContainer>
+          {showSpinner && <OverlaySpinner message={"Paying..."} />}
         </StyledForm>
       );
   }

@@ -66,9 +66,6 @@ const StyledHeading = styled(Heading)`
   color: var(--color-brand-600);
 `;
 const StyledFormButtonContainer = styled.div`
-  /* position: fixed; */
-  /* bottom: 2.4rem; */
-  /* right: 2.4rem; */
   width: 100%;
   display: flex;
   justify-content: flex-end;
