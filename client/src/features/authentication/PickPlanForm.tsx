@@ -178,10 +178,12 @@ export default function PickPlanForm({
         lastName: data.lastName,
         email: signedUpUser?.email,
         address: addressObj,
+        userId: signedUpUser!.id,
       },
       {
         onSuccess: (customer) => {
           console.log("customer", customer);
+
           // action
           setPickPlanInfo({
             plan: data.plan,

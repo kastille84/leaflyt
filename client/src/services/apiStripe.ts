@@ -5,18 +5,20 @@ export async function createCustomer({
   lastName,
   email,
   address,
+  userId,
 }: {
   firstName: string;
   lastName: string;
   email: string;
   address: any;
+  userId: string;
 }) {
   const response = await fetch(`${getBaseUrl()}/api/stripe/create-customer`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ firstName, lastName, email, address }),
+    body: JSON.stringify({ firstName, lastName, email, address, userId }),
   });
   const responseJson = await response.json();
   return responseJson.data;

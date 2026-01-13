@@ -52,6 +52,7 @@ export default function PaymentFormContainer({
         { plan: pickPlanInfo.plan, customerId: pickPlanInfo.customerId },
         {
           onSuccess: (data: any) => {
+            console.log("Checkout Session data", data);
             setClientSecret(data.clientSecret);
           },
           onError: (error: any) => {},
