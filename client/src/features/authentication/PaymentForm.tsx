@@ -32,6 +32,11 @@ const StyledSubmitError = styled(Heading)`
 const StyledHeading = styled(Heading)`
   color: var(--color-brand-600);
 `;
+
+const StyledPaymentSection = styled.div`
+  padding: 2.4rem;
+`;
+
 const StyledFormButtonContainer = styled.div`
   width: 100%;
   display: flex;
@@ -96,7 +101,9 @@ export default function PaymentForm({
               Error: {submitError}
             </StyledSubmitError>
           )}
-          <PaymentElement />
+          <StyledPaymentSection>
+            <PaymentElement />
+          </StyledPaymentSection>
           <StyledFormButtonContainer data-testid="form-button-container">
             <Button type="button" onClick={handlePay}>
               Pay ${checkoutState.checkout.total.total.amount}

@@ -14,6 +14,9 @@ const stripeRoutes = require("./server/routes/stripe");
 const app = express();
 
 app.use(cors());
+// for handling stripe webhooks
+app.use("/webhook", stripeRoutes);
+
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 
