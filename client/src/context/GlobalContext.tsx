@@ -97,6 +97,12 @@ export type ContextType = {
   showFlaggedModal: boolean;
   setShowPlansModal: React.Dispatch<React.SetStateAction<boolean>>;
   showPlansModal: boolean;
+  setShowCancelPaymentModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showCancelPaymentModal: boolean;
+  setCancelPaymentModalType: React.Dispatch<
+    React.SetStateAction<"signup" | "upgrade" | null>
+  >;
+  cancelPaymentModalType: "signup" | "upgrade" | null;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -153,6 +159,10 @@ const GlobalContext = createContext<ContextType>({
   showFlaggedModal: false,
   setShowPlansModal: () => {},
   showPlansModal: false,
+  setShowCancelPaymentModal: () => {},
+  showCancelPaymentModal: false,
+  setCancelPaymentModalType: () => {},
+  cancelPaymentModalType: null,
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -205,6 +215,10 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   >(null);
   const [showFlaggedModal, setShowFlaggedModal] = useState(false);
   const [showPlansModal, setShowPlansModal] = useState(false);
+  const [showCancelPaymentModal, setShowCancelPaymentModal] = useState(false);
+  const [cancelPaymentModalType, setCancelPaymentModalType] = useState<
+    "signup" | "upgrade" | null
+  >(null);
 
   const {
     getUserGeo,
@@ -257,6 +271,10 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         showFlaggedModal,
         setShowPlansModal,
         showPlansModal,
+        setShowCancelPaymentModal,
+        showCancelPaymentModal,
+        setCancelPaymentModalType,
+        cancelPaymentModalType,
         // Auth
         isLoggedIn,
         setIsLoggedIn,

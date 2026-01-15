@@ -28,7 +28,7 @@ const StyledRegistrationContainer = styled.div`
   grid-template-columns: 35% 1fr;
   position: relative;
   overflow-y: auto;
-
+  overflow-x: hidden;
   @media (max-width: 75em) {
     width: 90%;
     grid-template-columns: 1fr;

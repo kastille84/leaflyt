@@ -50,6 +50,7 @@ export default function PaymentForm({
   signedUpUser: Auth_User_Signup_Response | null;
   pickPlanInfo: PickPlanInfo;
 }) {
+  const { setShowCancelPaymentModal } = useGlobalContext();
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
@@ -58,8 +59,9 @@ export default function PaymentForm({
   const checkoutState = useCheckout();
 
   function handleClose() {
-    setShowSpinner(true);
+    // setShowSpinner(true);
     // remove Customer from Stripe
+    setShowCancelPaymentModal(true);
   }
 
   function handlePay() {
@@ -68,6 +70,10 @@ export default function PaymentForm({
     try {
       checkoutState.checkout.confirm().then((result: any) => {
         // will never reach here
+        if (result.type === "error") {
+          setShowSpinner(false);
+          setSubmitError(result.error.message);
+        }
       });
     } catch (error: any) {
       // This point will only be reached if there is an immediate error when
@@ -76,7 +82,7 @@ export default function PaymentForm({
       // be redirected to an intermediate site first to authorize the payment, then
       // redirected to the `return_url`.
       setShowSpinner(false);
-      setSubmitError(error.message);
+      setSubmitError(result.error);
     }
   }
 

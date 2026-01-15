@@ -34,7 +34,7 @@ const StyledFormContainer = styled.div`
 
   @media (max-width: 75em) {
     padding: 4rem;
-    height: 80%;
+    /* height: 80%; */
   }
 `;
 
