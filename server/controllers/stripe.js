@@ -8,6 +8,13 @@ const productsPrice = {
   Forest: process.env.STRIPE_PRODUCT_FOREST,
 };
 
+const mapPlanToName = {
+  1: "Seed",
+  2: "Garden",
+  3: "Grove",
+  4: "Forest",
+};
+
 exports.createCustomer = async (req, res, next) => {
   try {
     // create customer in Stripe
@@ -25,13 +32,6 @@ exports.createCustomer = async (req, res, next) => {
         user: req.body.userId,
       },
     ]);
-    // update customer column of profile in supabase
-    const { data: userData, error: userDataError } = await supabase
-      .from("profiles")
-      .update({
-        customer: customer.id,
-      })
-      .eq("id", req.body.userId);
     return res.status(200).json({ data: customer });
   } catch (err) {
     next(err);
@@ -40,11 +40,7 @@ exports.createCustomer = async (req, res, next) => {
 
 exports.createCheckoutSession = async (req, res, next) => {
   console.log("req.body", req.body);
-  const mapPlanToName = {
-    1: "Garden",
-    2: "Grove",
-    3: "Forest",
-  };
+
   console.log("price", productsPrice[mapPlanToName[req.body.plan]]);
   if (!productsPrice[mapPlanToName[req.body.plan]]) {
     return res.status(400).json({ message: "Invalid plan" });
@@ -57,13 +53,20 @@ exports.createCheckoutSession = async (req, res, next) => {
         {
           price: productsPrice[mapPlanToName[req.body.plan]],
           quantity: 1,
+          metadata: {
+            friendlyPlanId: req.body.plan,
+            friendlyPlanName: mapPlanToName[req.body.plan],
+          },
         },
       ],
       mode: "subscription",
       // return_url: `${YOUR_DOMAIN}/return?session_id={CHECKOUT_SESSION_ID}`,
       return_url:
-        "https://localhost:5173/dashboard/home?session_id={CHECKOUT_SESSION_ID}&customerId=" +
-        req.body.customerId,
+        // TODO: - replace with real url
+        "https://localhost:5173/dashboard/home?session_id={CHECKOUT_SESSION_ID}&customer_id=" +
+        req.body.customerId +
+        "&plan=" +
+        req.body.plan,
     });
     console.log("session", session);
     return res
@@ -101,16 +104,22 @@ exports.webhook = async (req, res, next) => {
       // Used to provision services after the trial has ended.
       // The status of the invoice will show up as paid. Store the status in your
       // database to reference when a user accesses your service to avoid hitting rate limits.
+      console.log("invoice.paid", dataObject);
       break;
     case "invoice.payment_failed":
       // If the payment fails or the customer doesn't have a valid payment method,
       //  an invoice.payment_failed event is sent, the subscription becomes past_due.
       // Use this webhook to notify your user that their payment has
       // failed and to retrieve new card details.
+      console.log("invoice.payment_failed", dataObject);
       break;
     case "customer.subscription.created":
       if (event.request != null) {
         console.log("customer.subscription.created", dataObject);
+        console.log(
+          "customer.subscription.created - items - data",
+          dataObject.items.data
+        );
         const subscriptionId = dataObject.id;
         const productId = dataObject.plan.product;
         const priceId = dataObject.plan.id;
@@ -119,7 +128,7 @@ exports.webhook = async (req, res, next) => {
         // update subabscription in supabase
         try {
           const { data, error } = await supabase
-            .from("subscriptions")
+            .from("customers")
             .update({
               subscriptionId: subscriptionId,
               subscriptionStatus: status,

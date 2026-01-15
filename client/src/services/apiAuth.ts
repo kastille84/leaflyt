@@ -12,14 +12,6 @@ export const loginUser = async (email: string, password: string) => {
       throw error;
     }
 
-    // store the access token in local storage
-    // localStorage.setItem(
-    //   "access_token",
-    //   JSON.stringify(data.session?.access_token)
-    // );
-    // supabase.auth.getUser(data.session?.access_token).then((user) => {
-    //   console.log("user", user);
-    // });
     // get userProfile from supabase
     const { data: userProfile, error: userProfileError } = await supabase
       .from("profiles")
@@ -29,7 +21,8 @@ export const loginUser = async (email: string, password: string) => {
         templates(*, user(*)),
         plan(*),
         assets(*),
-        saved_flyers(*, flyer(*, place(*), user(*)))
+        saved_flyers(*, flyer(*, place(*), user(*))),
+        customers(*)
         `
       )
       .eq("email", email)
@@ -37,6 +30,29 @@ export const loginUser = async (email: string, password: string) => {
     console.log("userProfile", userProfile);
     if (userProfileError) {
       throw userProfileError;
+    }
+    // check if current plan is the same as the one in supabase
+    const customers = userProfile?.customers ?? [];
+    const currPlan = userProfile?.plan ?? {};
+    if (
+      customers.length > 0 &&
+      customers[0].productId !== currPlan.stripeProductId
+    ) {
+      // get new plan from supabase
+      const { data: newPlan } = await supabase
+        .from("plans")
+        .select("*")
+        .eq("stripeProductId", customers[0].productId)
+        .single();
+      // set new plan in supabase
+      const { data: updatedUserProfile, error: updatedUserProfileError } =
+        await supabase
+          .from("profiles")
+          .update({ plan: newPlan.id })
+          .eq("id", userProfile.id);
+
+      // update userProfile's plan
+      userProfile.plan = newPlan;
     }
     return {
       data: userProfile,
@@ -61,12 +77,14 @@ export const loginUserWithAccessToken = async () => {
         templates(*, user(*)),
         plan(*),
         assets(*),
-        saved_flyers(*, flyer(*, place(*), user(*)))
+        saved_flyers(*, flyer(*, place(*), user(*))),
+        customers(*)
         `
       )
       .eq("email", data.user.email)
       .single();
-    console.log("userProfile", userProfile);
+
+    if (userProfile) console.log("userProfile", userProfile);
     if (userProfileError) {
       throw new Error("Could not fetch user profile");
     }

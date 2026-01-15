@@ -106,7 +106,7 @@ export default function PaymentForm({
           </StyledPaymentSection>
           <StyledFormButtonContainer data-testid="form-button-container">
             <Button type="button" onClick={handlePay}>
-              Pay ${checkoutState.checkout.total.total.amount}
+              Pay {checkoutState.checkout.total.total.amount}
             </Button>
             <Button type="button" variation="secondary" onClick={handleClose}>
               Cancel
