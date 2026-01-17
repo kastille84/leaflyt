@@ -78,7 +78,7 @@ export default function PlansModal() {
 
   function handleClose() {
     setShowPlansModal(false);
-    setCurrentFormOptions(null);
+    // setCurrentFormOptions(null);
   }
 
   function handlePlanSelect(plan: Plan) {
