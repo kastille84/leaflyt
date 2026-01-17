@@ -82,6 +82,7 @@ export default function SlideInBottom() {
   function shouldShowXMark() {
     switch (bottomSlideInType) {
       case "chooseAssets":
+      case "signup":
         return false;
       default:
         return true;

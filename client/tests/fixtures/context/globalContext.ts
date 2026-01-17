@@ -56,4 +56,6 @@ export const mockUseGlobalContextReturnObj = {
   showCancelPaymentModal: false,
   setCancelPaymentModalType: () => {},
   cancelPaymentModalType: null,
+  setCustomerId: () => {},
+  customerId: null,
 };

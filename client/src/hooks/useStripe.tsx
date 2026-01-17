@@ -1,10 +1,19 @@
 import { useMutation } from "@tanstack/react-query";
-import { createCustomer, createCheckoutSession } from "../services/apiStripe";
+import {
+  createCustomer,
+  createCheckoutSession,
+  deleteCustomer,
+} from "../services/apiStripe";
 
 export default function useStripe() {
   const { mutate: createCustomerFn, error: createCustomerFnError } =
     useMutation({
       mutationFn: (prepData: any) => createCustomer(prepData),
+    });
+
+  const { mutate: deleteCustomerFn, error: deleteCustomerFnError } =
+    useMutation({
+      mutationFn: (prepData: any) => deleteCustomer(prepData),
     });
 
   const {
@@ -18,5 +27,7 @@ export default function useStripe() {
     createCustomerFnError,
     createCheckoutSessionFn,
     createCheckoutSessionFnError,
+    deleteCustomerFn,
+    deleteCustomerFnError,
   };
 }

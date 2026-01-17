@@ -38,6 +38,26 @@ exports.createCustomer = async (req, res, next) => {
   }
 };
 
+exports.deleteCustomer = async (req, res, next) => {
+  // get customerId from the headers
+  const customerId = req.headers.customerid;
+  try {
+    // delete customer in Stripe
+    // This function will permanently delete the customer
+    // and immediately cancel any active subscriptions associated with them
+    const customer = await stripe.customers.del(customerId);
+    console.log("deleteCustomer", customer);
+    // delete customer in supabase
+    const { customerData, error } = await supabase
+      .from("customers")
+      .delete()
+      .eq("customerId", customerId);
+    return res.status(200).json({ data: customer });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.createCheckoutSession = async (req, res, next) => {
   console.log("req.body", req.body);
 

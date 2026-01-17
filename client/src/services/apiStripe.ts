@@ -24,6 +24,18 @@ export async function createCustomer({
   return responseJson.data;
 }
 
+export async function deleteCustomer({ customerId }: { customerId: string }) {
+  const response = await fetch(`${getBaseUrl()}/api/stripe/delete-customer`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      customerId: customerId,
+    },
+  });
+  const responseJson = await response.json();
+  return responseJson.data;
+}
+
 export async function createCheckoutSession({
   plan,
   customerId,

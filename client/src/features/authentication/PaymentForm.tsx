@@ -50,7 +50,11 @@ export default function PaymentForm({
   signedUpUser: Auth_User_Signup_Response | null;
   pickPlanInfo: PickPlanInfo;
 }) {
-  const { setShowCancelPaymentModal } = useGlobalContext();
+  const {
+    setShowCancelPaymentModal,
+    setCancelPaymentModalType,
+    setCustomerId,
+  } = useGlobalContext();
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
@@ -58,9 +62,11 @@ export default function PaymentForm({
 
   const checkoutState = useCheckout();
 
-  function handleClose() {
-    // setShowSpinner(true);
+  function handleCancel() {
+    // warns user about canceling at this stage
     // remove Customer from Stripe
+    setCustomerId(pickPlanInfo!.customerId!);
+    setCancelPaymentModalType("onSignup");
     setShowCancelPaymentModal(true);
   }
 
@@ -114,7 +120,7 @@ export default function PaymentForm({
             <Button type="button" onClick={handlePay}>
               Pay {checkoutState.checkout.total.total.amount}
             </Button>
-            <Button type="button" variation="secondary" onClick={handleClose}>
+            <Button type="button" variation="secondary" onClick={handleCancel}>
               Cancel
             </Button>
           </StyledFormButtonContainer>
