@@ -39,6 +39,8 @@ export default function PlansModal() {
     setShowPlansModal,
     currentFormOptions,
     setCurrentFormOptions,
+    bottomSlideInType,
+    user,
   } = useGlobalContext();
   const responsiveVal = useResponsiveWidth();
 
@@ -81,7 +83,15 @@ export default function PlansModal() {
 
   function handlePlanSelect(plan: Plan) {
     currentFormOptions?.setValue("plan", plan.id.toString());
+    currentFormOptions?.clearErrors("plan");
     handleClose();
+  }
+
+  function determineIfDisabled(planItem: Plan) {
+    if (bottomSlideInType === "upgrade" && user?.plan.id >= planItem.id) {
+      return true;
+    }
+    return false;
   }
 
   return (
@@ -100,6 +110,7 @@ export default function PlansModal() {
               selected={
                 currentFormOptions?.getValues("plan") === plan.id.toString()
               }
+              disabled={determineIfDisabled(plan)}
               action={() => handlePlanSelect(plan)}
             />
           ))}

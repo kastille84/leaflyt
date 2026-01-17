@@ -3,7 +3,11 @@ import { UploadApiResponse } from "cloudinary";
 import useGetUserGeo from "../hooks/useGetUserGeo";
 import { LatLng, NearbySearchPlaceResult } from "../interfaces/Geo";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
-import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
+import {
+  UseFormClearErrors,
+  UseFormGetValues,
+  UseFormSetValue,
+} from "react-hook-form";
 import { DB_Flyers_Response, DB_Template } from "../interfaces/DB_Flyers";
 
 export type ContextType = {
@@ -196,6 +200,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [currentFormOptions, setCurrentFormOptions] = useState<{
     getValues: UseFormGetValues<any>;
     setValue: UseFormSetValue<any>;
+    clearErrors?: UseFormClearErrors<any>;
   } | null>(null);
   const [contextImages, setContextImages] = useState<
     UploadApiResponse[] | null

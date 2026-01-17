@@ -115,10 +115,12 @@ export default function PlanItem({
   plan,
   selected,
   action,
+  disabled = false,
 }: {
   plan: Plan;
   selected: boolean;
   action: () => void;
+  disabled?: boolean;
 }) {
   return (
     <StyledPlanItem selected={selected}>
@@ -218,7 +220,12 @@ export default function PlanItem({
         </StyledDatum>
       </StyledPlanItemSection>
       <StyledActionContainer>
-        <Button size="large" onClick={action}>
+        <Button
+          size="large"
+          disabled={disabled}
+          variation={disabled ? "disabled" : "primary"}
+          onClick={action}
+        >
           Select
         </Button>
       </StyledActionContainer>

@@ -84,7 +84,7 @@ export const sortPlansByLevel = (plans: Plan[]) => {
 };
 
 export const getPlansForSelect = (plans: Plan[]) => {
-  return plans.map((plan: Plan) => ({
+  return sortPlansByLevel(plans).map((plan: Plan) => ({
     value: plan.id.toString(),
     label: plan.name,
   }));

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import {
   FieldErrors,
   FieldValues,
+  UseFormClearErrors,
   UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
@@ -34,14 +35,20 @@ export default function PlansInputContainer({
   register,
   setValue,
   getValues,
+  clearErrors,
   // value,
   errors,
+  isUpgrade = false,
+  currentPlanId = 1,
 }: {
   register: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
   getValues: UseFormGetValues<any>;
+  clearErrors: UseFormClearErrors<any>;
   // value: string;
   errors: FieldErrors<FieldValues>;
+  isUpgrade?: boolean;
+  currentPlanId?: number;
 }) {
   const { showPlansModal, setShowPlansModal, setCurrentFormOptions } =
     useGlobalContext();
@@ -52,6 +59,7 @@ export default function PlansInputContainer({
     setCurrentFormOptions({
       setValue: setValue,
       getValues: getValues,
+      clearErrors: clearErrors,
     });
     setShowPlansModal(!showPlansModal);
   }
@@ -66,7 +74,11 @@ export default function PlansInputContainer({
       <FormControlRow>
         <PlanInput
           register={register}
-          options={getPlansForSelect(plans!.data!)}
+          options={
+            isUpgrade
+              ? getPlansForSelect(plans!.data!).slice(currentPlanId)
+              : getPlansForSelect(plans!.data!)
+          }
           // value={value}
           errors={errors}
         />

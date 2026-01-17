@@ -23,9 +23,9 @@ import {
   Auth_User_Signup_Response,
   SignupSubmitData,
 } from "../../interfaces/Auth_User";
-import useSignup from "./useSignup";
+
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+
 import PlansInputContainer from "../../ui/Plan/PlansInputContainer";
 import { parseAdrAddress } from "../../utils/ServiceUtils";
 import { PickPlanInfo } from "./SignupContainer";
@@ -72,29 +72,6 @@ const StyledFormButtonContainer = styled.div`
   gap: 2.4rem;
 `;
 
-const StyledCheckboxContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  margin-top: 1.4rem;
-  margin-bottom: 1.4rem;
-`;
-
-const StyledCheckbox = styled.input`
-  width: 1.6rem;
-  height: 1.6rem;
-`;
-
-const StyledCheckboxLabel = styled.label`
-  font-size: 1.4rem;
-  color: var(--color-grey-600);
-
-  & a {
-    color: var(--color-brand-500);
-    text-decoration: underline;
-  }
-`;
-
 const StyledPlanSection = styled.div`
   margin-top: 2.4rem;
   margin-bottom: 2.4rem;
@@ -103,12 +80,21 @@ const StyledPlanSection = styled.div`
   gap: 1rem;
 `;
 
+const StyledCurrentPlanName = styled.p`
+  color: var(--color-brand-600);
+  display: inline-block;
+`;
+
 export default function PickPlanForm({
   signedUpUser,
   setPickPlanInfo,
+  isUpgrade = false,
+  currentPlanId = 1,
 }: {
   signedUpUser: Auth_User_Signup_Response | null;
   setPickPlanInfo: React.Dispatch<React.SetStateAction<PickPlanInfo | null>>;
+  isUpgrade?: boolean;
+  currentPlanId?: number;
 }) {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -121,7 +107,7 @@ export default function PickPlanForm({
     getValues,
     setValue,
     formState: { errors },
-    control,
+    clearErrors,
   } = useForm({
     mode: "all",
     defaultValues: {
@@ -213,17 +199,29 @@ export default function PickPlanForm({
           </StyledSubmitError>
         )}
         <StyledPlanSection>
+          {isUpgrade && (
+            <>
+              <Heading as="h3">
+                Current Plan:{" "}
+                <StyledCurrentPlanName>
+                  {signedUpUser?.plan.name}
+                </StyledCurrentPlanName>
+              </Heading>
+            </>
+          )}
           <Heading as="h3">Plans</Heading>
           <PlansInputContainer
             register={register}
             setValue={setValue}
             getValues={getValues}
             errors={errors}
-            // value={planWatch}
+            clearErrors={clearErrors}
+            isUpgrade={isUpgrade}
+            currentPlanId={currentPlanId}
           />
         </StyledPlanSection>
 
-        {planWatch !== "1" && (
+        {planWatch && planWatch !== "1" && (
           <>
             <Heading as="h3">Account Holder Information</Heading>
             <FormControlRow>
@@ -256,8 +254,10 @@ export default function PickPlanForm({
         )}
 
         <StyledFormButtonContainer data-testid="form-button-container">
-          {planWatch !== "1" && <Button type="submit">Continue to Pay</Button>}
-          {planWatch === "1" && (
+          {planWatch && planWatch !== "1" && (
+            <Button type="submit">Continue to Pay</Button>
+          )}
+          {planWatch && planWatch === "1" && !isUpgrade && (
             <Button type="button" onClick={handleTryFree}>
               Try Seed Plan for Free
             </Button>
