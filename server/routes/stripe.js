@@ -8,6 +8,7 @@ const router = express.Router();
 router.post("/create-customer", stripeController.createCustomer);
 router.delete("/delete-customer", stripeController.deleteCustomer);
 router.post("/create-checkout-session", stripeController.createCheckoutSession);
+router.post("/update-subscription", stripeController.updateSubscription);
 
 router.post(
   "/",

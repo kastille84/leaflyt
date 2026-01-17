@@ -3,6 +3,7 @@ import {
   createCustomer,
   createCheckoutSession,
   deleteCustomer,
+  updateSubscription,
 } from "../services/apiStripe";
 
 export default function useStripe() {
@@ -14,6 +15,11 @@ export default function useStripe() {
   const { mutate: deleteCustomerFn, error: deleteCustomerFnError } =
     useMutation({
       mutationFn: (prepData: any) => deleteCustomer(prepData),
+    });
+
+  const { mutate: updateSubscriptionFn, error: updateSubscriptionFnError } =
+    useMutation({
+      mutationFn: (prepData: any) => updateSubscription(prepData),
     });
 
   const {
@@ -29,5 +35,7 @@ export default function useStripe() {
     createCheckoutSessionFnError,
     deleteCustomerFn,
     deleteCustomerFnError,
+    updateSubscriptionFn,
+    updateSubscriptionFnError,
   };
 }

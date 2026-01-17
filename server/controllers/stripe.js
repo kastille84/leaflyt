@@ -97,6 +97,29 @@ exports.createCheckoutSession = async (req, res, next) => {
   }
 };
 
+exports.updateSubscription = async (req, res, next) => {
+  const { subscriptionId, newPlan } = req.body;
+  try {
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    const updatedSubscription = await stripe.subscriptions.update(
+      subscriptionId,
+      {
+        items: [
+          {
+            id: subscription.items.data[0].id, // Get the existing subscription item ID
+            price: productsPrice[mapPlanToName[newPlan]], // Set the new price ID
+          },
+        ],
+        // Configure how to handle prorations (always_invoice, create_prorations, none)
+        proration_behavior: "create_prorations",
+      }
+    );
+    res.json({ status: "success", subscription: updatedSubscription });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.webhook = async (req, res, next) => {
   // Retrieve the event by verifying the signature using the raw body and secret.
   let event;

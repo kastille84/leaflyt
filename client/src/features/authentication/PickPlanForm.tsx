@@ -99,7 +99,7 @@ export default function PickPlanForm({
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  const { createCustomerFn } = useStripe();
+  const { createCustomerFn, updateSubscriptionFn } = useStripe();
   const {
     register,
     handleSubmit,
@@ -152,41 +152,70 @@ export default function PickPlanForm({
     setSubmitError("");
     console.log("data", data);
 
-    const addressObj = parseAdrAddress(data.addressObjToSave.adr_address);
-
     // set full addressObj to address field
     // data[typeOfUser].contact.address = data.addressObjToSave;
     setShowSpinner(true);
-    // create customer
-    createCustomerFn(
-      {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: signedUpUser?.email,
-        address: addressObj,
-        userId: signedUpUser!.id,
-      },
-      {
-        onSuccess: (customer) => {
-          console.log("customer", customer);
+    // create customer only if
+    // 1. Not upgrading, but instead signing up
+    // 2. Upgrading from free to paid plan
+    if (!isUpgrade || (isUpgrade && currentPlanId === 1)) {
+      const addressObj = parseAdrAddress(data.addressObjToSave.adr_address);
+      createCustomerFn(
+        {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: signedUpUser?.email,
+          address: addressObj,
+          userId: signedUpUser!.id,
+        },
+        {
+          onSuccess: (customer) => {
+            console.log("customer", customer);
 
-          // action
-          setPickPlanInfo({
-            plan: data.plan,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            address: parseAdrAddress(data.addressObjToSave.adr_address),
-            customerId: customer.id,
-          });
-          setShowSpinner(false);
+            // action
+            setPickPlanInfo({
+              plan: data.plan,
+              firstName: data.firstName,
+              lastName: data.lastName,
+              address: parseAdrAddress(data.addressObjToSave.adr_address),
+              customerId: customer.id,
+            });
+            setShowSpinner(false);
+          },
+          onError: (error) => {
+            console.log("error", error);
+            setShowSpinner(false);
+            setSubmitError(error.message);
+          },
+        }
+      );
+    } else {
+      // upgrading from paid to higher paid
+      updateSubscriptionFn(
+        {
+          plan: data.plan,
+          subscriptionId: signedUpUser?.customers[0].subscriptionId,
         },
-        onError: (error) => {
-          console.log("error", error);
-          setShowSpinner(false);
-          setSubmitError(error.message);
-        },
-      }
-    );
+        {
+          onSuccess: () => {
+            // // action
+            // setPickPlanInfo({
+            //   plan: data.plan,
+            //   firstName: data.firstName,
+            //   lastName: data.lastName,
+            //   address: parseAdrAddress(data.addressObjToSave.adr_address),
+            //   customerId: signedUpUser?.customers[0].customerId,
+            // });
+            setShowSpinner(false);
+          },
+          onError: (error) => {
+            console.log("error", error);
+            setShowSpinner(false);
+            setSubmitError(error.message);
+          },
+        }
+      );
+    }
   }
 
   return (
@@ -221,47 +250,60 @@ export default function PickPlanForm({
           />
         </StyledPlanSection>
 
-        {planWatch && planWatch !== "1" && (
-          <>
-            <Heading as="h3">Account Holder Information</Heading>
-            <FormControlRow>
-              {/* Personal Info / firstName */}
-              <FirstNameInput
-                register={register}
-                registerName="firstName"
-                errors={errors}
-              />
-              {/* Personal Info / lastName */}
-              <LastNameInput
-                register={register}
-                registerName="lastName"
-                errors={errors}
-              />
-            </FormControlRow>
-            <FormControlRow>
-              <AddressInput
-                register={register}
-                setValue={setValue}
-                registerName="address"
-                errors={errors}
-                fieldName="Billing Address"
-                shouldSaveAddressObj
-              />
+        {planWatch &&
+          planWatch !== "1" &&
+          (!isUpgrade || (isUpgrade && currentPlanId === 1)) && (
+            <>
+              <Heading as="h3">Account Holder Information</Heading>
+              <FormControlRow>
+                {/* Personal Info / firstName */}
+                <FirstNameInput
+                  register={register}
+                  registerName="firstName"
+                  errors={errors}
+                />
+                {/* Personal Info / lastName */}
+                <LastNameInput
+                  register={register}
+                  registerName="lastName"
+                  errors={errors}
+                />
+              </FormControlRow>
+              <FormControlRow>
+                <AddressInput
+                  register={register}
+                  setValue={setValue}
+                  registerName="address"
+                  errors={errors}
+                  fieldName="Billing Address"
+                  shouldSaveAddressObj
+                />
 
-              <FormControl>{/* empty */}</FormControl>
-            </FormControlRow>
-          </>
-        )}
-
+                <FormControl>{/* empty */}</FormControl>
+              </FormControlRow>
+            </>
+          )}
         <StyledFormButtonContainer data-testid="form-button-container">
-          {planWatch && planWatch !== "1" && (
+          {/* Signup */}
+          {!isUpgrade && planWatch && planWatch !== "1" && (
             <Button type="submit">Continue to Pay</Button>
           )}
-          {planWatch && planWatch === "1" && !isUpgrade && (
+          {!isUpgrade && planWatch && planWatch === "1" && (
             <Button type="button" onClick={handleTryFree}>
               Try Seed Plan for Free
             </Button>
           )}
+
+          {/* Upgrade */}
+          {/*  from Free to Paid.. must continue to pay */}
+          {isUpgrade && planWatch && currentPlanId === 1 && (
+            <Button type="submit">Continue to Pay</Button>
+          )}
+          {/*  from Paid to higher paid.. must finalize upgrade */}
+          {isUpgrade && planWatch && currentPlanId !== 1 && (
+            <Button type="submit">Finalize Upgrade</Button>
+          )}
+
           <Button type="button" variation="secondary" onClick={handleClose}>
             Cancel
           </Button>

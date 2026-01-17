@@ -36,6 +36,30 @@ export async function deleteCustomer({ customerId }: { customerId: string }) {
   return responseJson.data;
 }
 
+export async function updateSubscription({
+  subscriptionId,
+  plan,
+}: {
+  subscriptionId: string;
+  plan: string;
+}) {
+  const response = await fetch(
+    `${getBaseUrl()}/api/stripe/update-subscription`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        subscriptionId: subscriptionId,
+        newPlan: plan, // as "2"
+      }),
+    }
+  );
+  const responseJson = await response.json();
+  return responseJson.data;
+}
+
 export async function createCheckoutSession({
   plan,
   customerId,
