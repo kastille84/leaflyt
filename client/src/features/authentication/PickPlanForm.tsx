@@ -120,6 +120,7 @@ export default function PickPlanForm({
     setIsOpenBottomSlideIn,
     setTermsModalType,
     setShowTermsModal,
+    setUser,
   } = useGlobalContext();
 
   const planWatch = watch("plan");
@@ -195,18 +196,18 @@ export default function PickPlanForm({
         {
           plan: data.plan,
           subscriptionId: signedUpUser?.customers[0].subscriptionId,
+          userId: signedUpUser!.id,
         },
         {
-          onSuccess: () => {
-            // // action
-            // setPickPlanInfo({
-            //   plan: data.plan,
-            //   firstName: data.firstName,
-            //   lastName: data.lastName,
-            //   address: parseAdrAddress(data.addressObjToSave.adr_address),
-            //   customerId: signedUpUser?.customers[0].customerId,
-            // });
+          onSuccess: ({ user }) => {
+            console.log("user updated", user);
             setShowSpinner(false);
+            setUser(user!);
+            toast.success("Plan updated! Enjoy your new plan!", {
+              duration: 8000,
+            });
+            setBottomSlideInType(null);
+            setIsOpenBottomSlideIn(false);
           },
           onError: (error) => {
             console.log("error", error);

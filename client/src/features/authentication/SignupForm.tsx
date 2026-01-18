@@ -21,8 +21,7 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import { SignupSubmitData } from "../../interfaces/Auth_User";
 import useSignup from "./useSignup";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
-import PlansInputContainer from "../../ui/Plan/PlansInputContainer";
+import { Link } from "react-router-dom";
 
 const StyledFormContainer = styled.div`
   display: flex;
@@ -350,56 +349,54 @@ export default function SignupForm({
           </>
         )}
         {typeOfUserWatch && (
-          <>
-            <div>
-              <StyledCheckboxContainer>
-                <StyledCheckbox
-                  id="terms"
-                  type="checkbox"
-                  {...register("terms", { required: true })}
-                />
-                <StyledCheckboxLabel htmlFor="terms">
-                  I agree to the{" "}
-                  <Link
-                    to="/terms"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleLinkClick("terms");
-                    }}
-                  >
-                    Terms and Conditions
-                  </Link>
-                  ,{" "}
-                  <Link
-                    to="/privacy"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleLinkClick("privacy");
-                    }}
-                  >
-                    Privacy Policy
-                  </Link>
-                  ,{" & "}
-                  <Link
-                    to="/guidelines"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleLinkClick("guidelines");
-                    }}
-                  >
-                    Community Guidelines
-                  </Link>
-                </StyledCheckboxLabel>
-              </StyledCheckboxContainer>
-            </div>
-            <StyledFormButtonContainer data-testid="form-button-container">
-              <Button type="submit">Sign up</Button>
-              <Button type="button" variation="secondary" onClick={handleClose}>
-                Cancel
-              </Button>
-            </StyledFormButtonContainer>
-          </>
+          <div>
+            <StyledCheckboxContainer>
+              <StyledCheckbox
+                id="terms"
+                type="checkbox"
+                {...register("terms", { required: true })}
+              />
+              <StyledCheckboxLabel htmlFor="terms">
+                I agree to the{" "}
+                <Link
+                  to="/terms"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleLinkClick("terms");
+                  }}
+                >
+                  Terms and Conditions
+                </Link>
+                ,{" "}
+                <Link
+                  to="/privacy"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleLinkClick("privacy");
+                  }}
+                >
+                  Privacy Policy
+                </Link>
+                ,{" & "}
+                <Link
+                  to="/guidelines"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleLinkClick("guidelines");
+                  }}
+                >
+                  Community Guidelines
+                </Link>
+              </StyledCheckboxLabel>
+            </StyledCheckboxContainer>
+          </div>
         )}
+        <StyledFormButtonContainer data-testid="form-button-container">
+          {typeOfUserWatch && <Button type="submit">Sign up</Button>}
+          <Button type="button" variation="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+        </StyledFormButtonContainer>
         {/* </StyledContentContainer> */}
       </StyledForm>
       {showSpinner && <OverlaySpinner message={"Creating your account..."} />}

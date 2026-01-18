@@ -114,7 +114,7 @@ exports.updateSubscription = async (req, res, next) => {
         proration_behavior: "create_prorations",
       }
     );
-    res.json({ status: "success", subscription: updatedSubscription });
+    return res.json({ status: "success", subscription: updatedSubscription });
   } catch (err) {
     next(err);
   }
@@ -196,6 +196,23 @@ exports.webhook = async (req, res, next) => {
     case "customer.subscription.updated":
       if (event.request != null) {
         console.log("customer.subscription.updated", dataObject);
+        const subscriptionId = dataObject.id;
+        const productId = dataObject.plan.product;
+        const priceId = dataObject.plan.id;
+        const customerId = dataObject.customer;
+        const status = dataObject.status;
+        // update subabscription in supabase
+        try {
+          const { data, error } = await supabase
+            .from("customers")
+            .update({
+              subscriptionStatus: status,
+              productId: productId,
+            })
+            .eq("customerId", customerId);
+        } catch (err) {
+          next(err);
+        }
       }
       break;
     case "customer.subscription.deleted":

@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 import Heading from "../../ui/Heading";
 import { useGlobalContext } from "../../context/GlobalContext";
-import PlanItem from "../../ui/Plan/PlanItem";
+import UpgradeText from "../../ui/UpgradeText";
+import useGetUserLimits from "../../hooks/useGetUserLimits";
 
 const MyPlanContainer = styled.div`
   display: flex;
@@ -78,9 +79,19 @@ const PlanDatum = styled.div`
 
 export default function MyPlan() {
   const { user } = useGlobalContext();
+  const { canUpgrade } = useGetUserLimits();
   console.log("plan", user?.plan);
   return (
     <MyPlanContainer>
+      {canUpgrade && (
+        <small>
+          <UpgradeText
+            text="Want more capabilities?"
+            type="upgrade"
+            btnText="Upgrade"
+          ></UpgradeText>
+        </small>
+      )}
       <Heading as={"h3"}>{user?.plan.name} Plan</Heading>
       <p>{user?.plan.subtitle}</p>
       <StyledPlanDatumContainer>

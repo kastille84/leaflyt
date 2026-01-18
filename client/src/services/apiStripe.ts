@@ -1,4 +1,5 @@
 import { getBaseUrl } from "../utils/ServiceUtils";
+import { supabase } from "./supabase";
 
 export async function createCustomer({
   firstName,
@@ -13,51 +14,75 @@ export async function createCustomer({
   address: any;
   userId: string;
 }) {
-  const response = await fetch(`${getBaseUrl()}/api/stripe/create-customer`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ firstName, lastName, email, address, userId }),
-  });
-  const responseJson = await response.json();
-  return responseJson.data;
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/stripe/create-customer`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ firstName, lastName, email, address, userId }),
+    });
+    const responseJson = await response.json();
+    return responseJson.data;
+  } catch (error) {
+    return { data: null, error };
+  }
 }
 
 export async function deleteCustomer({ customerId }: { customerId: string }) {
-  const response = await fetch(`${getBaseUrl()}/api/stripe/delete-customer`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      customerId: customerId,
-    },
-  });
-  const responseJson = await response.json();
-  return responseJson.data;
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/stripe/delete-customer`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        customerId: customerId,
+      },
+    });
+    const responseJson = await response.json();
+    return responseJson.data;
+  } catch (error) {
+    return { data: null, error };
+  }
 }
 
 export async function updateSubscription({
   subscriptionId,
   plan,
+  userId,
 }: {
   subscriptionId: string;
   plan: string;
+  userId: string;
 }) {
-  const response = await fetch(
-    `${getBaseUrl()}/api/stripe/update-subscription`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        subscriptionId: subscriptionId,
-        newPlan: plan, // as "2"
-      }),
-    }
-  );
-  const responseJson = await response.json();
-  return responseJson.data;
+  try {
+    const response = await fetch(
+      `${getBaseUrl()}/api/stripe/update-subscription`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          subscriptionId: subscriptionId,
+          newPlan: plan, // as "2"
+        }),
+      }
+    );
+    const responseJson = await response.json();
+    // update the user's plan in supabase
+    const { data: updatedUser, error } = await supabase
+      .from("profiles")
+      .update({ plan: plan })
+      .eq("id", userId)
+      .select("*")
+      .single();
+    return {
+      user: updatedUser,
+      error: null,
+    };
+  } catch (error) {
+    return { data: null, error };
+  }
 }
 
 export async function createCheckoutSession({
@@ -67,16 +92,23 @@ export async function createCheckoutSession({
   plan: string;
   customerId: string;
 }) {
-  const response = await fetch(
-    `${getBaseUrl()}/api/stripe/create-checkout-session`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ plan, customerId }),
-    }
-  );
-  const responseJson = await response.json();
-  return responseJson; // {clientSecret: ...}
+  try {
+    const response = await fetch(
+      `${getBaseUrl()}/api/stripe/create-checkout-session`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ plan, customerId }),
+      }
+    );
+    const responseJson = await response.json();
+    return responseJson; // {clientSecret: ...}
+  } catch (error) {
+    return {
+      data: null,
+      error,
+    };
+  }
 }

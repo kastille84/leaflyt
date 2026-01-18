@@ -5,6 +5,7 @@ import { useGlobalContext } from "../context/GlobalContext";
 import useGetUserLimits from "../hooks/useGetUserLimits";
 import Button from "../ui/Button";
 import TemplateList from "../features/template/myTemplates/TemplateList";
+import UpgradeText from "../ui/UpgradeText";
 
 const StyledMyTemplates = styled.div`
   height: 100%;
@@ -33,6 +34,7 @@ const StyledTemplateTitleContainer = styled.div`
 export default function MyTemplates() {
   const { user, setIsOpenFlyerDrawer, setDrawerAction } = useGlobalContext();
   const userLimits = useGetUserLimits();
+  const { canUpgrade } = useGetUserLimits();
 
   function handleCreateTemplate() {
     setDrawerAction("createTemplate");
@@ -47,6 +49,15 @@ export default function MyTemplates() {
           <small>
             {user?.templates?.length} of {userLimits.templates.limit} templates
             created
+          </small>
+          <small>
+            {canUpgrade && (
+              <UpgradeText
+                text="Need more templates?"
+                type="upgrade"
+                btnText="Upgrade"
+              ></UpgradeText>
+            )}
           </small>
         </StyledTemplateTitleContainer>
         <Button
