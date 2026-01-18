@@ -82,10 +82,21 @@ const PlanDatum = styled.div`
 `;
 
 export default function MyBilling() {
-  const { user } = useGlobalContext();
+  const {
+    user,
+    setShowCancelSubscriptionModal,
+    setCancelSubscriptionModalType,
+    setCustomerId,
+  } = useGlobalContext();
   const { canUpgrade } = useGetUserLimits();
   console.log("user", user?.customers);
   const customer = user?.customers[0];
+
+  function handleCancelSubscription() {
+    setCustomerId(customer!.id!);
+    setCancelSubscriptionModalType("onAccount");
+    setShowCancelSubscriptionModal(true);
+  }
   return (
     <MyPlanContainer>
       {canUpgrade && (
@@ -132,16 +143,20 @@ export default function MyBilling() {
         <PlanDatum>
           <span>Cancel Subscription?</span>{" "}
           <span>
-            <p>
-              <Button size="small" variation="danger">
-                Cancel
-              </Button>
-            </p>
-            <small>
+            <small style={{ lineHeight: "1.7rem" }}>
               You will lose paid capabilities of higher plans. <br />
               You will be assigned to the Free Seed Plan. <br />
               Your account will permanently delete all your flyers
             </small>
+            <p>
+              <Button
+                size="small"
+                variation="danger"
+                onClick={handleCancelSubscription}
+              >
+                Cancel Subscription
+              </Button>
+            </p>
           </span>
         </PlanDatum>
 

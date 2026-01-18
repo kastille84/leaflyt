@@ -51,8 +51,8 @@ export default function PaymentForm({
   pickPlanInfo: PickPlanInfo;
 }) {
   const {
-    setShowCancelPaymentModal,
-    setCancelPaymentModalType,
+    setShowCancelSubscriptionModal,
+    setCancelSubscriptionModalType,
     setCustomerId,
   } = useGlobalContext();
   const [showSpinner, setShowSpinner] = useState(false);
@@ -66,8 +66,8 @@ export default function PaymentForm({
     // warns user about canceling at this stage
     // remove Customer from Stripe
     setCustomerId(pickPlanInfo!.customerId!);
-    setCancelPaymentModalType("onSignup");
-    setShowCancelPaymentModal(true);
+    setCancelSubscriptionModalType("onPayment");
+    setShowCancelSubscriptionModal(true);
   }
 
   function handlePay() {

@@ -25,7 +25,7 @@ import ForgotPassword from "./features/authentication/ForgotPassword";
 import ResetPassword from "./features/authentication/ResetPassword";
 import TermsModal from "./ui/Modals/TermsModal";
 import PlansModal from "./ui/Modals/PlansModal";
-import CancelPaymentModal from "./ui/Modals/CancelPaymentModal";
+import CancelSubscriptionModal from "./ui/Modals/CancelSubscriptionModal";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -72,7 +72,7 @@ function App() {
               <LoginModal />
               <TermsModal />
               <PlansModal />
-              <CancelPaymentModal />
+              <CancelSubscriptionModal />
               <FlyerSlideIn />
               <SlideInBottom />
             </BrowserRouter>

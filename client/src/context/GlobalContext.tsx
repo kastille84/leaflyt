@@ -103,12 +103,12 @@ export type ContextType = {
   showFlaggedModal: boolean;
   setShowPlansModal: React.Dispatch<React.SetStateAction<boolean>>;
   showPlansModal: boolean;
-  setShowCancelPaymentModal: React.Dispatch<React.SetStateAction<boolean>>;
-  showCancelPaymentModal: boolean;
-  setCancelPaymentModalType: React.Dispatch<
-    React.SetStateAction<"onSignup" | "onUpgrade" | null>
+  setShowCancelSubscriptionModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showCancelSubscriptionModal: boolean;
+  setCancelSubscriptionModalType: React.Dispatch<
+    React.SetStateAction<"onPayment" | "onAccount" | null>
   >;
-  cancelPaymentModalType: "onSignup" | "onUpgrade" | null;
+  cancelSubscriptionModalType: "onPayment" | "onAccount" | null;
   setCustomerId: React.Dispatch<React.SetStateAction<string | null>>;
   customerId: string | null;
 };
@@ -167,10 +167,10 @@ const GlobalContext = createContext<ContextType>({
   showFlaggedModal: false,
   setShowPlansModal: () => {},
   showPlansModal: false,
-  setShowCancelPaymentModal: () => {},
-  showCancelPaymentModal: false,
-  setCancelPaymentModalType: () => {},
-  cancelPaymentModalType: null,
+  setShowCancelSubscriptionModal: () => {},
+  showCancelSubscriptionModal: false,
+  setCancelSubscriptionModalType: () => {},
+  cancelSubscriptionModalType: null,
   setCustomerId: () => {},
   customerId: null,
 });
@@ -227,10 +227,10 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   >(null);
   const [showFlaggedModal, setShowFlaggedModal] = useState(false);
   const [showPlansModal, setShowPlansModal] = useState(false);
-  const [showCancelPaymentModal, setShowCancelPaymentModal] = useState(false);
-  const [cancelPaymentModalType, setCancelPaymentModalType] = useState<
-    "onSignup" | "onUpgrade" | null
-  >(null);
+  const [showCancelSubscriptionModal, setShowCancelSubscriptionModal] =
+    useState(false);
+  const [cancelSubscriptionModalType, setCancelSubscriptionModalType] =
+    useState<"onPayment" | "onAccount" | null>(null);
   const [customerId, setCustomerId] = useState<string | null>(null);
 
   const {
@@ -284,10 +284,10 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         showFlaggedModal,
         setShowPlansModal,
         showPlansModal,
-        setShowCancelPaymentModal,
-        showCancelPaymentModal,
-        setCancelPaymentModalType,
-        cancelPaymentModalType,
+        setShowCancelSubscriptionModal,
+        showCancelSubscriptionModal,
+        setCancelSubscriptionModalType,
+        cancelSubscriptionModalType,
         setCustomerId,
         customerId,
         // Auth
