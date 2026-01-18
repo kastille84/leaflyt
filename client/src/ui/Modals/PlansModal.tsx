@@ -91,6 +91,12 @@ export default function PlansModal() {
     if (bottomSlideInType === "upgrade" && user?.plan.id >= planItem.id) {
       return true;
     }
+    if (
+      bottomSlideInType === "changePlan" &&
+      (user?.plan.id === planItem.id || planItem.id === 1)
+    ) {
+      return true;
+    }
     return false;
   }
 

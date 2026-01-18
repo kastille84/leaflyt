@@ -12,7 +12,8 @@ export const getUserProfile = async (id: string) => {
           templates(*, user(*)),
           plan(*),
           assets(*),
-          saved_flyers(*, flyer(*, place(*), user(*)))
+          saved_flyers(*, flyer(*, place(*), user(*))),
+          customers(*)
           `
       )
       .eq("id", id)

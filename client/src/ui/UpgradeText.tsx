@@ -17,7 +17,7 @@ export default function UpgradeText({
   btnText = "Learn more",
 }: {
   text?: string;
-  type?: "upgrade" | "signup";
+  type?: "upgrade" | "signup" | "changePlan";
   btnText?: string;
 }) {
   const displayText = text || "Upgrade to get more features";

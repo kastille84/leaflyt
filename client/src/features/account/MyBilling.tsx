@@ -4,6 +4,7 @@ import Heading from "../../ui/Heading";
 import { useGlobalContext } from "../../context/GlobalContext";
 import UpgradeText from "../../ui/UpgradeText";
 import useGetUserLimits from "../../hooks/useGetUserLimits";
+import Button from "../../ui/Button";
 
 const MyPlanContainer = styled.div`
   display: flex;
@@ -80,55 +81,35 @@ const PlanDatum = styled.div`
   }
 `;
 
-export default function MyPlan() {
+export default function MyBilling() {
   const { user } = useGlobalContext();
   const { canUpgrade } = useGetUserLimits();
-  console.log("plan", user?.plan);
+  console.log("user", user?.customers);
+  const customer = user?.customers[0];
   return (
     <MyPlanContainer>
       {canUpgrade && (
         <small>
           <UpgradeText
-            text="Want more capabilities?"
+            text="Want to change your plan?"
             type="upgrade"
             btnText="Upgrade"
           ></UpgradeText>
         </small>
       )}
-      <Heading as={"h3"}>{user?.plan.name} Plan</Heading>
-      <p>{user?.plan.subtitle}</p>
+      <Heading as={"h3"}>Billing Information</Heading>
+
       <StyledPlanDatumContainer>
         <PlanDatum>
-          <span>Price</span>
-          <span>
-            ${user?.plan.price} /month <br />{" "}
-            <small>{user?.plan.priceDescription}</small>
+          <span>Status</span>
+          <span style={{ textTransform: "capitalize" }}>
+            {customer.subscriptionStatus}
           </span>
         </PlanDatum>
         <PlanDatum>
-          <span>On-location Posting</span>{" "}
+          <span>Current Plan</span>
           <span>
-            {user?.plan.onLocationPostingLimit} flyers <br />
-            <small>
-              Going in person and posting flyers in your neighborhood
-            </small>
-          </span>
-        </PlanDatum>
-        <PlanDatum>
-          <span>Remote Posting</span>{" "}
-          <span>
-            {user?.plan.remotePostingLimit} flyers <br />
-            <small>
-              Posting from your address without having to be physically near the
-              location
-            </small>
-          </span>
-        </PlanDatum>
-        <PlanDatum>
-          <span>Remote Posting Distance</span>{" "}
-          <span>
-            {(user!.plan!.virtualPostingDistance! * 100 * 0.621371).toFixed(2)}{" "}
-            miles
+            {user!.plan!.name! + " Plan"}
             <br />
             <small>
               Max distance from your address to post a flyer virtually
@@ -136,28 +117,34 @@ export default function MyPlan() {
           </span>
         </PlanDatum>
         <PlanDatum>
-          <span>Templates</span>{" "}
+          <span>Change Plan Tier?</span>{" "}
           <span>
-            {user?.plan.templateLimit} templates <br />
-            <small>Instantly post flyers based on pre-defined templates</small>
-          </span>
-        </PlanDatum>
-        <PlanDatum>
-          <span>Assets Allowed </span>{" "}
-          <span>{user?.plan.numOfMedia} per flyer</span>
-        </PlanDatum>
-        <PlanDatum>
-          <span>Total Assets</span> <span>{user?.plan.maxAssets}</span>
-        </PlanDatum>
-        <PlanDatum>
-          <span>Lifespan</span>
-          <span>
-            Up to {user?.plan.lifespan} wks per flyer <br />
+            <UpgradeText
+              text="Want to change your plan?"
+              type="changePlan"
+              btnText="Change Plan"
+            ></UpgradeText>
             <small>
-              After this period, the flyer will be deleted from the boards
+              If downgrading your plan, your capabilities will be limited.
             </small>
           </span>
         </PlanDatum>
+        <PlanDatum>
+          <span>Cancel Subscription?</span>{" "}
+          <span>
+            <p>
+              <Button size="small" variation="danger">
+                Cancel
+              </Button>
+            </p>
+            <small>
+              You will lose paid capabilities of higher plans. <br />
+              You will be assigned to the Free Seed Plan. <br />
+              Your account will permanently delete all your flyers
+            </small>
+          </span>
+        </PlanDatum>
+
         {/* <PlanDatum>
           <span>Analytics</span> <span>{user?.plan.hasAnalytics}</span>
         </PlanDatum> */}

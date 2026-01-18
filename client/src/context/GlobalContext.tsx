@@ -39,6 +39,7 @@ export type ContextType = {
   bottomSlideInType:
     | "signup"
     | "upgrade"
+    | "changePlan"
     | "flyerDesigner"
     | "carousel"
     | "hasTemplates"
@@ -49,6 +50,7 @@ export type ContextType = {
     React.SetStateAction<
       | "signup"
       | "upgrade"
+      | "changePlan"
       | "flyerDesigner"
       | "carousel"
       | "hasTemplates"
@@ -189,6 +191,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [bottomSlideInType, setBottomSlideInType] = useState<
     | "signup"
     | "upgrade"
+    | "changePlan"
     | "flyerDesigner"
     | "carousel"
     | "hasTemplates"

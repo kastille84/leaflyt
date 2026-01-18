@@ -67,7 +67,13 @@ const testSignedUpUser = {
   termsAccepted: true,
 };
 
-export default function UpgradeContainer() {
+export default function ChangePlanContainer({
+  isUpgrade,
+  isAnyPaidPlan,
+}: {
+  isAnyPaidPlan?: boolean;
+  isUpgrade?: boolean;
+}) {
   const { user } = useGlobalContext();
   const [signedUpUser, setSignedUpUser] =
     useState<Auth_User_Signup_Response | null>(user);
@@ -81,8 +87,9 @@ export default function UpgradeContainer() {
         <PickPlanForm
           signedUpUser={signedUpUser}
           setPickPlanInfo={setPickPlanInfo}
-          isUpgrade
+          isUpgrade={isUpgrade}
           currentPlanId={signedUpUser.plan.id}
+          isAnyPaidPlan={isAnyPaidPlan}
         />
       )}
       {signedUpUser && pickPlanInfo && (

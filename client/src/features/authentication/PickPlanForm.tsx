@@ -90,11 +90,13 @@ export default function PickPlanForm({
   setPickPlanInfo,
   isUpgrade = false,
   currentPlanId = 1,
+  isAnyPaidPlan = false,
 }: {
   signedUpUser: Auth_User_Signup_Response | null;
   setPickPlanInfo: React.Dispatch<React.SetStateAction<PickPlanInfo | null>>;
   isUpgrade?: boolean;
   currentPlanId?: number;
+  isAnyPaidPlan?: boolean;
 }) {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -159,7 +161,8 @@ export default function PickPlanForm({
     // create customer only if
     // 1. Not upgrading, but instead signing up
     // 2. Upgrading from free to paid plan
-    if (!isUpgrade || (isUpgrade && currentPlanId === 1)) {
+    // 3. Not Upgrading from paid plan to higher paid plan
+    if ((!isUpgrade && !isAnyPaidPlan) || (isUpgrade && currentPlanId === 1)) {
       const addressObj = parseAdrAddress(data.addressObjToSave.adr_address);
       createCustomerFn(
         {
@@ -192,6 +195,7 @@ export default function PickPlanForm({
       );
     } else {
       // upgrading from paid to higher paid
+      // or changing from paid to another paid
       updateSubscriptionFn(
         {
           plan: data.plan,
@@ -229,7 +233,7 @@ export default function PickPlanForm({
           </StyledSubmitError>
         )}
         <StyledPlanSection>
-          {isUpgrade && (
+          {(isUpgrade || isAnyPaidPlan) && (
             <>
               <Heading as="h3">
                 Current Plan:{" "}
@@ -248,11 +252,13 @@ export default function PickPlanForm({
             clearErrors={clearErrors}
             isUpgrade={isUpgrade}
             currentPlanId={currentPlanId}
+            isAnyPaidPlan={isAnyPaidPlan}
           />
         </StyledPlanSection>
 
         {planWatch &&
           planWatch !== "1" &&
+          !isAnyPaidPlan &&
           (!isUpgrade || (isUpgrade && currentPlanId === 1)) && (
             <>
               <Heading as="h3">Account Holder Information</Heading>
@@ -286,10 +292,10 @@ export default function PickPlanForm({
           )}
         <StyledFormButtonContainer data-testid="form-button-container">
           {/* Signup */}
-          {!isUpgrade && planWatch && planWatch !== "1" && (
-            <Button type="submit">Continue to Pay</Button>
-          )}
-          {!isUpgrade && planWatch && planWatch === "1" && (
+          {!(!isUpgrade || !isAnyPaidPlan) &&
+            planWatch &&
+            planWatch !== "1" && <Button type="submit">Continue to Pay</Button>}
+          {!isUpgrade && !isAnyPaidPlan && planWatch && planWatch === "1" && (
             <Button type="button" onClick={handleTryFree}>
               Try Seed Plan for Free
             </Button>
@@ -301,8 +307,8 @@ export default function PickPlanForm({
             <Button type="submit">Continue to Pay</Button>
           )}
           {/*  from Paid to higher paid.. must finalize upgrade */}
-          {isUpgrade && planWatch && currentPlanId !== 1 && (
-            <Button type="submit">Finalize Upgrade</Button>
+          {(isUpgrade || isAnyPaidPlan) && planWatch && currentPlanId !== 1 && (
+            <Button type="submit">Finalize New Plan</Button>
           )}
 
           <Button type="button" variation="secondary" onClick={handleClose}>

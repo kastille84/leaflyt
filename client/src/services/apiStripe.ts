@@ -74,7 +74,16 @@ export async function updateSubscription({
       .from("profiles")
       .update({ plan: plan })
       .eq("id", userId)
-      .select("*")
+      .select(
+        `*,
+          flyers(*, place(*)),
+          templates(*, user(*)),
+          plan(*),
+          assets(*),
+          saved_flyers(*, flyer(*, place(*), user(*))),
+          customers(*)
+          `
+      )
       .single();
     return {
       user: updatedUser,

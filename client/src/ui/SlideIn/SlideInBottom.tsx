@@ -14,7 +14,7 @@ import TemplateSelectionContainer from "../../features/template/TemplateSelectio
 import AssestSelectionContainer from "../../features/assets/AssetSelection/AssestSelectionContainer";
 import { AssetSelectionContextProvider } from "../../context/AssetSelectionContext";
 import EditAccountInfo from "../../features/account/EditAccountInfo";
-import UpgradeContainer from "../../features/authentication/UpgradeContainer";
+import ChangePlanContainer from "../../features/authentication/ChangePlanContainer";
 
 const StyledCloseContainer = styled.div`
   display: flex;
@@ -48,7 +48,9 @@ export default function SlideInBottom() {
       case "signup":
         return <SignupContainer />;
       case "upgrade":
-        return <UpgradeContainer />;
+        return <ChangePlanContainer isUpgrade />;
+      case "changePlan":
+        return <ChangePlanContainer isAnyPaidPlan />;
       case "carousel":
         return <FullCarouselContainer />;
       case "flyerDesigner":

@@ -40,6 +40,7 @@ export default function PlansInputContainer({
   errors,
   isUpgrade = false,
   currentPlanId = 1,
+  isAnyPaidPlan = false,
 }: {
   register: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
@@ -49,6 +50,7 @@ export default function PlansInputContainer({
   errors: FieldErrors<FieldValues>;
   isUpgrade?: boolean;
   currentPlanId?: number;
+  isAnyPaidPlan?: boolean;
 }) {
   const { showPlansModal, setShowPlansModal, setCurrentFormOptions } =
     useGlobalContext();
@@ -64,6 +66,18 @@ export default function PlansInputContainer({
     setShowPlansModal(!showPlansModal);
   }
 
+  function determineWhichPlansToRender() {
+    if (isUpgrade) {
+      return getPlansForSelect(plans!.data!).slice(currentPlanId);
+    }
+    if (isAnyPaidPlan) {
+      return getPlansForSelect(plans!.data!)
+        .slice(1)
+        .filter((select) => select.value !== currentPlanId.toString());
+    }
+    return getPlansForSelect(plans!.data!);
+  }
+
   if (isLoading)
     return <OverlaySpinner message="Getting Plans"></OverlaySpinner>;
 
@@ -74,11 +88,7 @@ export default function PlansInputContainer({
       <FormControlRow>
         <PlanInput
           register={register}
-          options={
-            isUpgrade
-              ? getPlansForSelect(plans!.data!).slice(currentPlanId)
-              : getPlansForSelect(plans!.data!)
-          }
+          options={determineWhichPlansToRender()}
           // value={value}
           errors={errors}
         />
