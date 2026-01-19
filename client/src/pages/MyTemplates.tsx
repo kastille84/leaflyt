@@ -6,6 +6,7 @@ import useGetUserLimits from "../hooks/useGetUserLimits";
 import Button from "../ui/Button";
 import TemplateList from "../features/template/myTemplates/TemplateList";
 import UpgradeText from "../ui/UpgradeText";
+import LimitExceededWarning from "../ui/LimitExceededWarning";
 
 const StyledMyTemplates = styled.div`
   height: 100%;
@@ -43,6 +44,9 @@ export default function MyTemplates() {
 
   return (
     <StyledMyTemplates>
+      {userLimits.templates.limit <= (user?.templates?.length || 0) && (
+        <LimitExceededWarning text="You have exceeded your template limit. Please remove some templates or upgrade your plan." />
+      )}
       <StyledHeadingContainer>
         <StyledTemplateTitleContainer>
           <Heading as="h2">Templates</Heading>
@@ -62,9 +66,11 @@ export default function MyTemplates() {
         </StyledTemplateTitleContainer>
         <Button
           size="small"
-          disabled={userLimits.templates.limit === user?.templates?.length}
+          disabled={
+            userLimits.templates.limit <= (user?.templates?.length || 0)
+          }
           variation={
-            userLimits.templates.limit === user?.templates.length
+            userLimits.templates.limit <= (user?.templates?.length || 0)
               ? "disabled"
               : "primary"
           }

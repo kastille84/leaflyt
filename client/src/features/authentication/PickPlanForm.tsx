@@ -139,7 +139,7 @@ export default function PickPlanForm({
     handleClose();
 
     toast.success(
-      "Seed Plan Selected. Remember to confirm your email. Besides that, you're all set! Find Boards Near You and start posting!",
+      "Seed Plan Selected. \nRemember to confirm your email. \nBesides that, you're all set! \nFind Boards Near You and start posting!",
       {
         duration: 10000,
       }
@@ -207,7 +207,7 @@ export default function PickPlanForm({
             console.log("user updated", user);
             setShowSpinner(false);
             setUser(user!);
-            toast.success("Plan updated! Enjoy your new plan!", {
+            toast.success("Plan updated! \nEnjoy your new plan!", {
               duration: 8000,
             });
             setBottomSlideInType(null);

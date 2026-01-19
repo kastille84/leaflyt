@@ -2,20 +2,20 @@ import { getBaseUrl } from "../utils/ServiceUtils";
 import { getLatestUserAfterChanges } from "./apiFlyers";
 import { supabase } from "./supabase";
 
-export const getUserProfile = async (id: string) => {
-  try {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select(
-        `*,
+export const selectEverythingFromProfile = `*,
           flyers(*, place(*)),
           templates(*, user(*)),
           plan(*),
           assets(*),
           saved_flyers(*, flyer(*, place(*), user(*))),
           customers(*)
-          `
-      )
+          `;
+
+export const getUserProfile = async (id: string) => {
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select(selectEverythingFromProfile)
       .eq("id", id)
       .single();
     if (error) throw new Error(error.message) as any;

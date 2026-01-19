@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Modal from "react-modal";
 import Heading from "../Heading";
@@ -42,9 +42,13 @@ export default function CancelSubscriptionModal() {
     setCustomerId,
     setIsOpenBottomSlideIn,
     setBottomSlideInType,
+    user,
+    setUser,
   } = useGlobalContext();
 
-  const { deleteCustomerFn } = useStripe();
+  const { deleteCustomerFn, updateUserPlanFn } = useStripe();
+
+  const navigate = useNavigate();
 
   const customStyles = {
     overlay: {
@@ -85,7 +89,7 @@ export default function CancelSubscriptionModal() {
           {
             onSuccess: () => {
               toast.success(
-                "Cancelled payment successfully. Please verify your email and log in."
+                "Cancelled payment successfully. \nImportant: \nPlease verify your email and log in."
               );
               setShowCancelSubscriptionModal(false);
               setCancelSubscriptionModalType(null);
@@ -101,9 +105,42 @@ export default function CancelSubscriptionModal() {
           }
         );
       } else if (cancelSubscriptionModalType === "onAccount") {
-        console.log("cancel upgrade");
+        console.log("cancel onAccount");
         // must delete the customer in Stripe
         // must delete the customer in Supabase
+        deleteCustomerFn(
+          { customerId },
+          {
+            onSuccess: () => {
+              // update user plan to Seed plan in profiles
+              updateUserPlanFn(
+                {
+                  userId: user!.id as string,
+                  plan: "1",
+                },
+                {
+                  onSuccess: ({ user }) => {
+                    toast.success(
+                      "Cancelled subscription successfully. \nYou are on Seed plan now."
+                    );
+                    setUser(user);
+                    setShowCancelSubscriptionModal(false);
+                    setCancelSubscriptionModalType(null);
+                    setCustomerId(null);
+                    setIsOpenBottomSlideIn(false);
+                    setBottomSlideInType(null);
+                    navigate("/dashboard/home");
+                  },
+                }
+              );
+            },
+            onError: (error: any) => {
+              setShowSpinner(false);
+              toast.error(error.message);
+              setSubmitError(error.message);
+            },
+          }
+        );
       }
     } catch (error) {
       console.error(error);

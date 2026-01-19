@@ -168,7 +168,7 @@ exports.webhook = async (req, res, next) => {
         const priceId = dataObject.plan.id;
         const customerId = dataObject.customer;
         const status = dataObject.status;
-        // update subabscription in supabase
+        // update subscription in supabase
         try {
           const { data, error } = await supabase
             .from("customers")

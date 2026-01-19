@@ -93,7 +93,7 @@ export default function MyBilling() {
   const customer = user?.customers[0];
 
   function handleCancelSubscription() {
-    setCustomerId(customer!.id!);
+    setCustomerId(customer!.customerId!);
     setCancelSubscriptionModalType("onAccount");
     setShowCancelSubscriptionModal(true);
   }
@@ -146,7 +146,8 @@ export default function MyBilling() {
             <small style={{ lineHeight: "1.7rem" }}>
               You will lose paid capabilities of higher plans. <br />
               You will be assigned to the Free Seed Plan. <br />
-              Your account will permanently delete all your flyers
+              Your will lose data and access to some of your flyers and
+              templates
             </small>
             <p>
               <Button

@@ -1,4 +1,5 @@
 import { getBaseUrl } from "../utils/ServiceUtils";
+import { selectEverythingFromProfile } from "./apiUser";
 import { supabase } from "./supabase";
 
 export async function createCustomer({
@@ -74,16 +75,7 @@ export async function updateSubscription({
       .from("profiles")
       .update({ plan: plan })
       .eq("id", userId)
-      .select(
-        `*,
-          flyers(*, place(*)),
-          templates(*, user(*)),
-          plan(*),
-          assets(*),
-          saved_flyers(*, flyer(*, place(*), user(*))),
-          customers(*)
-          `
-      )
+      .select(selectEverythingFromProfile)
       .single();
     return {
       user: updatedUser,
@@ -121,3 +113,23 @@ export async function createCheckoutSession({
     };
   }
 }
+
+export const updateUserPlan = async (userId: string, plan: string) => {
+  try {
+    const { data: userData, error } = await supabase
+      .from("profiles")
+      .update({ plan })
+      .eq("id", userId)
+      .select(selectEverythingFromProfile)
+      .single();
+    if (error) {
+      throw error;
+    }
+    return {
+      user: userData,
+      error: null,
+    };
+  } catch (error) {
+    return { data: null, error };
+  }
+};

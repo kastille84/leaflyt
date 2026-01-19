@@ -81,7 +81,7 @@ export default function Home() {
     }
     if (sessionId && customerId && plan) {
       toast.success(
-        "Payment successful! Verify Your Email. Login. Be In The Know.",
+        "Payment successful! \nImportant: \nVerify Your Email, If it's your first time here. \nThen Login or Re-Login for new plan to take affect.",
         {
           duration: 10000,
         }
