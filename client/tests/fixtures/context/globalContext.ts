@@ -58,4 +58,6 @@ export const mockUseGlobalContextReturnObj = {
   cancelSubscriptionModalType: null,
   setCustomerId: () => {},
   customerId: null,
+  setShowDeleteAccountModal: () => {},
+  showDeleteAccountModal: false,
 };

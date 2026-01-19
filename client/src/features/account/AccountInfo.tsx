@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/GlobalContext";
-import useGetUserLimits from "../../hooks/useGetUserLimits";
 import Button from "../../ui/Button";
 
 const AccountContainer = styled.div`
@@ -83,25 +82,36 @@ const ImportantDatum = styled.div`
       min-width: 100px;
     }
   }
-  & span:last-child {
-    display: inline-block;
-    font-weight: 400;
-    margin-left: 1.2rem;
-  }
 
   & small {
     font-size: 1.2rem;
   }
+  & .deleteSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 100%;
+  }
 `;
 
 export default function AccountInfo() {
-  const { user, setIsOpenBottomSlideIn, setBottomSlideInType } =
-    useGlobalContext();
+  const {
+    user,
+    setIsOpenBottomSlideIn,
+    setBottomSlideInType,
+    setShowDeleteAccountModal,
+  } = useGlobalContext();
   console.log("user", user);
 
   const handleEditClick = () => {
     setIsOpenBottomSlideIn(true);
     setBottomSlideInType("editAccountInfo");
+  };
+
+  const handleDeleteAccount = () => {
+    setShowDeleteAccountModal(true);
   };
 
   const determineNameToDisplay = () => {
@@ -156,16 +166,20 @@ export default function AccountInfo() {
       </AccountDatumContainer>
       <StyledImportantDatumContainer>
         <ImportantDatum>
-          <span>End Subscription?</span>
-          <span>
-            <Button size="small" variation="danger">
-              Delete
-            </Button>
-          </span>
-          <span>
+          <span>Delete Account</span>
+          <span className="deleteSection">
             <small>
               <strong>Can't Be Undone</strong> You will lose all your data.
-            </small>
+            </small>{" "}
+            <div>
+              <Button
+                size="small"
+                variation="danger"
+                onClick={handleDeleteAccount}
+              >
+                Delete Account
+              </Button>
+            </div>
           </span>
         </ImportantDatum>
       </StyledImportantDatumContainer>
