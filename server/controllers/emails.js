@@ -51,3 +51,29 @@ exports.sendWelcomeEmail = async (req, res, next) => {
     handleCatchError(next, err);
   }
 };
+
+exports.sendDeletedUserEmail = async (req, res, next) => {
+  try {
+    const { email, name, firstName, lastName } = req.body;
+    console.log("email", email);
+    console.log("name", name);
+    console.log("firstName", firstName);
+    console.log("lastName", lastName);
+    const data = await mailgunClient.messages.create(
+      process.env.MAILGUN_DOMAIN,
+      {
+        from: "support@" + process.env.MAILGUN_DOMAIN,
+        to: email,
+        subject: "Your account has been deleted",
+        template: `DeletedUser`,
+        "v:name": name,
+        "v:firstName": firstName,
+        "v:lastName": lastName,
+      }
+    );
+    return res.status(200).json({ data: data });
+  } catch (err) {
+    console.log("error", err);
+    handleCatchError(next, err);
+  }
+};

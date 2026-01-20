@@ -36,7 +36,7 @@ export async function deleteCustomer({ customerId }: { customerId: string }) {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        customerId: customerId,
+        customerid: customerId,
       },
     });
     const responseJson = await response.json();

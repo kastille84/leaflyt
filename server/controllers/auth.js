@@ -2,7 +2,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const moment = require("moment");
-const { supabase } = require("../../supabase");
+const { supabase, supabaseAdmin } = require("../../supabase");
+const uuid = require("uuid");
 
 const { handleCatchError } = require("../utility/error");
 
@@ -33,4 +34,34 @@ exports.signup = async (req, res, next) => {
   }
 };
 
+exports.deleteUser = async (req, res, next) => {
+  // const userId = req.headers.userid;
+  const token = req.headers.token;
+  try {
+    // console.log("typeof userId", typeof userId);
+    // console.log("userId", userId);
+    // console.log("validate userId", uuid.parse(userId));
+    // console.log("uuid.parse(userId)", uuid.parse(userId));
+
+    // const supabaseUser = await supabaseAdmin.auth.admin.getUserById(userId);
+    // console.log("supabaseUser", supabaseUser);
+    // const { data, error } = await supabaseAdmin.auth.admin.deleteUser(
+    //   `'${userId}'`
+    // );
+    // const { data, error } = await supabaseAdmin.auth.
+    const response = await fetch(process.env.SUPABASE_DB_DELETE_USER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const jsonRespone = await response.json();
+
+    return res.status(200).json({ data: jsonRespone });
+  } catch (err) {
+    handleCatchError(next, err);
+  }
+};
 exports.login = async (req, res, next) => {};

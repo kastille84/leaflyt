@@ -63,6 +63,25 @@ export const loginUser = async (email: string, password: string) => {
   }
 };
 
+export const deleteUser = async () => {
+  // const userIdFromSupabase = (await supabase.auth.getUser()).data.user?.id;
+  try {
+    const token = (await supabase.auth.getSession()).data.session?.access_token;
+    const data = await fetch(`${getBaseUrl()}/api/auth/delete-user`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        token: token!,
+        // userid: JSON.stringify(userIdFromSupabase),
+      },
+    });
+
+    await supabase.auth.signOut();
+    return data;
+  } catch (error) {
+    return { data: null, error };
+  }
+};
 export const loginUserWithAccessToken = async () => {
   try {
     const { data, error } = await supabase.auth.getUser();
@@ -226,6 +245,39 @@ export const sendWelcomeEmail = async ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, typeOfUser, name, firstName, lastName }),
+      }
+    );
+    const result = await response.json();
+    console.log("result", result);
+    if (result.error) {
+      throw result.error;
+    }
+    return result;
+  } catch (error) {
+    return { data: null, error };
+  }
+};
+
+export const sendDeletedUserEmail = async ({
+  email,
+  name,
+  firstName,
+  lastName,
+}: {
+  email: string;
+  name: string;
+  firstName: string;
+  lastName: string;
+}) => {
+  try {
+    const response = await fetch(
+      `${getBaseUrl()}/api/email/send-deleted-user-email`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, name, firstName, lastName }),
       }
     );
     const result = await response.json();

@@ -9,6 +9,9 @@ import useStripe from "../../hooks/useStripe";
 import toast from "react-hot-toast";
 import OverlaySpinner from "../OverlaySpinner";
 import { useState } from "react";
+import useAssetMutations from "../../features/assets/useAssetMutations";
+import { set } from "react-hook-form";
+import useSignup from "../../features/authentication/useSignup";
 
 const StyledSubmitError = styled(Heading)`
   color: var(--color-red-600) !important;
@@ -36,7 +39,9 @@ export default function DeleteAccountModal() {
   const { showDeleteAccountModal, setShowDeleteAccountModal, user, setUser } =
     useGlobalContext();
 
-  // const { deleteCustomerFn, updateUserPlanFn } = useStripe();
+  const { deleteAllAssetsAsync } = useAssetMutations();
+  const { deleteCustomerAsync } = useStripe();
+  const { deleteUserAsyncFn, sendDeletedUserEmailAsyncFn } = useSignup();
 
   const navigate = useNavigate();
 
@@ -67,9 +72,28 @@ export default function DeleteAccountModal() {
 
   async function performDeleteAccountAction() {
     try {
-      // delete all user assets
-      //  - done with cloudinary api for bulk delete
+      console.log("user", user);
+      setShowSpinner(true);
+      // delete assets in cloudinary
+      const assetsToDeleteVideo = (user?.assets || [])
+        .filter((asset) => asset.asset_info.resource_type === "video")
+        .map((asset) => asset.asset_info.public_id);
+      const assetsToDeleteImages = (user?.assets || [])
+        .filter((asset) => asset.asset_info.resource_type === "image")
+        .map((asset) => asset.asset_info.public_id);
+
+      console.log("assetsToDelete", assetsToDeleteVideo, assetsToDeleteImages);
+      await deleteAllAssetsAsync({
+        assetVideos: assetsToDeleteVideo,
+        assetImages: assetsToDeleteImages,
+      });
       // delete customer in stripe
+      //  - if using deleteCustomerFn from useStripe hook, it will also delete customer in supabase
+      if (user?.customers.length > 0) {
+        await deleteCustomerAsync({
+          customerId: user?.customers[0]?.customerId,
+        });
+      }
       // delete auth user
       //  - the user profile associated with the auth user will be auto deleted
       //    - all flyers associated with the referenced user profile will be auto deleted.
@@ -77,7 +101,18 @@ export default function DeleteAccountModal() {
       //    - all saved templates associated with the referenced user profile will be auto deleted
       //    - all user assets rows in supabase assets table will be auto deleted
       //    - the customer row in supabase customers table will be auto deleted
+      await deleteUserAsyncFn();
       // send an email to the user to notify them that their account has been deleted
+      await sendDeletedUserEmailAsyncFn({
+        email: user!.email,
+        name: user!.name || "",
+        firstName: user!.firstName || "",
+        lastName: user!.lastName || "",
+      });
+
+      setShowSpinner(false);
+      setShowDeleteAccountModal(false);
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
@@ -115,7 +150,9 @@ export default function DeleteAccountModal() {
           Stay with Account
         </Button>
       </StyledButtonContainer>
-      {showSpinner && <OverlaySpinner message="Deleting your account..." />}
+      {showSpinner && (
+        <OverlaySpinner message="Deleting your account, this may take a while..." />
+      )}
     </Modal>
   );
 }

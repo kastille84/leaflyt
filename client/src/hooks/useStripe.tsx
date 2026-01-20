@@ -17,6 +17,10 @@ export default function useStripe() {
     useMutation({
       mutationFn: (prepData: any) => deleteCustomer(prepData),
     });
+  const { mutateAsync: deleteCustomerAsync, error: deleteCustomerAsyncError } =
+    useMutation({
+      mutationFn: (prepData: any) => deleteCustomer(prepData),
+    });
 
   const { mutate: updateSubscriptionFn, error: updateSubscriptionFnError } =
     useMutation({
@@ -43,6 +47,8 @@ export default function useStripe() {
     createCheckoutSessionFnError,
     deleteCustomerFn,
     deleteCustomerFnError,
+    deleteCustomerAsync,
+    deleteCustomerAsyncError,
     updateSubscriptionFn,
     updateSubscriptionFnError,
     updateUserPlanFn,

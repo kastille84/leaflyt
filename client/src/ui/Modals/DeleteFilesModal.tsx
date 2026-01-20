@@ -26,10 +26,7 @@ export default function DeleteFilesModal() {
     setUser,
   } = useGlobalContext();
 
-  // const { deleteFlyerFn, deleteTemplateFn } = useRegisteredFlyer();
   const { deleteAssetsFn } = useAssetMutations();
-  const { id } = useParams();
-  const queryClient = useQueryClient();
 
   const customStyles = {
     overlay: {
@@ -59,7 +56,7 @@ export default function DeleteFilesModal() {
       onSuccess: ({ user }: any) => {
         // update the user
         setUser(user);
-        toast.success("Template deleted!");
+        toast.success("Assets deleted!");
         handleCancel();
       },
       onError: (error) => {

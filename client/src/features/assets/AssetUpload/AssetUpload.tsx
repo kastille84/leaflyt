@@ -66,7 +66,7 @@ export default function AssetUpload({
           }
           if (error) {
             console.log(error);
-            toast.error(error.message);
+            toast.error(error.statusText);
             (cloudinaryWidgetRef.current as any).close();
           }
         }
@@ -83,7 +83,7 @@ export default function AssetUpload({
           htmlFor="title"
           // className={`${errors["fileUrlArr"] && "error"}`}
         >
-          File Upload
+          File Upload (max 10mb size)
         </StyledLabel>
 
         <Button

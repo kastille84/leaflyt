@@ -34,6 +34,27 @@ export const deleteAssets = async (assets: UploadApiResponse[], id: string) => {
   } catch (error) {}
 };
 
+export const deleteAllAssets = async (
+  assetVideos: string[],
+  assetImages: string[]
+) => {
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/assets/delete-all`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        assetvideos: JSON.stringify(assetVideos),
+        assetimages: JSON.stringify(assetImages),
+      },
+    });
+    const result = await response.json();
+    console.log("result", result);
+    return result;
+  } catch (error) {
+    return { data: null, error };
+  }
+};
+
 export async function assetUsageByFlyer(
   initialAssets: UploadApiResponse[],
   proposedAssets: UploadApiResponse[],
