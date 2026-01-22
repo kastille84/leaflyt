@@ -45,7 +45,10 @@ exports.keysBasedOnEnv = () => {
       },
       // Stripe
       stripe: {
-        publishableKey: "",
+        publishableKey: process.env.STRIPE_SECRET_KEY_TEST,
+        price_garden: process.env.STRIPE_PRICE_GARDEN,
+        price_grove: process.env.STRIPE_PRICE_GROVE,
+        price_forest: process.env.STRIPE_PRICE_FOREST,
       },
       openai: {
         apiKey: process.env.OPENAI_API_KEY,

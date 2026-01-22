@@ -1,11 +1,12 @@
 const { stripe } = require("../../stripe");
 const { supabase } = require("../../supabase");
+const { keysBasedOnEnv } = require("../utility/generalUtils");
 
 // #TODO: - replace with real products
 const productsPrice = {
-  Garden: process.env.STRIPE_PRODUCT_GARDEN,
-  Grove: process.env.STRIPE_PRODUCT_GROVE,
-  Forest: process.env.STRIPE_PRODUCT_FOREST,
+  Garden: keysBasedOnEnv().stripe.price_garden,
+  Grove: keysBasedOnEnv().stripe.price_grove,
+  Forest: keysBasedOnEnv().stripe.price_forest,
 };
 
 const mapPlanToName = {
