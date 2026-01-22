@@ -1,14 +1,15 @@
 const { mailgunClient } = require("../../mailgun");
 const { handleCatchError } = require("../utility/error");
+const { keysBasedOnEnv } = require("../utility/generalUtils");
 
 exports.testEmail = async (req, res, next) => {
   try {
     const { email } = req.body;
     console.log("email", email);
     const data = await mailgunClient.messages.create(
-      process.env.MAILGUN_DOMAIN,
+      keysBasedOnEnv().mailgun.domain,
       {
-        from: "support@" + process.env.MAILGUN_DOMAIN,
+        from: "support@" + keysBasedOnEnv().mailgun.domain,
         to: email,
         subject: "Hello Testing",
         text: "Testing some Mailgun awesomness!",
@@ -31,9 +32,9 @@ exports.sendWelcomeEmail = async (req, res, next) => {
     console.log("firstName", firstName);
     console.log("lastName", lastName);
     const data = await mailgunClient.messages.create(
-      process.env.MAILGUN_DOMAIN,
+      keysBasedOnEnv().mailgun.domain,
       {
-        from: "support@" + process.env.MAILGUN_DOMAIN,
+        from: "support@" + keysBasedOnEnv().mailgun.domain,
         to: email,
         subject: "Welcome to Leaflit",
         template: `Welcome-${
@@ -60,9 +61,9 @@ exports.sendDeletedUserEmail = async (req, res, next) => {
     console.log("firstName", firstName);
     console.log("lastName", lastName);
     const data = await mailgunClient.messages.create(
-      process.env.MAILGUN_DOMAIN,
+      keysBasedOnEnv().mailgun.domain,
       {
-        from: "support@" + process.env.MAILGUN_DOMAIN,
+        from: "support@" + keysBasedOnEnv().mailgun.domain,
         to: email,
         subject: "Your account has been deleted",
         template: `DeletedUser`,

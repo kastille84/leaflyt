@@ -12,7 +12,7 @@ import { getUserProfile } from "./apiUser";
 import { UploadApiResponse } from "cloudinary";
 import { assetUsageByFlyer, assetUsageByTemplate } from "./apiAssets";
 import { getBaseUrl } from "../utils/ServiceUtils";
-import { checkFlyerDataForAppropriateness } from "../utils/FlyerUtils";
+import { prepFlyerDataForAppropriateness } from "../utils/FlyerUtils";
 
 const getOrCreateBoard = async (selectedPlace: NearbySearchPlaceResult) => {
   // make a call to get the latest board data
@@ -620,7 +620,7 @@ export async function moderateContent(
   flyerData: DB_Flyer_Create | DB_Template
 ) {
   const { messageToCheck, fileUrlsToCheck } =
-    checkFlyerDataForAppropriateness(flyerData);
+    prepFlyerDataForAppropriateness(flyerData);
   try {
     const response = await fetch(`${getBaseUrl()}/api/moderate`, {
       method: "POST",
@@ -636,7 +636,7 @@ export async function moderateContent(
 
     if (result.data?.results[0].flagged) {
       throw new Error(
-        "Flagged content and/or image. Please abide by our guidelines. If you feel this is an error, please contact us. (leaflit.flyers@gmail.com) "
+        "Flagged content and/or image. Please abide by our guidelines. If you feel this is an error, please contact us. (support@leaflit.us) "
       );
     }
   } catch (error: any) {

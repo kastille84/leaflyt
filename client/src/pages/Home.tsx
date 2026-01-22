@@ -103,7 +103,7 @@ export default function Home() {
       <StyledGreetingsContainer>
         <Heading as="h3">
           Whether you are a business, organization or individual, <br />
-          we make it easy for you to view and distribute flyers in your
+          We make it easy for you to view and distribute flyers in your
           community. <br />
           We are beta testing and looking for early adopters.
           <br />

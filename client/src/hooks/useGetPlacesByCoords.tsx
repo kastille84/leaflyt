@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { LatLng, NearbySearchPlaceResult } from "../interfaces/Geo";
 import { excludedTypeList } from "../constants";
+import { keysBasedOnEnv } from "../utils/GeneralUtils";
 // import { setKey, fromLatLng, setBounds, setResultType } from "react-geocode";
 
 export default (coords: LatLng) => {
-  const apiKey = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
+  const apiKey = keysBasedOnEnv().google.mapsApiKey;
   const [places, setPlaces] = useState<NearbySearchPlaceResult[] | null>([]);
   const [error, setError] = useState<string | null>(null);
   const [isGettingPlaces, setIsGettingPlaces] = useState(true);

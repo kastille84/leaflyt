@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { FILE_UPLOAD_OPTIONS } from "../../../constants";
 import { UploadApiErrorResponse, UploadApiResponse } from "cloudinary";
 import toast from "react-hot-toast";
+import { keysBasedOnEnv } from "../../../utils/GeneralUtils";
 
 const StyledAssetUploadContainer = styled.div`
   display: flex;
@@ -46,8 +47,8 @@ export default function AssetUpload({
     if (!cloudinaryWidgetRef?.current && uploadButtonRef?.current) {
       cloudinaryWidgetRef.current = window.cloudinary.createUploadWidget(
         {
-          cloudName: import.meta.env.VITE_CLOUDINARY_NAME,
-          uploadPreset: import.meta.env.VITE_CLOUDINARY_PRESET,
+          cloudName: keysBasedOnEnv().cloudinary.name,
+          uploadPreset: keysBasedOnEnv().cloudinary.preset,
           ...FILE_UPLOAD_OPTIONS[level],
         },
         (error: UploadApiErrorResponse, result: UploadApiResponse) => {

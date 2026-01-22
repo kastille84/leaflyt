@@ -27,6 +27,7 @@ import TermsModal from "./ui/Modals/TermsModal";
 import PlansModal from "./ui/Modals/PlansModal";
 import CancelSubscriptionModal from "./ui/Modals/CancelSubscriptionModal";
 import DeleteAccountModal from "./ui/Modals/DeleteAccountModal";
+import { keysBasedOnEnv } from "./utils/GeneralUtils";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -49,8 +50,7 @@ function App() {
         <GlobalStyles />
         <GlobalContextProvider>
           <StripeProvider
-            // #TODO: update to production key
-            publishableKey={import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_TEST}
+            publishableKey={keysBasedOnEnv().stripe.publishableKey}
           >
             <BrowserRouter>
               <Routes>

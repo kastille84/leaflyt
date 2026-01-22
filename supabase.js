@@ -1,12 +1,10 @@
 const { createClient } = require("@supabase/supabase-js");
+const { keysBasedOnEnv } = require("./server/utility/generalUtils");
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_API_KEY;
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseUrl = keysBasedOnEnv().supabase.url;
+const supabaseKey = keysBasedOnEnv().supabase.apiKey;
 const supabase = createClient(supabaseUrl, supabaseKey);
-const supabaseAdmin = createClient(supabaseUrl, supabaseServiceRoleKey);
 
 exports.supabaseUrl = supabaseUrl;
 exports.supabaseKey = supabaseKey;
 exports.supabase = supabase;
-exports.supabaseAdmin = supabaseAdmin;

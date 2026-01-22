@@ -164,7 +164,7 @@ export default function PrivacyPolicy() {
       <h2>9. Contact Us</h2>
       <p>
         If you have questions about this Privacy Policy, please contact us at:
-        <em>leaflit.flyers@gmail.com</em>.
+        <em>support@leaflit.us</em>.
       </p>
     </StyledMain>
   );

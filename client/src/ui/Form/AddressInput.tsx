@@ -12,11 +12,11 @@ import Input from "../Input";
 import styled from "styled-components";
 import FormControl from "./FormControl";
 import FieldInputError from "./FieldInputError";
-import { accessNestedProperty } from "../../utils/GeneralUtils";
+import { accessNestedProperty, keysBasedOnEnv } from "../../utils/GeneralUtils";
 import OverlaySpinner from "../OverlaySpinner";
 import Spinner from "../Spinner";
 
-const key = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
+const key = keysBasedOnEnv().google.mapsApiKey;
 
 const StyledLabel = styled.label`
   font-weight: 600;
