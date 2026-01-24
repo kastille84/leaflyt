@@ -129,12 +129,13 @@ export default function LoginModal() {
     login(data, {
       onSuccess: (response) => {
         /* v8 ignore start */
+        // set user in global context
+        setUser(response.data);
+        // a purposefully thrown error (i.e. user hasn't paid)
         if (response.error) {
           throw new Error((response.error as any).message);
         }
         /* v8 ignore stop */
-        // set user in global context
-        setUser(response.data);
         handleClose();
         toast.success(`Login successful!`);
         setShowSpinner(false);
@@ -142,15 +143,20 @@ export default function LoginModal() {
         navigate(
           `/dashboard${
             selectedPlace?.id ? "/board/" + selectedPlace.id : "/home"
-          }`
+          }`,
         );
       },
       onError: (error) => {
-        console.log("onError", error.message);
+        console.log("onError", error);
         setSubmitError(error.message);
         // set focus on error
         document.querySelector("#form-error")?.scrollIntoView();
         setShowSpinner(false);
+        if (error.message === "unpaid") {
+          setShowLoginModal(false);
+          setIsOpenBottomSlideIn(true);
+          setBottomSlideInType("unpaid");
+        }
       },
     });
   };

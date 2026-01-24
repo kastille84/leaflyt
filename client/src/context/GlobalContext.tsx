@@ -45,6 +45,7 @@ export type ContextType = {
     | "hasTemplates"
     | "chooseAssets"
     | "editAccountInfo"
+    | "unpaid"
     | null;
   setBottomSlideInType: React.Dispatch<
     React.SetStateAction<
@@ -56,6 +57,7 @@ export type ContextType = {
       | "hasTemplates"
       | "chooseAssets"
       | "editAccountInfo"
+      | "unpaid"
       | null
     >
   >;
@@ -201,6 +203,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
     | "hasTemplates"
     | "chooseAssets"
     | "editAccountInfo"
+    | "unpaid"
     | null
   >(null);
   const [user, setUser] = useState<Auth_User_Profile_Response | null>(null);
@@ -215,10 +218,10 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [hasFlyerAtLocation, setHasFlyerAtLocation] = useState(false);
   const [isSelectingNewPlace, setIsSelectingNewPlace] = useState(false);
   const [selectedFlyer, setSelectedFlyer] = useState<DB_Flyers_Response | null>(
-    null
+    null,
   );
   const [selectedTemplate, setSelectedTemplate] = useState<DB_Template | null>(
-    null
+    null,
   );
   const [showEditFlyerModal, setShowEditFlyerModal] = useState(false);
   const [showDeleteFlyerTemplateModal, setShowDeleteFlyerTemplateModal] =
@@ -332,7 +335,7 @@ const useGlobalContext = () => {
   const context = useContext(GlobalContext);
   if (context === undefined) {
     throw new Error(
-      "useGlobalContext must be used within a GlobalContextProvider"
+      "useGlobalContext must be used within a GlobalContextProvider",
     );
   }
   return context;

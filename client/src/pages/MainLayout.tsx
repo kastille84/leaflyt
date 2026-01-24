@@ -39,7 +39,12 @@ const StyledMainContentContainer = styled.div`
 export default function MainLayout() {
   const responsiveVal = useResponsiveWidth();
 
-  const { setUser } = useGlobalContext();
+  const {
+    setUser,
+    setShowLoginModal,
+    setIsOpenBottomSlideIn,
+    setBottomSlideInType,
+  } = useGlobalContext();
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
@@ -56,10 +61,19 @@ export default function MainLayout() {
             console.log("response", response);
             // set user in global context
             setUser(response.data);
+            // a purposefully thrown error (i.e. user hasn't paid)
+            if (response.error) {
+              throw new Error((response.error as any).message);
+            }
             navigate(`/dashboard${id ? "/board/" + id : "/home"}`);
           },
           onError: (error) => {
             console.log("error", error);
+            if (error.message === "unpaid") {
+              setShowLoginModal(false);
+              setIsOpenBottomSlideIn(true);
+              setBottomSlideInType("unpaid");
+            }
           },
         });
       }

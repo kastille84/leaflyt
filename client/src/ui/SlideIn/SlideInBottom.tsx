@@ -51,6 +51,8 @@ export default function SlideInBottom() {
         return <ChangePlanContainer isUpgrade />;
       case "changePlan":
         return <ChangePlanContainer isAnyPaidPlan />;
+      case "unpaid":
+        return <p>Unpaid</p>;
       case "carousel":
         return <FullCarouselContainer />;
       case "flyerDesigner":
@@ -86,6 +88,7 @@ export default function SlideInBottom() {
     switch (bottomSlideInType) {
       case "chooseAssets":
       case "signup":
+      case "unpaid":
         return false;
       default:
         return true;

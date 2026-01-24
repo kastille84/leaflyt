@@ -23,7 +23,7 @@ export const loginUser = async (email: string, password: string) => {
         assets(*),
         saved_flyers(*, flyer(*, place(*), user(*))),
         customers(*)
-        `
+        `,
       )
       .eq("email", email)
       .single();
@@ -31,8 +31,19 @@ export const loginUser = async (email: string, password: string) => {
     if (userProfileError) {
       throw userProfileError;
     }
-    // check if current plan is the same as the one in supabase
     const customers = userProfile?.customers ?? [];
+    // check if user has a plan && it's unpaid
+    if (customers.length > 0 && customers[0].subscriptionStatus == "unpaid") {
+      await supabase.auth.signOut();
+
+      return {
+        data: userProfile,
+        error: {
+          message: "unpaid",
+        },
+      };
+    }
+    // check if current plan is the same as the one in supabase
     const currPlan = userProfile?.plan ?? {};
     if (
       customers.length > 0 &&
@@ -98,7 +109,7 @@ export const loginUserWithAccessToken = async () => {
         assets(*),
         saved_flyers(*, flyer(*, place(*), user(*))),
         customers(*)
-        `
+        `,
       )
       .eq("email", data.user.email)
       .single();
@@ -106,6 +117,18 @@ export const loginUserWithAccessToken = async () => {
     if (userProfile) console.log("userProfile", userProfile);
     if (userProfileError) {
       throw new Error("Could not fetch user profile");
+    }
+    const customers = userProfile?.customers ?? [];
+    // check if user has a plan && it's unpaid
+    if (customers.length > 0 && customers[0].subscriptionStatus == "unpaid") {
+      await supabase.auth.signOut();
+
+      return {
+        data: userProfile,
+        error: {
+          message: "unpaid",
+        },
+      };
     }
     return {
       data: userProfile,
@@ -245,7 +268,7 @@ export const sendWelcomeEmail = async ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, typeOfUser, name, firstName, lastName }),
-      }
+      },
     );
     const result = await response.json();
     console.log("result", result);
@@ -278,7 +301,7 @@ export const sendDeletedUserEmail = async ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, name, firstName, lastName }),
-      }
+      },
     );
     const result = await response.json();
     console.log("result", result);
@@ -290,42 +313,3 @@ export const sendDeletedUserEmail = async ({
     return { data: null, error };
   }
 };
-// export const getUser = async () => {
-//   try {
-//     const { data, error } = await supabase.auth.getUser();
-//     if (error) {
-//       throw error;
-//     }
-//     const { data: userProfile, error: userProfileError } = await supabase
-//       .from("profiles")
-//       .select("*")
-//       .eq("email", data.user.email)
-//       .single();
-//     if (userProfileError) {
-//       throw new Error("Could not fetch user profile");
-//     }
-//     return {
-//       data: userProfile,
-//       error: null,
-//     };
-//   } catch (error) {
-//     return { data: null, error };
-//   }
-// };
-// export const getUserWithFlyersAndTemplates = async () => {
-//     const { data, error } = await supabase
-//     .from('users') // Start by querying the users table
-//     .select(`
-//       *, // Select all columns from the user record
-//       flyers ( * ), // Select all columns from the related flyers
-//       templates ( * ) // Select all columns from the related templates
-//     `)
-//     .eq('id', userId); // Filter for the specific user ID
-
-//   if (error) {
-//     console.error('Error fetching user data:', error.message);
-//     return null;
-//   }
-
-//   return data; // 'data' will be an array containing the user record(s) with embedded flyers and templates
-// };

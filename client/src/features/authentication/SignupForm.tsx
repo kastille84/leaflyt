@@ -138,8 +138,8 @@ export default function SignupForm({
     if (typeOfUser) {
       unregister(
         ["individual", "business", "organization"].filter(
-          (item) => item !== typeOfUser
-        )
+          (item) => item !== typeOfUser,
+        ),
       );
     }
   }, [typeOfUser]);
@@ -174,7 +174,7 @@ export default function SignupForm({
           `Signup successful! \nImportant: \nYou must verify your email: ${response.data.email} before logging in. \nMake sure to check your SPAM folder.`,
           {
             duration: 10000,
-          }
+          },
         );
         // toast.custom(
         //   `Signup successful! You must verify your email: ${response.data.email} before logging in. Make sure to check your SPAM folder.`,
