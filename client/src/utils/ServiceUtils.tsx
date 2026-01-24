@@ -8,12 +8,12 @@ import {
 
 export const getBaseUrl = () => {
   switch (process.env.NODE_ENV) {
+    case "production":
+      // # TODO: - get correct url
+      return "https://leaflit.us/";
     case "development":
     case "test":
       return "http://localhost:5000";
-    case "production":
-      // # TODO - get correct url
-      return "to-be-determined";
     default:
       return "http://localhost:5000";
   }

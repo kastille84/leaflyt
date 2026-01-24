@@ -113,7 +113,7 @@ exports.updateSubscription = async (req, res, next) => {
         ],
         // Configure how to handle prorations (always_invoice, create_prorations, none)
         proration_behavior: "create_prorations",
-      }
+      },
     );
     return res.json({ status: "success", subscription: updatedSubscription });
   } catch (err) {
@@ -128,7 +128,7 @@ exports.webhook = async (req, res, next) => {
     event = stripe.webhooks.constructEvent(
       req.body,
       req.headers["stripe-signature"],
-      process.env.STRIPE_WEBHOOK_SECRET
+      process.env.STRIPE_WEBHOOK_SECRET,
     );
   } catch (err) {
     console.log(err);
@@ -156,13 +156,27 @@ exports.webhook = async (req, res, next) => {
       // Use this webhook to notify your user that their payment has
       // failed and to retrieve new card details.
       console.log("invoice.payment_failed", dataObject);
+      const customerId = dataObject.customer;
+      const status = dataObject.status; // will be "open" because invoice created but not paid
+      // update subscription in supabase
+      try {
+        const { data, error } = await supabase
+          .from("customers")
+          .update({
+            subscriptionStatus: "unpaid", // changing to unpaid
+          })
+          .eq("customerId", customerId);
+      } catch (err) {
+        next(err);
+      }
+
       break;
     case "customer.subscription.created":
       if (event.request != null) {
         console.log("customer.subscription.created", dataObject);
         console.log(
           "customer.subscription.created - items - data",
-          dataObject.items.data
+          dataObject.items.data,
         );
         const subscriptionId = dataObject.id;
         const productId = dataObject.plan.product;
@@ -220,6 +234,18 @@ exports.webhook = async (req, res, next) => {
       if (event.request != null) {
         // handle a subscription canceled by your request
         // from above.
+        console.log("customer.subscription.deleted", dataObject);
+        const customerId = dataObject.customer;
+
+        // delete customer in supabase
+        try {
+          const { data, error } = await supabase
+            .from("customers")
+            .delete()
+            .eq("customerId", customerId);
+        } catch (err) {
+          next(err);
+        }
       } else {
         // handle subscription canceled automatically based
         // upon your subscription settings.
