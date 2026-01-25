@@ -60,7 +60,6 @@ export default function CTA({
               If redeeming online, then the person redeeming the deal can press
               redeem.
             </small>
-            {/* #TODO: add redeem button functionality */}
             <Button size="medium" onClick={() => handleRedeem()}>
               Redeem
             </Button>

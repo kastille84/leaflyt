@@ -139,7 +139,6 @@ export default function LoginModal() {
         handleClose();
         toast.success(`Login successful!`);
         setShowSpinner(false);
-        // TODO: redirect user to dashboard
         navigate(
           `/dashboard${
             selectedPlace?.id ? "/board/" + selectedPlace.id : "/home"

@@ -57,7 +57,6 @@ export default function Content({
 
   return (
     <>
-      {/* TODO: Make this section dynamic (mainContent, infoContent, couponContent) */}
       <StyledSubcategory flyerDesign={flyerStyles}>
         {flyer.subcategory}
       </StyledSubcategory>
