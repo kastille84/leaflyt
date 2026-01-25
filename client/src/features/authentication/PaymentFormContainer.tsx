@@ -37,9 +37,13 @@ const StyledHeading = styled(Heading)`
 export default function PaymentFormContainer({
   signedUpUser,
   pickPlanInfo,
+  hideCancel,
+  updatePaymentInfo,
 }: {
   signedUpUser: Auth_User_Signup_Response | null;
   pickPlanInfo: PickPlanInfo;
+  hideCancel?: boolean;
+  updatePaymentInfo?: boolean;
 }) {
   const { stripe, loading } = useStripeContext();
   const [clientSecret, setClientSecret] = useState(null);
@@ -49,14 +53,18 @@ export default function PaymentFormContainer({
   useEffect(() => {
     if (pickPlanInfo && signedUpUser) {
       createCheckoutSessionFn(
-        { plan: pickPlanInfo.plan, customerId: pickPlanInfo.customerId },
+        {
+          plan: pickPlanInfo.plan,
+          customerId: pickPlanInfo.customerId,
+          updatePaymentInfo,
+        },
         {
           onSuccess: (data: any) => {
             console.log("Checkout Session data", data);
             setClientSecret(data.clientSecret);
           },
           onError: (error: any) => {},
-        }
+        },
       );
     }
   }, []);
@@ -68,7 +76,11 @@ export default function PaymentFormContainer({
   return (
     <CheckoutProvider stripe={stripe} options={{ clientSecret: clientSecret }}>
       <StyledFormContainer>
-        <PaymentForm signedUpUser={signedUpUser} pickPlanInfo={pickPlanInfo} />
+        <PaymentForm
+          signedUpUser={signedUpUser}
+          pickPlanInfo={pickPlanInfo}
+          hideCancel={hideCancel}
+        />
       </StyledFormContainer>
     </CheckoutProvider>
   );

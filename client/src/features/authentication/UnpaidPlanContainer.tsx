@@ -5,6 +5,9 @@ import PaymentFormContainer from "./PaymentFormContainer";
 import PickPlanForm from "./PickPlanForm";
 import { useGlobalContext } from "../../context/GlobalContext";
 import WhyUpgrade from "./WhyUpgrade";
+import Heading from "../../ui/Heading";
+import LimitExceededWarning from "../../ui/LimitExceededWarning";
+import PaymentBillingInfoForm from "./PaymentBillingInfoForm";
 
 export type PickPlanInfo = {
   plan: string;
@@ -20,12 +23,12 @@ export type PickPlanInfo = {
   customerId?: string | null;
 };
 const StyledUpgradeContainer = styled.div`
-  width: 90%;
+  width: 60%;
   height: 100%;
   margin: auto;
   /* background: red; */
   display: grid;
-  grid-template-columns: 35% 1fr;
+  grid-template-columns: 1fr;
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
@@ -34,6 +37,8 @@ const StyledUpgradeContainer = styled.div`
     grid-template-columns: 1fr;
   }
 `;
+
+const WarningHolder = styled.div``;
 
 const testSignedUpUser = {
   id: "ba8eff6f-102b-4d24-afca-eabce2cff9c8",
@@ -65,13 +70,7 @@ const testSignedUpUser = {
   termsAccepted: true,
 };
 
-export default function ChangePlanContainer({
-  isUpgrade,
-  isAnyPaidPlan,
-}: {
-  isAnyPaidPlan?: boolean;
-  isUpgrade?: boolean;
-}) {
+export default function UnpaidPlanContainer() {
   const { user } = useGlobalContext();
   const [signedUpUser, setSignedUpUser] =
     useState<Auth_User_Signup_Response | null>(user);
@@ -79,21 +78,26 @@ export default function ChangePlanContainer({
   console.log("pickPlanInfo", pickPlanInfo);
   return (
     <StyledUpgradeContainer>
-      <WhyUpgrade />
+      {/* <WhyUpgrade /> */}
+
+      <LimitExceededWarning
+        text="Your plan is on hold due to payment failure. Either the card is expired or insufficient funds. Please update your payment method."
+        isClosable={false}
+      />
 
       {signedUpUser && !pickPlanInfo && (
-        <PickPlanForm
+        <PaymentBillingInfoForm
           signedUpUser={signedUpUser}
           setPickPlanInfo={setPickPlanInfo}
-          isUpgrade={isUpgrade}
           currentPlanId={signedUpUser.plan.id}
-          isAnyPaidPlan={isAnyPaidPlan}
         />
       )}
       {signedUpUser && pickPlanInfo && (
         <PaymentFormContainer
           signedUpUser={signedUpUser}
           pickPlanInfo={pickPlanInfo}
+          hideCancel={true}
+          // updatePaymentInfo={true}
         />
       )}
     </StyledUpgradeContainer>

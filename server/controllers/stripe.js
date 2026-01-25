@@ -63,12 +63,14 @@ exports.createCheckoutSession = async (req, res, next) => {
   console.log("req.body", req.body);
 
   console.log("price", productsPrice[mapPlanToName[req.body.plan]]);
+  const updatePaymentInfo = req.body.updatePaymentInfo;
   if (!productsPrice[mapPlanToName[req.body.plan]]) {
     return res.status(400).json({ message: "Invalid plan" });
   }
   try {
-    const session = await stripe.checkout.sessions.create({
+    const createSessionObj = {
       ui_mode: "custom",
+      payment_method_types: ["card"],
       customer: req.body.customerId,
       line_items: [
         {
@@ -88,7 +90,16 @@ exports.createCheckoutSession = async (req, res, next) => {
         req.body.customerId +
         "&plan=" +
         req.body.plan,
-    });
+    };
+
+    if (updatePaymentInfo) {
+      // needed when updating payment information
+      createSessionObj.payment_intent_data = {
+        setup_future_usage: "on_session",
+      };
+    }
+
+    const session = await stripe.checkout.sessions.create(createSessionObj);
     console.log("session", session);
     return res
       .status(200)

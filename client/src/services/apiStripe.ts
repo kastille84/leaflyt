@@ -67,7 +67,7 @@ export async function updateSubscription({
           subscriptionId: subscriptionId,
           newPlan: plan, // as "2"
         }),
-      }
+      },
     );
     const responseJson = await response.json();
     // update the user's plan in supabase
@@ -89,9 +89,11 @@ export async function updateSubscription({
 export async function createCheckoutSession({
   plan,
   customerId,
+  updatePaymentInfo,
 }: {
   plan: string;
   customerId: string;
+  updatePaymentInfo?: boolean;
 }) {
   try {
     const response = await fetch(
@@ -101,8 +103,8 @@ export async function createCheckoutSession({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ plan, customerId }),
-      }
+        body: JSON.stringify({ plan, customerId, updatePaymentInfo }),
+      },
     );
     const responseJson = await response.json();
     return responseJson; // {clientSecret: ...}

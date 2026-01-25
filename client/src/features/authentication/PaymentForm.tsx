@@ -46,9 +46,11 @@ const StyledFormButtonContainer = styled.div`
 export default function PaymentForm({
   signedUpUser,
   pickPlanInfo,
+  hideCancel,
 }: {
   signedUpUser: Auth_User_Signup_Response | null;
   pickPlanInfo: PickPlanInfo;
+  hideCancel?: boolean;
 }) {
   const {
     setShowCancelSubscriptionModal,
@@ -94,7 +96,7 @@ export default function PaymentForm({
 
   switch (checkoutState.type) {
     case "loading":
-      return <div>Loading ...</div>;
+      return <OverlaySpinner message="Loading Payment Form" />;
     case "error":
       return <div>Error: {checkoutState.error.message}</div>;
     case "success":
@@ -120,9 +122,15 @@ export default function PaymentForm({
             <Button type="button" onClick={handlePay}>
               Pay {checkoutState.checkout.total.total.amount}
             </Button>
-            <Button type="button" variation="secondary" onClick={handleCancel}>
-              Cancel
-            </Button>
+            {!hideCancel && (
+              <Button
+                type="button"
+                variation="secondary"
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
+            )}
           </StyledFormButtonContainer>
           {showSpinner && <OverlaySpinner message={"Paying..."} />}
         </StyledForm>

@@ -15,6 +15,7 @@ import AssestSelectionContainer from "../../features/assets/AssetSelection/Asses
 import { AssetSelectionContextProvider } from "../../context/AssetSelectionContext";
 import EditAccountInfo from "../../features/account/EditAccountInfo";
 import ChangePlanContainer from "../../features/authentication/ChangePlanContainer";
+import UnpaidPlanContainer from "../../features/authentication/UnpaidPlanContainer";
 
 const StyledCloseContainer = styled.div`
   display: flex;
@@ -52,7 +53,7 @@ export default function SlideInBottom() {
       case "changePlan":
         return <ChangePlanContainer isAnyPaidPlan />;
       case "unpaid":
-        return <p>Unpaid</p>;
+        return <UnpaidPlanContainer />;
       case "carousel":
         return <FullCarouselContainer />;
       case "flyerDesigner":
