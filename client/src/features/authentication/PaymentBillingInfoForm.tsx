@@ -194,7 +194,7 @@ export default function PaymentBillingInfoForm({
   return (
     <StyledFormContainer>
       <StyledHeading as="h2">
-        Next, Provide Your Billing Information.
+        Plese Provide Your Billing Information.
       </StyledHeading>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         {submitError && (

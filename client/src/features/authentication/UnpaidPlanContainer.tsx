@@ -27,18 +27,22 @@ const StyledUpgradeContainer = styled.div`
   height: 100%;
   margin: auto;
   /* background: red; */
-  display: grid;
-  grid-template-columns: 1fr;
+  /* display: grid;
+  grid-template-columns: 1fr; */
+  display: flex;
+  flex-direction: column;
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
   @media (max-width: 75em) {
     width: 90%;
-    grid-template-columns: 1fr;
+    /* grid-template-columns: 1fr; */
   }
 `;
 
-const WarningHolder = styled.div``;
+const WarningHolder = styled.div`
+  max-height: 100px;
+`;
 
 const testSignedUpUser = {
   id: "ba8eff6f-102b-4d24-afca-eabce2cff9c8",
@@ -79,11 +83,19 @@ export default function UnpaidPlanContainer() {
   return (
     <StyledUpgradeContainer>
       {/* <WhyUpgrade /> */}
-
-      <LimitExceededWarning
-        text="Your plan is on hold due to payment failure. Either the card is expired or insufficient funds. Please update your payment method."
-        isClosable={false}
-      />
+      <WarningHolder>
+        <LimitExceededWarning
+          // text="Your plan is on hold due to payment failure. Either the card is expired, frozen, or declined for some other reason. Please update your billing info and payment method."
+          isClosable={false}
+        >
+          <p>
+            Your plan is on hold due to payment failure. <br />
+            Either the card is expired, frozen, or declined for some other
+            reason. <br />
+            Please update your billing info and payment method.
+          </p>
+        </LimitExceededWarning>
+      </WarningHolder>
 
       {signedUpUser && !pickPlanInfo && (
         <PaymentBillingInfoForm

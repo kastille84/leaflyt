@@ -18,11 +18,13 @@ const StyledLimitExceededWarning = styled.div`
   }
 `;
 export default function LimitExceededWarning({
-  text,
+  text = "",
   isClosable = true,
+  children,
 }: {
-  text: string;
+  text?: string;
   isClosable?: boolean;
+  children?: React.ReactNode;
 }) {
   const [showContent, setShowContent] = useState(true);
 
@@ -33,7 +35,8 @@ export default function LimitExceededWarning({
   if (!showContent) return null;
   return (
     <StyledLimitExceededWarning>
-      <p>{text}</p> {isClosable && <HiOutlineXMark onClick={handleClick} />}
+      {children ? children : <p>{text}</p>}{" "}
+      {isClosable && <HiOutlineXMark onClick={handleClick} />}
     </StyledLimitExceededWarning>
   );
 }
