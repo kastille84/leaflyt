@@ -38,6 +38,7 @@ export default function FlaggedModal() {
     setSelectedFlyer,
     setShowFlaggedModal,
     showFlaggedModal,
+    selectedPlace,
   } = useGlobalContext();
 
   const { id } = useParams();
@@ -87,6 +88,7 @@ export default function FlaggedModal() {
         flyer: selectedFlyer!,
         reason: data.reason,
         userId: user ? (user!.id as string) : null,
+        placeName: selectedPlace!.displayName.text,
       },
       {
         onSuccess: () => {
@@ -104,7 +106,7 @@ export default function FlaggedModal() {
           toast.error("Flyer flagging failed! Try again.");
           setShowSpinner(false);
         },
-      }
+      },
     );
   }
 

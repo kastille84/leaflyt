@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const moment = require("moment");
 const { supabase } = require("../../supabase");
+const uuid = require("uuid");
 
 const { handleCatchError } = require("../utility/error");
 
@@ -33,4 +34,23 @@ exports.signup = async (req, res, next) => {
   }
 };
 
+exports.deleteUser = async (req, res, next) => {
+  // const userId = req.headers.userid;
+  const token = req.headers.token;
+  try {
+    const response = await fetch(process.env.SUPABASE_DB_DELETE_USER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const jsonRespone = await response.json();
+
+    return res.status(200).json({ data: jsonRespone });
+  } catch (err) {
+    handleCatchError(next, err);
+  }
+};
 exports.login = async (req, res, next) => {};

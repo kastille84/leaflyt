@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 
 import "./index.css";
 import App from "./App.tsx";
+import { keysBasedOnEnv } from "./utils/GeneralUtils.tsx";
 
 // Import your Publishable Key
 // const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -13,13 +14,12 @@ import App from "./App.tsx";
 //   throw new Error("Missing Publishable Key");
 // }
 
-const API_KEY = import.meta.env.VITE_GOOGLE_MAP_API_KEY!;
+const API_KEY = keysBasedOnEnv().google.mapsApiKey;
 createRoot(document.getElementById("root")!).render(
   // <StrictMode>
-  // <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
   <APIProvider apiKey={API_KEY} libraries={["places"]}>
     <App />
   </APIProvider>
-  // {/* </ClerkProvider> */}
+
   // </StrictMode>,
 );

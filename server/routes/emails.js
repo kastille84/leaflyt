@@ -6,5 +6,10 @@ const router = express.Router();
 
 // router.post("/test", emailsController.testEmail);
 router.post("/send-welcome-email", emailsController.sendWelcomeEmail);
+router.post("/send-deleted-user-email", emailsController.sendDeletedUserEmail);
+router.post(
+  "/send-flagged-flyer-email",
+  emailsController.sendFlaggedFlyerEmail,
+);
 
 module.exports = router;

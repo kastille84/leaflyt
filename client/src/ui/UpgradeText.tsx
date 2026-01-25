@@ -14,9 +14,11 @@ const StyledLearnMore = styled.small`
 export default function UpgradeText({
   text,
   type = "upgrade",
+  btnText = "Learn more",
 }: {
   text?: string;
-  type?: "upgrade" | "signup";
+  type?: "upgrade" | "signup" | "changePlan";
+  btnText?: string;
 }) {
   const displayText = text || "Upgrade to get more features";
 
@@ -31,7 +33,7 @@ export default function UpgradeText({
       <p>
         {displayText}{" "}
         <StyledLearnMore onClick={handleLearnMore}>
-          Learn more &gt;
+          {btnText} &gt;
         </StyledLearnMore>
       </p>
     </StyledUpgradeTextContainer>

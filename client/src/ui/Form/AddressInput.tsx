@@ -12,9 +12,11 @@ import Input from "../Input";
 import styled from "styled-components";
 import FormControl from "./FormControl";
 import FieldInputError from "./FieldInputError";
-import { accessNestedProperty } from "../../utils/GeneralUtils";
+import { accessNestedProperty, keysBasedOnEnv } from "../../utils/GeneralUtils";
+import OverlaySpinner from "../OverlaySpinner";
+import Spinner from "../Spinner";
 
-const key = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
+const key = keysBasedOnEnv().google.mapsApiKey;
 
 const StyledLabel = styled.label`
   font-weight: 600;
@@ -42,6 +44,16 @@ const StyledAddressResultContainer = styled.ul`
   border-radius: 0 0 4px 4px;
   overflow: hidden;
   list-style: none;
+
+  &::after {
+    content: "Powered by Google Maps";
+    font-size: 1rem;
+    font-weight: 600;
+    position: absolute;
+    bottom: 0.2rem;
+    right: 1.2rem;
+    color: var(--color-brand-500);
+  }
 `;
 
 const StyledAddressResult = styled.li`
@@ -61,6 +73,7 @@ export default function AddressInput({
   shouldSaveAddressObj = false,
   disabled = false,
   cantUpdate = false,
+  fieldName = "Address",
 }: {
   register: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
@@ -71,6 +84,7 @@ export default function AddressInput({
   shouldSaveAddressObj?: boolean;
   disabled?: boolean;
   cantUpdate?: boolean;
+  fieldName?: string;
 }) {
   const [addressSelected, setAddressSelected] = useState<boolean>(false);
   if (shouldSaveAddressObj) {
@@ -84,7 +98,7 @@ export default function AddressInput({
     placesService,
     placePredictions,
     getPlacePredictions,
-    // isPlacePredictionsLoading,
+    isPlacePredictionsLoading,
   } = usePlacesService({
     apiKey: key,
     debounce: 800,
@@ -98,7 +112,7 @@ export default function AddressInput({
   return (
     <FormControl testId="address-container">
       <StyledLabel htmlFor="address" className={`${errorObj && "error"}`}>
-        Address
+        {fieldName}
       </StyledLabel>
       <StyledInputContainer>
         <Input
@@ -117,6 +131,14 @@ export default function AddressInput({
           hasError={Boolean(errorObj)}
           disabled={disabled}
         />
+        {isPlacePredictionsLoading && (
+          <StyledAddressResultContainer>
+            <StyledAddressResult>
+              {/* <OverlaySpinner message="Getting normalized addresses..." /> */}
+              <Spinner />
+            </StyledAddressResult>
+          </StyledAddressResultContainer>
+        )}
         {placePredictions.length > 0 && addressSelected === false && (
           <StyledAddressResultContainer data-testid="address-results">
             {placePredictions.map((placePrediction, idx) => (

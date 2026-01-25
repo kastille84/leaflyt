@@ -1,4 +1,6 @@
-const apiKey = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
+import { keysBasedOnEnv } from "../utils/GeneralUtils";
+
+const apiKey = keysBasedOnEnv().google.mapsApiKey;
 
 export const getPlaceDetails = async (placeId: string) => {
   // https://developers.google.com/maps/documentation/places/web-service/place-details#introduction

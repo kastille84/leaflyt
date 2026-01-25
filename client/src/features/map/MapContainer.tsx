@@ -4,7 +4,7 @@ import { Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 import toast from "react-hot-toast";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 
-const myAreaMapId = import.meta.env.VITE_GOOGLE_MAP_MY_AREA_MAP_ID;
+const myAreaMapId = keysBasedOnEnv().google.mapId;
 
 import { useGlobalContext } from "../../context/GlobalContext";
 import MyRectangle from "./MyRectangle";
@@ -14,6 +14,7 @@ import { getPlaceDetails } from "../../services/googleMaps";
 import { useNavigate } from "react-router-dom";
 import MarkerWithInfoWindow from "./MarkerWithInfoWindow";
 import { useResponsiveWidth } from "../../hooks/useResponsiveWidth";
+import { keysBasedOnEnv } from "../../utils/GeneralUtils";
 
 const StyledMapContainer = styled.div`
   width: 100%;

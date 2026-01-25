@@ -162,10 +162,19 @@ export default function Landing() {
             console.log("response", response);
             // set user in global context
             setUser(response.data);
+            // a purposefully thrown error (i.e. user hasn't paid)
+            if (response.error) {
+              throw new Error((response.error as any).message);
+            }
             navigate("/dashboard/home");
           },
           onError: (error) => {
             console.log("error", error);
+            if (error.message === "unpaid") {
+              setShowLoginModal(false);
+              setIsOpenBottomSlideIn(true);
+              setBottomSlideInType("unpaid");
+            }
           },
         });
       }

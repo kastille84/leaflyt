@@ -17,4 +17,6 @@ router.post(
   authController.login
 );
 
+router.delete("/delete-user", authController.deleteUser);
+
 module.exports = router;

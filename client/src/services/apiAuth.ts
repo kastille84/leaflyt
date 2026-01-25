@@ -12,14 +12,6 @@ export const loginUser = async (email: string, password: string) => {
       throw error;
     }
 
-    // store the access token in local storage
-    // localStorage.setItem(
-    //   "access_token",
-    //   JSON.stringify(data.session?.access_token)
-    // );
-    // supabase.auth.getUser(data.session?.access_token).then((user) => {
-    //   console.log("user", user);
-    // });
     // get userProfile from supabase
     const { data: userProfile, error: userProfileError } = await supabase
       .from("profiles")
@@ -29,14 +21,49 @@ export const loginUser = async (email: string, password: string) => {
         templates(*, user(*)),
         plan(*),
         assets(*),
-        saved_flyers(*, flyer(*, place(*), user(*)))
-        `
+        saved_flyers(*, flyer(*, place(*), user(*))),
+        customers(*)
+        `,
       )
       .eq("email", email)
       .single();
     console.log("userProfile", userProfile);
     if (userProfileError) {
       throw userProfileError;
+    }
+    const customers = userProfile?.customers ?? [];
+    // check if user has a plan && it's unpaid
+    if (customers.length > 0 && customers[0].subscriptionStatus == "unpaid") {
+      // await supabase.auth.signOut();
+
+      return {
+        data: userProfile,
+        error: {
+          message: "unpaid",
+        },
+      };
+    }
+    // check if current plan is the same as the one in supabase
+    const currPlan = userProfile?.plan ?? {};
+    if (
+      customers.length > 0 &&
+      customers[0].productId !== currPlan.stripeProductId
+    ) {
+      // get new plan from supabase
+      const { data: newPlan } = await supabase
+        .from("plans")
+        .select("*")
+        .eq("stripeProductId", customers[0].productId)
+        .single();
+      // set new plan in supabase
+      const { data: updatedUserProfile, error: updatedUserProfileError } =
+        await supabase
+          .from("profiles")
+          .update({ plan: newPlan.id })
+          .eq("id", userProfile.id);
+
+      // update userProfile's plan
+      userProfile.plan = newPlan;
     }
     return {
       data: userProfile,
@@ -47,6 +74,25 @@ export const loginUser = async (email: string, password: string) => {
   }
 };
 
+export const deleteUser = async () => {
+  // const userIdFromSupabase = (await supabase.auth.getUser()).data.user?.id;
+  try {
+    const token = (await supabase.auth.getSession()).data.session?.access_token;
+    const data = await fetch(`${getBaseUrl()}/api/auth/delete-user`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        token: token!,
+        // userid: JSON.stringify(userIdFromSupabase),
+      },
+    });
+
+    await supabase.auth.signOut();
+    return data;
+  } catch (error) {
+    return { data: null, error };
+  }
+};
 export const loginUserWithAccessToken = async () => {
   try {
     const { data, error } = await supabase.auth.getUser();
@@ -61,14 +107,28 @@ export const loginUserWithAccessToken = async () => {
         templates(*, user(*)),
         plan(*),
         assets(*),
-        saved_flyers(*, flyer(*, place(*), user(*)))
-        `
+        saved_flyers(*, flyer(*, place(*), user(*))),
+        customers(*)
+        `,
       )
       .eq("email", data.user.email)
       .single();
-    console.log("userProfile", userProfile);
+
+    if (userProfile) console.log("userProfile", userProfile);
     if (userProfileError) {
       throw new Error("Could not fetch user profile");
+    }
+    const customers = userProfile?.customers ?? [];
+    // check if user has a plan && it's unpaid
+    if (customers.length > 0 && customers[0].subscriptionStatus == "unpaid") {
+      // await supabase.auth.signOut();
+
+      return {
+        data: userProfile,
+        error: {
+          message: "unpaid",
+        },
+      };
     }
     return {
       data: userProfile,
@@ -208,7 +268,7 @@ export const sendWelcomeEmail = async ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, typeOfUser, name, firstName, lastName }),
-      }
+      },
     );
     const result = await response.json();
     console.log("result", result);
@@ -220,42 +280,36 @@ export const sendWelcomeEmail = async ({
     return { data: null, error };
   }
 };
-// export const getUser = async () => {
-//   try {
-//     const { data, error } = await supabase.auth.getUser();
-//     if (error) {
-//       throw error;
-//     }
-//     const { data: userProfile, error: userProfileError } = await supabase
-//       .from("profiles")
-//       .select("*")
-//       .eq("email", data.user.email)
-//       .single();
-//     if (userProfileError) {
-//       throw new Error("Could not fetch user profile");
-//     }
-//     return {
-//       data: userProfile,
-//       error: null,
-//     };
-//   } catch (error) {
-//     return { data: null, error };
-//   }
-// };
-// export const getUserWithFlyersAndTemplates = async () => {
-//     const { data, error } = await supabase
-//     .from('users') // Start by querying the users table
-//     .select(`
-//       *, // Select all columns from the user record
-//       flyers ( * ), // Select all columns from the related flyers
-//       templates ( * ) // Select all columns from the related templates
-//     `)
-//     .eq('id', userId); // Filter for the specific user ID
 
-//   if (error) {
-//     console.error('Error fetching user data:', error.message);
-//     return null;
-//   }
-
-//   return data; // 'data' will be an array containing the user record(s) with embedded flyers and templates
-// };
+export const sendDeletedUserEmail = async ({
+  email,
+  name,
+  firstName,
+  lastName,
+}: {
+  email: string;
+  name: string;
+  firstName: string;
+  lastName: string;
+}) => {
+  try {
+    const response = await fetch(
+      `${getBaseUrl()}/api/email/send-deleted-user-email`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, name, firstName, lastName }),
+      },
+    );
+    const result = await response.json();
+    console.log("result", result);
+    if (result.error) {
+      throw result.error;
+    }
+    return result;
+  } catch (error) {
+    return { data: null, error };
+  }
+};

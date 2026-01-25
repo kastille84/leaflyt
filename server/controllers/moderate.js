@@ -30,17 +30,42 @@ exports.postModerate = async (req, res, next) => {
   console.log("fileUrls", fileUrls);
   let response;
 
+  const filePromises = [];
   try {
-    response = await openai.moderations.create({
+    const response = await openai.moderations.create({
       model: "omni-moderation-latest",
       input: [
         {
           type: "text",
           text: message,
         },
-        ...fileUrls,
+        ...fileUrls[0],
       ],
     });
+
+    // filePromises.push(
+    //   openai.moderations.create({
+    //     model: "omni-moderation-latest",
+    //     input: [
+    //       {
+    //         type: "text",
+    //         text: message,
+    //       },
+    //       ...fileUrls,
+    //     ],
+    //   })
+    // );
+
+    // fileUrls.forEach((file) => {
+    //   filePromises.push(
+    //     openai.moderations.create({
+    //       model: "omni-moderation-latest",
+    //       input: [...file],
+    //     })
+    //   );
+    // });
+
+    // const responses = await Promise.all(filePromises);
 
     return res.status(200).json({ data: response });
   } catch (err) {

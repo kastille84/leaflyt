@@ -35,11 +35,13 @@ export default function useCreateUnregisteredFlyer() {
       flyer,
       reason,
       userId,
+      placeName,
     }: {
       flyer: DB_Flyers_Response;
       reason: string;
       userId: string | null;
-    }) => flagFlyer({ flyer, reason, userId }),
+      placeName: string;
+    }) => flagFlyer({ flyer, reason, placeName, userId }),
   });
   return {
     createFlyer,

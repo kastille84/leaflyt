@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Heading from "../ui/Heading";
 import AccountInfo from "../features/account/AccountInfo";
 import MyPlan from "../features/account/MyPlan";
+import useGetUserLimits from "../hooks/useGetUserLimits";
+import MyBilling from "../features/account/MyBilling";
 
 const StyledMyAccountPage = styled.div`
   /* height: 100%; */
@@ -50,6 +52,7 @@ export default function MyAccount() {
   const [activeTab, setActiveTab] = useState<"account" | "plan" | "billing">(
     "account"
   );
+  const { paid } = useGetUserLimits();
 
   return (
     <StyledMyAccountPage>
@@ -70,20 +73,20 @@ export default function MyAccount() {
           >
             Plan
           </Pill>
-          <Pill
-            active={activeTab === "billing"}
-            onClick={() => setActiveTab("billing")}
-          >
-            Billing
-          </Pill>
+          {paid && (
+            <Pill
+              active={activeTab === "billing"}
+              onClick={() => setActiveTab("billing")}
+            >
+              Billing
+            </Pill>
+          )}
         </StyledActionPillsContainer>
       </StyledHeadingContainer>
       <div>
         {activeTab === "account" && <AccountInfo />}
         {activeTab === "plan" && <MyPlan />}
-        {activeTab === "billing" && (
-          <p style={{ textAlign: "center" }}>Billing Coming Soon.</p>
-        )}
+        {activeTab === "billing" && <MyBilling />}
       </div>
     </StyledMyAccountPage>
   );

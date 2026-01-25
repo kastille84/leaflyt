@@ -4,6 +4,7 @@ import { renderHook, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { APIProvider } from "@vis.gl/react-google-maps";
+import { keysBasedOnEnv } from "../src/utils/GeneralUtils";
 
 const QueryClientProviderWrapper = () => {
   const queryClient = new QueryClient({
@@ -41,7 +42,7 @@ const QueryClientProviderWrapperWithBrowserRouterAndGoogle = () => {
   return ({ children: children }: { children: React.ReactNode }) => {
     return (
       <APIProvider
-        apiKey={import.meta.env.VITE_GOOGLE_MAP_API_KEY!}
+        apiKey={keysBasedOnEnv().google.mapsApiKey}
         libraries={["places"]}
       >
         {QueryClientProviderWrapperWithBrowserRouter()({ children })}

@@ -4,8 +4,11 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { Toaster } from "react-hot-toast";
 
 import GlobalStyles from "./styles/GlobalStyles";
-import Landing from "./pages/Landing";
 import { GlobalContextProvider } from "./context/GlobalContext";
+import { StripeProvider } from "./context/StripeContext";
+
+// pages
+import Landing from "./pages/Landing";
 import Board from "./features/board/Board";
 import MainLayout from "./pages/MainLayout";
 import FlyerSlideIn from "./ui/Flyer/FlyerSlideIn";
@@ -21,6 +24,10 @@ import MyAccount from "./pages/MyAccount";
 import ForgotPassword from "./features/authentication/ForgotPassword";
 import ResetPassword from "./features/authentication/ResetPassword";
 import TermsModal from "./ui/Modals/TermsModal";
+import PlansModal from "./ui/Modals/PlansModal";
+import CancelSubscriptionModal from "./ui/Modals/CancelSubscriptionModal";
+import DeleteAccountModal from "./ui/Modals/DeleteAccountModal";
+import { keysBasedOnEnv } from "./utils/GeneralUtils";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,54 +49,61 @@ function App() {
         ></ReactQueryDevtools>
         <GlobalStyles />
         <GlobalContextProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/dashboard/" element={<MainLayout />}>
-                <Route path="home" element={<Home />} />
-                <Route path="board/:id" element={<Board />} />
-                <Route path="my-area" element={<MyArea />} />
-                <Route path="templates" element={<MyTemplates />} />
-                <Route path="saved-flyers" element={<SavedFlyers />} />
-                <Route path="assets" element={<MyAssets />} />
-                <Route path="statistics" element={<Statistics />} />
-                <Route path="account" element={<MyAccount />} />
-                <Route path="forgot-password" element={<ForgotPassword />} />
-                <Route path="update-password" element={<ResetPassword />} />
-              </Route>
+          <StripeProvider
+            publishableKey={keysBasedOnEnv().stripe.publishableKey}
+          >
+            <BrowserRouter>
+              <Routes>
+                <Route path="/dashboard/" element={<MainLayout />}>
+                  <Route path="home" element={<Home />} />
+                  <Route path="board/:id" element={<Board />} />
+                  <Route path="my-area" element={<MyArea />} />
+                  <Route path="templates" element={<MyTemplates />} />
+                  <Route path="saved-flyers" element={<SavedFlyers />} />
+                  <Route path="assets" element={<MyAssets />} />
+                  <Route path="statistics" element={<Statistics />} />
+                  <Route path="account" element={<MyAccount />} />
+                  <Route path="forgot-password" element={<ForgotPassword />} />
+                  <Route path="update-password" element={<ResetPassword />} />
+                </Route>
 
-              <Route path="/" index element={<Landing />} />
-              <Route path="*" element={<div>Page not found</div>} />
-            </Routes>
-            <LoginModal />
-            <TermsModal />
-            <FlyerSlideIn />
-            <SlideInBottom />
-          </BrowserRouter>
-          <Toaster
-            position="top-center"
-            gutter={12}
-            containerStyle={{ margin: "8px" }}
-            toastOptions={{
-              success: {
-                duration: 3000,
-              },
-              error: {
-                duration: 6000,
-              },
-              style: {
-                fontSize: "16px",
-                maxWidth: "500px",
-                padding: "16px 24px",
-                backgroundColor: "var(--color-grey-50)",
-                color: "var(--color-grey-700)",
-                opacity: 0,
-              },
-              ariaProps: {
-                role: "alert",
-                "aria-live": "polite",
-              },
-            }}
-          />
+                <Route path="/" index element={<Landing />} />
+                <Route path="*" element={<div>Page not found</div>} />
+              </Routes>
+              <LoginModal />
+              <TermsModal />
+              <PlansModal />
+              <CancelSubscriptionModal />
+              <DeleteAccountModal />
+              <FlyerSlideIn />
+              <SlideInBottom />
+            </BrowserRouter>
+            <Toaster
+              position="top-center"
+              gutter={12}
+              containerStyle={{ margin: "8px" }}
+              toastOptions={{
+                success: {
+                  duration: 3000,
+                },
+                error: {
+                  duration: 6000,
+                },
+                style: {
+                  fontSize: "16px",
+                  maxWidth: "500px",
+                  padding: "16px 24px",
+                  backgroundColor: "var(--color-grey-50)",
+                  color: "var(--color-grey-700)",
+                  opacity: 0,
+                },
+                ariaProps: {
+                  role: "alert",
+                  "aria-live": "polite",
+                },
+              }}
+            />
+          </StripeProvider>
         </GlobalContextProvider>
       </QueryClientProvider>
     </div>

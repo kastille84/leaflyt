@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
+import { get, useForm } from "react-hook-form";
 
 import Heading from "../../ui/Heading";
 import FormControlRow from "../../ui/Form/FormControlRow";
@@ -21,16 +21,19 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import { SignupSubmitData } from "../../interfaces/Auth_User";
 import useSignup from "./useSignup";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const StyledFormContainer = styled.div`
   display: flex;
   flex-direction: column;
   border: 1px solid var(--color-brand-100);
   padding: 2.4rem 0 2.4rem 2.4rem;
+  height: 100%;
+  overflow-y: auto;
 
   @media (max-width: 75em) {
     padding: 4rem;
+    /* height: 80%; */
   }
 `;
 
@@ -39,7 +42,7 @@ const StyledForm = styled.form`
   flex-direction: column;
   /* gap: 2.4rem; */
   height: 70rem;
-  padding-top: 2.4rem;
+  /* padding-top: 2.4rem; */
   padding-right: 2.4rem;
   overflow-y: auto;
 
@@ -87,7 +90,19 @@ const StyledCheckboxLabel = styled.label`
   }
 `;
 
-export default function SignupForm() {
+const StyledPlanSection = styled.div`
+  margin-top: 2.4rem;
+  margin-bottom: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+export default function SignupForm({
+  setSignedUpUser,
+}: {
+  setSignedUpUser: (user: any) => void;
+}) {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
@@ -114,6 +129,7 @@ export default function SignupForm() {
 
   const typeOfUserWatch = watch("typeOfUser");
   const typeOfUser = getValues("typeOfUser");
+  const planWatch = watch("plan");
 
   console.log("getValues", getValues());
   console.log("errors", errors);
@@ -122,8 +138,8 @@ export default function SignupForm() {
     if (typeOfUser) {
       unregister(
         ["individual", "business", "organization"].filter(
-          (item) => item !== typeOfUser
-        )
+          (item) => item !== typeOfUser,
+        ),
       );
     }
   }, [typeOfUser]);
@@ -153,14 +169,21 @@ export default function SignupForm() {
           throw response.error;
         }
         /* v8 ignore end */
-        handleClose();
+        // handleClose();
         toast.success(
-          `Signup successful! You must verify your email: ${response.data.email} before logging in. Make sure to check your SPAM folder.`,
+          `Signup successful! \nImportant: \nYou must verify your email: ${response.data.email} before logging in. \nMake sure to check your SPAM folder.`,
           {
-            duration: 8000,
-          }
+            duration: 10000,
+          },
         );
+        // toast.custom(
+        //   `Signup successful! You must verify your email: ${response.data.email} before logging in. Make sure to check your SPAM folder.`,
+        //   {
+        //     duration: 10000,
+        //   }
+        // );
         setShowSpinner(false);
+        setSignedUpUser(response.data);
       },
       onError: (error) => {
         console.log("onError", error.message);
@@ -223,6 +246,7 @@ export default function SignupForm() {
                 errors={errors}
                 locationAdvisory
                 shouldSaveAddressObj
+                fieldName="Address (Your Home Base / Headquarters)"
               />
             </FormControlRow>
             <FormControlRow>
@@ -253,6 +277,7 @@ export default function SignupForm() {
                 errors={errors}
                 locationAdvisory
                 shouldSaveAddressObj
+                fieldName="Address (Your Home Base / Headquarters)"
               />
             </FormControlRow>
             <FormControlRow>
@@ -287,6 +312,7 @@ export default function SignupForm() {
                 errors={errors}
                 locationAdvisory
                 shouldSaveAddressObj
+                fieldName="Address (Your Home Base / Headquarters)"
               />
             </FormControlRow>
             <FormControlRow>
@@ -303,6 +329,7 @@ export default function SignupForm() {
             </FormControlRow>
           </>
         )}
+
         {typeOfUserWatch && (
           <>
             <Heading as="h3">Credentials</Heading>
@@ -319,55 +346,57 @@ export default function SignupForm() {
                 shouldShow
               />
             </FormControlRow>
-            <div>
-              <StyledCheckboxContainer>
-                <StyledCheckbox
-                  id="terms"
-                  type="checkbox"
-                  {...register("terms", { required: true })}
-                />
-                <StyledCheckboxLabel htmlFor="terms">
-                  I agree to the{" "}
-                  <Link
-                    to="/terms"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleLinkClick("terms");
-                    }}
-                  >
-                    Terms and Conditions
-                  </Link>
-                  ,{" "}
-                  <Link
-                    to="/privacy"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleLinkClick("privacy");
-                    }}
-                  >
-                    Privacy Policy
-                  </Link>
-                  ,{" & "}
-                  <Link
-                    to="/guidelines"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleLinkClick("guidelines");
-                    }}
-                  >
-                    Community Guidelines
-                  </Link>
-                </StyledCheckboxLabel>
-              </StyledCheckboxContainer>
-            </div>
-            <StyledFormButtonContainer data-testid="form-button-container">
-              <Button type="submit">Sign up</Button>
-              <Button type="button" variation="secondary" onClick={handleClose}>
-                Cancel
-              </Button>
-            </StyledFormButtonContainer>
           </>
         )}
+        {typeOfUserWatch && (
+          <div>
+            <StyledCheckboxContainer>
+              <StyledCheckbox
+                id="terms"
+                type="checkbox"
+                {...register("terms", { required: true })}
+              />
+              <StyledCheckboxLabel htmlFor="terms">
+                I agree to the{" "}
+                <Link
+                  to="/terms"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleLinkClick("terms");
+                  }}
+                >
+                  Terms and Conditions
+                </Link>
+                ,{" "}
+                <Link
+                  to="/privacy"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleLinkClick("privacy");
+                  }}
+                >
+                  Privacy Policy
+                </Link>
+                ,{" & "}
+                <Link
+                  to="/guidelines"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleLinkClick("guidelines");
+                  }}
+                >
+                  Community Guidelines
+                </Link>
+              </StyledCheckboxLabel>
+            </StyledCheckboxContainer>
+          </div>
+        )}
+        <StyledFormButtonContainer data-testid="form-button-container">
+          {typeOfUserWatch && <Button type="submit">Sign up</Button>}
+          <Button type="button" variation="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+        </StyledFormButtonContainer>
         {/* </StyledContentContainer> */}
       </StyledForm>
       {showSpinner && <OverlaySpinner message={"Creating your account..."} />}

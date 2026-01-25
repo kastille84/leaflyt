@@ -2,12 +2,17 @@ import styled from "styled-components";
 
 import Heading from "../../ui/Heading";
 import { useGlobalContext } from "../../context/GlobalContext";
+import UpgradeText from "../../ui/UpgradeText";
+import useGetUserLimits from "../../hooks/useGetUserLimits";
 
 const MyPlanContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
 
+  & h3 {
+    color: var(--color-brand-600);
+  }
   @media (max-width: 75em) {
     /* flex-direction: column;
   align-items: center; */
@@ -77,9 +82,19 @@ const PlanDatum = styled.div`
 
 export default function MyPlan() {
   const { user } = useGlobalContext();
+  const { canUpgrade } = useGetUserLimits();
   console.log("plan", user?.plan);
   return (
     <MyPlanContainer>
+      {canUpgrade && (
+        <small>
+          <UpgradeText
+            text="Want more capabilities?"
+            type="upgrade"
+            btnText="Upgrade"
+          ></UpgradeText>
+        </small>
+      )}
       <Heading as={"h3"}>{user?.plan.name} Plan</Heading>
       <p>{user?.plan.subtitle}</p>
       <StyledPlanDatumContainer>
@@ -137,7 +152,7 @@ export default function MyPlan() {
         <PlanDatum>
           <span>Lifespan</span>
           <span>
-            {user?.plan.lifespan} wks per flyer <br />
+            Up to {user?.plan.lifespan} wks per flyer <br />
             <small>
               After this period, the flyer will be deleted from the boards
             </small>
@@ -147,6 +162,7 @@ export default function MyPlan() {
           <span>Analytics</span> <span>{user?.plan.hasAnalytics}</span>
         </PlanDatum> */}
       </StyledPlanDatumContainer>
+      {/* <PlanItem plan={user!.plan!} selected={true} action={() => {}} /> */}
     </MyPlanContainer>
   );
 }

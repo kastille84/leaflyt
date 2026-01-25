@@ -14,6 +14,8 @@ import TemplateSelectionContainer from "../../features/template/TemplateSelectio
 import AssestSelectionContainer from "../../features/assets/AssetSelection/AssestSelectionContainer";
 import { AssetSelectionContextProvider } from "../../context/AssetSelectionContext";
 import EditAccountInfo from "../../features/account/EditAccountInfo";
+import ChangePlanContainer from "../../features/authentication/ChangePlanContainer";
+import UnpaidPlanContainer from "../../features/authentication/UnpaidPlanContainer";
 
 const StyledCloseContainer = styled.div`
   display: flex;
@@ -47,7 +49,11 @@ export default function SlideInBottom() {
       case "signup":
         return <SignupContainer />;
       case "upgrade":
-        return <p>Upgrade</p>;
+        return <ChangePlanContainer isUpgrade />;
+      case "changePlan":
+        return <ChangePlanContainer isAnyPaidPlan />;
+      case "unpaid":
+        return <UnpaidPlanContainer />;
       case "carousel":
         return <FullCarouselContainer />;
       case "flyerDesigner":
@@ -82,6 +88,8 @@ export default function SlideInBottom() {
   function shouldShowXMark() {
     switch (bottomSlideInType) {
       case "chooseAssets":
+      case "signup":
+      case "unpaid":
         return false;
       default:
         return true;

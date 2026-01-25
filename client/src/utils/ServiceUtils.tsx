@@ -8,12 +8,12 @@ import {
 
 export const getBaseUrl = () => {
   switch (process.env.NODE_ENV) {
+    case "production":
+      // # TODO: - get correct url
+      return "https://leaflit.us/";
     case "development":
     case "test":
       return "http://localhost:5000";
-    case "production":
-      // # TODO - get correct url
-      return "to-be-determined";
     default:
       return "http://localhost:5000";
   }
@@ -114,3 +114,27 @@ export const getContactInfoFromUser = (user: Auth_User_Profile_Response) => {
   contactInfo.addres = user.address.formatted_address;
   return contactInfo;
 };
+
+/**
+ * Parses a Google Places adr_address string into a structured object.
+ * @param {string} adrString - The HTML-formatted address string.
+ * @returns {object} Structured address object.
+ */
+export function parseAdrAddress(adrString: string) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(adrString, "text/html");
+
+  // Helper to extract text by class name
+  const getVal = (className: string) => {
+    const el = doc.querySelector(`.${className}`);
+    return el ? el.textContent.trim() : "";
+  };
+
+  return {
+    line1: getVal("street-address"),
+    city: getVal("locality"),
+    state: getVal("region"),
+    postal_code: getVal("postal-code"),
+    country: getVal("country-name"),
+  };
+}

@@ -98,7 +98,7 @@ export default function ForgotPassword() {
           console.log("response", response);
           setShowSpinner(false);
           toast.success(
-            "Password reset link sent to your email successfully! Check your inbox.",
+            "Password reset link sent to your email successfully! \nCheck your inbox.",
             {
               duration: 6000,
             }
