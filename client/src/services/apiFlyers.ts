@@ -42,7 +42,7 @@ const getOrCreateBoard = async (selectedPlace: NearbySearchPlaceResult) => {
 
 export const createUnregisteredFlyer = async (
   flyerData: DB_Flyer_Create,
-  selectedPlace: NearbySearchPlaceResult
+  selectedPlace: NearbySearchPlaceResult,
 ) => {
   // make sure content is appropriate
   await moderateContent(flyerData);
@@ -69,7 +69,7 @@ export const createUnregisteredFlyer = async (
 
 export const createRegisteredFlyer = async (
   flyerData: DB_Flyer_Create,
-  selectedPlace: NearbySearchPlaceResult
+  selectedPlace: NearbySearchPlaceResult,
 ) => {
   // make sure content is appropriate
   await moderateContent(flyerData);
@@ -112,7 +112,7 @@ export const createRegisteredFlyer = async (
       await assetUsageByTemplate(
         [],
         flyerData.fileUrlArr || [],
-        newTemplate.id
+        newTemplate.id,
       );
     } catch (error: any) {
       console.error(error);
@@ -169,15 +169,15 @@ export const createRegisteredFlyer = async (
     await assetUsageByFlyer([], flyerData.fileUrlArr || [], newFlyer.id);
 
     // send test email
-    const emailResponse = await fetch(`${getBaseUrl()}/api/email/test`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: "kastille84@gmail.com" }),
-    });
-    const result = await emailResponse.json();
-    console.log("result", result);
+    // const emailResponse = await fetch(`${getBaseUrl()}/api/email/test`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ email: "kastille84@gmail.com" }),
+    // });
+    // const result = await emailResponse.json();
+    // console.log("result", result);
     // return updated user
     return await getLatestUserAfterChanges(newFlyer?.user! as string, "flyer");
   } catch (error: any) {
@@ -188,7 +188,7 @@ export const createRegisteredFlyer = async (
 export const updateRegisteredFlyer = async (
   flyerData: DB_Flyer_Create,
   selectedPlace: NearbySearchPlaceResult,
-  initialAssets: UploadApiResponse[]
+  initialAssets: UploadApiResponse[],
 ) => {
   // make sure content is appropriate
   await moderateContent(flyerData);
@@ -215,12 +215,12 @@ export const updateRegisteredFlyer = async (
     await assetUsageByFlyer(
       initialAssets,
       flyerData.fileUrlArr || [],
-      updatedFlyer.id
+      updatedFlyer.id,
     );
 
     return await getLatestUserAfterChanges(
       updatedFlyer?.user as string,
-      "flyer"
+      "flyer",
     );
   } catch (error: any) {
     console.error(error);
@@ -231,7 +231,7 @@ export const updateRegisteredFlyer = async (
 export const createFlyerFromTemplate = async (
   templateData: DB_Template,
   selectedPlace: NearbySearchPlaceResult,
-  user: Auth_User_Profile_Response
+  user: Auth_User_Profile_Response,
 ) => {
   // make sure content is appropriate
   await moderateContent(templateData);
@@ -320,7 +320,7 @@ export const deleteFlyer = async (flyer: DB_Flyers_Response) => {
     // return updated user
     return await getLatestUserAfterChanges(
       (flyer?.user as Auth_User_Profile_Response).id as string,
-      "flyer"
+      "flyer",
     );
   } catch (error: any) {
     console.error(error);
@@ -330,7 +330,7 @@ export const deleteFlyer = async (flyer: DB_Flyers_Response) => {
 
 export const updateTemplate = async (
   templateData: DB_Template,
-  initialAssets: UploadApiResponse[]
+  initialAssets: UploadApiResponse[],
 ) => {
   // make sure content is appropriate
   await moderateContent(templateData);
@@ -355,7 +355,7 @@ export const updateTemplate = async (
         tags: templateData.tags,
         flyerDesign: templateData.flyerDesign,
         callToAction: templateData.callToAction,
-        fileUrlArr: templateData.fileUrlArr,
+        fileUrlArr: templateData.fileUrlArr || [],
         lifespan: templateData.lifespan,
       })
       .eq("template", templateData.id);
@@ -364,7 +364,7 @@ export const updateTemplate = async (
       console.error(updateFlyersError);
       throw new Error(
         "Error updating all flyers belonging to the template: " +
-          updateFlyersError.message
+          updateFlyersError.message,
       );
     }
 
@@ -372,12 +372,12 @@ export const updateTemplate = async (
     await assetUsageByTemplate(
       initialAssets,
       templateData.fileUrlArr || [],
-      templateData.id as string
+      templateData.id as string,
     );
     // return updated user
     return await getLatestUserAfterChanges(
       templateData?.user! as string,
-      "template"
+      "template",
     );
     // const { data: userData, error: getUserError } = await getUserProfile(
     //   templateData?.user! as number
@@ -413,7 +413,7 @@ export const createTemplate = async (templateData: DB_Template) => {
           tags: templateData.tags,
           flyerDesign: templateData.flyerDesign,
           callToAction: templateData.callToAction,
-          fileUrlArr: templateData.fileUrlArr,
+          fileUrlArr: templateData.fileUrlArr || [],
           hasComments: templateData.hasComments,
           lifespan: templateData.lifespan,
           likes: 0,
@@ -430,12 +430,12 @@ export const createTemplate = async (templateData: DB_Template) => {
     await assetUsageByTemplate(
       [],
       templateData.fileUrlArr || [],
-      newTemplate.id
+      newTemplate.id,
     );
     // return updated user
     return await getLatestUserAfterChanges(
       templateData?.user! as string,
-      "template"
+      "template",
     );
     // const { data: userData, error: getUserError } = await getUserProfile(
     //   templateData?.user! as number
@@ -469,12 +469,12 @@ export const deleteTemplate = async (template: DB_Template) => {
     await assetUsageByTemplate(
       template.fileUrlArr || [],
       [],
-      template.id as string
+      template.id as string,
     );
     // return updated user
     return await getLatestUserAfterChanges(
       (template?.user as Auth_User_Profile_Response)?.id! as string,
-      "template"
+      "template",
     );
   } catch (error: any) {
     console.error(error);
@@ -504,7 +504,7 @@ export const saveFlyer = async (userId: number | string, flyerId: string) => {
 
 export const removeSavedFlyer = async (
   userId: number | string,
-  flyerId: number | string
+  flyerId: number | string,
 ) => {
   try {
     const { error } = await supabase
@@ -525,7 +525,7 @@ export const removeSavedFlyer = async (
 
 export const likeFlyer = async (
   flyer: DB_Flyers_Response,
-  type: "inc" | "dec"
+  type: "inc" | "dec",
 ) => {
   try {
     if (flyer.template) {
@@ -562,26 +562,28 @@ export const flagFlyer = async ({
   flyer,
   reason,
   userId,
+  placeName,
 }: {
   flyer: DB_Flyers_Response;
   reason: string;
   userId: string | null;
+  placeName: string;
 }) => {
   try {
     const { data: updatedFlyer, error } = await supabase
       .from("flyers")
       .update({
-        place: null,
+        place: null, // this removes the flyer from the board
         flagged: true,
         flaggedReason: {
           reason,
           user: userId || "anonymous",
-          place: flyer.place,
+          place: placeName,
           timestamp: new Date().toISOString(),
         },
       })
       .eq("id", flyer.id)
-      .select("*")
+      .select("*, template(*)")
       .single();
 
     if (error) {
@@ -589,7 +591,15 @@ export const flagFlyer = async ({
       throw new Error("Error reporting the flyer: " + error.message);
     }
 
-    //  TODO: EMAIL USER that flyer was reported if user exists
+    if (userId) {
+      const { data: userData, error: getUserError } =
+        await getUserProfile(userId);
+      // TODO: EMAIL USER that flyer was reported
+      await sendFlaggedFlyerEmail({
+        email: userData.email,
+        flyer: updatedFlyer,
+      });
+    }
 
     // return await getLatestUserAfterChanges(
     //   updatedFlyer?.user as string,
@@ -617,7 +627,7 @@ export async function getLatestUserAfterChanges(userId: string, type: string) {
 }
 
 export async function moderateContent(
-  flyerData: DB_Flyer_Create | DB_Template
+  flyerData: DB_Flyer_Create | DB_Template,
 ) {
   const { messageToCheck, fileUrlsToCheck } =
     prepFlyerDataForAppropriateness(flyerData);
@@ -636,7 +646,7 @@ export async function moderateContent(
 
     if (result.data?.results[0].flagged) {
       throw new Error(
-        "Flagged content and/or image. Please abide by our guidelines. If you feel this is an error, please contact us. (support@leaflit.us) "
+        "Flagged content and/or image. Please abide by our guidelines. If you feel this is an error, please contact us. (support@leaflit.us) ",
       );
     }
   } catch (error: any) {
@@ -646,3 +656,32 @@ export async function moderateContent(
 
   return true;
 }
+
+export const sendFlaggedFlyerEmail = async ({
+  email,
+  flyer,
+}: {
+  email: string;
+  flyer: DB_Flyers_Response;
+}) => {
+  try {
+    const response = await fetch(
+      `${getBaseUrl()}/api/email/send-flagged-flyer-email`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, flyer }),
+      },
+    );
+    const result = await response.json();
+    console.log("result", result);
+    if (result.error) {
+      throw result.error;
+    }
+    return result;
+  } catch (error) {
+    return { data: null, error };
+  }
+};
