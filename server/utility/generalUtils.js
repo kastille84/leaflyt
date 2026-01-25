@@ -2,6 +2,7 @@ exports.keysBasedOnEnv = () => {
   if (process.env.NODE_ENV === "production") {
     // PRODUCTION
     return {
+      clientUrl: "https://leaflit.us",
       // Mailgun
       mailgun: {
         apiKey: process.env.MAILGUN_API_KEY,
@@ -27,6 +28,7 @@ exports.keysBasedOnEnv = () => {
   } else {
     // Non-Prod
     return {
+      clientUrl: "https://localhost:5173",
       // Mailgun
       mailgun: {
         apiKey: process.env.MAILGUN_API_KEY,

@@ -17,7 +17,6 @@ export const addAsset = async (asset: any, id: string) => {
 };
 
 export const deleteAssets = async (assets: UploadApiResponse[], id: string) => {
-  // #TODO:
   //  api call to delete assets
   try {
     const response = await fetch(`${getBaseUrl()}/api/assets/delete`, {
@@ -36,7 +35,7 @@ export const deleteAssets = async (assets: UploadApiResponse[], id: string) => {
 
 export const deleteAllAssets = async (
   assetVideos: string[],
-  assetImages: string[]
+  assetImages: string[],
 ) => {
   try {
     const response = await fetch(`${getBaseUrl()}/api/assets/delete-all`, {
@@ -58,7 +57,7 @@ export const deleteAllAssets = async (
 export async function assetUsageByFlyer(
   initialAssets: UploadApiResponse[],
   proposedAssets: UploadApiResponse[],
-  providedFlyerId: string
+  providedFlyerId: string,
 ) {
   // find the delta from the initalAssets and the new Assets and place them in a 'to_delete' and 'to_add' arrays
   const to_delete: UploadApiResponse[] = [];
@@ -89,12 +88,12 @@ export async function assetUsageByFlyer(
         "find_asset_by_public_id",
         {
           asset_public_id: asset.public_id,
-        }
+        },
       );
       if (error) throw error;
       // 1.2 in the assets's 'used_by_flyers' column, remove the flyer_id
       const used_by_flyers = foundAsset.used_by_flyers.filter(
-        (usedByflyerId: string) => usedByflyerId !== providedFlyerId
+        (usedByflyerId: string) => usedByflyerId !== providedFlyerId,
       );
       // 1.3 update the asset
       const { data, error: updateError } = await supabase
@@ -110,7 +109,7 @@ export async function assetUsageByFlyer(
         "find_asset_by_public_id",
         {
           asset_public_id: asset.public_id,
-        }
+        },
       );
       if (error) throw error;
       // 2.2 in the assets's 'used_by_flyers' column, add the flyer_id
@@ -131,7 +130,7 @@ export async function assetUsageByFlyer(
 export async function assetUsageByTemplate(
   initialAssets: UploadApiResponse[],
   proposedAssets: UploadApiResponse[],
-  providedTemplateId: string
+  providedTemplateId: string,
 ) {
   // find the delta from the initalAssets and the new Assets and place them in a 'to_delete' and 'to_add' arrays
   const to_delete: UploadApiResponse[] = [];
@@ -162,12 +161,12 @@ export async function assetUsageByTemplate(
         "find_asset_by_public_id",
         {
           asset_public_id: asset.public_id,
-        }
+        },
       );
       if (error) throw error;
       // 1.2 in the assets's 'used_by_templates' column, remove the flyer_id
       const used_by_templates = foundAsset.used_by_templates.filter(
-        (usedByflyerId: string) => usedByflyerId !== providedTemplateId
+        (usedByflyerId: string) => usedByflyerId !== providedTemplateId,
       );
       // 1.3 update the asset
       const { data, error: updateError } = await supabase
@@ -183,7 +182,7 @@ export async function assetUsageByTemplate(
         "find_asset_by_public_id",
         {
           asset_public_id: asset.public_id,
-        }
+        },
       );
       if (error) throw error;
       // 2.2 in the assets's 'used_by_templates' column, add the flyer_id

@@ -102,7 +102,7 @@ export interface Auth_User_Signup_Response {
       created_at: string;
       updated_at: string;
       email: string;
-    }
+    },
   ];
   created_at: string;
   updated_at: string;
@@ -135,7 +135,7 @@ export interface Auth_User_Profile_Response {
     html_attributions: any[];
   };
   avatar?: string | null;
-  flyers: any[]; // TODO: add flyer type
+  flyers: DB_Flyers_Response[];
   templates: DB_Template[];
   assets: {
     id: number | string;

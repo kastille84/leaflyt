@@ -454,7 +454,6 @@ export const createTemplate = async (templateData: DB_Template) => {
   }
 };
 
-// #TODO: AI generated, must check this code and consider effects on templates?
 export const deleteTemplate = async (template: DB_Template) => {
   try {
     const { error } = await supabase
@@ -594,7 +593,7 @@ export const flagFlyer = async ({
     if (userId) {
       const { data: userData, error: getUserError } =
         await getUserProfile(userId);
-      // TODO: EMAIL USER that flyer was reported
+
       await sendFlaggedFlyerEmail({
         email: userData.email,
         flyer: updatedFlyer,

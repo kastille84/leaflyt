@@ -10,7 +10,7 @@ export const getBaseUrl = () => {
   switch (process.env.NODE_ENV) {
     case "production":
       // # TODO: - get correct url
-      return "https://leaflit.us/";
+      return "https://leaflit.us";
     case "development":
     case "test":
       return "http://localhost:5000";
