@@ -8,6 +8,8 @@ import {
   sendDeletedUserEmail,
 } from "../../services/apiAuth";
 
+import { updateUserProfilePlan } from "../../services/apiUser";
+
 export default function useSignup() {
   const { mutate: signup, error: signupError } = useMutation({
     mutationFn: (prepData: SignupSubmitData) => signupUser(prepData),
@@ -17,6 +19,14 @@ export default function useSignup() {
     useMutation({
       mutationFn: () => deleteUser(),
     });
+
+  const {
+    mutateAsync: updateUserProfilePlanAsyncFn,
+    error: updateUserProfilePlanAsyncFnError,
+  } = useMutation({
+    mutationFn: ({ userId, plan }: { userId: string; plan: number }) =>
+      updateUserProfilePlan(userId, plan),
+  });
 
   const { mutate: sendWelcomeEmailFn, error: sendWelcomeEmailFnError } =
     useMutation({
@@ -72,6 +82,8 @@ export default function useSignup() {
     sendWelcomeEmailFnError,
     deleteUserAsyncFn,
     deleteUserAsyncFnError,
+    updateUserProfilePlanAsyncFn,
+    updateUserProfilePlanAsyncFnError,
     sendDeletedUserEmailAsyncFn,
     sendDeletedUserEmailAsyncFnError,
   };

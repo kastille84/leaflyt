@@ -34,7 +34,7 @@ export const loginUser = async (email: string, password: string) => {
     const customers = userProfile?.customers ?? [];
     // check if user has a plan && it's unpaid
     if (customers.length > 0 && customers[0].subscriptionStatus == "unpaid") {
-      await supabase.auth.signOut();
+      // await supabase.auth.signOut();
 
       return {
         data: userProfile,
@@ -121,7 +121,7 @@ export const loginUserWithAccessToken = async () => {
     const customers = userProfile?.customers ?? [];
     // check if user has a plan && it's unpaid
     if (customers.length > 0 && customers[0].subscriptionStatus == "unpaid") {
-      await supabase.auth.signOut();
+      // await supabase.auth.signOut();
 
       return {
         data: userProfile,

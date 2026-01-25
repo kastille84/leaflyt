@@ -1,35 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import { get, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import Heading from "../../ui/Heading";
 import FormControlRow from "../../ui/Form/FormControlRow";
-import EmailInput from "../../ui/Form/EmailInput";
-import PasswordInput from "../../ui/Form/PasswordInput";
-import TypeOfUserInput from "../../ui/Form/TypeOfUserInput";
 import FormControl from "../../ui/Form/FormControl";
-import WebsiteInput from "../../ui/Form/WebsiteInput";
-import PhoneInput from "../../ui/Form/PhoneInput";
 import AddressInput from "../../ui/Form/AddressInput";
-import FullNameInput from "../../ui/Form/FullNameInput";
 import LastNameInput from "../../ui/Form/LastNameInput";
 import FirstNameInput from "../../ui/Form/FirstNameInput";
 import Button from "../../ui/Button";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 
 import { useGlobalContext } from "../../context/GlobalContext";
-import {
-  Auth_User_Profile_Response,
-  Auth_User_Signup_Response,
-  SignupSubmitData,
-} from "../../interfaces/Auth_User";
+import { Auth_User_Signup_Response } from "../../interfaces/Auth_User";
 
 import toast from "react-hot-toast";
 
-import PlansInputContainer from "../../ui/Plan/PlansInputContainer";
 import { parseAdrAddress } from "../../utils/ServiceUtils";
 import { PickPlanInfo } from "./SignupContainer";
 import useStripe from "../../hooks/useStripe";
+import useSignup from "./useSignup";
 
 const StyledFormContainer = styled.div`
   display: flex;
@@ -68,7 +58,7 @@ const StyledHeading = styled(Heading)`
 const StyledFormButtonContainer = styled.div`
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 2.4rem;
 `;
 
@@ -100,6 +90,7 @@ export default function PaymentBillingInfoForm({
   const [submitError, setSubmitError] = useState("");
 
   const { createCustomerFn, deleteCustomerAsync } = useStripe();
+  const { updateUserProfilePlanAsyncFn } = useSignup();
   const {
     register,
     handleSubmit,
@@ -131,15 +122,28 @@ export default function PaymentBillingInfoForm({
     setBottomSlideInType(null);
   }
 
-  function handleTryFree() {
-    handleClose();
-
-    toast.success(
-      "Seed Plan Selected. \nRemember to confirm your email. \nBesides that, you're all set! \nFind Boards Near You and start posting!",
-      {
-        duration: 10000,
-      },
-    );
+  async function handleSwitchToFree() {
+    // handleClose();
+    setShowSpinner(true);
+    try {
+      // delete the customer in Stripe
+      await deleteCustomerAsync({
+        customerId: signedUpUser?.customers[0]?.customerId,
+      });
+      // updated the user profile's plan to free
+      const { user } = await updateUserProfilePlanAsyncFn({
+        userId: signedUpUser?.id as string,
+        plan: 1,
+      });
+      // set user in global context
+      setUser(user);
+      setShowSpinner(false);
+      toast.success("Switched to free plan");
+      handleClose();
+    } catch (error) {
+      setShowSpinner(false);
+      console.log("error", error);
+    }
   }
 
   function handleLinkClick(type: "terms" | "privacy" | "guidelines" | null) {
@@ -241,7 +245,7 @@ export default function PaymentBillingInfoForm({
         <StyledFormButtonContainer data-testid="form-button-container">
           {/* Free Plan */}
 
-          <Button type="button" variation="secondary" onClick={handleTryFree}>
+          <Button type="button" variation="danger" onClick={handleSwitchToFree}>
             Switch To Free Plan (Seed Plan)
           </Button>
           {/* Continue */}

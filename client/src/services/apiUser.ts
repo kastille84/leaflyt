@@ -73,7 +73,28 @@ export const updateUserProfile = async ({
       .single();
     if (error) throw error;
     // return updated user
-    return await getLatestUserAfterChanges(userId as string, "upated profile");
+    return await getLatestUserAfterChanges(userId as string, "updated profile");
+  } catch (error) {
+    return { data: null, error };
+  }
+};
+
+export const updateUserProfilePlan = async (userId: string, plan: number) => {
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .update([
+        {
+          plan: Number(plan),
+        },
+      ])
+      .eq("id", userId)
+      .single();
+    // .select(selectEverythingFromProfile)
+    // .single();
+    if (error) throw error;
+    // return updated user
+    return await getLatestUserAfterChanges(userId as string, "updated profile");
   } catch (error) {
     return { data: null, error };
   }
