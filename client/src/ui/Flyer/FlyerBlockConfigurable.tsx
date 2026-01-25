@@ -367,7 +367,6 @@ export default function FlyerBlockConfigurable({ flyer }: { flyer: any }) {
             />
           </StyledFigure>
         )}
-        {/* TODO: Make this section dynamic (mainContent, infoContent, couponContent) */}
         <StyledSubcategory
           flyerDesign={flyerDesign}
           selected={selectedSection === "subcategory_color"}

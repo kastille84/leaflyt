@@ -2,7 +2,6 @@ const { stripe } = require("../../stripe");
 const { supabase } = require("../../supabase");
 const { keysBasedOnEnv } = require("../utility/generalUtils");
 
-// #TODO: - replace with real products
 const productsPrice = {
   Garden: keysBasedOnEnv().stripe.price_garden,
   Grove: keysBasedOnEnv().stripe.price_grove,
@@ -85,8 +84,7 @@ exports.createCheckoutSession = async (req, res, next) => {
       mode: "subscription",
       // return_url: `${YOUR_DOMAIN}/return?session_id={CHECKOUT_SESSION_ID}`,
       return_url:
-        // TODO: - replace with real url
-        "https://localhost:5173/dashboard/home?session_id={CHECKOUT_SESSION_ID}&customer_id=" +
+        `${keysBasedOnEnv().clientUrl}/dashboard/home?session_id={CHECKOUT_SESSION_ID}&customer_id=` +
         req.body.customerId +
         "&plan=" +
         req.body.plan,
