@@ -90,6 +90,7 @@ export default function UnpaidPlanContainer() {
           signedUpUser={signedUpUser}
           setPickPlanInfo={setPickPlanInfo}
           currentPlanId={signedUpUser.plan.id}
+          updatedPaymentInfo={true}
         />
       )}
       {signedUpUser && pickPlanInfo && (
@@ -97,7 +98,7 @@ export default function UnpaidPlanContainer() {
           signedUpUser={signedUpUser}
           pickPlanInfo={pickPlanInfo}
           hideCancel={true}
-          // updatePaymentInfo={true}
+          updatePaymentInfo={true}
         />
       )}
     </StyledUpgradeContainer>

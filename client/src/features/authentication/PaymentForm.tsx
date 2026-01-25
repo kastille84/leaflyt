@@ -10,8 +10,6 @@ import OverlaySpinner from "../../ui/OverlaySpinner";
 import Heading from "../../ui/Heading";
 import Button from "../../ui/Button";
 import { useGlobalContext } from "../../context/GlobalContext";
-import { set } from "react-hook-form";
-import toast from "react-hot-toast";
 
 const StyledForm = styled.form`
   display: flex;
@@ -47,10 +45,12 @@ export default function PaymentForm({
   signedUpUser,
   pickPlanInfo,
   hideCancel,
+  updatePaymentInfo,
 }: {
   signedUpUser: Auth_User_Signup_Response | null;
   pickPlanInfo: PickPlanInfo;
   hideCancel?: boolean;
+  updatePaymentInfo?: boolean;
 }) {
   const {
     setShowCancelSubscriptionModal,
@@ -60,7 +60,7 @@ export default function PaymentForm({
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  // const { setBottomSlideInType, setIsOpenBottomSlideIn } = useGlobalContext();
+  const { deleteCustomerAsync } = useStripe();
 
   const checkoutState = useCheckout();
 
@@ -72,10 +72,16 @@ export default function PaymentForm({
     setShowCancelSubscriptionModal(true);
   }
 
-  function handlePay() {
+  async function handlePay() {
     setSubmitError("");
     setShowSpinner(true);
     try {
+      // if (updatePaymentInfo) {
+      //   // delete current customer, which has old subscription, to make way for new one with new payment details
+      //   await deleteCustomerAsync({
+      //     customerId: signedUpUser?.customers[0]?.customerId,
+      //   });
+      // }
       checkoutState.checkout.confirm().then((result: any) => {
         // will never reach here
         if (result.type === "error") {

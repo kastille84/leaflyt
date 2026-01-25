@@ -89,15 +89,17 @@ export default function PaymentBillingInfoForm({
   signedUpUser,
   setPickPlanInfo,
   currentPlanId = 1,
+  updatedPaymentInfo = false,
 }: {
   signedUpUser: Auth_User_Signup_Response | null;
   setPickPlanInfo: React.Dispatch<React.SetStateAction<PickPlanInfo | null>>;
   currentPlanId?: number;
+  updatedPaymentInfo?: boolean;
 }) {
   const [showSpinner, setShowSpinner] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  const { createCustomerFn, updateSubscriptionFn } = useStripe();
+  const { createCustomerFn, deleteCustomerAsync } = useStripe();
   const {
     register,
     handleSubmit,
@@ -145,20 +147,48 @@ export default function PaymentBillingInfoForm({
     setTermsModalType(type);
   }
 
-  function onSubmit(data: any) {
+  async function onSubmit(data: any) {
     setSubmitError("");
     console.log("data", data);
-
     setShowSpinner(true);
-    // They are trying to update their payment, so we will set the planPick as the current plan
-    setPickPlanInfo({
-      plan: currentPlanId.toString(),
-      firstName: data.firstName,
-      lastName: data.lastName,
-      address: parseAdrAddress(data.addressObjToSave.adr_address),
-      customerId: signedUpUser?.customers[0].customerId,
-    });
-    setShowSpinner(false);
+    // delete old customer in Stripe if they are trying to update their payment information
+    if (updatedPaymentInfo) {
+      // delete current customer, which has old subscription, to make way for new one with new payment details
+      await deleteCustomerAsync({
+        customerId: signedUpUser?.customers[0]?.customerId,
+      });
+      // create new customer in Stripe
+      const addressObj = parseAdrAddress(data.addressObjToSave.adr_address);
+      createCustomerFn(
+        {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: signedUpUser?.email,
+          address: addressObj,
+          userId: signedUpUser!.id,
+        },
+        {
+          onSuccess: (customer) => {
+            console.log("customer", customer);
+
+            // action
+            setPickPlanInfo({
+              plan: currentPlanId.toString(),
+              firstName: data.firstName,
+              lastName: data.lastName,
+              address: parseAdrAddress(data.addressObjToSave.adr_address),
+              customerId: customer.id,
+            });
+            setShowSpinner(false);
+          },
+          onError: (error) => {
+            console.log("error", error);
+            setShowSpinner(false);
+            setSubmitError(error.message);
+          },
+        },
+      );
+    }
   }
 
   return (

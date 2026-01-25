@@ -56,7 +56,7 @@ export default function PaymentFormContainer({
         {
           plan: pickPlanInfo.plan,
           customerId: pickPlanInfo.customerId,
-          updatePaymentInfo,
+          // updatePaymentInfo,
         },
         {
           onSuccess: (data: any) => {
@@ -80,6 +80,7 @@ export default function PaymentFormContainer({
           signedUpUser={signedUpUser}
           pickPlanInfo={pickPlanInfo}
           hideCancel={hideCancel}
+          updatePaymentInfo={updatePaymentInfo}
         />
       </StyledFormContainer>
     </CheckoutProvider>

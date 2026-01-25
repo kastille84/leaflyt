@@ -4,6 +4,7 @@ import {
   createCheckoutSession,
   deleteCustomer,
   updateSubscription,
+  // cancelSubscription,
   updateUserPlan,
 } from "../services/apiStripe";
 
@@ -26,6 +27,13 @@ export default function useStripe() {
     useMutation({
       mutationFn: (prepData: any) => updateSubscription(prepData),
     });
+
+  // const {
+  //   mutateAsync: cancelSubscriptionAsyncFn,
+  //   error: cancelSubscriptionAsyncFnError,
+  // } = useMutation({
+  //   mutationFn: (prepData: any) => cancelSubscription(prepData),
+  // });
 
   const {
     mutate: createCheckoutSessionFn,
@@ -51,6 +59,8 @@ export default function useStripe() {
     deleteCustomerAsyncError,
     updateSubscriptionFn,
     updateSubscriptionFnError,
+    // cancelSubscriptionAsyncFn,
+    // cancelSubscriptionAsyncFnError,
     updateUserPlanFn,
     updateUserPlanFnError,
   };

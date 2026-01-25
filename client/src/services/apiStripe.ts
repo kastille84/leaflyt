@@ -86,14 +86,37 @@ export async function updateSubscription({
   }
 }
 
+// export async function cancelSubscription({
+//   subscriptionId,
+// }: {
+//   subscriptionId: string;
+// }) {
+//   try {
+//     const response = await fetch(
+//       `${getBaseUrl()}/api/stripe/cancel-subscription`,
+//       {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({ subscriptionId }),
+//       },
+//     );
+//     const responseJson = await response.json();
+//     return responseJson.data;
+//   } catch (error) {
+//     return { data: null, error };
+//   }
+// }
+
 export async function createCheckoutSession({
   plan,
   customerId,
-  updatePaymentInfo,
+  // updatePaymentInfo,
 }: {
   plan: string;
   customerId: string;
-  updatePaymentInfo?: boolean;
+  // updatePaymentInfo?: boolean;
 }) {
   try {
     const response = await fetch(
@@ -103,7 +126,8 @@ export async function createCheckoutSession({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ plan, customerId, updatePaymentInfo }),
+        // body: JSON.stringify({ plan, customerId, updatePaymentInfo }),
+        body: JSON.stringify({ plan, customerId }),
       },
     );
     const responseJson = await response.json();

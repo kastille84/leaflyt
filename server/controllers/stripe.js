@@ -63,7 +63,7 @@ exports.createCheckoutSession = async (req, res, next) => {
   console.log("req.body", req.body);
 
   console.log("price", productsPrice[mapPlanToName[req.body.plan]]);
-  const updatePaymentInfo = req.body.updatePaymentInfo;
+  // const updatePaymentInfo = req.body.updatePaymentInfo;
   if (!productsPrice[mapPlanToName[req.body.plan]]) {
     return res.status(400).json({ message: "Invalid plan" });
   }
@@ -92,12 +92,12 @@ exports.createCheckoutSession = async (req, res, next) => {
         req.body.plan,
     };
 
-    if (updatePaymentInfo) {
-      // needed when updating payment information
-      createSessionObj.payment_intent_data = {
-        setup_future_usage: "on_session",
-      };
-    }
+    // if (updatePaymentInfo) {
+    //   // needed when updating payment information
+    //   createSessionObj.payment_intent_data = {
+    //     setup_future_usage: "on_session",
+    //   };
+    // }
 
     const session = await stripe.checkout.sessions.create(createSessionObj);
     console.log("session", session);
@@ -127,6 +127,16 @@ exports.updateSubscription = async (req, res, next) => {
       },
     );
     return res.json({ status: "success", subscription: updatedSubscription });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.cancelSubscription = async (req, res, next) => {
+  const { subscriptionId } = req.body;
+  try {
+    // cancel subscription in Stripe
+    const subscription = await stripe.subscriptions.cancel(subscriptionId);
   } catch (err) {
     next(err);
   }
