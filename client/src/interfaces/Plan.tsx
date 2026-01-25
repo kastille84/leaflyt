@@ -15,4 +15,5 @@ export interface Plan {
   onLocationPostingLimit: number;
   virtualPostingDistance: number | null;
   maxAssets: number;
+  stripeProductId: string | null;
 }

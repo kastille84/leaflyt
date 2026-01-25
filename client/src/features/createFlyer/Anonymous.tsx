@@ -44,6 +44,7 @@ import toast from "react-hot-toast";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 import AttestationInput from "../../ui/Form/AttestationInput";
 import { Link } from "react-router-dom";
+import FlyerDesignerInput from "../../ui/Form/FlyerDesignerInput";
 
 const StyledAnonymousContainer = styled.div``;
 

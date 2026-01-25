@@ -31,17 +31,17 @@ export default () => {
     switch (error.code) {
       case 1: // PERMISSION_DENIED
         toast.error(
-          "We weren't able to get your location. Make sure to select 'Allow' on the pop-up to enable location sharing."
+          "We weren't able to get your location. \nMake sure to select 'Allow' on the pop-up to enable location sharing."
         );
         break;
       case 2: // POSITION_UNAVAILABLE
         toast.error(
-          "We weren't able to get your location. It seems to be unavailable. Please check your internet connection or move to another location."
+          "We weren't able to get your location. \nIt seems to be unavailable. \nPlease check your internet connection or move to another location."
         );
         break;
       case 3: // TIMEOUT
         toast.error(
-          "We weren't able to get your location. The request timed out. Please check your internet connection or move to another location."
+          "We weren't able to get your location. \nThe request timed out. \nPlease check your internet connection or move to another location."
         );
     }
     navigator.geolocation.clearWatch(watchId!);

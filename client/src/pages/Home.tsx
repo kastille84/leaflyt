@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import { useSearchParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 import { useGlobalContext } from "../context/GlobalContext";
 import Heading from "../ui/Heading";
@@ -60,6 +61,11 @@ export default function Home() {
   const firstName = searchParams.get("firstName") || "";
   const lastName = searchParams.get("lastName") || "";
 
+  // stripe
+  const sessionId = searchParams.get("session_id");
+  const customerId = searchParams.get("customer_id");
+  const plan = searchParams.get("plan");
+
   function showName() {
     if (user?.name) {
       return `, ${user?.name}`;
@@ -71,8 +77,15 @@ export default function Home() {
 
   useEffect(() => {
     if (verified === "true" && email && typeOfUser) {
-      console.log("welcomeEmail", { verified, email, typeOfUser });
       sendWelcomeEmailFn({ email, typeOfUser, name, firstName, lastName });
+    }
+    if (sessionId && customerId && plan) {
+      toast.success(
+        "Payment successful! \nImportant: \nVerify Your Email, If it's your first time here. \nThen Login or Re-Login for new plan to take affect.",
+        {
+          duration: 10000,
+        }
+      );
     }
   }, []);
 
@@ -90,7 +103,7 @@ export default function Home() {
       <StyledGreetingsContainer>
         <Heading as="h3">
           Whether you are a business, organization or individual, <br />
-          we make it easy for you to view and distribute flyers in your
+          We make it easy for you to view and distribute flyers in your
           community. <br />
           We are beta testing and looking for early adopters.
           <br />

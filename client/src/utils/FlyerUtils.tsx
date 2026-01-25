@@ -61,7 +61,7 @@ export const totalNumberOfFlyerLikes = (flyers: DB_Flyers_Response[]) => {
   return totalLikes;
 };
 
-export const checkFlyerDataForAppropriateness = (
+export const prepFlyerDataForAppropriateness = (
   flyerData: DB_Flyer_Create | DB_Template
 ) => {
   // first check if content is appropriate

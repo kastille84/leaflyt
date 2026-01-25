@@ -22,3 +22,32 @@ exports.deleteAssets = async (req, res, next) => {
     handleCatchError(next, err);
   }
 };
+
+exports.deleteAllAssetsFromUser = async (req, res, next) => {
+  const assetVideos = JSON.parse(req.headers.assetvideos);
+  const assetImages = JSON.parse(req.headers.assetimages);
+
+  try {
+    if (assetImages.length) {
+      console.log("assetImages", assetImages);
+      await cloudinary.api
+        .delete_resources(assetImages, {
+          resource_type: "image",
+        })
+        .then(() => {
+          console.log("here image");
+        });
+    }
+    if (assetVideos.length) {
+      console.log("assetVideos", assetVideos);
+      await cloudinary.api
+        .delete_resources(assetVideos, {
+          resource_type: "video",
+        })
+        .then(() => {});
+    }
+    return res.status(200).json({ data: null });
+  } catch (err) {
+    handleCatchError(next, err);
+  }
+};

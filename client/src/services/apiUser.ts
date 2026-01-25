@@ -2,19 +2,20 @@ import { getBaseUrl } from "../utils/ServiceUtils";
 import { getLatestUserAfterChanges } from "./apiFlyers";
 import { supabase } from "./supabase";
 
-export const getUserProfile = async (id: string) => {
-  try {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select(
-        `*,
+export const selectEverythingFromProfile = `*,
           flyers(*, place(*)),
           templates(*, user(*)),
           plan(*),
           assets(*),
-          saved_flyers(*, flyer(*, place(*), user(*)))
-          `
-      )
+          saved_flyers(*, flyer(*, place(*), user(*))),
+          customers(*)
+          `;
+
+export const getUserProfile = async (id: string) => {
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select(selectEverythingFromProfile)
       .eq("id", id)
       .single();
     if (error) throw new Error(error.message) as any;
@@ -72,7 +73,28 @@ export const updateUserProfile = async ({
       .single();
     if (error) throw error;
     // return updated user
-    return await getLatestUserAfterChanges(userId as string, "upated profile");
+    return await getLatestUserAfterChanges(userId as string, "updated profile");
+  } catch (error) {
+    return { data: null, error };
+  }
+};
+
+export const updateUserProfilePlan = async (userId: string, plan: number) => {
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .update([
+        {
+          plan: Number(plan),
+        },
+      ])
+      .eq("id", userId)
+      .single();
+    // .select(selectEverythingFromProfile)
+    // .single();
+    if (error) throw error;
+    // return updated user
+    return await getLatestUserAfterChanges(userId as string, "updated profile");
   } catch (error) {
     return { data: null, error };
   }

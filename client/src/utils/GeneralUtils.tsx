@@ -1,3 +1,5 @@
+import { Plan } from "../interfaces/Plan";
+
 function shortenTitle(title: string, length: number) {
   if (title.length > length) {
     return title.substring(0, length) + "...";
@@ -75,6 +77,67 @@ export const debounce = (func: any, delay: number) => {
       func.apply(this, args);
     }, delay);
   };
+};
+
+export const sortPlansByLevel = (plans: Plan[]) => {
+  return plans.sort((a, b) => a.level - b.level);
+};
+
+export const getPlansForSelect = (plans: Plan[]) => {
+  return sortPlansByLevel(plans).map((plan: Plan) => ({
+    value: plan.id.toString(),
+    label: plan.name,
+  }));
+};
+
+export const keysBasedOnEnv = () => {
+  if (import.meta.env.MODE === "production") {
+    // PRODUCTION
+    return {
+      // Google Maps
+      google: {
+        mapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
+        mapId: import.meta.env.VITE_GOOGLE_MAP_MY_AREA_MAP_ID,
+      },
+      // Supabase
+      supabase: {
+        url: "",
+        apiKey: "",
+      },
+      // Cloudinary
+      cloudinary: {
+        name: import.meta.env.VITE_CLOUDINARY_NAME,
+        preset: import.meta.env.VITE_CLOUDINARY_PRESET_PROD,
+      },
+      // Stripe
+      stripe: {
+        publishableKey: "",
+      },
+    };
+  } else {
+    // Non-Prod
+    return {
+      // Google Maps
+      google: {
+        mapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
+        mapId: import.meta.env.VITE_GOOGLE_MAP_MY_AREA_MAP_ID,
+      },
+      // Supabase
+      supabase: {
+        url: import.meta.env.VITE_SUPABASE_URL,
+        apiKey: import.meta.env.VITE_SUPABASE_API_KEY,
+      },
+      // Cloudinary
+      cloudinary: {
+        name: import.meta.env.VITE_CLOUDINARY_NAME,
+        preset: import.meta.env.VITE_CLOUDINARY_PRESET_TEST,
+      },
+      // Stripe
+      stripe: {
+        publishableKey: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_TEST,
+      },
+    };
+  }
 };
 
 export {

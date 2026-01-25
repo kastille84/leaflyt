@@ -22,27 +22,27 @@ const StyledWhyRegisterContainer = styled.div`
   @media (max-width: 75em) {
     position: absolute;
     top: 0;
-    left: -400px;
+    right: -400px;
     z-index: 2;
     width: 400px;
-    transition: left 0.5s ease-in-out;
+    transition: right 0.5s ease-in-out;
 
     &.open {
-      left: 0;
+      right: 0;
     }
   }
 
   @media (max-width: 34em) {
     /* display: none; */
     width: 250px;
-    left: -250px;
+    right: -250px;
   }
 `;
 
 const SlideOpener = styled.div`
   position: absolute;
   top: 60px;
-  right: -68px;
+  left: -68px;
   font-size: 1.2rem;
   /* opacity: 0.8; */
   font-weight: 600;
@@ -56,14 +56,14 @@ const SlideOpener = styled.div`
   @media (max-width: 75em) {
     display: block;
     transform: rotate(90deg);
-    right: -78px;
+    left: -78px;
   }
   @media (max-width: 59em) {
-    right: -69px;
+    left: -69px;
   }
 
   @media (max-width: 34em) {
-    right: -53px;
+    left: -53px;
   }
 `;
 

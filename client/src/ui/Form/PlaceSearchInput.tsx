@@ -5,6 +5,7 @@ import { debounce } from "../../utils/GeneralUtils";
 import { useMapsLibrary } from "@vis.gl/react-google-maps";
 import { useGlobalContext } from "../../context/GlobalContext";
 import useGetUserLimits from "../../hooks/useGetUserLimits";
+import Spinner from "../Spinner";
 
 const StyledInput = styled.input`
   width: 40rem;
@@ -54,6 +55,7 @@ export default function PlaceSearchInput({
   const [searchText, setSearchText] = useState("");
   const [predictions, setPredictions] = useState([]);
   const placesLibrary = useMapsLibrary("places");
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const { user } = useGlobalContext();
   const planLimits = useGetUserLimits();
@@ -71,6 +73,7 @@ export default function PlaceSearchInput({
   const debouncedGetPlacePredictions = useCallback(
     debounce((input: string) => {
       if (service && input) {
+        setShowSpinner(true);
         service.getPlacePredictions(
           {
             input,
@@ -91,6 +94,7 @@ export default function PlaceSearchInput({
             } else {
               setPredictions([]);
             }
+            setShowSpinner(false);
           }
         );
       } else {
@@ -116,7 +120,12 @@ export default function PlaceSearchInput({
         onChange={handleInputChange}
         placeholder="Search boards in your local area..."
       />
-
+      {showSpinner && (
+        <StyledResults>
+          {/* <OverlaySpinner message="Getting normalized addresses..." /> */}
+          <Spinner />
+        </StyledResults>
+      )}
       {predictions.length > 0 && (
         <StyledResults data-testid="place-search-results">
           {predictions.map((prediction: any) => (

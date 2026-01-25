@@ -3,7 +3,11 @@ import { UploadApiResponse } from "cloudinary";
 import useGetUserGeo from "../hooks/useGetUserGeo";
 import { LatLng, NearbySearchPlaceResult } from "../interfaces/Geo";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
-import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
+import {
+  UseFormClearErrors,
+  UseFormGetValues,
+  UseFormSetValue,
+} from "react-hook-form";
 import { DB_Flyers_Response, DB_Template } from "../interfaces/DB_Flyers";
 
 export type ContextType = {
@@ -35,21 +39,25 @@ export type ContextType = {
   bottomSlideInType:
     | "signup"
     | "upgrade"
+    | "changePlan"
     | "flyerDesigner"
     | "carousel"
     | "hasTemplates"
     | "chooseAssets"
     | "editAccountInfo"
+    | "unpaid"
     | null;
   setBottomSlideInType: React.Dispatch<
     React.SetStateAction<
       | "signup"
       | "upgrade"
+      | "changePlan"
       | "flyerDesigner"
       | "carousel"
       | "hasTemplates"
       | "chooseAssets"
       | "editAccountInfo"
+      | "unpaid"
       | null
     >
   >;
@@ -95,6 +103,18 @@ export type ContextType = {
   termsModalType: "terms" | "privacy" | "guidelines" | null;
   setShowFlaggedModal: React.Dispatch<React.SetStateAction<boolean>>;
   showFlaggedModal: boolean;
+  setShowPlansModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showPlansModal: boolean;
+  setShowCancelSubscriptionModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showCancelSubscriptionModal: boolean;
+  setCancelSubscriptionModalType: React.Dispatch<
+    React.SetStateAction<"onPayment" | "onAccount" | null>
+  >;
+  cancelSubscriptionModalType: "onPayment" | "onAccount" | null;
+  setCustomerId: React.Dispatch<React.SetStateAction<string | null>>;
+  customerId: string | null;
+  setShowDeleteAccountModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showDeleteAccountModal: boolean;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -149,6 +169,16 @@ const GlobalContext = createContext<ContextType>({
   termsModalType: null,
   setShowFlaggedModal: () => {},
   showFlaggedModal: false,
+  setShowPlansModal: () => {},
+  showPlansModal: false,
+  setShowCancelSubscriptionModal: () => {},
+  showCancelSubscriptionModal: false,
+  setCancelSubscriptionModalType: () => {},
+  cancelSubscriptionModalType: null,
+  setCustomerId: () => {},
+  customerId: null,
+  setShowDeleteAccountModal: () => {},
+  showDeleteAccountModal: false,
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -167,17 +197,20 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [bottomSlideInType, setBottomSlideInType] = useState<
     | "signup"
     | "upgrade"
+    | "changePlan"
     | "flyerDesigner"
     | "carousel"
     | "hasTemplates"
     | "chooseAssets"
     | "editAccountInfo"
+    | "unpaid"
     | null
   >(null);
   const [user, setUser] = useState<Auth_User_Profile_Response | null>(null);
   const [currentFormOptions, setCurrentFormOptions] = useState<{
     getValues: UseFormGetValues<any>;
     setValue: UseFormSetValue<any>;
+    clearErrors?: UseFormClearErrors<any>;
   } | null>(null);
   const [contextImages, setContextImages] = useState<
     UploadApiResponse[] | null
@@ -185,10 +218,10 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [hasFlyerAtLocation, setHasFlyerAtLocation] = useState(false);
   const [isSelectingNewPlace, setIsSelectingNewPlace] = useState(false);
   const [selectedFlyer, setSelectedFlyer] = useState<DB_Flyers_Response | null>(
-    null
+    null,
   );
   const [selectedTemplate, setSelectedTemplate] = useState<DB_Template | null>(
-    null
+    null,
   );
   const [showEditFlyerModal, setShowEditFlyerModal] = useState(false);
   const [showDeleteFlyerTemplateModal, setShowDeleteFlyerTemplateModal] =
@@ -200,6 +233,14 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
     "terms" | "privacy" | "guidelines" | null
   >(null);
   const [showFlaggedModal, setShowFlaggedModal] = useState(false);
+  const [showPlansModal, setShowPlansModal] = useState(false);
+  const [showCancelSubscriptionModal, setShowCancelSubscriptionModal] =
+    useState(false);
+  const [cancelSubscriptionModalType, setCancelSubscriptionModalType] =
+    useState<"onPayment" | "onAccount" | null>(null);
+  const [customerId, setCustomerId] = useState<string | null>(null);
+  const [showDeleteAccountModal, setShowDeleteAccountModal] =
+    useState<boolean>(false);
 
   const {
     getUserGeo,
@@ -250,6 +291,16 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         termsModalType,
         setShowFlaggedModal,
         showFlaggedModal,
+        setShowPlansModal,
+        showPlansModal,
+        setShowCancelSubscriptionModal,
+        showCancelSubscriptionModal,
+        setCancelSubscriptionModalType,
+        cancelSubscriptionModalType,
+        setCustomerId,
+        customerId,
+        setShowDeleteAccountModal,
+        showDeleteAccountModal,
         // Auth
         isLoggedIn,
         setIsLoggedIn,
@@ -284,7 +335,7 @@ const useGlobalContext = () => {
   const context = useContext(GlobalContext);
   if (context === undefined) {
     throw new Error(
-      "useGlobalContext must be used within a GlobalContextProvider"
+      "useGlobalContext must be used within a GlobalContextProvider",
     );
   }
   return context;
