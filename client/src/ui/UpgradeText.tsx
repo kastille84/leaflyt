@@ -4,8 +4,8 @@ import { useGlobalContext } from "../context/GlobalContext";
 
 const StyledUpgradeTextContainer = styled.div``;
 const StyledLearnMore = styled.small`
-  /* color: var(--color-brand-600) !important; */
-  color: var(--color-blue-400) !important;
+  color: var(--color-brand-600) !important;
+  /* color: var(--color-blue-400) !important; */
   font-weight: 600;
   cursor: pointer;
   text-transform: capitalize;

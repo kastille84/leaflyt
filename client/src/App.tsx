@@ -28,6 +28,7 @@ import PlansModal from "./ui/Modals/PlansModal";
 import CancelSubscriptionModal from "./ui/Modals/CancelSubscriptionModal";
 import DeleteAccountModal from "./ui/Modals/DeleteAccountModal";
 import { keysBasedOnEnv } from "./utils/GeneralUtils";
+import SingleFlyer from "./features/single_flyer/SingleFlyer";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,6 +57,7 @@ function App() {
               <Routes>
                 <Route path="/dashboard/" element={<MainLayout />}>
                   <Route path="home" element={<Home />} />
+                  <Route path="flyer/:id" element={<SingleFlyer />} />
                   <Route path="board/:id" element={<Board />} />
                   <Route path="my-area" element={<MyArea />} />
                   <Route path="templates" element={<MyTemplates />} />

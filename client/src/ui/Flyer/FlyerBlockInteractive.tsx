@@ -3,7 +3,9 @@ import styled, { css } from "styled-components";
 import {
   HiOutlineBookmark,
   HiOutlineBookmarkSlash,
+  HiOutlineEnvelope,
   HiOutlineHandThumbUp,
+  HiOutlineLink,
   HiOutlineShare,
 } from "react-icons/hi2";
 import { useEffect, useState } from "react";
@@ -278,7 +280,7 @@ export default function FlyerBlockInteractive({
   const { likeFlyerFn } = useCreateUnregisteredFlyer();
 
   const [contentType, setContentType] = useState<"info" | "contact" | "cta">(
-    "info"
+    "info",
   );
   const { saveFlyerFn, removeSavedFlyerFn } = useRegisteredFlyer();
   const [currentLikes, setCurrentLikes] = useState(() => flyer?.likes || 0);
@@ -294,7 +296,7 @@ export default function FlyerBlockInteractive({
   const [isLikedByUser, setIsLikedByUser] = useState(() => {
     return checkIfCurrentFlyerIsLiked(
       likedContextSessionFlyers || [],
-      flyer.id!
+      flyer.id!,
     );
   });
 
@@ -507,7 +509,7 @@ export default function FlyerBlockInteractive({
             setIsLikedByUser(false);
             toast.error(error.message);
           },
-        }
+        },
       );
     } else if (!doesFlyerBelongToUser() && isLikedByUser) {
       // unlike the flyer
@@ -527,9 +529,19 @@ export default function FlyerBlockInteractive({
             setIsLikedByUser(true);
             toast.error(error.message);
           },
-        }
+        },
       );
     }
+  }
+
+  function handleLinkClick() {
+    // copy to clipboard functionality
+    navigator.clipboard.writeText(
+      `${window.location.origin}/dashboard/flyer/${flyer.id}`,
+    );
+    toast.success("Link copied to clipboard. \nShare link with others!", {
+      duration: 5000,
+    });
   }
 
   function renderTopContent() {
@@ -634,8 +646,17 @@ export default function FlyerBlockInteractive({
         {/* <StyledActionIconContainer flyerDesign={flyerStyles}>
           <HiOutlineChatBubbleLeftEllipsis />
         </StyledActionIconContainer> */}
-        <StyledActionIconContainer flyerDesign={flyerStyles}>
-          <HiOutlineShare /> <small>Share</small>
+        {/* <StyledActionIconContainer
+          flyerDesign={flyerStyles}
+          onClick={handleEmailClick}
+        >
+          <HiOutlineEnvelope /> <small>Email</small>
+        </StyledActionIconContainer> */}
+        <StyledActionIconContainer
+          flyerDesign={flyerStyles}
+          onClick={handleLinkClick}
+        >
+          <HiOutlineLink /> <small>Share</small>
         </StyledActionIconContainer>
       </StyledActionContainer>
     </StyledFlyerBlock>

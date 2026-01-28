@@ -1,5 +1,5 @@
 import { useGlobalContext } from "../../context/GlobalContext";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   DB_Flyer_Create,
   DB_Flyers_Response,
@@ -15,8 +15,10 @@ import {
   deleteTemplate,
   saveFlyer,
   removeSavedFlyer,
+  getFlyerById,
 } from "../../services/apiFlyers";
 import { UploadApiResponse } from "cloudinary";
+import { useParams } from "react-router-dom";
 
 export default function useRegisteredFlyer() {
   const { selectedPlace, user } = useGlobalContext();
