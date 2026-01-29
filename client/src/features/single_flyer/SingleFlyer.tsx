@@ -49,7 +49,13 @@ export default function SingleFlyer() {
   console.log("user value", user);
   if (isLoadingBoard) return <OverlaySpinner message="Getting the flyer" />;
 
-  if (error) return <div>Could not retrieve the flyer. It may be deleted.</div>;
+  if (error)
+    return (
+      <div>
+        Could not retrieve the flyer. It may be deleted. <br />
+        Click on Home to view other flyers on Leaflit.
+      </div>
+    );
 
   return (
     <StyledSingleFlyerContainer>

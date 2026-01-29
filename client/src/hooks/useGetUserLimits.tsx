@@ -24,7 +24,7 @@ const defaultPlan: Plan = {
 function getPostingAmount(flyers: DB_Flyers_Response[], type: string) {
   return flyers.reduce(
     (acc, flyer) => (flyer.postingMethod === type ? acc + 1 : acc),
-    0
+    0,
   );
 }
 
@@ -42,13 +42,13 @@ export default () => {
     // maxAssets:
     remotePosting: {
       isAllowed:
-        (user?.flyers ? getPostingAmount(user.flyers, "remote") : 0) <=
+        (user?.flyers ? getPostingAmount(user.flyers, "remote") : 0) <
         plan.remotePostingLimit,
       limit: plan.remotePostingLimit,
     },
     onLocationPosting: {
       isAllowed:
-        (user?.flyers ? getPostingAmount(user.flyers, "onLocation") : 0) <=
+        (user?.flyers ? getPostingAmount(user.flyers, "onLocation") : 0) <
         plan.onLocationPostingLimit,
       limit: plan.onLocationPostingLimit,
     },

@@ -149,6 +149,7 @@ export const createRegisteredFlyer = async (
         case "r":
           flyerData.postingMethod = "remote";
           break;
+        // #TODO: add bulk option
         case "rb":
           flyerData.postingMethod = "remoteBulk";
           break;

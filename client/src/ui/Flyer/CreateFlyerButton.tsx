@@ -4,8 +4,10 @@ import { useGlobalContext } from "../../context/GlobalContext";
 
 export default function CreateFlyerButton({
   size,
+  disabled = false,
 }: {
   size?: "small" | "medium" | "large";
+  disabled?: boolean;
 }) {
   const {
     setIsOpenFlyerDrawer,
@@ -33,6 +35,8 @@ export default function CreateFlyerButton({
     <Button
       size={size}
       onClick={hasTemplates ? handleHasTemplates : handleCreateFlyer}
+      disabled={disabled}
+      variation={disabled ? "disabled" : "primary"}
     >
       Create Flyer
     </Button>
