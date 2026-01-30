@@ -57,7 +57,7 @@ function App() {
               <Routes>
                 <Route path="/dashboard/" element={<MainLayout />}>
                   <Route path="home" element={<Home />} />
-                  <Route path="flyer/:id" element={<SingleFlyer />} />
+                  <Route path="fullFlyer/:id" element={<SingleFlyer />} />
                   <Route path="board/:id" element={<Board />} />
                   <Route path="my-area" element={<MyArea />} />
                   <Route path="templates" element={<MyTemplates />} />

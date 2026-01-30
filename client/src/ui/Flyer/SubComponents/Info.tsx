@@ -4,9 +4,12 @@ import {
   DB_Template,
   FlyerDesign,
 } from "../../../interfaces/DB_Flyers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Heading from "../../Heading";
-import { shortenTitle } from "../../../utils/GeneralUtils";
+import {
+  determineIsFullFlyer,
+  shortenTitle,
+} from "../../../utils/GeneralUtils";
 
 const StyledSubcategory = styled.small<{ flyerDesign: FlyerDesign }>`
   display: block;
@@ -35,11 +38,12 @@ const StyledReadMore = styled.p<{ flyerDesign: FlyerDesign }>`
 const StyledTagContainer = styled.div`
   margin-top: 1rem;
   display: flex;
-  gap: 1rem;
+  flex-wrap: wrap;
 `;
 
 const StyledTag = styled.small<{ flyerDesign: FlyerDesign }>`
   text-transform: capitalize;
+  word-break: break-all;
   font-weight: 600;
   letter-spacing: 1px;
   font-size: 1rem;
@@ -53,7 +57,12 @@ export default function Content({
   flyer: DB_Flyers_Response | DB_Template;
   flyerStyles: FlyerDesign;
 }) {
-  const [isReadMore, setIsReadMore] = useState(false);
+  const [isReadMore, setIsReadMore] = useState(() => {
+    if (determineIsFullFlyer()) {
+      return true;
+    }
+    return false;
+  });
 
   return (
     <>
@@ -61,7 +70,7 @@ export default function Content({
         {flyer.subcategory}
       </StyledSubcategory>
       <StyledHeading as="h2" flyerDesign={flyerStyles}>
-        {flyer.title}
+        {determineIsFullFlyer() ? flyer.title : shortenTitle(flyer.title, 33)}
       </StyledHeading>
       {!isReadMore && (
         <div
@@ -73,7 +82,7 @@ export default function Content({
       {isReadMore && (
         <div dangerouslySetInnerHTML={{ __html: flyer.content }}></div>
       )}
-      {flyer.content.length > 75 && (
+      {!determineIsFullFlyer() && flyer.content.length > 75 && (
         <StyledReadMore
           flyerDesign={flyerStyles}
           onClick={() => setIsReadMore(!isReadMore)}
@@ -82,11 +91,10 @@ export default function Content({
         </StyledReadMore>
       )}
       <StyledTagContainer>
-        <StyledTag flyerDesign={flyerStyles}>#</StyledTag>
         {flyer.tags &&
           flyer.tags.map((tag) => (
             <StyledTag flyerDesign={flyerStyles} key={tag}>
-              {tag}
+              {`#${tag}`}&nbsp;
             </StyledTag>
           ))}
       </StyledTagContainer>

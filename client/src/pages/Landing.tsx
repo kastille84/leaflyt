@@ -167,7 +167,7 @@ export default function Landing() {
               throw new Error((response.error as any).message);
             }
             // check if url contains "flyer"
-            if (!location.pathname.includes("flyer")) {
+            if (!location.pathname.includes("fullFlyer")) {
               navigate("/dashboard/home");
             }
           },

@@ -3,10 +3,8 @@ import styled, { css } from "styled-components";
 import {
   HiOutlineBookmark,
   HiOutlineBookmarkSlash,
-  HiOutlineEnvelope,
   HiOutlineHandThumbUp,
   HiOutlineLink,
-  HiOutlineShare,
 } from "react-icons/hi2";
 import { useEffect, useState } from "react";
 import { UNREGISTERED_FLYER_DESIGN_DEFAULT } from "../../constants";
@@ -34,6 +32,7 @@ import {
   checkIfCurrentFlyerIsLiked,
 } from "../../utils/FlyerUtils";
 import { useLikeFlyers } from "../../hooks/useLikeFlyers";
+import { determineIsFullFlyer } from "../../utils/GeneralUtils";
 
 const common = {
   style: css`
@@ -55,8 +54,12 @@ const common = {
   `,
 };
 
-const StyledFlyerBlock = styled.div<{ flyerDesign: FlyerDesign }>`
+const StyledFlyerBlock = styled.div<{
+  flyerDesign: FlyerDesign;
+  isFullFlyer: boolean;
+}>`
   ${common.style}
+  ${({ isFullFlyer }) => isFullFlyer && "width: 50rem;"}
   font-family: ${({ flyerDesign }) => flyerDesign.font};
   border: 1px solid var(--color-grey-200);
   /* border: 1px solid ${(props) => props.flyerDesign.outlines.color}; */
@@ -70,34 +73,6 @@ const StyledFlyerBlock = styled.div<{ flyerDesign: FlyerDesign }>`
     flyerDesign.borderBottomRightRadius}px;
 `;
 
-const StyledImageSection = styled.figure<{ flyerDesign: FlyerDesign }>`
-  width: 100%;
-  height: auto;
-  position: relative;
-  overflow: hidden;
-  border-top-left-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopLeftRadius}px;
-  border-top-right-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopRightRadius}px;
-`;
-
-const StyledTopImageContainer = styled.div<{ flyerDesign: FlyerDesign }>`
-  background-color: ${(props) => props.flyerDesign.top.backgroundColor};
-  position: absolute;
-  top: 0;
-
-  opacity: 0.85;
-  color: ${(props) => props.flyerDesign.top.color};
-  width: 100%;
-  padding: 1rem 2.4rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top-left-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopLeftRadius}px;
-  border-top-right-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopRightRadius}px;
-`;
 const StyledTopTextContainer = styled.div<{ flyerDesign: FlyerDesign }>`
   width: 100%;
   padding: 1rem 2.4rem;
@@ -537,7 +512,7 @@ export default function FlyerBlockInteractive({
   function handleLinkClick() {
     // copy to clipboard functionality
     navigator.clipboard.writeText(
-      `${window.location.origin}/dashboard/flyer/${flyer.id}`,
+      `${window.location.origin}/dashboard/fullFlyer/${flyer.id}`,
     );
     toast.success("Link copied to clipboard. \nShare link with others!", {
       duration: 5000,
@@ -569,7 +544,10 @@ export default function FlyerBlockInteractive({
   }
 
   return (
-    <StyledFlyerBlock flyerDesign={flyerStyles}>
+    <StyledFlyerBlock
+      flyerDesign={flyerStyles}
+      isFullFlyer={determineIsFullFlyer()}
+    >
       <StyledTopTextContainer flyerDesign={flyerStyles}>
         {renderTopContent()}
       </StyledTopTextContainer>
