@@ -20,6 +20,9 @@ import {
 } from "../../utils/GeneralUtils";
 import categoriesObj from "../../data/categories";
 import Input from "../../ui/Input";
+import useGetUserLimits from "../../hooks/useGetUserLimits";
+import LimitExceededWarning from "../../ui/LimitExceededWarning";
+import UpgradeText from "../../ui/UpgradeText";
 
 const StyledBoardContainer = styled.div`
   & .category,
@@ -89,6 +92,7 @@ export default function Board() {
   const responsiveVal = useResponsiveWidth();
   const { id } = useParams();
   const QueryClient = useQueryClient();
+  const planLimits = useGetUserLimits();
   const {
     register,
     watch,
@@ -175,6 +179,22 @@ export default function Board() {
     <>
       <StyledBoardContainer data-testid="board-container">
         <div data-testid="board" style={{ width: "90%", margin: "auto" }}>
+          {!planLimits?.onLocationPosting.isAllowed && (
+            <>
+              <LimitExceededWarning isClosable={true}>
+                <p>
+                  You've reached your limit for posting flyers on location.{" "}
+                  <br />
+                  Try posting flyers remotely.
+                </p>
+              </LimitExceededWarning>
+              <UpgradeText
+                text="Upgrade your plan to post more flyers on location."
+                type="upgrade"
+                btnText="Upgrade"
+              />
+            </>
+          )}
           {hasFlyerAtLocation && (
             <InfoAlert text="You already have a flyer posted here" />
           )}
@@ -210,7 +230,7 @@ export default function Board() {
                         register={register}
                         options={getSubcategoriesForSelect(
                           categoriesObj,
-                          categoryWatch
+                          categoryWatch,
                         )}
                         value={subcategoryWatch}
                         errors={errors}

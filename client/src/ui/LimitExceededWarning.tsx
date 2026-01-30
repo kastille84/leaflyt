@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const StyledLimitExceededWarning = styled.div`
   background-color: var(--color-red-500);
-  color: #fff;
+  color: var(--color-grey-700);
   padding: 0.5rem;
   font-size: 1.6rem;
   display: flex;

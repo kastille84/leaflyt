@@ -65,7 +65,10 @@ export default function MainLayout() {
             if (response.error) {
               throw new Error((response.error as any).message);
             }
-            navigate(`/dashboard${id ? "/board/" + id : "/home"}`);
+            // check if url contains "flyer"
+            if (!location.pathname.includes("fullFlyer")) {
+              navigate(`/dashboard${id ? "/board/" + id : "/home"}`);
+            }
           },
           onError: (error) => {
             console.log("error", error);

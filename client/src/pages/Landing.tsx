@@ -166,7 +166,10 @@ export default function Landing() {
             if (response.error) {
               throw new Error((response.error as any).message);
             }
-            navigate("/dashboard/home");
+            // check if url contains "flyer"
+            if (!location.pathname.includes("fullFlyer")) {
+              navigate("/dashboard/home");
+            }
           },
           onError: (error) => {
             console.log("error", error);
