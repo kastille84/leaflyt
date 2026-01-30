@@ -171,7 +171,7 @@ export default function Registered({
             // set focus on error
             document.querySelector("#form-error")?.scrollIntoView();
           },
-        }
+        },
       );
     } else if (templateToEdit && type === "editTemplate") {
       // remove the template property
@@ -196,7 +196,7 @@ export default function Registered({
             // set focus on error
             document.querySelector("#form-error")?.scrollIntoView();
           },
-        }
+        },
       );
     } else if (type === "createTemplate") {
       // action - Create New Template
@@ -303,7 +303,7 @@ export default function Registered({
                     register={register}
                     options={getSubcategoriesForSelect(
                       categoriesObj,
-                      categoryWatch
+                      categoryWatch,
                     )}
                     value={subcategoryWatch}
                     errors={errors}
@@ -378,7 +378,7 @@ export default function Registered({
                 canUpgrade={!planLimits.paid}
               />
             </FormControlRow>
-            {!flyerToEdit && (
+            {planLimits.templates.isAllowed && !flyerToEdit && (
               <FormControlRow>
                 <FormControl testId="template-container">
                   <StyledLabel>

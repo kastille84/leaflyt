@@ -4,7 +4,7 @@ import {
   HiOutlineBookmark,
   HiOutlineBookmarkSlash,
   HiOutlineHandThumbUp,
-  HiOutlineShare,
+  HiOutlineLink,
 } from "react-icons/hi2";
 import { useEffect, useState } from "react";
 import { UNREGISTERED_FLYER_DESIGN_DEFAULT } from "../../constants";
@@ -32,6 +32,7 @@ import {
   checkIfCurrentFlyerIsLiked,
 } from "../../utils/FlyerUtils";
 import { useLikeFlyers } from "../../hooks/useLikeFlyers";
+import { determineIsFullFlyer } from "../../utils/GeneralUtils";
 
 const common = {
   style: css`
@@ -53,8 +54,12 @@ const common = {
   `,
 };
 
-const StyledFlyerBlock = styled.div<{ flyerDesign: FlyerDesign }>`
+const StyledFlyerBlock = styled.div<{
+  flyerDesign: FlyerDesign;
+  isFullFlyer: boolean;
+}>`
   ${common.style}
+  ${({ isFullFlyer }) => isFullFlyer && "width: 50rem;"}
   font-family: ${({ flyerDesign }) => flyerDesign.font};
   border: 1px solid var(--color-grey-200);
   /* border: 1px solid ${(props) => props.flyerDesign.outlines.color}; */
@@ -68,34 +73,6 @@ const StyledFlyerBlock = styled.div<{ flyerDesign: FlyerDesign }>`
     flyerDesign.borderBottomRightRadius}px;
 `;
 
-const StyledImageSection = styled.figure<{ flyerDesign: FlyerDesign }>`
-  width: 100%;
-  height: auto;
-  position: relative;
-  overflow: hidden;
-  border-top-left-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopLeftRadius}px;
-  border-top-right-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopRightRadius}px;
-`;
-
-const StyledTopImageContainer = styled.div<{ flyerDesign: FlyerDesign }>`
-  background-color: ${(props) => props.flyerDesign.top.backgroundColor};
-  position: absolute;
-  top: 0;
-
-  opacity: 0.85;
-  color: ${(props) => props.flyerDesign.top.color};
-  width: 100%;
-  padding: 1rem 2.4rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top-left-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopLeftRadius}px;
-  border-top-right-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopRightRadius}px;
-`;
 const StyledTopTextContainer = styled.div<{ flyerDesign: FlyerDesign }>`
   width: 100%;
   padding: 1rem 2.4rem;
@@ -278,7 +255,7 @@ export default function FlyerBlockInteractive({
   const { likeFlyerFn } = useCreateUnregisteredFlyer();
 
   const [contentType, setContentType] = useState<"info" | "contact" | "cta">(
-    "info"
+    "info",
   );
   const { saveFlyerFn, removeSavedFlyerFn } = useRegisteredFlyer();
   const [currentLikes, setCurrentLikes] = useState(() => flyer?.likes || 0);
@@ -294,7 +271,7 @@ export default function FlyerBlockInteractive({
   const [isLikedByUser, setIsLikedByUser] = useState(() => {
     return checkIfCurrentFlyerIsLiked(
       likedContextSessionFlyers || [],
-      flyer.id!
+      flyer.id!,
     );
   });
 
@@ -507,7 +484,7 @@ export default function FlyerBlockInteractive({
             setIsLikedByUser(false);
             toast.error(error.message);
           },
-        }
+        },
       );
     } else if (!doesFlyerBelongToUser() && isLikedByUser) {
       // unlike the flyer
@@ -527,9 +504,19 @@ export default function FlyerBlockInteractive({
             setIsLikedByUser(true);
             toast.error(error.message);
           },
-        }
+        },
       );
     }
+  }
+
+  function handleLinkClick() {
+    // copy to clipboard functionality
+    navigator.clipboard.writeText(
+      `${window.location.origin}/dashboard/fullFlyer/${flyer.id}`,
+    );
+    toast.success("Link copied to clipboard. \nShare link with others!", {
+      duration: 5000,
+    });
   }
 
   function renderTopContent() {
@@ -557,7 +544,10 @@ export default function FlyerBlockInteractive({
   }
 
   return (
-    <StyledFlyerBlock flyerDesign={flyerStyles}>
+    <StyledFlyerBlock
+      flyerDesign={flyerStyles}
+      isFullFlyer={determineIsFullFlyer()}
+    >
       <StyledTopTextContainer flyerDesign={flyerStyles}>
         {renderTopContent()}
       </StyledTopTextContainer>
@@ -634,8 +624,17 @@ export default function FlyerBlockInteractive({
         {/* <StyledActionIconContainer flyerDesign={flyerStyles}>
           <HiOutlineChatBubbleLeftEllipsis />
         </StyledActionIconContainer> */}
-        <StyledActionIconContainer flyerDesign={flyerStyles}>
-          <HiOutlineShare /> <small>Share</small>
+        {/* <StyledActionIconContainer
+          flyerDesign={flyerStyles}
+          onClick={handleEmailClick}
+        >
+          <HiOutlineEnvelope /> <small>Email</small>
+        </StyledActionIconContainer> */}
+        <StyledActionIconContainer
+          flyerDesign={flyerStyles}
+          onClick={handleLinkClick}
+        >
+          <HiOutlineLink /> <small>Share</small>
         </StyledActionIconContainer>
       </StyledActionContainer>
     </StyledFlyerBlock>

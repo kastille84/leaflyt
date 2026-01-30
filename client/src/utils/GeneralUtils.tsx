@@ -29,7 +29,7 @@ function getCategories(categories: any[]) {
 }
 function getCategoriesForSelect(
   categories: any[],
-  defaultCategoryText?: string
+  defaultCategoryText?: string,
 ) {
   const categoriesForSelect = [...categories].map((categoryObj: any) => ({
     value: categoryObj.category,
@@ -45,14 +45,14 @@ function getCategoriesForSelect(
 
 function getSubcategories(categories: any[], categoryToFind: string) {
   return categories.find(
-    (categoryObj: any) => categoryObj.category === categoryToFind
+    (categoryObj: any) => categoryObj.category === categoryToFind,
   ).subcategories;
 }
 
 function getSubcategoriesForSelect(
   categories: any,
   categoryToFind: string,
-  defaultSubcategoryText?: string
+  defaultSubcategoryText?: string,
 ) {
   const subcategories = categories
     .find((categoryObj: any) => categoryObj.category === categoryToFind)
@@ -139,6 +139,10 @@ export const keysBasedOnEnv = () => {
     };
   }
 };
+
+export function determineIsFullFlyer() {
+  return location.pathname.includes("fullFlyer");
+}
 
 export {
   shortenTitle,

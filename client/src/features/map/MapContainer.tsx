@@ -100,19 +100,19 @@ export default function MapContainer() {
     switch (planLimits.distance.limit!) {
       case 0.05:
         return ["m_tablet", "s_tablet", "l_mobile", "s_mobile"].includes(
-          responsiveVal
+          responsiveVal,
         )
           ? 11
           : 12;
       case 0.1:
         return ["m_tablet", "s_tablet", "l_mobile", "s_mobile"].includes(
-          responsiveVal
+          responsiveVal,
         )
           ? 10
           : 11;
       case 0.25:
         return ["m_tablet", "s_tablet", "l_mobile", "s_mobile"].includes(
-          responsiveVal
+          responsiveVal,
         )
           ? 9
           : 10;

@@ -40,6 +40,25 @@ const getOrCreateBoard = async (selectedPlace: NearbySearchPlaceResult) => {
   return board;
 };
 
+export const getFlyerById = async (id: string) => {
+  try {
+    const { data: flyer, error } = await supabase
+      .from("flyers")
+      .select(
+        `*, user(id, firstName, lastName, name, email, phone, website, address, typeOfUser)`,
+      )
+      .eq("id", id)
+      .single();
+    if (error) {
+      console.error(error);
+      throw new Error("Error getting flyer by id: " + error.message);
+    }
+    return flyer;
+  } catch (error: any) {
+    console.error(error);
+    throw new Error("Error getting flyer by id: " + error.message);
+  }
+};
 export const createUnregisteredFlyer = async (
   flyerData: DB_Flyer_Create,
   selectedPlace: NearbySearchPlaceResult,
@@ -130,6 +149,7 @@ export const createRegisteredFlyer = async (
         case "r":
           flyerData.postingMethod = "remote";
           break;
+        // #TODO: add bulk option
         case "rb":
           flyerData.postingMethod = "remoteBulk";
           break;
