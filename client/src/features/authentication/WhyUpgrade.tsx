@@ -159,7 +159,7 @@ export default function WhyUpgrade() {
           <HiOutlinePhoto />
         </StyledIconContainer>
         <StyledContentContainer>
-          <StyledHeading as="h3">More Image Uploads</StyledHeading>
+          <StyledHeading as="h3">More Image/Video Uploads</StyledHeading>
           <StyledText>
             Stand out with more Images. You have access to more image uploads
             than lower tiers.

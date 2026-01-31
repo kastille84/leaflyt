@@ -22,6 +22,7 @@ const StyledPlansItemsContainer = styled.div`
   justify-content: center;
   gap: 1.2rem;
   margin-top: 1.2rem;
+  min-height: 500px;
   max-height: 800px;
   overflow-y: auto;
 `;
@@ -67,7 +68,7 @@ export default function PlansModal() {
       boxShadow: "var(--shadow-lg)",
       padding: "3.2rem",
       width: ["s_tablet", "m_tablet", "l_mobile", "s_mobile"].includes(
-        responsiveVal
+        responsiveVal,
       )
         ? "95%"
         : "80%",

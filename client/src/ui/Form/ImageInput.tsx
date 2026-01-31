@@ -69,10 +69,10 @@ export default function ImageInput({
           }
           if (error) {
             console.log(error);
-            toast.error(error.message);
-            (cloudinaryWidgetRef.current as any).close();
+            toast.error(error.statusText);
+            // (cloudinaryWidgetRef.current as any).close();
           }
-        }
+        },
       );
     }
     (cloudinaryWidgetRef.current as any).open();
@@ -85,7 +85,7 @@ export default function ImageInput({
             htmlFor="title"
             className={`${errors["fileUrlArr"] && "error"}`}
           >
-            File Upload
+            File Upload (10mb max)
           </StyledLabel>
           <Button
             ref={uploadButtonRef}
