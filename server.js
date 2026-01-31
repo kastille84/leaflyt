@@ -13,7 +13,7 @@ const emailRoutes = require("./server/routes/emails");
 const stripeRoutes = require("./server/routes/stripe");
 const {
   deleteFlaggedFlyers,
-  deleteOldFlyers,
+  deleteExpiredFlyers,
 } = require("./server/controllers/flyers");
 
 const app = express();
@@ -33,16 +33,16 @@ app.use("/api/stripe", stripeRoutes);
 
 /****  C R O N   J O B S *****/
 // cron jobs - delete flagged flyers
-cron.schedule("* * * * *", () => {
-  console.log("running a task every minute");
+cron.schedule("0 5 * * *", () => {
+  console.log("running delete Flagged Flyers task at 5am every day");
   deleteFlaggedFlyers();
 });
 
 // TODO: turn this on once we've seeded a lot of flyers
 // cron jobs - delete old flyers
-// cron.schedule("* * * * *", () => {
-//   console.log("running a task every minute");
-//   deleteOldFlyers();
+// cron.schedule("0 5 * * *", () => {
+//   console.log("running delete Expired Flyers task at 5am every day");
+//   deleteExpiredFlyers();
 // });
 
 // general error handling

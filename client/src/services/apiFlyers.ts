@@ -11,8 +11,9 @@ import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
 import { getUserProfile } from "./apiUser";
 import { UploadApiResponse } from "cloudinary";
 import { assetUsageByFlyer, assetUsageByTemplate } from "./apiAssets";
-import { getBaseUrl } from "../utils/ServiceUtils";
+import { calculateEndDate, getBaseUrl } from "../utils/ServiceUtils";
 import { prepFlyerDataForAppropriateness } from "../utils/FlyerUtils";
+import dayjs from "dayjs";
 
 const getOrCreateBoard = async (selectedPlace: NearbySearchPlaceResult) => {
   // make a call to get the latest board data
@@ -71,7 +72,18 @@ export const createUnregisteredFlyer = async (
   try {
     const { data: newFlyer, error } = await supabase
       .from("flyers")
-      .insert([{ ...flyerData, place: selectedPlace.id, likes: 0 }]) // selectedPlace.id is the placeId of the board
+      .insert([
+        {
+          ...flyerData,
+          place: selectedPlace.id,
+          likes: 0,
+          // calculate end date
+          expires_at: calculateEndDate(
+            Date.now(),
+            flyerData.lifespan as number,
+          ),
+        },
+      ]) // selectedPlace.id is the placeId of the board
       .select("*")
       .single();
 
@@ -118,6 +130,11 @@ export const createRegisteredFlyer = async (
             hasComments: flyerData.hasComments,
             lifespan: flyerData.lifespan,
             likes: 0,
+            // calculate end date
+            expires_at: calculateEndDate(
+              Date.now(),
+              flyerData.lifespan as number,
+            ),
           },
         ])
         .select("*")
@@ -271,6 +288,7 @@ export const createFlyerFromTemplate = async (
     user: user.id,
     template: templateData.id,
     likes: 0,
+    expires_at: calculateEndDate(Date.now(), templateData.lifespan as number),
     // placeInfo: {
     //   displayName: selectedPlace.displayName.text,
     //   formattedAddress: selectedPlace.formattedAddress,
@@ -600,6 +618,8 @@ export const flagFlyer = async ({
           place: placeName,
           timestamp: new Date().toISOString(),
         },
+        // set flagged_at to current timestamp using dayjs
+        flaggedAt: dayjs().format("YYYY-MM-DD HH:mm:ssZZ"),
       })
       .eq("id", flyer.id)
       .select("*, template(*)")

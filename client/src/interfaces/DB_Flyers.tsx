@@ -68,18 +68,19 @@ export interface DB_Flyer_Create {
     reason: string;
     user: string;
   };
+  created_at?: string;
+  expires_at?: string;
+  flagged_at?: string;
 }
 
 interface DB_Flyer_Create_Unregistered extends DB_Flyer_Create {
   typeOfUser: "individual" | "business" | "organization" | "anonymous" | null;
 }
 
-export interface DB_Flyer_Create_Unregistered_Anonymous
-  extends DB_Flyer_Create_Unregistered {
+export interface DB_Flyer_Create_Unregistered_Anonymous extends DB_Flyer_Create_Unregistered {
   attestation: boolean;
 }
-export interface DB_Flyer_Create_Unregistered_Individual
-  extends DB_Flyer_Create_Unregistered {
+export interface DB_Flyer_Create_Unregistered_Individual extends DB_Flyer_Create_Unregistered {
   individual: {
     name: {
       firstName: string;
@@ -92,8 +93,7 @@ export interface DB_Flyer_Create_Unregistered_Individual
     };
   };
 }
-export interface DB_Flyer_Create_Unregistered_Business
-  extends DB_Flyer_Create_Unregistered {
+export interface DB_Flyer_Create_Unregistered_Business extends DB_Flyer_Create_Unregistered {
   business: {
     name: string;
     contact: {
@@ -104,8 +104,7 @@ export interface DB_Flyer_Create_Unregistered_Business
     };
   };
 }
-export interface DB_Flyer_Create_Unregistered_Organization
-  extends DB_Flyer_Create_Unregistered {
+export interface DB_Flyer_Create_Unregistered_Organization extends DB_Flyer_Create_Unregistered {
   organization: {
     name: string;
     contact: {
@@ -146,8 +145,10 @@ interface RemoveFlyerKeys {
   postingMethod?: "onLocation" | "remote" | "remoteBulk";
   placeInfo?: PlaceInfo;
 }
-export interface DB_Template
-  extends Omit<DB_Flyer_Create, keyof RemoveFlyerKeys> {
+export interface DB_Template extends Omit<
+  DB_Flyer_Create,
+  keyof RemoveFlyerKeys
+> {
   id: string | number;
 }
 

@@ -10,7 +10,7 @@ exports.deleteFlaggedFlyers = async (req, res, next) => {
       .select("*")
       .eq("flagged", true)
       // reads as "created_at < now() - 7 days"
-      .lt("created_at", dayjs().subtract(7, "day").format("YYYY-MM-DD"));
+      .lt("flagged_at", dayjs().subtract(7, "day").format("YYYY-MM-DD"));
     // .lt("created_at", dayjs().subtract(1, "month").format("YYYY-MM-DD"));
     // .lt("created_at", dayjs().subtract(4, "day").format("YYYY-MM-DD"));
 
@@ -32,13 +32,15 @@ exports.deleteFlaggedFlyers = async (req, res, next) => {
   }
 };
 
-exports.deleteOldFlyers = async (req, res, next) => {
+exports.deleteExpiredFlyers = async (req, res, next) => {
   try {
     // select all flyers that are older than 7 days
     const { data, error } = await supabase
       .from("flyers")
       .select("*")
-      .lt("created_at", dayjs().subtract(10, "days").format("YYYY-MM-DD"));
+      // expires_at < now()
+      .lt("expires_at", dayjs().format("YYYY-MM-DD"));
+    // .lt("expires_at", dayjs().subtract(10, "days").format("YYYY-MM-DD"));
     const flyerIds = data.map((flyer) => {
       return flyer.id;
     });
