@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
 import {
   DB_Flyer_Create_Unregistered_Business,
@@ -138,3 +139,8 @@ export function parseAdrAddress(adrString: string) {
     country: getVal("country-name"),
   };
 }
+
+// function that calculates the end date when given a start date as timestamp and a duration in weeks using dayjs
+export const calculateEndDate = (startDate: number, duration: number) => {
+  return dayjs(startDate).add(duration, "week").format("YYYY-MM-DD HH:mm:ssZZ");
+};

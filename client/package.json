@@ -28,6 +28,7 @@
     "chart.js": "^4.5.1",
     "cloudinary": "^2.7.0",
     "date-fns": "^4.1.0",
+    "dayjs": "^1.11.19",
     "quill": "^2.0.3",
     "react": "^19.1.0",
     "react-autocomplete-tagbox": "^1.0.1",
