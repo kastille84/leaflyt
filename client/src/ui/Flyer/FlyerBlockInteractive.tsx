@@ -520,6 +520,10 @@ export default function FlyerBlockInteractive({
     });
   }
 
+  function handleViewFullFlyer() {
+    navigate(`/dashboard/fullFlyer/${flyer.id}`);
+  }
+
   function renderTopContent() {
     return (
       <>
@@ -527,6 +531,7 @@ export default function FlyerBlockInteractive({
           {determineAvatarAndName()}
         </StyledAvatarContainer>
         <DropdownMenu>
+          <li onClick={handleViewFullFlyer}>View Flyer</li>
           {doesFlyerBelongToUser() && <li onClick={handleEditClick}>Edit</li>}
           {doesFlyerBelongToUser() && flyer.template && (
             <li onClick={() => navigate(`/dashboard/my-templates`)}>
