@@ -111,7 +111,7 @@ export default function MainNav() {
             to="/dashboard/statistics"
             className={registered ? "" : "disabled"}
           >
-            <HiOutlineChartPie /> <span>Statistics</span>
+            <HiOutlineChartPie /> <span>Stats & Data</span>
           </StyledNavLink>
         </li>
         <li>

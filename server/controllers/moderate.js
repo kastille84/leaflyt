@@ -31,16 +31,19 @@ exports.postModerate = async (req, res, next) => {
   let response;
 
   const filePromises = [];
+  const inputObj = [
+    {
+      type: "text",
+      text: message,
+    },
+  ];
+  if (fileUrls) {
+    inputObj.push(...fileUrls);
+  }
   try {
     const response = await openai.moderations.create({
       model: "omni-moderation-latest",
-      input: [
-        {
-          type: "text",
-          text: message,
-        },
-        ...fileUrls[0],
-      ],
+      input: inputObj,
     });
 
     // filePromises.push(
