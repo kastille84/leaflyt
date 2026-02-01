@@ -29,6 +29,7 @@ export default function TitleInput({
         id="title"
         {...register("title", {
           required: { value: true, message: "Title is required" },
+          maxLength: { value: 75, message: "Title must be less than 75 chars" },
         })}
         placeholder="Something Eye Catching..."
         hasError={Boolean(errors["title"])}

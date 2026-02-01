@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { useParams } from "react-router-dom";
@@ -9,6 +9,7 @@ import OverlaySpinner from "../../ui/OverlaySpinner";
 import FlyerBlockInteractive from "../../ui/Flyer/FlyerBlockInteractive";
 import Heading from "../../ui/Heading";
 import UpgradeText from "../../ui/UpgradeText";
+import { checkIfCurrentFlyerIsSaved } from "../../utils/FlyerUtils";
 
 const StyledSingleFlyerContainer = styled.div`
   width: 100%;
@@ -44,6 +45,12 @@ export default function SingleFlyer() {
     // enabled: !!id,
     gcTime: 0,
     staleTime: 0,
+  });
+
+  // isSaved state depends on saved flyers on user object
+  const [isSaved, setIsSaved] = useState(() => {
+    const saved_flyers_arr = user?.saved_flyers! || [];
+    return checkIfCurrentFlyerIsSaved(saved_flyers_arr, flyer);
   });
 
   console.log("user value", user);

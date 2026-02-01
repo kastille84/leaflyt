@@ -35,6 +35,9 @@ const StyledUl = styled.ul`
     /* text-align: center; */
     cursor: pointer;
     font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
     /* border: 1px solid var(--color-grey-200); */
   }
   & li:hover {

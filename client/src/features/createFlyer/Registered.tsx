@@ -398,7 +398,7 @@ export default function Registered({
                     />{" "}
                     Check this box to create a template
                   </StyledCheckboxContainer>
-                  {(templateWatch || !!type.match(/template/i)) && (
+                  {/* {(templateWatch || !!type.match(/template/i)) && (
                     <>
                       <FullNameInput
                         register={register}
@@ -409,7 +409,7 @@ export default function Registered({
                       />
                       <CommentsInput register={register} />
                     </>
-                  )}
+                  )} */}
                 </FormControl>
                 <FormControl>{/* Empty */}</FormControl>
               </FormControlRow>

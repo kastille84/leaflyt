@@ -80,7 +80,7 @@ export const createUnregisteredFlyer = async (
           // calculate end date
           expires_at: calculateEndDate(
             Date.now(),
-            flyerData.lifespan as number,
+            (flyerData.lifespan as number) || 1,
           ),
         },
       ]) // selectedPlace.id is the placeId of the board
@@ -616,10 +616,10 @@ export const flagFlyer = async ({
           reason,
           user: userId || "anonymous",
           place: placeName,
-          timestamp: new Date().toISOString(),
+          timestamp: dayjs().format("MM-DD-YYYY"),
         },
         // set flagged_at to current timestamp using dayjs
-        flaggedAt: dayjs().format("YYYY-MM-DD HH:mm:ssZZ"),
+        flagged_at: dayjs().format("YYYY-MM-DD HH:mm:ssZZ"),
       })
       .eq("id", flyer.id)
       .select("*, template(*)")
@@ -630,20 +630,14 @@ export const flagFlyer = async ({
       throw new Error("Error reporting the flyer: " + error.message);
     }
 
-    if (userId) {
-      const { data: userData, error: getUserError } =
-        await getUserProfile(userId);
-
+    if (flyer.user) {
+      // inform the flyer's user that their flyer has been reported
       await sendFlaggedFlyerEmail({
-        email: userData.email,
+        email: (flyer.user as Auth_User_Profile_Response).email,
         flyer: updatedFlyer,
       });
     }
 
-    // return await getLatestUserAfterChanges(
-    //   updatedFlyer?.user as string,
-    //   "flyer"
-    // );
     return updatedFlyer;
   } catch (error: any) {
     console.error(error);

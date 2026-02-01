@@ -95,6 +95,11 @@ export default function CtaInput({
             id="headline"
             {...register("callToAction.headline", {
               required: { value: true, message: "Headline is required" },
+              maxLength: {
+                value: 75,
+                message: "Headline must be less than 75 chars",
+              },
+
               validate: (value) => {
                 if (value === "") {
                   return "Headline is required";

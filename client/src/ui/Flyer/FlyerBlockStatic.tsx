@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import {
   HiOutlineChatBubbleLeftEllipsis,
   HiOutlineHandThumbUp,
+  HiOutlineLink,
   HiOutlineShare,
 } from "react-icons/hi2";
 import { useEffect, useState } from "react";
@@ -22,6 +23,7 @@ import {
 import ImageCarousel from "./SubComponents/ImageCarousel";
 import { Auth_User_Profile_Response } from "../../interfaces/Auth_User";
 import { useGlobalContext } from "../../context/GlobalContext";
+import toast from "react-hot-toast";
 
 const common = {
   style: css`
@@ -119,6 +121,7 @@ const StyledActionIconContainer = styled.div<{ flyerDesign: FlyerDesign }>`
   & svg {
     color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
   }
+  cursor: pointer;
 `;
 
 const StyledAvatarContainer = styled.div`
@@ -248,7 +251,7 @@ export default function FlyerBlockStatic({
     }
   }, [flyer]);
   const [contentType, setContentType] = useState<"info" | "contact" | "cta">(
-    "info"
+    "info",
   );
 
   function hasFiles() {
@@ -388,6 +391,16 @@ export default function FlyerBlockStatic({
     );
   }
 
+  function handleLinkClick() {
+    // copy to clipboard functionality
+    navigator.clipboard.writeText(
+      `${window.location.origin}/dashboard/fullFlyer/${flyer.id}`,
+    );
+    toast.success("Link copied to clipboard. \nShare link with others!", {
+      duration: 5000,
+    });
+  }
+
   return (
     <StyledFlyerBlock flyerDesign={flyerStyles}>
       {/* {hasFiles() && (
@@ -462,14 +475,17 @@ export default function FlyerBlockStatic({
         )}
       </StyledInfoContentContainer>
       <StyledActionContainer>
-        <StyledActionIconContainer flyerDesign={flyerStyles}>
+        {/* <StyledActionIconContainer flyerDesign={flyerStyles}>
           <HiOutlineHandThumbUp /> <small>Likes</small>
-        </StyledActionIconContainer>
+        </StyledActionIconContainer> */}
         {/* <StyledActionIconContainer flyerDesign={flyerStyles}>
           <HiOutlineChatBubbleLeftEllipsis />
         </StyledActionIconContainer> */}
-        <StyledActionIconContainer flyerDesign={flyerStyles}>
-          <HiOutlineShare /> <small>Share</small>
+        <StyledActionIconContainer
+          flyerDesign={flyerStyles}
+          onClick={handleLinkClick}
+        >
+          <HiOutlineLink /> <small>Click to Share</small>
         </StyledActionIconContainer>
       </StyledActionContainer>
     </StyledFlyerBlock>

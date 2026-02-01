@@ -33,6 +33,7 @@ app.use("/api/stripe", stripeRoutes);
 
 /****  C R O N   J O B S *****/
 // cron jobs - delete flagged flyers
+// cron.schedule("* * * * *", () => {
 cron.schedule("0 5 * * *", () => {
   console.log("running delete Flagged Flyers task at 5am every day");
   deleteFlaggedFlyers();

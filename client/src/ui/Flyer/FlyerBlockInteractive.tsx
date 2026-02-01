@@ -1,10 +1,14 @@
 import styled, { css } from "styled-components";
 
 import {
+  HiOutlineArrowTopRightOnSquare,
   HiOutlineBookmark,
   HiOutlineBookmarkSlash,
+  HiOutlineFlag,
   HiOutlineHandThumbUp,
   HiOutlineLink,
+  HiOutlinePencilSquare,
+  HiOutlineTrash,
 } from "react-icons/hi2";
 import { useEffect, useState } from "react";
 import { UNREGISTERED_FLYER_DESIGN_DEFAULT } from "../../constants";
@@ -276,6 +280,13 @@ export default function FlyerBlockInteractive({
     );
   });
 
+  // check saved if user was null then auto logged in
+  useEffect(() => {
+    if (user) {
+      setIsSaved(checkIfCurrentFlyerIsSaved(user?.saved_flyers!, flyer));
+    }
+  }, [user]);
+
   const navigate = useNavigate();
 
   function hasFiles() {
@@ -531,18 +542,34 @@ export default function FlyerBlockInteractive({
           {determineAvatarAndName()}
         </StyledAvatarContainer>
         <DropdownMenu>
-          <li onClick={handleViewFullFlyer}>View Flyer</li>
-          {doesFlyerBelongToUser() && <li onClick={handleEditClick}>Edit</li>}
-          {doesFlyerBelongToUser() && flyer.template && (
-            <li onClick={() => navigate(`/dashboard/my-templates`)}>
-              View Template
+          <li onClick={handleViewFullFlyer}>
+            <HiOutlineArrowTopRightOnSquare /> View Flyer
+          </li>
+          {doesFlyerBelongToUser() && (
+            <li onClick={handleEditClick}>
+              <HiOutlinePencilSquare /> Edit
             </li>
           )}
-          {user && !doesFlyerBelongToUser() && <li>Save</li>}
+          {doesFlyerBelongToUser() && flyer.template && (
+            <li onClick={() => navigate(`/dashboard/my-templates`)}>
+              <HiOutlineArrowTopRightOnSquare /> View Template
+            </li>
+          )}
+          {user && !doesFlyerBelongToUser() && (
+            <li>
+              <HiOutlineBookmark /> Save
+            </li>
+          )}
 
-          {doesFlyerBelongToUser() && <li onClick={handleDelete}>Delete</li>}
+          {doesFlyerBelongToUser() && (
+            <li onClick={handleDelete}>
+              <HiOutlineTrash /> Delete
+            </li>
+          )}
           {!doesFlyerBelongToUser() && (
-            <li onClick={handleInappropriate}>Inappropriate</li>
+            <li onClick={handleInappropriate}>
+              <HiOutlineFlag /> Inappropriate
+            </li>
           )}
         </DropdownMenu>
       </>
