@@ -33,16 +33,6 @@ export default function AssetUpload({
   const uploadButtonRef = useRef(null);
   const cloudinaryWidgetRef = useRef(null);
 
-  // const [fileUrlArr, setFileUrlArr] = useState<any>([]);
-
-  // useEffect(() => {
-  //   if (!getValues("fileUrlArr")?.length) {
-  //     setValue("fileUrlArr", []);
-  //   }
-  // }, []);
-
-  // const fileUrlArr = getValues("fileUrlArr");
-  // console.log("fileUrlArr", fileUrlArr);
   const openCloudinaryWidget = () => {
     if (!cloudinaryWidgetRef?.current && uploadButtonRef?.current) {
       cloudinaryWidgetRef.current = window.cloudinary.createUploadWidget(

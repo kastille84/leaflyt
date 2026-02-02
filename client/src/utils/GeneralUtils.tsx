@@ -111,7 +111,7 @@ export const keysBasedOnEnv = () => {
       },
       // Stripe
       stripe: {
-        publishableKey: "",
+        publishableKey: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD,
       },
     };
   } else {

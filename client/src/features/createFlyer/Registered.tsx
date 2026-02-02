@@ -34,6 +34,7 @@ import FlyerDesignerInput from "../../ui/Form/FlyerDesignerInput";
 import FormInfoAlert from "../../ui/Form/FormInfoAlert";
 import { DB_Flyers_Response, DB_Template } from "../../interfaces/DB_Flyers";
 import AssetsPreviewList from "../assets/AssetSelection/AssetsPreview/AssetsPreviewList";
+import OverlaySpinner from "../../ui/OverlaySpinner";
 
 const StyledRegisteredContainer = styled.div``;
 
@@ -186,6 +187,10 @@ export default function Registered({
             setIsOpenFlyerDrawer(false);
             setDrawerAction(null);
             setSelectedFlyer(null);
+            queryClient.invalidateQueries({
+              queryKey: ["board", selectedPlace?.id],
+              refetchType: "all",
+            });
             // update the user
             setUser(user);
           },
@@ -398,7 +403,7 @@ export default function Registered({
                     />{" "}
                     Check this box to create a template
                   </StyledCheckboxContainer>
-                  {/* {(templateWatch || !!type.match(/template/i)) && (
+                  {(templateWatch || !!type.match(/template/i)) && (
                     <>
                       <FullNameInput
                         register={register}
@@ -407,9 +412,9 @@ export default function Registered({
                         errors={errors}
                         textLimit={30}
                       />
-                      <CommentsInput register={register} />
+                      {/* <CommentsInput register={register} /> */}
                     </>
-                  )} */}
+                  )}
                 </FormControl>
                 <FormControl>{/* Empty */}</FormControl>
               </FormControlRow>
@@ -430,6 +435,11 @@ export default function Registered({
           </StyledFormContent>
         </Form>
       </StyledFormContainer>
+      {showSpinner && (
+        <OverlaySpinner
+          message={`${type.includes("edit") ? "Editing..." : "Creating..."}`}
+        />
+      )}
     </StyledRegisteredContainer>
   );
 }

@@ -8,6 +8,8 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import useRegisteredFlyer from "../../features/createFlyer/useRegisteredFlyer";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import OverlaySpinner from "../OverlaySpinner";
 
 const StyledButtonContainer = styled.div`
   margin-top: 2.4rem;
@@ -17,6 +19,7 @@ const StyledButtonContainer = styled.div`
 `;
 
 export default function DeleteFlyerTemplateModal() {
+  const [showSpinner, setShowSpinner] = useState(false);
   const {
     setUser,
     selectedTemplate,
@@ -55,6 +58,8 @@ export default function DeleteFlyerTemplateModal() {
   }
 
   async function handleDelete() {
+    setShowSpinner(true);
+
     if (selectedTemplate) {
       // delete template
       console.log("delete template");
@@ -67,6 +72,7 @@ export default function DeleteFlyerTemplateModal() {
         },
         onError: (error) => {
           toast.error("Flyer deletion failed! Try again.");
+          setShowSpinner(false);
         },
       });
     } else if (selectedFlyer) {
@@ -77,14 +83,15 @@ export default function DeleteFlyerTemplateModal() {
           // update the user
           setUser(user);
           toast.success("Flyer deleted!");
-          handleCancel();
           // invalidate queries to update the board
           queryClient.invalidateQueries({
             queryKey: ["board", id],
           });
+          handleCancel();
         },
         onError: (error) => {
           toast.error("Flyer deletion failed! Try again.");
+          setShowSpinner(false);
         },
       });
     }
@@ -117,6 +124,7 @@ export default function DeleteFlyerTemplateModal() {
           Delete
         </Button>
       </StyledButtonContainer>
+      {showSpinner && <OverlaySpinner message={"Deleting..."} />}
     </Modal>
   );
 }

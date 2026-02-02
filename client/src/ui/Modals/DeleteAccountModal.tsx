@@ -10,7 +10,6 @@ import toast from "react-hot-toast";
 import OverlaySpinner from "../OverlaySpinner";
 import { useState } from "react";
 import useAssetMutations from "../../features/assets/useAssetMutations";
-import { set } from "react-hook-form";
 import useSignup from "../../features/authentication/useSignup";
 
 const StyledSubmitError = styled(Heading)`
@@ -115,6 +114,8 @@ export default function DeleteAccountModal() {
       navigate("/");
     } catch (error) {
       console.error(error);
+      setShowSpinner(false);
+      setSubmitError("Something went wrong. Please try again.");
     }
   }
 

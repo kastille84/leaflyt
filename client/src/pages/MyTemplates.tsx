@@ -44,7 +44,7 @@ export default function MyTemplates() {
 
   return (
     <StyledMyTemplates>
-      {userLimits.templates.limit <= (user?.templates?.length || 0) && (
+      {userLimits.templates.limit < (user?.templates?.length || 0) && (
         <LimitExceededWarning text="You have exceeded your template limit. Please remove some templates or upgrade your plan." />
       )}
       <StyledHeadingContainer>

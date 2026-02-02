@@ -79,6 +79,7 @@ export default function CancelSubscriptionModal() {
   }
 
   async function performCancelSubscriptionAction() {
+    setShowSpinner(true);
     try {
       if (cancelSubscriptionModalType === "onPayment") {
         console.log("cancel signup");
@@ -89,7 +90,7 @@ export default function CancelSubscriptionModal() {
           {
             onSuccess: () => {
               toast.success(
-                "Cancelled payment successfully. \nImportant: \nPlease verify your email and log in."
+                "Cancelled payment successfully. \nImportant: \nPlease verify your email and log in.",
               );
               setShowCancelSubscriptionModal(false);
               setCancelSubscriptionModalType(null);
@@ -102,7 +103,7 @@ export default function CancelSubscriptionModal() {
               toast.error(error.message);
               setSubmitError(error.message);
             },
-          }
+          },
         );
       } else if (cancelSubscriptionModalType === "onAccount") {
         console.log("cancel onAccount");
@@ -121,7 +122,7 @@ export default function CancelSubscriptionModal() {
                 {
                   onSuccess: ({ user }) => {
                     toast.success(
-                      "Cancelled subscription successfully. \nYou are on Seed plan now."
+                      "Cancelled subscription successfully. \nYou are on Seed plan now.",
                     );
                     setUser(user);
                     setShowCancelSubscriptionModal(false);
@@ -131,7 +132,7 @@ export default function CancelSubscriptionModal() {
                     setBottomSlideInType(null);
                     navigate("/dashboard/home");
                   },
-                }
+                },
               );
             },
             onError: (error: any) => {
@@ -139,11 +140,12 @@ export default function CancelSubscriptionModal() {
               toast.error(error.message);
               setSubmitError(error.message);
             },
-          }
+          },
         );
       }
     } catch (error) {
       console.error(error);
+      setShowSpinner(false);
     }
   }
 

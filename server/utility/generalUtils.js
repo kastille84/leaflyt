@@ -21,7 +21,10 @@ exports.keysBasedOnEnv = () => {
       },
       // Stripe
       stripe: {
-        publishableKey: "",
+        secretKey: process.env.STRIPE_SECRET_KEY_PROD,
+        price_garden: process.env.STRIPE_PRICE_GARDEN_PROD,
+        price_grove: process.env.STRIPE_PRICE_GROVE_PROD,
+        price_forest: process.env.STRIPE_PRICE_FOREST_PROD,
       },
       openai: {},
     };
@@ -47,7 +50,7 @@ exports.keysBasedOnEnv = () => {
       },
       // Stripe
       stripe: {
-        publishableKey: process.env.STRIPE_SECRET_KEY_TEST,
+        secretKey: process.env.STRIPE_SECRET_KEY_TEST,
         price_garden: process.env.STRIPE_PRICE_GARDEN,
         price_grove: process.env.STRIPE_PRICE_GROVE,
         price_forest: process.env.STRIPE_PRICE_FOREST,

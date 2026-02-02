@@ -130,11 +130,6 @@ export const createRegisteredFlyer = async (
             hasComments: flyerData.hasComments,
             lifespan: flyerData.lifespan,
             likes: 0,
-            // calculate end date
-            expires_at: calculateEndDate(
-              Date.now(),
-              flyerData.lifespan as number,
-            ),
           },
         ])
         .select("*")
@@ -192,6 +187,11 @@ export const createRegisteredFlyer = async (
           postingMethod: flyerData.postingMethod || "onLocation",
           lifespan: flyerData.lifespan,
           likes: 0,
+          // calculate end date
+          expires_at: calculateEndDate(
+            Date.now(),
+            flyerData.lifespan as number,
+          ),
         },
       ])
       .select("*")

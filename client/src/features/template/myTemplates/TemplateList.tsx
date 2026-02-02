@@ -114,7 +114,11 @@ export default function TemplateList() {
               Flyer(s)
             </StyledSmall>
           </StyledTemplateHeader>
-          <FlyerBlockStatic key={template.id} flyer={template} />
+          <FlyerBlockStatic
+            key={template.id}
+            flyer={template}
+            redeemable={true}
+          />
         </StyledTemplateListItem>
       ))}
     </StyledTemplateListContainer>
