@@ -542,12 +542,13 @@ export const saveFlyer = async (userId: number | string, flyerId: string) => {
 export const removeSavedFlyer = async (
   userId: number | string,
   flyerId: number | string,
+  type: 'flyer' | 'id'
 ) => {
   try {
     const { error } = await supabase
       .from("saved_flyers")
       .delete()
-      .eq(typeof flyerId === "string" ? "flyer" : "id", flyerId);
+      .eq(type === "flyer" ? "flyer" : "id", flyerId);
     if (error) {
       console.error(error);
       throw new Error("Error removing the saved flyer: " + error.message);

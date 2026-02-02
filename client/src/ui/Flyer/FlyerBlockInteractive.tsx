@@ -459,16 +459,19 @@ export default function FlyerBlockInteractive({
   async function handleUnsaveClick() {
     if (user) {
       setIsSaved(false);
-      removeSavedFlyerFn(flyer.id!, {
-        onSuccess: ({ user }) => {
-          // update the user
-          setUser(user);
-          toast.success("Flyer unsaved!");
+      removeSavedFlyerFn(
+        { flyerId: flyer.id!, type: "flyer" },
+        {
+          onSuccess: ({ user }) => {
+            // update the user
+            setUser(user);
+            toast.success("Flyer unsaved!");
+          },
+          onError: (error) => {
+            toast.error(error.message);
+          },
         },
-        onError: (error) => {
-          toast.error(error.message);
-        },
-      });
+      );
     }
   }
   function doesFlyerBelongToUser() {

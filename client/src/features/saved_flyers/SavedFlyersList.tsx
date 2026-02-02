@@ -8,7 +8,7 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import FlyerBlockStatic from "../../ui/Flyer/FlyerBlockStatic";
 import { HiOutlinePencilSquare, HiOutlineXMark } from "react-icons/hi2";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useRegisteredFlyer from "../createFlyer/useRegisteredFlyer";
 import { useResponsiveWidth } from "../../hooks/useResponsiveWidth";
 
@@ -20,6 +20,7 @@ import {
 } from "../../utils/GeneralUtils";
 import categoriesObj from "../../data/categories";
 import Input from "../../ui/Input";
+import OverlaySpinner from "../../ui/OverlaySpinner";
 
 const StyledSavedFlyersListContainer = styled.div`
   height: 100%;
@@ -122,13 +123,14 @@ const StyledSavedFlyersListItem = styled.div`
   } */
 `;
 export default function SavedFlyersList() {
+  const [showSpinner, setShowSpinner] = useState(false);
   const { user, setUser } = useGlobalContext();
   const { removeSavedFlyerFn } = useRegisteredFlyer();
   const responsiveVal = useResponsiveWidth();
 
   const responsiveItemStyle = {
     alignItems: ["s_tablet", "m_tablet", "l_mobile", "s_mobile"].includes(
-      responsiveVal
+      responsiveVal,
     )
       ? "center"
       : "start",
@@ -171,16 +173,22 @@ export default function SavedFlyersList() {
     }
   }, [filterOnWatch]);
   async function removeSavedFlyer(id: number, toastMessage: string) {
-    removeSavedFlyerFn(id, {
-      onSuccess: ({ user }) => {
-        // update the user
-        setUser(user);
-        toast.success(toastMessage);
+    setShowSpinner(true);
+    removeSavedFlyerFn(
+      { flyerId: id, type: "id" },
+      {
+        onSuccess: ({ user }) => {
+          // update the user
+          setUser(user);
+          setShowSpinner(false);
+          toast.success(toastMessage);
+        },
+        onError: (error) => {
+          toast.error(error.message);
+          setShowSpinner(false);
+        },
       },
-      onError: (error) => {
-        toast.error(error.message);
-      },
-    });
+    );
   }
 
   return (
@@ -217,7 +225,7 @@ export default function SavedFlyersList() {
                     register={register}
                     options={getSubcategoriesForSelect(
                       categoriesObj,
-                      categoryWatch
+                      categoryWatch,
                     )}
                     value={subcategoryWatch}
                     errors={errors}
@@ -249,7 +257,7 @@ export default function SavedFlyersList() {
                           onClick={() =>
                             removeSavedFlyer(
                               savedFlyer.id,
-                              "Flyer removed from saved flyers"
+                              "Flyer removed from saved flyers",
                             )
                           }
                         />
@@ -263,7 +271,7 @@ export default function SavedFlyersList() {
                         }
                       />
                     </StyledSavedFlyersListItem>
-                  )
+                  ),
                 )}
               {determineWhichFlyersToUse().length === 0 && (
                 <StyledSmall as="h2">No flyers found</StyledSmall>
@@ -272,6 +280,7 @@ export default function SavedFlyersList() {
           </ResponsiveMasonry>
         </div>
       )}
+      {showSpinner && <OverlaySpinner message="Removing flyer..." />}
     </StyledSavedFlyersListContainer>
   );
 }
