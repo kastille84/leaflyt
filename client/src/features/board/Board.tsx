@@ -23,8 +23,18 @@ import Input from "../../ui/Input";
 import useGetUserLimits from "../../hooks/useGetUserLimits";
 import LimitExceededWarning from "../../ui/LimitExceededWarning";
 import UpgradeText from "../../ui/UpgradeText";
+import { HiOutlineInformationCircle } from "react-icons/hi2";
 
 const StyledBoardContainer = styled.div`
+  position: relative;
+  & .info-icon {
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--color-brand-600);
+  }
   & .category,
   & .subcategory {
     font-size: 1.4rem;
@@ -108,6 +118,7 @@ export default function Board() {
     hasFlyerAtLocation,
     setHasFlyerAtLocation,
     anonUserPostings,
+    setShowMerchantDisclaimerModal,
   } = useGlobalContext();
   const [shouldGetPlace, setShouldGetPlace] = useState(false);
 
@@ -132,6 +143,9 @@ export default function Board() {
     return originalFlyers;
   }
 
+  function handleMerchantInfoClick() {
+    setShowMerchantDisclaimerModal(true);
+  }
   useGetPlaceByPlaceId(id!, shouldGetPlace);
 
   useEffect(() => {
@@ -178,6 +192,11 @@ export default function Board() {
   return (
     <>
       <StyledBoardContainer data-testid="board-container">
+        <HiOutlineInformationCircle
+          className="info-icon"
+          size={25}
+          onClick={handleMerchantInfoClick}
+        />
         <div data-testid="board" style={{ width: "90%", margin: "auto" }}>
           {!planLimits?.onLocationPosting.isAllowed && (
             <>

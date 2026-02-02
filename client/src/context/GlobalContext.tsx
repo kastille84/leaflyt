@@ -115,6 +115,8 @@ export type ContextType = {
   customerId: string | null;
   setShowDeleteAccountModal: React.Dispatch<React.SetStateAction<boolean>>;
   showDeleteAccountModal: boolean;
+  setShowMerchantDisclaimerModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showMerchantDisclaimerModal: boolean;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -179,6 +181,8 @@ const GlobalContext = createContext<ContextType>({
   customerId: null,
   setShowDeleteAccountModal: () => {},
   showDeleteAccountModal: false,
+  setShowMerchantDisclaimerModal: () => {},
+  showMerchantDisclaimerModal: false,
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -241,6 +245,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [customerId, setCustomerId] = useState<string | null>(null);
   const [showDeleteAccountModal, setShowDeleteAccountModal] =
     useState<boolean>(false);
+  const [showMerchantDisclaimerModal, setShowMerchantDisclaimerModal] =
+    useState<boolean>(false);
 
   const {
     getUserGeo,
@@ -301,6 +307,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         customerId,
         setShowDeleteAccountModal,
         showDeleteAccountModal,
+        showMerchantDisclaimerModal,
+        setShowMerchantDisclaimerModal,
         // Auth
         isLoggedIn,
         setIsLoggedIn,

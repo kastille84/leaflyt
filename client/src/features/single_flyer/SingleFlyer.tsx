@@ -47,12 +47,6 @@ export default function SingleFlyer() {
     staleTime: 0,
   });
 
-  // isSaved state depends on saved flyers on user object
-  const [isSaved, setIsSaved] = useState(() => {
-    const saved_flyers_arr = user?.saved_flyers! || [];
-    return checkIfCurrentFlyerIsSaved(saved_flyers_arr, flyer);
-  });
-
   console.log("user value", user);
   if (isLoadingBoard) return <OverlaySpinner message="Getting the flyer" />;
 

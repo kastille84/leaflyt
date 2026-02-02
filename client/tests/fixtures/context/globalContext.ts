@@ -60,4 +60,6 @@ export const mockUseGlobalContextReturnObj = {
   customerId: null,
   setShowDeleteAccountModal: () => {},
   showDeleteAccountModal: false,
+  setShowMerchantDisclaimerModal: () => {},
+  showMerchantDisclaimerModal: false,
 };

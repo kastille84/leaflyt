@@ -29,6 +29,7 @@ import CancelSubscriptionModal from "./ui/Modals/CancelSubscriptionModal";
 import DeleteAccountModal from "./ui/Modals/DeleteAccountModal";
 import { keysBasedOnEnv } from "./utils/GeneralUtils";
 import SingleFlyer from "./features/single_flyer/SingleFlyer";
+import MerchantDisclaimerModal from "./ui/Modals/MerchantDisclaimerModal";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -75,6 +76,7 @@ function App() {
               <LoginModal />
               <TermsModal />
               <PlansModal />
+              <MerchantDisclaimerModal />
               <CancelSubscriptionModal />
               <DeleteAccountModal />
               <FlyerSlideIn />
