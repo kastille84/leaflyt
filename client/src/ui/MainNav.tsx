@@ -25,6 +25,7 @@ const NavList = styled.ul`
 `;
 
 const StyledNavLink = styled(NavLink)`
+  border: 1px solid var(--color-blue-100);
   &:link,
   &:visited {
     display: flex;
@@ -43,6 +44,10 @@ const StyledNavLink = styled(NavLink)`
     background-color: var(--color-grey-50);
     border-radius: var(--border-radius-sm);
     border: 1px solid var(--color-blue-100);
+  }
+
+  &:active {
+    background-color: #fff;
   }
 
   &.disabled {

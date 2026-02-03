@@ -98,12 +98,24 @@ exports.sendFlaggedFlyerEmail = async (req, res, next) => {
     if (flyer.template) {
       variables["v:templateName"] = flyer.template.templateName;
     }
+    // send to user
     const data = await mailgunClient.messages.create(
       keysBasedOnEnv().mailgun.domain,
       {
         from: "support@" + keysBasedOnEnv().mailgun.domain,
         to: email,
         subject: "Your Flyer was Flagged",
+        template: `FlaggedFlyer`,
+        ...variables,
+      },
+    );
+    // send to leaflit team
+    const data2 = await mailgunClient.messages.create(
+      keysBasedOnEnv().mailgun.domain,
+      {
+        from: "support@" + keysBasedOnEnv().mailgun.domain,
+        to: "support@" + keysBasedOnEnv().mailgun.domain,
+        subject: "Review - Flagged Flyer - " + flyer.id,
         template: `FlaggedFlyer`,
         ...variables,
       },

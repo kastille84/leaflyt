@@ -62,4 +62,6 @@ export const mockUseGlobalContextReturnObj = {
   showDeleteAccountModal: false,
   setShowMerchantDisclaimerModal: () => {},
   showMerchantDisclaimerModal: false,
+  setShowDcmaModal: () => {},
+  showDcmaModal: false,
 };

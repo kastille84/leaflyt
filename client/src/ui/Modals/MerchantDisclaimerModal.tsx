@@ -1,14 +1,10 @@
 import styled from "styled-components";
 
 import Modal from "react-modal";
-import Heading from "../Heading";
 import Button from "../Button";
 import { useGlobalContext } from "../../context/GlobalContext";
 
-import TermsOfUse from "../../partials/TermsOfUse";
 import { useResponsiveWidth } from "../../hooks/useResponsiveWidth";
-import PrivacyPolicy from "../../partials/PrivacyPolicy";
-import CommunityGuidelines from "../../partials/CommunityGuidelines";
 
 const StyledContentContainer = styled.div`
   /* width: 80%; */

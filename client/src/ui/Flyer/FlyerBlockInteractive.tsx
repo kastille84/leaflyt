@@ -255,6 +255,7 @@ export default function FlyerBlockInteractive({
     setIsOpenBottomSlideIn,
     likedContextSessionFlyers,
     setShowFlaggedModal,
+    setShowDcmaModal,
   } = useGlobalContext();
 
   const { likeFlyerFn } = useCreateUnregisteredFlyer();
@@ -534,6 +535,10 @@ export default function FlyerBlockInteractive({
     });
   }
 
+  function handleCopyright() {
+    setShowDcmaModal(true);
+  }
+
   function handleViewFullFlyer() {
     navigate(`/dashboard/fullFlyer/${flyer.id}`);
   }
@@ -558,21 +563,19 @@ export default function FlyerBlockInteractive({
               <HiOutlineArrowTopRightOnSquare /> View Template
             </li>
           )}
-          {user && !doesFlyerBelongToUser() && (
-            <li>
-              <HiOutlineBookmark /> Save
-            </li>
-          )}
-
           {doesFlyerBelongToUser() && (
             <li onClick={handleDelete}>
               <HiOutlineTrash /> Delete
             </li>
           )}
+          {!doesFlyerBelongToUser() && <hr />}
           {!doesFlyerBelongToUser() && (
             <li onClick={handleInappropriate}>
               <HiOutlineFlag /> Inappropriate
             </li>
+          )}
+          {!doesFlyerBelongToUser() && (
+            <li onClick={handleCopyright}>&copy; &nbsp; Copyright</li>
           )}
         </DropdownMenu>
       </>
