@@ -89,7 +89,6 @@ export default function ActionMenu() {
     hasFlyerAtLocation,
     isSelectingNewPlace,
     setIsSelectingNewPlace,
-    anonUserPostings,
     setShowMerchantDisclaimerModal,
   } = useGlobalContext();
 
@@ -167,23 +166,6 @@ export default function ActionMenu() {
         </div>
       );
     }
-    // else {
-    //   // action to find nearest place
-    //   // only here if for some reason you are on the dashboard and don't have a selected place
-    //   return (
-    //     <div>
-    //       <Button
-    //         size="small"
-    //         onClick={() => {
-    //           setIsSelectingNewPlace(true);
-    //           getUserGeo();
-    //         }}
-    //       >
-    //         Open Board Near You
-    //       </Button>
-    //     </div>
-    //   );
-    // }
   }
 
   return (

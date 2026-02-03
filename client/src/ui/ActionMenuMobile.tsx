@@ -9,6 +9,7 @@ import LocationSelection from "../features/location/LocationSelection";
 import { supabase } from "../services/supabase";
 import CreateFlyerButton from "./Flyer/CreateFlyerButton";
 import { useSessionStorageState } from "../hooks/useSessionStorageState";
+import { HiOutlineInformationCircle } from "react-icons/hi2";
 
 const StyledActionMenu = styled.div`
   grid-column: 1 / -1;
@@ -43,6 +44,17 @@ const StyledAvatar = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 100%;
+`;
+
+const StyledAddressContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  & svg {
+    color: var(--color-orange-700);
+    font-size: 1.6rem;
+    cursor: pointer;
+  }
 `;
 
 const StyledAddress = styled.div`
@@ -84,12 +96,13 @@ export default function ActionMenuMobile() {
     hasFlyerAtLocation,
     isSelectingNewPlace,
     setIsSelectingNewPlace,
+    setShowMerchantDisclaimerModal,
   } = useGlobalContext();
 
   const navigate = useNavigate();
   const [likedSessionFlyers, setLikedSessionFlyers] = useSessionStorageState(
     [],
-    "likedFlyers"
+    "likedFlyers",
   );
 
   useEffect(() => {}, [selectedPlace]);
@@ -147,23 +160,6 @@ export default function ActionMenuMobile() {
         </div>
       );
     }
-    // else {
-    //   // action to find nearest place
-    //   // only here if for some reason you are on the dashboard and don't have a selected place
-    //   return (
-    //     <div>
-    //       <Button
-    //         size="small"
-    //         onClick={() => {
-    //           setIsSelectingNewPlace(true);
-    //           getUserGeo();
-    //         }}
-    //       >
-    //         Open Board Near You
-    //       </Button>
-    //     </div>
-    //   );
-    // }
   }
 
   return (
@@ -196,9 +192,13 @@ export default function ActionMenuMobile() {
               <p>{selectedPlace?.displayName.text}</p>
               <p>{selectedPlace?.formattedAddress}</p>
               <VerySmall>
-                * Establishment is not directly involved with this board
+                Leaflit Virtual Board is not affiliated with this physical
+                location.
               </VerySmall>
             </div>
+            <HiOutlineInformationCircle
+              onClick={() => setShowMerchantDisclaimerModal(true)}
+            />
           </StyledAddress>
         )}
       </div>

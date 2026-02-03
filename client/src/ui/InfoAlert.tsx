@@ -15,6 +15,11 @@ const StyledInfoAlertContainer = styled.div`
     display: flex;
     align-items: center;
     gap: 0.8rem;
+
+    & span {
+      display: flex;
+      align-items: center;
+    }
   }
 
   & p {

@@ -31,7 +31,7 @@ const StyledBoardContainer = styled.div`
     position: absolute;
     top: 0;
     right: 1rem;
-    font-size: 1.8rem;
+    font-size: 2.4rem;
     cursor: pointer;
     color: var(--color-brand-600);
   }
@@ -194,7 +194,7 @@ export default function Board() {
       <StyledBoardContainer data-testid="board-container">
         <HiOutlineInformationCircle
           className="info-icon"
-          size={25}
+          // size={25}
           onClick={handleMerchantInfoClick}
         />
         <div data-testid="board" style={{ width: "90%", margin: "auto" }}>

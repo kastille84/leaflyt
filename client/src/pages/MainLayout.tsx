@@ -27,6 +27,10 @@ const StyledMainLayout = styled.main`
   @media (max-width: 59em) {
     grid-template-columns: 1fr;
   }
+  @media (max-height: 59em) {
+    height: 800px;
+    overflow-y: auto;
+  }
 `;
 
 const StyledMainContentContainer = styled.div`

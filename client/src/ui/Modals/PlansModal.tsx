@@ -25,6 +25,10 @@ const StyledPlansItemsContainer = styled.div`
   min-height: 500px;
   max-height: 800px;
   overflow-y: auto;
+  @media (max-height: 59em) {
+    height: 60vh;
+    min-height: unset;
+  }
 `;
 
 const StyledButtonContainer = styled.div`

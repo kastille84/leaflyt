@@ -61,7 +61,7 @@ export default function SingleFlyer() {
   return (
     <StyledSingleFlyerContainer>
       <div>
-        <Heading as={"h2"}>Single Flyer View</Heading>
+        <Heading as={"h2"}>Flyer View</Heading>
         {!user && (
           <small>
             <UpgradeText
