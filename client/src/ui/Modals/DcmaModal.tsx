@@ -10,6 +10,10 @@ const StyledContentContainer = styled.div`
   /* width: 80%; */
   height: 80vh;
   overflow-y: auto;
+  @media (max-height: 59em) {
+    height: 60vh;
+    min-height: unset;
+  }
 `;
 
 const StyledMain = styled.main`
