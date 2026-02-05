@@ -112,8 +112,8 @@ export default function WhyRegister() {
       <div>
         <StyledTopHeading as="h2">Why Signup?</StyledTopHeading>
         <StyledText>
-          When you signup, you have a chance to access these features based on
-          your chosen tier:
+          When you signup, you could access these features based on your chosen
+          tier:
         </StyledText>
       </div>
       <StyledArticleContainer>

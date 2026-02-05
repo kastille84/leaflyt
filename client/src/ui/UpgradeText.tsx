@@ -15,10 +15,12 @@ export default function UpgradeText({
   text,
   type = "upgrade",
   btnText = "Learn more",
+  children,
 }: {
   text?: string;
   type?: "upgrade" | "signup" | "changePlan";
   btnText?: string;
+  children?: React.ReactNode;
 }) {
   const displayText = text || "Upgrade to get more features";
 
@@ -30,12 +32,22 @@ export default function UpgradeText({
 
   return (
     <StyledUpgradeTextContainer data-testid="upgrade-text-container">
-      <p>
-        {displayText}{" "}
-        <StyledLearnMore onClick={handleLearnMore}>
-          {btnText} &gt;
-        </StyledLearnMore>
-      </p>
+      {children && (
+        <p>
+          {children}{" "}
+          <StyledLearnMore onClick={handleLearnMore}>
+            {btnText} &gt;
+          </StyledLearnMore>
+        </p>
+      )}
+      {!children && (
+        <p>
+          {displayText}{" "}
+          <StyledLearnMore onClick={handleLearnMore}>
+            {btnText}&nbsp; &gt;
+          </StyledLearnMore>
+        </p>
+      )}
     </StyledUpgradeTextContainer>
   );
 }

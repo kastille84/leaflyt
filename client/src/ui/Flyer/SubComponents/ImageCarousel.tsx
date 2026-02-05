@@ -17,6 +17,11 @@ const StyledFigure = styled.figure<{
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  @media (max-height: 34em) {
+    width: 50%;
+    height: auto;
+    margin: auto;
+  }
 `;
 const StyledCarouselContainer = styled.div<{ bgColor: string }>`
   & .react-multi-carousel-item {
