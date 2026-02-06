@@ -43,6 +43,7 @@ const StyledSingleFlyerContainer = styled.div`
     text-transform: capitalize;
     font-size: 1.8rem;
     margin-top: 2.4rem;
+    color: var(--color-orange-600);
   }
 `;
 

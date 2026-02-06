@@ -104,14 +104,18 @@ const StyledInfoContentContainer = styled.div`
   background-color: #fff;
 `;
 
-const StyledActionContainer = styled.section`
+const StyledActionContainer = styled.section<{ flyerDesign: FlyerDesign }>`
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 2.4rem;
-  border-top: 1px solid var(--color-grey-200);
   padding: 1rem 2.4rem;
   background-color: #fff;
+  border-top: 1px solid var(--color-grey-200);
+  border-bottom-left-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderBottomLeftRadius}px;
+  border-bottom-right-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderBottomRightRadius}px;
 `;
 
 const StyledActionIconContainer = styled.div<{ flyerDesign: FlyerDesign }>`
@@ -392,6 +396,8 @@ export default function FlyerBlockStatic({
   }
 
   function handleLinkClick() {
+    // if location contains 'template' then return
+    if (location.pathname.includes("template")) return;
     // copy to clipboard functionality
     navigator.clipboard.writeText(
       `${window.location.origin}/dashboard/fullFlyer/${flyer.id}`,
@@ -474,7 +480,7 @@ export default function FlyerBlockStatic({
           />
         )}
       </StyledInfoContentContainer>
-      <StyledActionContainer>
+      <StyledActionContainer flyerDesign={flyerStyles}>
         {/* <StyledActionIconContainer flyerDesign={flyerStyles}>
           <HiOutlineHandThumbUp /> <small>Likes</small>
         </StyledActionIconContainer> */}
@@ -485,7 +491,7 @@ export default function FlyerBlockStatic({
           flyerDesign={flyerStyles}
           onClick={handleLinkClick}
         >
-          <HiOutlineLink /> <small>Click to Share</small>
+          <HiOutlineLink /> <small> Share</small>
         </StyledActionIconContainer>
       </StyledActionContainer>
     </StyledFlyerBlock>

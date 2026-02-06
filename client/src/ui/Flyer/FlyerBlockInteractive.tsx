@@ -100,14 +100,18 @@ const StyledInfoContentContainer = styled.div`
   background-color: #fff;
 `;
 
-const StyledActionContainer = styled.section`
+const StyledActionContainer = styled.section<{ flyerDesign: FlyerDesign }>`
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 2.4rem;
-  border-top: 1px solid var(--color-grey-200);
   padding: 1rem 2.4rem;
   background-color: #fff;
+  border-top: 1px solid var(--color-grey-200);
+  border-bottom-left-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderBottomLeftRadius}px;
+  border-bottom-right-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderBottomRightRadius}px;
 `;
 
 const StyledActionIconContainer = styled.div<{ flyerDesign: FlyerDesign }>`
@@ -559,7 +563,7 @@ export default function FlyerBlockInteractive({
             </li>
           )}
           {doesFlyerBelongToUser() && flyer.template && (
-            <li onClick={() => navigate(`/dashboard/my-templates`)}>
+            <li onClick={() => navigate(`/dashboard/templates`)}>
               <HiOutlineArrowTopRightOnSquare /> View Template
             </li>
           )}
@@ -635,7 +639,7 @@ export default function FlyerBlockInteractive({
           <CTA flyer={flyer} belongsToUser={doesFlyerBelongToUser()} />
         )}
       </StyledInfoContentContainer>
-      <StyledActionContainer>
+      <StyledActionContainer flyerDesign={flyerStyles}>
         {!isSaved && !doesFlyerBelongToUser() && (
           <StyledActionIconContainer
             flyerDesign={flyerStyles}

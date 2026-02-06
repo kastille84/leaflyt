@@ -191,7 +191,7 @@ export default function ActionMenu() {
         <div>
           <Button
             size="small"
-            variation="secondary"
+            variation="primary"
             onClick={() => {
               setIsSelectingNewPlace(true);
               getUserGeo();

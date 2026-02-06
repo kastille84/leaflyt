@@ -169,7 +169,7 @@ export default function ActionMenuMobile() {
           <div>
             <Button
               size="small"
-              variation="secondary"
+              variation="primary"
               onClick={() => {
                 setIsSelectingNewPlace(true);
                 getUserGeo();
