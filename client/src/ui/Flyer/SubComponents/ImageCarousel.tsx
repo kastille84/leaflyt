@@ -121,9 +121,7 @@ export default function ImageCarousel({
             key={index}
             onClick={() => handleImageClick(filesToUse!)}
             height={heightToUse}
-            backgroundColor={
-              file.resource_type === "video" ? bgColor : "var(--color-grey-75)"
-            }
+            backgroundColor={file.resource_type === "video" ? bgColor : "#fff"}
           >
             {file.resource_type === "video" && (
               <video

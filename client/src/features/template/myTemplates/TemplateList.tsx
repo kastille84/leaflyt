@@ -63,7 +63,7 @@ const StyledTemplateListItem = styled.div`
   gap: 1.6rem;
   border: 1px dashed var(--color-brand-700);
   border-radius: var(--border-radius-md);
-  padding: 2.4rem;
+  padding: 1.4rem;
   background-color: var(--color-grey-50);
 `;
 export default function TemplateList() {

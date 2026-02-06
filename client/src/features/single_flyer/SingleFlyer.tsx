@@ -92,7 +92,7 @@ export default function SingleFlyer() {
       <small>
         <section className="point">
           <article>
-            <p className="sub-point">Got something to say?</p>
+            <p className="sub-point">Have something to say?</p>
             <p>Post it on Leaflit for Free.</p>
             <StyledLearnMore
               onClick={() => {
@@ -104,8 +104,8 @@ export default function SingleFlyer() {
             </StyledLearnMore>
           </article>
           <article>
-            <p className="sub-point">Or See what others are saying.</p>
-            <p>Get in on the conversation.</p>
+            <p className="sub-point">See what others are saying.</p>
+            <p>Be in the Loop</p>
             <p>
               <StyledLearnMore
                 onClick={() => {
