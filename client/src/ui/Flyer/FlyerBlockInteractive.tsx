@@ -632,7 +632,6 @@ export default function FlyerBlockInteractive({
             {(flyer?.likes || 0) > 5 && (
               <HiOutlineFire className="fire" data-tooltip-id="fire" />
             )}
-            <HiOutlineFire className="fire" data-tooltip-id="fire" />
           </StyledBadgeSection>
           <PillsContainer>
             <Pill
