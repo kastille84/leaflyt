@@ -4,6 +4,8 @@ import {
   HiOutlineArrowTopRightOnSquare,
   HiOutlineBookmark,
   HiOutlineBookmarkSlash,
+  HiOutlineCheckBadge,
+  HiOutlineFire,
   HiOutlineFlag,
   HiOutlineHandThumbUp,
   HiOutlineLink,
@@ -145,6 +147,25 @@ const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
 
 const StyledAvatarName = styled.div`
   font-size: 1.4rem;
+`;
+
+const StyledActionSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const StyledBadgeSection = styled.div`
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+
+  & svg {
+    font-size: 1.8rem;
+    color: var(--color-brand-600);
+  }
+  & .fire {
+    color: var(--color-orange-500);
+  }
 `;
 
 const PillsContainer = styled.div`
@@ -595,33 +616,42 @@ export default function FlyerBlockInteractive({
         {renderTopContent()}
       </StyledTopTextContainer>
       <StyledInfoContentContainer>
-        <PillsContainer>
-          <Pill
-            contentType={contentType}
-            type="info"
-            onClick={() => setContentType("info")}
-          >
-            main
-          </Pill>
-          {flyer.typeOfUser !== "anonymous" && (
+        <StyledActionSection>
+          <StyledBadgeSection>
+            {(flyer?.user as Auth_User_Profile_Response).powerUser && (
+              <HiOutlineCheckBadge />
+            )}
+            {(flyer?.likes || 0) > 5 && <HiOutlineFire />}
+            {/* <HiOutlineFire className="fire" /> */}
+          </StyledBadgeSection>
+          <PillsContainer>
             <Pill
               contentType={contentType}
-              type="contact"
-              onClick={() => setContentType("contact")}
+              type="info"
+              onClick={() => setContentType("info")}
             >
-              contact
+              main
             </Pill>
-          )}
-          {flyer.callToAction && flyer.callToAction.ctaType !== "none" && (
-            <Pill
-              contentType={contentType}
-              type="cta"
-              onClick={() => setContentType("cta")}
-            >
-              {flyer.callToAction?.ctaType === "offer" ? "deals" : "ask"}
-            </Pill>
-          )}
-        </PillsContainer>
+            {flyer.typeOfUser !== "anonymous" && (
+              <Pill
+                contentType={contentType}
+                type="contact"
+                onClick={() => setContentType("contact")}
+              >
+                contact
+              </Pill>
+            )}
+            {flyer.callToAction && flyer.callToAction.ctaType !== "none" && (
+              <Pill
+                contentType={contentType}
+                type="cta"
+                onClick={() => setContentType("cta")}
+              >
+                {flyer.callToAction?.ctaType === "offer" ? "deals" : "ask"}
+              </Pill>
+            )}
+          </PillsContainer>
+        </StyledActionSection>
         {contentType === "info" && (
           <>
             {hasFiles() && (

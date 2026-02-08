@@ -23,7 +23,7 @@ import Input from "../../ui/Input";
 import useGetUserLimits from "../../hooks/useGetUserLimits";
 import LimitExceededWarning from "../../ui/LimitExceededWarning";
 import UpgradeText from "../../ui/UpgradeText";
-import { HiOutlineInformationCircle } from "react-icons/hi2";
+import { HiOutlineFunnel, HiOutlineInformationCircle } from "react-icons/hi2";
 
 const StyledBoardContainer = styled.div`
   position: relative;
@@ -73,6 +73,18 @@ const StyledFilterOptionContainer = styled.div`
   gap: 0.8rem;
   cursor: pointer;
   font-size: 1.4rem;
+
+  & .filter-checkbox {
+    visibility: hidden;
+  }
+  & label[for="filter"] {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-brand-700);
+    cursor: pointer;
+    font-size: 1.6rem;
+  }
 `;
 
 const StyledFilterSelectContainer = styled.div`
@@ -225,12 +237,15 @@ export default function Board() {
               <StyledForm>
                 <StyledFilterContainer>
                   <StyledFilterOptionContainer>
-                    <label htmlFor="filter">Filter: </label>
+                    <label htmlFor="filter">
+                      <HiOutlineFunnel /> Filter
+                    </label>
                     <Input
                       id="filter"
                       type="checkbox"
                       {...register("filter")}
                       placeholder="Filter:"
+                      className="filter-checkbox"
                     />
                   </StyledFilterOptionContainer>
                   <StyledFilterSelectContainer>

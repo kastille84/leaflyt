@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { HiEllipsisHorizontal, HiEllipsisVertical } from "react-icons/hi2";
+import {
+  HiEllipsisHorizontal,
+  HiEllipsisVertical,
+  HiOutlineBars2,
+} from "react-icons/hi2";
 import styled from "styled-components";
 
 const StyledDropdownContainer = styled.div`
@@ -57,7 +61,7 @@ export default function DropdownMenu(props: any) {
     <StyledDropdownContainer>
       <StyledActionButtonContainer>
         {/* <HiEllipsisHorizontal onClick={handleClick} /> */}
-        <HiEllipsisVertical onClick={handleClick} />
+        <HiOutlineBars2 onClick={handleClick} />
       </StyledActionButtonContainer>
       {isOpen && (
         <StyledDropdownMenuContainer onMouseLeave={() => setIsOpen(false)}>
