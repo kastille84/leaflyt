@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { Tooltip } from "react-tooltip";
 
 import {
   HiOutlineArrowTopRightOnSquare,
@@ -10,6 +11,7 @@ import {
   HiOutlineHandThumbUp,
   HiOutlineLink,
   HiOutlinePencilSquare,
+  HiOutlineShieldCheck,
   HiOutlineTrash,
 } from "react-icons/hi2";
 import { useEffect, useState } from "react";
@@ -415,6 +417,9 @@ export default function FlyerBlockInteractive({
                   .lastName
               }
             </StyledAvatarName>
+            {(flyer?.user as Auth_User_Profile_Response) && (
+              <HiOutlineShieldCheck data-tooltip-id="verified" />
+            )}
           </>
         );
       } else {
@@ -436,6 +441,9 @@ export default function FlyerBlockInteractive({
                   .name as string
               }
             </StyledAvatarName>
+            {(flyer?.user as Auth_User_Profile_Response) && (
+              <HiOutlineShieldCheck data-tooltip-id="verified" />
+            )}
           </>
         );
       }
@@ -619,10 +627,12 @@ export default function FlyerBlockInteractive({
         <StyledActionSection>
           <StyledBadgeSection>
             {(flyer?.user as Auth_User_Profile_Response).powerUser && (
-              <HiOutlineCheckBadge />
+              <HiOutlineCheckBadge data-tooltip-id="powerUser" />
             )}
-            {(flyer?.likes || 0) > 5 && <HiOutlineFire />}
-            {/* <HiOutlineFire className="fire" /> */}
+            {(flyer?.likes || 0) > 5 && (
+              <HiOutlineFire className="fire" data-tooltip-id="fire" />
+            )}
+            <HiOutlineFire className="fire" data-tooltip-id="fire" />
           </StyledBadgeSection>
           <PillsContainer>
             <Pill
@@ -710,6 +720,27 @@ export default function FlyerBlockInteractive({
           <HiOutlineLink /> <small>Share</small>
         </StyledActionIconContainer>
       </StyledActionContainer>
+      <Tooltip
+        id="verified"
+        place="top"
+        content="Registered Users who have been verified by us"
+        openOnClick={true}
+        variant="info"
+      />
+      <Tooltip
+        id="powerUser"
+        place="bottom"
+        content="Users with 10 or more flyers"
+        openOnClick={true}
+        variant="success"
+      />
+      <Tooltip
+        id="fire"
+        place="bottom"
+        content="Flyers with 5 or more likes"
+        openOnClick={true}
+        variant="success"
+      />
     </StyledFlyerBlock>
   );
 }
