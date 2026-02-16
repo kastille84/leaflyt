@@ -114,7 +114,7 @@ export const getPlansForSelect = (plans: Plan[]) => {
 };
 
 export const keysBasedOnEnv = () => {
-  if (import.meta.env.MODE === "production") {
+  if (import.meta.env.MODE.toLowerCase() === "production") {
     // PRODUCTION
     return {
       // Google Maps
@@ -124,8 +124,8 @@ export const keysBasedOnEnv = () => {
       },
       // Supabase
       supabase: {
-        url: "",
-        apiKey: "",
+        url: import.meta.env.VITE_SUPABASE_URL_PROD,
+        apiKey: import.meta.env.VITE_SUPABASE_API_KEY_PROD,
       },
       // Cloudinary
       cloudinary: {

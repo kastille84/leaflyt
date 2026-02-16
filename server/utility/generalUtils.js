@@ -1,5 +1,7 @@
+const { deleteUser } = require("../controllers/auth");
+
 exports.keysBasedOnEnv = () => {
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV.toLowerCase() === "production") {
     // PRODUCTION
     return {
       clientUrl: "https://leaflit.us",
@@ -10,8 +12,9 @@ exports.keysBasedOnEnv = () => {
       },
       // Supabase
       supabase: {
-        url: "",
-        apiKey: "",
+        url: process.env.SUPABASE_URL_PROD,
+        apiKey: process.env.SUPABASE_API_KEY_PROD,
+        deleteUserUrl: process.env.SUPABASE_DB_DELETE_USER_URL_PROD,
       },
       // Cloudinary
       cloudinary: {
@@ -26,7 +29,9 @@ exports.keysBasedOnEnv = () => {
         price_grove: process.env.STRIPE_PRICE_GROVE_PROD,
         price_forest: process.env.STRIPE_PRICE_FOREST_PROD,
       },
-      openai: {},
+      openai: {
+        apiKey: process.env.OPENAI_API_KEY,
+      },
     };
   } else {
     // Non-Prod
@@ -41,6 +46,7 @@ exports.keysBasedOnEnv = () => {
       supabase: {
         url: process.env.SUPABASE_URL,
         apiKey: process.env.SUPABASE_API_KEY,
+        deleteUserUrl: process.env.SUPABASE_DB_DELETE_USER_URL,
       },
       // Cloudinary
       cloudinary: {
