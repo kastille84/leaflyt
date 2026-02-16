@@ -30,7 +30,6 @@ export default function ImagePreview({
       // remove image from state
       setValue("fileUrlArr", fileUrlArr);
     } catch (error) {
-      console.log("error deleting file", error);
       toast.error("Error deleting image");
     }
   }

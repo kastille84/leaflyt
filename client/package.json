@@ -47,6 +47,7 @@
     "react-quill-new": "^3.4.6",
     "react-responsive-masonry": "^2.7.1",
     "react-router-dom": "^7.6.0",
+    "react-tooltip": "^5.30.0",
     "styled-components": "^6.1.18"
   },
   "devDependencies": {

@@ -14,6 +14,7 @@ import { assetUsageByFlyer, assetUsageByTemplate } from "./apiAssets";
 import { calculateEndDate, getBaseUrl } from "../utils/ServiceUtils";
 import { prepFlyerDataForAppropriateness } from "../utils/FlyerUtils";
 import dayjs from "dayjs";
+import { use } from "chai";
 
 const getOrCreateBoard = async (selectedPlace: NearbySearchPlaceResult) => {
   // make a call to get the latest board data
@@ -30,7 +31,6 @@ const getOrCreateBoard = async (selectedPlace: NearbySearchPlaceResult) => {
     };
     try {
       newBoard = await createBoard(boardData);
-      console.log("newBoard", newBoard);
       board = newBoard;
     } catch (error) {
       console.error(error);
@@ -46,7 +46,7 @@ export const getFlyerById = async (id: string) => {
     const { data: flyer, error } = await supabase
       .from("flyers")
       .select(
-        `*, user(id, firstName, lastName, name, email, phone, website, address, typeOfUser)`,
+        `*, user(id, firstName, lastName, name, email, phone, website, address, typeOfUser, powerUser, pioneer)`,
       )
       .eq("id", id)
       .single();
@@ -80,7 +80,7 @@ export const createUnregisteredFlyer = async (
           // calculate end date
           expires_at: calculateEndDate(
             Date.now(),
-            flyerData.lifespan as number,
+            (flyerData.lifespan as number) || 1,
           ),
         },
       ]) // selectedPlace.id is the placeId of the board
@@ -130,11 +130,6 @@ export const createRegisteredFlyer = async (
             hasComments: flyerData.hasComments,
             lifespan: flyerData.lifespan,
             likes: 0,
-            // calculate end date
-            expires_at: calculateEndDate(
-              Date.now(),
-              flyerData.lifespan as number,
-            ),
           },
         ])
         .select("*")
@@ -192,6 +187,11 @@ export const createRegisteredFlyer = async (
           postingMethod: flyerData.postingMethod || "onLocation",
           lifespan: flyerData.lifespan,
           likes: 0,
+          // calculate end date
+          expires_at: calculateEndDate(
+            Date.now(),
+            flyerData.lifespan as number,
+          ),
         },
       ])
       .select("*")
@@ -335,15 +335,11 @@ export const createFlyerFromTemplate = async (
     // keep track of assets being used in flyers
     await assetUsageByFlyer([], flyerData.fileUrlArr || [], newFlyer.id);
 
-    // tie newFlyer to template
-    // await supabase
-    //   .from("templates")
-    //   .update({ flyer: newFlyer.id })
-    //   .eq("id", templateData.template);
-
-    // return updated User with included new flyer
-    // const user = await getUser();
-    return newFlyer;
+    // return updated user
+    return await getLatestUserAfterChanges(
+      (templateData?.user! as Auth_User_Profile_Response).id as string,
+      "template",
+    );
   } catch (error: any) {
     console.error(error);
     throw new Error("Error creating a flyer: " + error.message);
@@ -542,12 +538,13 @@ export const saveFlyer = async (userId: number | string, flyerId: string) => {
 export const removeSavedFlyer = async (
   userId: number | string,
   flyerId: number | string,
+  type: "flyer" | "id",
 ) => {
   try {
     const { error } = await supabase
       .from("saved_flyers")
       .delete()
-      .eq(typeof flyerId === "string" ? "flyer" : "id", flyerId);
+      .eq(type === "flyer" ? "flyer" : "id", flyerId);
     if (error) {
       console.error(error);
       throw new Error("Error removing the saved flyer: " + error.message);
@@ -616,10 +613,10 @@ export const flagFlyer = async ({
           reason,
           user: userId || "anonymous",
           place: placeName,
-          timestamp: new Date().toISOString(),
+          timestamp: dayjs().format("MM-DD-YYYY"),
         },
         // set flagged_at to current timestamp using dayjs
-        flaggedAt: dayjs().format("YYYY-MM-DD HH:mm:ssZZ"),
+        flagged_at: dayjs().format("YYYY-MM-DD HH:mm:ssZZ"),
       })
       .eq("id", flyer.id)
       .select("*, template(*)")
@@ -630,20 +627,14 @@ export const flagFlyer = async ({
       throw new Error("Error reporting the flyer: " + error.message);
     }
 
-    if (userId) {
-      const { data: userData, error: getUserError } =
-        await getUserProfile(userId);
-
+    if (flyer.user) {
+      // inform the flyer's user that their flyer has been reported
       await sendFlaggedFlyerEmail({
-        email: userData.email,
+        email: (flyer.user as Auth_User_Profile_Response).email,
         flyer: updatedFlyer,
       });
     }
 
-    // return await getLatestUserAfterChanges(
-    //   updatedFlyer?.user as string,
-    //   "flyer"
-    // );
     return updatedFlyer;
   } catch (error: any) {
     console.error(error);
@@ -659,10 +650,39 @@ export async function getLatestUserAfterChanges(userId: string, type: string) {
     console.error(getUserError);
     throw new Error(`Error updating the ${type}: ` + getUserError);
   }
+  if (!userData.powerUser && userData.flyers.length >= 15) {
+    // update user's powerUser status if they have more than 15 flyers
+    await updateUserPowerUserStatus(userId, true);
+  }
+  if (userData.powerUser && userData.flyers.length < 15) {
+    // update user's powerUser status if they have less than 15 flyers
+    await updateUserPowerUserStatus(userId, false);
+  }
   return {
     user: userData,
     error: null,
   };
+}
+
+export async function updateUserPowerUserStatus(
+  userId: string,
+  status: boolean,
+) {
+  try {
+    const { data: userData, error } = await supabase
+      .from("profiles")
+      .update({ powerUser: status })
+      .eq("id", userId);
+    if (error) {
+      throw error;
+    }
+    return {
+      user: userData,
+      error: null,
+    };
+  } catch (error) {
+    return { data: null, error };
+  }
 }
 
 export async function moderateContent(
@@ -715,7 +735,6 @@ export const sendFlaggedFlyerEmail = async ({
       },
     );
     const result = await response.json();
-    console.log("result", result);
     if (result.error) {
       throw result.error;
     }

@@ -5,12 +5,11 @@ import toast from "react-hot-toast";
 export default () => {
   const [watchId, setWatchId] = useState<number | null>(null);
   const [isGettingLocation, setIsGettingLocation] = useState<boolean | null>(
-    null
+    null,
   );
   const [coords, setCoords] = useState<LatLng | null>(null);
 
   const onSuccess = (position: GeolocationPosition) => {
-    console.log(position);
     const latLng = {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude,
@@ -26,22 +25,21 @@ export default () => {
   const onReject = (error: GeolocationPositionError) => {
     setIsGettingLocation(false);
     setCoords(null);
-    console.log("onReject error", error);
     // set a toast, letting user know that location is not available and to enable location sharing
     switch (error.code) {
       case 1: // PERMISSION_DENIED
         toast.error(
-          "We weren't able to get your location. \nMake sure to select 'Allow' on the pop-up to enable location sharing."
+          "We weren't able to get your location. \nMake sure to select 'Allow' on the pop-up to enable location sharing.",
         );
         break;
       case 2: // POSITION_UNAVAILABLE
         toast.error(
-          "We weren't able to get your location. \nIt seems to be unavailable. \nPlease check your internet connection or move to another location."
+          "We weren't able to get your location. \nIt seems to be unavailable. \nPlease check your internet connection or move to another location.",
         );
         break;
       case 3: // TIMEOUT
         toast.error(
-          "We weren't able to get your location. \nThe request timed out. \nPlease check your internet connection or move to another location."
+          "We weren't able to get your location. \nThe request timed out. \nPlease check your internet connection or move to another location.",
         );
     }
     navigator.geolocation.clearWatch(watchId!);
@@ -60,7 +58,7 @@ export default () => {
         enableHighAccuracy: true,
         timeout: 10000, // 10 seconds
         maximumAge: 500,
-      })
+      }),
     );
     // });
   };

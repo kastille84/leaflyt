@@ -1,22 +1,28 @@
 import styled from "styled-components";
 
 import Modal from "react-modal";
-import Heading from "../Heading";
 import Button from "../Button";
 import { useGlobalContext } from "../../context/GlobalContext";
 
-import TermsOfUse from "../../partials/TermsOfUse";
 import { useResponsiveWidth } from "../../hooks/useResponsiveWidth";
-import PrivacyPolicy from "../../partials/PrivacyPolicy";
-import CommunityGuidelines from "../../partials/CommunityGuidelines";
 
 const StyledContentContainer = styled.div`
   /* width: 80%; */
-  height: 600px;
+  /* height: 600px; */
   overflow-y: auto;
-  @media (max-height: 59em) {
-    height: 60vh;
-    min-height: unset;
+`;
+
+const StyledMain = styled.main`
+  padding: 1.4rem;
+
+  & h1,
+  & h2,
+  & h3 {
+    margin-top: 1.4rem;
+    color: var(--color-brand-600);
+  }
+  & strong {
+    color: var(--color-orange-600);
   }
 `;
 
@@ -27,13 +33,9 @@ const StyledButtonContainer = styled.div`
   gap: 1.6rem;
 `;
 
-export default function TermsModal() {
-  const {
-    showTermsModal,
-    setShowTermsModal,
-    termsModalType,
-    setTermsModalType,
-  } = useGlobalContext();
+export default function MerchantDisclaimerModal() {
+  const { showMerchantDisclaimerModal, setShowMerchantDisclaimerModal } =
+    useGlobalContext();
 
   const responsiveVal = useResponsiveWidth();
 
@@ -62,21 +64,32 @@ export default function TermsModal() {
   };
 
   function handleClose() {
-    setShowTermsModal(false);
-    setTermsModalType(null);
+    setShowMerchantDisclaimerModal(false);
   }
 
   return (
     // https://www.npmjs.com/package/react-modal
     <Modal
       testId="close-slide-in-modal"
-      isOpen={showTermsModal}
+      isOpen={showMerchantDisclaimerModal}
       style={customStyles}
     >
       <StyledContentContainer>
-        {termsModalType === "terms" && <TermsOfUse />}
-        {termsModalType === "privacy" && <PrivacyPolicy />}
-        {termsModalType === "guidelines" && <CommunityGuidelines />}
+        <StyledMain>
+          <h1>Merchant Disclaimer</h1>
+          <p>
+            {" "}
+            <strong>Notice</strong>: This Virtual Community Board is an
+            independent digital service provided by Leaflit. It is not owned,
+            operated, endorsed, or monitored by the physical establishment at
+            this location. All flyers, offers, and media are user-generated
+            content.{" "}
+            <strong>
+              The establishment is not responsible for the accuracy of these
+              flyers or any transactions resulting from them.
+            </strong>
+          </p>
+        </StyledMain>
       </StyledContentContainer>
       <StyledButtonContainer>
         <Button size="small" variation="secondary" onClick={handleClose}>

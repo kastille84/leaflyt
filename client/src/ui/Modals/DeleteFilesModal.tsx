@@ -9,6 +9,8 @@ import { useGlobalContext } from "../../context/GlobalContext";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import useAssetMutations from "../../features/assets/useAssetMutations";
+import { useState } from "react";
+import OverlaySpinner from "../OverlaySpinner";
 
 const StyledButtonContainer = styled.div`
   margin-top: 2.4rem;
@@ -18,6 +20,8 @@ const StyledButtonContainer = styled.div`
 `;
 
 export default function DeleteFilesModal() {
+  const [showSpinner, setShowSpinner] = useState(false);
+
   const {
     contextImages,
     setContextImages,
@@ -51,16 +55,20 @@ export default function DeleteFilesModal() {
   }
 
   async function handleDelete() {
-    console.log("delete images", contextImages);
+    setShowSpinner(true);
+
     deleteAssetsFn(contextImages!, {
       onSuccess: ({ user }: any) => {
         // update the user
         setUser(user);
+        setShowSpinner(false);
+
         toast.success("Assets deleted!");
         handleCancel();
       },
       onError: (error) => {
         toast.error("Assets deletion failed! Try again.");
+        setShowSpinner(false);
       },
     });
   }
@@ -82,6 +90,7 @@ export default function DeleteFilesModal() {
           Delete
         </Button>
       </StyledButtonContainer>
+      {showSpinner && <OverlaySpinner message={"Deleting the file(s)..."} />}
     </Modal>
   );
 }

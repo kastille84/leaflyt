@@ -27,6 +27,10 @@ const StyledMainLayout = styled.main`
   @media (max-width: 59em) {
     grid-template-columns: 1fr;
   }
+  @media (max-height: 59em) {
+    height: 800px;
+    overflow-y: auto;
+  }
 `;
 
 const StyledMainContentContainer = styled.div`
@@ -58,7 +62,6 @@ export default function MainLayout() {
       if (session) {
         autoLogin(session.access_token, {
           onSuccess: (response) => {
-            console.log("response", response);
             // set user in global context
             setUser(response.data);
             // a purposefully thrown error (i.e. user hasn't paid)
@@ -71,7 +74,6 @@ export default function MainLayout() {
             }
           },
           onError: (error) => {
-            console.log("error", error);
             if (error.message === "unpaid") {
               setShowLoginModal(false);
               setIsOpenBottomSlideIn(true);

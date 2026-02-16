@@ -131,9 +131,6 @@ export default function SignupForm({
   const typeOfUser = getValues("typeOfUser");
   const planWatch = watch("plan");
 
-  console.log("getValues", getValues());
-  console.log("errors", errors);
-
   useEffect(() => {
     if (typeOfUser) {
       unregister(
@@ -156,10 +153,8 @@ export default function SignupForm({
 
   function onSubmit(data: any) {
     setSubmitError("");
-    console.log("data", data);
     // set full addressObj to address field
     data[typeOfUser].contact.address = data.addressObjToSave;
-    console.log("data after", data);
     setShowSpinner(true);
     // action
     signup(data as SignupSubmitData, {
@@ -186,7 +181,6 @@ export default function SignupForm({
         setSignedUpUser(response.data);
       },
       onError: (error) => {
-        console.log("onError", error.message);
         setSubmitError(error.message);
         // set focus on error
         document.querySelector("#form-error")?.scrollIntoView();

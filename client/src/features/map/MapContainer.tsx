@@ -87,7 +87,6 @@ export default function MapContainer() {
     try {
       setShowSpinner(true);
       const placeDetails = await getPlaceDetails(place.place_id);
-      console.log("placeDetails", placeDetails);
       setSelectedPlace(placeDetails);
       setShowSpinner(false);
       navigate(`/dashboard/board/${placeDetails.id}?&pt=r`);

@@ -28,7 +28,6 @@ export const deleteAssets = async (assets: UploadApiResponse[], id: string) => {
       },
     });
     const result = await response.json();
-    console.log("result", result);
     return await getLatestUserAfterChanges(id, "asset");
   } catch (error) {}
 };
@@ -47,7 +46,6 @@ export const deleteAllAssets = async (
       },
     });
     const result = await response.json();
-    console.log("result", result);
     return result;
   } catch (error) {
     return { data: null, error };

@@ -28,7 +28,6 @@ exports.postModerate = async (req, res, next) => {
   const { message, fileUrls } = req.body;
   console.log("message", message);
   console.log("fileUrls", fileUrls);
-  let response;
 
   const filePromises = [];
   const inputObj = [
@@ -37,9 +36,10 @@ exports.postModerate = async (req, res, next) => {
       text: message,
     },
   ];
-  if (fileUrls) {
-    inputObj.push(...fileUrls);
-  }
+  // TODO: need to understand how to use fileUrls with moderation. Seems to not work.
+  // if (fileUrls) {
+  //   inputObj.push(...fileUrls);
+  // }
   try {
     const response = await openai.moderations.create({
       model: "omni-moderation-latest",

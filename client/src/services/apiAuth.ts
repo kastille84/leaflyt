@@ -27,7 +27,6 @@ export const loginUser = async (email: string, password: string) => {
       )
       .eq("email", email)
       .single();
-    console.log("userProfile", userProfile);
     if (userProfileError) {
       throw userProfileError;
     }
@@ -114,7 +113,6 @@ export const loginUserWithAccessToken = async () => {
       .eq("email", data.user.email)
       .single();
 
-    if (userProfile) console.log("userProfile", userProfile);
     if (userProfileError) {
       throw new Error("Could not fetch user profile");
     }
@@ -186,7 +184,6 @@ export const signupUser = async (prepData: SignupSubmitData) => {
         }&lastName=${typeof name === "object" ? name.lastName : null}`,
       },
     });
-    console.log("auth.signup", data);
     if (error) throw error;
     // //  create user profile in supabase
     const newUser = {
@@ -210,7 +207,6 @@ export const signupUser = async (prepData: SignupSubmitData) => {
       body: JSON.stringify(newUser),
     });
     const result = await response.json();
-    console.log("result", result);
     if (result.error) {
       throw result.error;
     }
@@ -271,7 +267,6 @@ export const sendWelcomeEmail = async ({
       },
     );
     const result = await response.json();
-    console.log("result", result);
     if (result.error) {
       throw result.error;
     }
@@ -304,7 +299,6 @@ export const sendDeletedUserEmail = async ({
       },
     );
     const result = await response.json();
-    console.log("result", result);
     if (result.error) {
       throw result.error;
     }

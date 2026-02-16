@@ -103,7 +103,7 @@ export default function AccountInfo() {
     setBottomSlideInType,
     setShowDeleteAccountModal,
   } = useGlobalContext();
-  console.log("user", user);
+
 
   const handleEditClick = () => {
     setIsOpenBottomSlideIn(true);

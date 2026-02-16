@@ -1,10 +1,19 @@
 import styled, { css } from "styled-components";
+import { Tooltip } from "react-tooltip";
 
 import {
+  HiOutlineArrowTopRightOnSquare,
+  HiOutlineBolt,
   HiOutlineBookmark,
   HiOutlineBookmarkSlash,
+  HiOutlineCheckBadge,
+  HiOutlineFire,
+  HiOutlineFlag,
   HiOutlineHandThumbUp,
   HiOutlineLink,
+  HiOutlinePencilSquare,
+  HiOutlineShieldCheck,
+  HiOutlineTrash,
 } from "react-icons/hi2";
 import { useEffect, useState } from "react";
 import { UNREGISTERED_FLYER_DESIGN_DEFAULT } from "../../constants";
@@ -96,14 +105,18 @@ const StyledInfoContentContainer = styled.div`
   background-color: #fff;
 `;
 
-const StyledActionContainer = styled.section`
+const StyledActionContainer = styled.section<{ flyerDesign: FlyerDesign }>`
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 2.4rem;
-  border-top: 1px solid var(--color-grey-200);
   padding: 1rem 2.4rem;
   background-color: #fff;
+  border-top: 1px solid var(--color-grey-200);
+  border-bottom-left-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderBottomLeftRadius}px;
+  border-bottom-right-radius: ${({ flyerDesign }) =>
+    flyerDesign.borderBottomRightRadius}px;
 `;
 
 const StyledActionIconContainer = styled.div<{ flyerDesign: FlyerDesign }>`
@@ -120,6 +133,9 @@ const StyledAvatarContainer = styled.div`
   display: flex;
   gap: 1.2rem;
   align-items: center;
+  & svg {
+    cursor: pointer;
+  }
 `;
 const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
   background-color: ${({ flyerDesign }) => flyerDesign.top.color};
@@ -137,6 +153,26 @@ const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
 
 const StyledAvatarName = styled.div`
   font-size: 1.4rem;
+`;
+
+const StyledActionSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const StyledBadgeSection = styled.div`
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+
+  & svg {
+    font-size: 1.8rem;
+    color: var(--color-brand-600);
+    cursor: pointer;
+  }
+  & .fire {
+    color: var(--color-orange-500);
+  }
 `;
 
 const PillsContainer = styled.div`
@@ -251,6 +287,7 @@ export default function FlyerBlockInteractive({
     setIsOpenBottomSlideIn,
     likedContextSessionFlyers,
     setShowFlaggedModal,
+    setShowDcmaModal,
   } = useGlobalContext();
 
   const { likeFlyerFn } = useCreateUnregisteredFlyer();
@@ -275,6 +312,13 @@ export default function FlyerBlockInteractive({
       flyer.id!,
     );
   });
+
+  // check saved if user was null then auto logged in
+  useEffect(() => {
+    if (user) {
+      setIsSaved(checkIfCurrentFlyerIsSaved(user?.saved_flyers!, flyer));
+    }
+  }, [user]);
 
   const navigate = useNavigate();
 
@@ -378,6 +422,9 @@ export default function FlyerBlockInteractive({
                   .lastName
               }
             </StyledAvatarName>
+            {(flyer?.user as Auth_User_Profile_Response) && (
+              <HiOutlineShieldCheck data-tooltip-id="verified" />
+            )}
           </>
         );
       } else {
@@ -399,6 +446,9 @@ export default function FlyerBlockInteractive({
                   .name as string
               }
             </StyledAvatarName>
+            {(flyer?.user as Auth_User_Profile_Response) && (
+              <HiOutlineShieldCheck data-tooltip-id="verified" />
+            )}
           </>
         );
       }
@@ -448,16 +498,19 @@ export default function FlyerBlockInteractive({
   async function handleUnsaveClick() {
     if (user) {
       setIsSaved(false);
-      removeSavedFlyerFn(flyer.id!, {
-        onSuccess: ({ user }) => {
-          // update the user
-          setUser(user);
-          toast.success("Flyer unsaved!");
+      removeSavedFlyerFn(
+        { flyerId: flyer.id!, type: "flyer" },
+        {
+          onSuccess: ({ user }) => {
+            // update the user
+            setUser(user);
+            toast.success("Flyer unsaved!");
+          },
+          onError: (error) => {
+            toast.error(error.message);
+          },
         },
-        onError: (error) => {
-          toast.error(error.message);
-        },
-      });
+      );
     }
   }
   function doesFlyerBelongToUser() {
@@ -520,6 +573,14 @@ export default function FlyerBlockInteractive({
     });
   }
 
+  function handleCopyright() {
+    setShowDcmaModal(true);
+  }
+
+  function handleViewFullFlyer() {
+    navigate(`/dashboard/fullFlyer/${flyer.id}`);
+  }
+
   function renderTopContent() {
     return (
       <>
@@ -527,17 +588,32 @@ export default function FlyerBlockInteractive({
           {determineAvatarAndName()}
         </StyledAvatarContainer>
         <DropdownMenu>
-          {doesFlyerBelongToUser() && <li onClick={handleEditClick}>Edit</li>}
-          {doesFlyerBelongToUser() && flyer.template && (
-            <li onClick={() => navigate(`/dashboard/my-templates`)}>
-              View Template
+          <li onClick={handleViewFullFlyer}>
+            <HiOutlineArrowTopRightOnSquare /> View Flyer
+          </li>
+          {doesFlyerBelongToUser() && (
+            <li onClick={handleEditClick}>
+              <HiOutlinePencilSquare /> Edit
             </li>
           )}
-          {user && !doesFlyerBelongToUser() && <li>Save</li>}
-
-          {doesFlyerBelongToUser() && <li onClick={handleDelete}>Delete</li>}
+          {doesFlyerBelongToUser() && flyer.template && (
+            <li onClick={() => navigate(`/dashboard/templates`)}>
+              <HiOutlineArrowTopRightOnSquare /> View Template
+            </li>
+          )}
+          {doesFlyerBelongToUser() && (
+            <li onClick={handleDelete}>
+              <HiOutlineTrash /> Delete
+            </li>
+          )}
+          {!doesFlyerBelongToUser() && <hr />}
           {!doesFlyerBelongToUser() && (
-            <li onClick={handleInappropriate}>Inappropriate</li>
+            <li onClick={handleInappropriate}>
+              <HiOutlineFlag /> Inappropriate
+            </li>
+          )}
+          {!doesFlyerBelongToUser() && (
+            <li onClick={handleCopyright}>&copy; &nbsp; Copyright</li>
           )}
         </DropdownMenu>
       </>
@@ -553,33 +629,46 @@ export default function FlyerBlockInteractive({
         {renderTopContent()}
       </StyledTopTextContainer>
       <StyledInfoContentContainer>
-        <PillsContainer>
-          <Pill
-            contentType={contentType}
-            type="info"
-            onClick={() => setContentType("info")}
-          >
-            main
-          </Pill>
-          {flyer.typeOfUser !== "anonymous" && (
+        <StyledActionSection>
+          <StyledBadgeSection>
+            {(flyer?.user as Auth_User_Profile_Response)?.pioneer && (
+              <HiOutlineCheckBadge data-tooltip-id="pioneer" />
+            )}
+            {(flyer?.user as Auth_User_Profile_Response)?.powerUser && (
+              <HiOutlineBolt data-tooltip-id="powerUser" />
+            )}
+            {(flyer?.likes || 0) > 5 && (
+              <HiOutlineFire className="fire" data-tooltip-id="fire" />
+            )}
+          </StyledBadgeSection>
+          <PillsContainer>
             <Pill
               contentType={contentType}
-              type="contact"
-              onClick={() => setContentType("contact")}
+              type="info"
+              onClick={() => setContentType("info")}
             >
-              contact
+              main
             </Pill>
-          )}
-          {flyer.callToAction && flyer.callToAction.ctaType !== "none" && (
-            <Pill
-              contentType={contentType}
-              type="cta"
-              onClick={() => setContentType("cta")}
-            >
-              {flyer.callToAction?.ctaType === "offer" ? "deals" : "ask"}
-            </Pill>
-          )}
-        </PillsContainer>
+            {flyer.typeOfUser !== "anonymous" && (
+              <Pill
+                contentType={contentType}
+                type="contact"
+                onClick={() => setContentType("contact")}
+              >
+                contact
+              </Pill>
+            )}
+            {flyer.callToAction && flyer.callToAction.ctaType !== "none" && (
+              <Pill
+                contentType={contentType}
+                type="cta"
+                onClick={() => setContentType("cta")}
+              >
+                {flyer.callToAction?.ctaType === "offer" ? "deals" : "ask"}
+              </Pill>
+            )}
+          </PillsContainer>
+        </StyledActionSection>
         {contentType === "info" && (
           <>
             {hasFiles() && (
@@ -597,7 +686,7 @@ export default function FlyerBlockInteractive({
           <CTA flyer={flyer} belongsToUser={doesFlyerBelongToUser()} />
         )}
       </StyledInfoContentContainer>
-      <StyledActionContainer>
+      <StyledActionContainer flyerDesign={flyerStyles}>
         {!isSaved && !doesFlyerBelongToUser() && (
           <StyledActionIconContainer
             flyerDesign={flyerStyles}
@@ -638,6 +727,34 @@ export default function FlyerBlockInteractive({
           <HiOutlineLink /> <small>Share</small>
         </StyledActionIconContainer>
       </StyledActionContainer>
+      <Tooltip
+        id="verified"
+        place="top"
+        content="Registered Users who have been verified by us"
+        openOnClick={true}
+        variant="info"
+      />
+      <Tooltip
+        id="powerUser"
+        place="bottom"
+        content="Power Users badge: 15 or more flyers"
+        openOnClick={true}
+        variant="info"
+      />
+      <Tooltip
+        id="pioneer"
+        place="bottom"
+        content="Early Pioneer who helped establish Leaflit in this community"
+        openOnClick={true}
+        variant="info"
+      />
+      <Tooltip
+        id="fire"
+        place="bottom"
+        content="Flyers with 5 or more likes"
+        openOnClick={true}
+        variant="info"
+      />
     </StyledFlyerBlock>
   );
 }

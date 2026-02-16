@@ -124,7 +124,6 @@ export default function LoginModal() {
   const onSubmit = async (data: any) => {
     setSubmitError("");
     setShowSpinner(true);
-    console.log("data", data);
     // action
     login(data, {
       onSuccess: (response) => {
@@ -146,7 +145,6 @@ export default function LoginModal() {
         );
       },
       onError: (error) => {
-        console.log("onError", error);
         setSubmitError(error.message);
         // set focus on error
         document.querySelector("#form-error")?.scrollIntoView();

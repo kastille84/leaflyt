@@ -10,6 +10,8 @@ import styled from "styled-components";
 import Button from "../../ui/Button";
 import { useNavigate } from "react-router-dom";
 import { DB_Board } from "../../interfaces/DB_Board";
+import { shortenTitle } from "../../utils/GeneralUtils";
+import dayjs from "dayjs";
 
 const StyledContainer = styled.div``;
 
@@ -17,6 +19,11 @@ const StyledContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+
+  & .title {
+    color: var(--color-brand-700);
+    font-weight: 600;
+  }
 `;
 
 export default function MarkerWithInfoWindow({
@@ -37,7 +44,7 @@ export default function MarkerWithInfoWindow({
   // clicking the marker will toggle the infowindow
   const handleMarkerClick = useCallback(
     () => setInfoWindowShown((isShown: boolean) => !isShown),
-    []
+    [],
   );
 
   // if the maps api closes the infowindow, we have to synchronize our state
@@ -60,13 +67,19 @@ export default function MarkerWithInfoWindow({
         >
           <StyledContentContainer>
             <Heading as={"h4"}>{(flyer.place as DB_Board)?.name}</Heading>
-            <p>{flyer.title}</p>
+            <p className="title">{shortenTitle(flyer.title, 35)}</p>
+            <p>{flyer.likes} Likes</p>
+            <p>
+              Posted{" "}
+              {flyer.postingMethod === "remote" ? "Remotely" : "On-Location"}
+            </p>
+            <p>on: {dayjs(flyer.created_at).format("MM/DD/YYYY")}</p>
             <Button
               variation="primary"
               size="small"
               onClick={() =>
                 navigtate(
-                  `/dashboard/board/${(flyer.place as DB_Board)?.placeId}?&pt=r`
+                  `/dashboard/board/${(flyer.place as DB_Board)?.placeId}?&pt=r`,
                 )
               }
             >

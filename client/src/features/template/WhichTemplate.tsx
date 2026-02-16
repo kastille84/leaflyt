@@ -137,13 +137,12 @@ export default function WhichTemplate({
     setShowSpinner(true);
 
     createFlyerUsingTemplate(selectedTemplate!, {
-      onSuccess: async (data: any) => {
+      onSuccess: ({ user }: any) => {
         queryClient.invalidateQueries({
           queryKey: ["board", selectedPlace?.id],
         });
         // get the latest user
-        const userObj = await loginUserWithAccessToken();
-        setUser((prev) => userObj.data);
+        setUser(user);
         setShowSpinner(false);
         toast.success("Flyer created!");
         setBottomSlideInType(null);

@@ -29,6 +29,7 @@ export const FILE_UPLOAD_OPTIONS = [
     // upload parameters
     tags: ["anonymous"],
     resourceType: "image",
+    clientAllowedFormats: ["jpg", "jpeg", "png", "gif", "webp"],
     // customization parameters
     theme: "minimal",
     buttonCaption: "Upload File(s)",
@@ -36,6 +37,8 @@ export const FILE_UPLOAD_OPTIONS = [
     showPoweredBy: false,
     // autoMinimize: true,
     return_delete_token: true,
+    // upload parameters
+    maxFileSize: 10000000, // 10MB
   },
   // LEVEL - 1
   {
@@ -56,6 +59,7 @@ export const FILE_UPLOAD_OPTIONS = [
     // upload parameters
     tags: ["registered", "unpaid", "seed"],
     resourceType: "image",
+    clientAllowedFormats: ["jpg", "jpeg", "png", "gif", "webp"],
     // customization parameters
     theme: "minimal",
     buttonCaption: "Upload File(s)",
@@ -63,6 +67,8 @@ export const FILE_UPLOAD_OPTIONS = [
     showPoweredBy: false,
     // autoMinimize: true,
     return_delete_token: true,
+    // upload parameters
+    maxFileSize: 20000000, // 20MB
   },
   // LEVEL - 2
   {
@@ -90,6 +96,8 @@ export const FILE_UPLOAD_OPTIONS = [
     showPoweredBy: false,
     // autoMinimize: true,
     return_delete_token: true,
+    // upload parameters
+    maxFileSize: 50000000, // 50MB
   },
   // LEVEL - 3
   {
@@ -117,6 +125,8 @@ export const FILE_UPLOAD_OPTIONS = [
     showPoweredBy: false,
     // autoMinimize: true,
     return_delete_token: true,
+    // upload parameters
+    maxFileSize: 75000000, // 75MB
   },
   // LEVEL - 4
   {
@@ -144,6 +154,8 @@ export const FILE_UPLOAD_OPTIONS = [
     showPoweredBy: false,
     // autoMinimize: true,
     return_delete_token: true,
+    // upload parameters
+    maxFileSize: 100000000, // 100MB
   },
 ];
 

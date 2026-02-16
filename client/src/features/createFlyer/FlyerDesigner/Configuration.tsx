@@ -107,7 +107,6 @@ export default function Configuration() {
   // watchers
   const formValuesWatch = watch();
   const fontWatch = watch("font");
-  console.log("selectedFlyer", selectedFlyer);
 
   useEffect(() => {
     setSelectedFlyer({ ...selectedFlyer, flyerDesign: getValues() });
@@ -118,8 +117,6 @@ export default function Configuration() {
   }
 
   function onSubmit(data: any) {
-    console.log("data", data);
-    console.log("getValues", getValues());
     currentFormOptions.setValue("flyerDesign", getValues());
     toast.success("Flyer design updated!");
     setBottomSlideInType(null);

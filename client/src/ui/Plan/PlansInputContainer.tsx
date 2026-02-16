@@ -55,7 +55,6 @@ export default function PlansInputContainer({
   const { showPlansModal, setShowPlansModal, setCurrentFormOptions } =
     useGlobalContext();
   const { isLoading, plans, error } = useGetPlans();
-  console.log("plans", plans);
 
   function handleShowPlansClick() {
     setCurrentFormOptions({

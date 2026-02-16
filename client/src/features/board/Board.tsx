@@ -23,8 +23,18 @@ import Input from "../../ui/Input";
 import useGetUserLimits from "../../hooks/useGetUserLimits";
 import LimitExceededWarning from "../../ui/LimitExceededWarning";
 import UpgradeText from "../../ui/UpgradeText";
+import { HiOutlineFunnel, HiOutlineInformationCircle } from "react-icons/hi2";
 
 const StyledBoardContainer = styled.div`
+  position: relative;
+  & .info-icon {
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    font-size: 2.4rem;
+    cursor: pointer;
+    color: var(--color-brand-600);
+  }
   & .category,
   & .subcategory {
     font-size: 1.4rem;
@@ -63,6 +73,18 @@ const StyledFilterOptionContainer = styled.div`
   gap: 0.8rem;
   cursor: pointer;
   font-size: 1.4rem;
+
+  & .filter-checkbox {
+    visibility: hidden;
+  }
+  & label[for="filter"] {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-brand-700);
+    cursor: pointer;
+    font-size: 1.6rem;
+  }
 `;
 
 const StyledFilterSelectContainer = styled.div`
@@ -108,6 +130,7 @@ export default function Board() {
     hasFlyerAtLocation,
     setHasFlyerAtLocation,
     anonUserPostings,
+    setShowMerchantDisclaimerModal,
   } = useGlobalContext();
   const [shouldGetPlace, setShouldGetPlace] = useState(false);
 
@@ -115,7 +138,6 @@ export default function Board() {
   //   category: categoryWatch,
   //   subcategory: subcategoryWatch,
   // };
-  console.log(filterOnWatch);
   const { isLoadingBoard, board } = useGetBoard(user?.id!);
 
   const originalFlyers = board?.data?.flyers || [];
@@ -132,6 +154,9 @@ export default function Board() {
     return originalFlyers;
   }
 
+  function handleMerchantInfoClick() {
+    setShowMerchantDisclaimerModal(true);
+  }
   useGetPlaceByPlaceId(id!, shouldGetPlace);
 
   useEffect(() => {
@@ -178,6 +203,11 @@ export default function Board() {
   return (
     <>
       <StyledBoardContainer data-testid="board-container">
+        <HiOutlineInformationCircle
+          className="info-icon"
+          // size={25}
+          onClick={handleMerchantInfoClick}
+        />
         <div data-testid="board" style={{ width: "90%", margin: "auto" }}>
           {!planLimits?.onLocationPosting.isAllowed && (
             <>
@@ -206,12 +236,15 @@ export default function Board() {
               <StyledForm>
                 <StyledFilterContainer>
                   <StyledFilterOptionContainer>
-                    <label htmlFor="filter">Filter: </label>
+                    <label htmlFor="filter">
+                      <HiOutlineFunnel /> Filter
+                    </label>
                     <Input
                       id="filter"
                       type="checkbox"
                       {...register("filter")}
                       placeholder="Filter:"
+                      className="filter-checkbox"
                     />
                   </StyledFilterOptionContainer>
                   <StyledFilterSelectContainer>

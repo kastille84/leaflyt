@@ -1,8 +1,31 @@
 import { Plan } from "../interfaces/Plan";
 
+// function stripHtml(html: string) {
+//   const tmp = document.createElement("DIV");
+//   tmp.innerHTML = html;
+//   return tmp.textContent || tmp.innerText || "";
+// }
+
+// function to stripHtml and join with a period
+// function stripHtml(html: string) {
+//   const tmp = document.createElement("DIV");
+//   tmp.innerHTML = html;
+//   const stripped = tmp.textContent || tmp.innerText || "";
+//   return stripped.replace(/<[^>]+>/g, " "); // replace HTML tags with non-breaking space
+// }
+function stripHtmlAndJoinWithPeriod(html: string): string {
+  const tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  const stripped = Array.from(tmp.childNodes)
+    .map((node) => node.textContent || "")
+    .filter((text) => text.trim() !== "")
+    .join(" ");
+  return stripped;
+}
 function shortenTitle(title: string, length: number) {
-  if (title.length > length) {
-    return title.substring(0, length) + "...";
+  const stripped = stripHtmlAndJoinWithPeriod(title);
+  if (stripped.length > length) {
+    return stripped.substring(0, length) + "...";
   }
   return title;
 }
@@ -91,7 +114,7 @@ export const getPlansForSelect = (plans: Plan[]) => {
 };
 
 export const keysBasedOnEnv = () => {
-  if (import.meta.env.MODE === "production") {
+  if (import.meta.env.MODE.toLowerCase() === "production") {
     // PRODUCTION
     return {
       // Google Maps
@@ -101,8 +124,8 @@ export const keysBasedOnEnv = () => {
       },
       // Supabase
       supabase: {
-        url: "",
-        apiKey: "",
+        url: import.meta.env.VITE_SUPABASE_URL_PROD,
+        apiKey: import.meta.env.VITE_SUPABASE_API_KEY_PROD,
       },
       // Cloudinary
       cloudinary: {
@@ -111,7 +134,7 @@ export const keysBasedOnEnv = () => {
       },
       // Stripe
       stripe: {
-        publishableKey: "",
+        publishableKey: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD,
       },
     };
   } else {

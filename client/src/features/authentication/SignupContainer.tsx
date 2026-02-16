@@ -69,7 +69,6 @@ export default function SignupContainer() {
   const [signedUpUser, setSignedUpUser] =
     useState<Auth_User_Signup_Response | null>(null);
   const [pickPlanInfo, setPickPlanInfo] = useState<PickPlanInfo | null>(null);
-  console.log("pickPlanInfo", pickPlanInfo);
   return (
     <StyledRegistrationContainer>
       <WhyRegister />
