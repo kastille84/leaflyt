@@ -31,7 +31,7 @@ export const getBoard = async (
     .from("boards")
     .select(
       `*,
-        flyers(*, user(id, firstName, lastName, name, email, phone, website, address, typeOfUser, powerUser))`,
+        flyers(*, user(id, firstName, lastName, name, email, phone, website, address, typeOfUser, powerUser, pioneer))`,
     )
     .eq("placeId", placeId)
     .order("created_at", {

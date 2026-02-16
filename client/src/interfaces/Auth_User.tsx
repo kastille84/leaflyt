@@ -148,6 +148,7 @@ export interface Auth_User_Profile_Response {
   saved_flyers: DB_Saved_Flyer[];
   termsAccepted: boolean;
   powerUser: boolean;
+  pioneer: boolean;
 }
 
 export interface LoginSubmitData {

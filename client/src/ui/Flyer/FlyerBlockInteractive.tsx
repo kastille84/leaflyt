@@ -3,6 +3,7 @@ import { Tooltip } from "react-tooltip";
 
 import {
   HiOutlineArrowTopRightOnSquare,
+  HiOutlineBolt,
   HiOutlineBookmark,
   HiOutlineBookmarkSlash,
   HiOutlineCheckBadge,
@@ -626,8 +627,11 @@ export default function FlyerBlockInteractive({
       <StyledInfoContentContainer>
         <StyledActionSection>
           <StyledBadgeSection>
+            {(flyer?.user as Auth_User_Profile_Response).pioneer && (
+              <HiOutlineCheckBadge data-tooltip-id="pioneer" />
+            )}
             {(flyer?.user as Auth_User_Profile_Response).powerUser && (
-              <HiOutlineCheckBadge data-tooltip-id="powerUser" />
+              <HiOutlineBolt data-tooltip-id="powerUser" />
             )}
             {(flyer?.likes || 0) > 5 && (
               <HiOutlineFire className="fire" data-tooltip-id="fire" />
@@ -729,7 +733,14 @@ export default function FlyerBlockInteractive({
       <Tooltip
         id="powerUser"
         place="bottom"
-        content="Users with 10 or more flyers"
+        content="Power Users badge: 15 or more flyers"
+        openOnClick={true}
+        variant="success"
+      />
+      <Tooltip
+        id="pioneer"
+        place="bottom"
+        content="Early Pioneer who helped establish Leaflit in this community"
         openOnClick={true}
         variant="success"
       />
