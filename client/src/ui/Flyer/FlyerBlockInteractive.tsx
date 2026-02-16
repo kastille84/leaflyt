@@ -133,6 +133,9 @@ const StyledAvatarContainer = styled.div`
   display: flex;
   gap: 1.2rem;
   align-items: center;
+  & svg {
+    cursor: pointer;
+  }
 `;
 const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
   background-color: ${({ flyerDesign }) => flyerDesign.top.color};
@@ -165,6 +168,7 @@ const StyledBadgeSection = styled.div`
   & svg {
     font-size: 1.8rem;
     color: var(--color-brand-600);
+    cursor: pointer;
   }
   & .fire {
     color: var(--color-orange-500);
@@ -735,21 +739,21 @@ export default function FlyerBlockInteractive({
         place="bottom"
         content="Power Users badge: 15 or more flyers"
         openOnClick={true}
-        variant="success"
+        variant="info"
       />
       <Tooltip
         id="pioneer"
         place="bottom"
         content="Early Pioneer who helped establish Leaflit in this community"
         openOnClick={true}
-        variant="success"
+        variant="info"
       />
       <Tooltip
         id="fire"
         place="bottom"
         content="Flyers with 5 or more likes"
         openOnClick={true}
-        variant="success"
+        variant="info"
       />
     </StyledFlyerBlock>
   );
