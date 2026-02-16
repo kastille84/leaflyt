@@ -6,6 +6,7 @@ const { supabase } = require("../../supabase");
 const uuid = require("uuid");
 
 const { handleCatchError } = require("../utility/error");
+const { keysBasedOnEnv } = require("../utility/generalUtils");
 
 exports.signup = async (req, res, next) => {
   // const errors = validationResult(req);
@@ -38,7 +39,7 @@ exports.deleteUser = async (req, res, next) => {
   // const userId = req.headers.userid;
   const token = req.headers.token;
   try {
-    const response = await fetch(process.env.SUPABASE_DB_DELETE_USER_URL, {
+    const response = await fetch(keysBasedOnEnv().supabase.deleteUserUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

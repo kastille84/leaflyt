@@ -1,4 +1,5 @@
 const { deleteUser } = require("../controllers/auth");
+const { webhook } = require("../controllers/stripe");
 
 exports.keysBasedOnEnv = () => {
   if (process.env.NODE_ENV.toLowerCase() === "production") {
@@ -28,6 +29,7 @@ exports.keysBasedOnEnv = () => {
         price_garden: process.env.STRIPE_PRICE_GARDEN_PROD,
         price_grove: process.env.STRIPE_PRICE_GROVE_PROD,
         price_forest: process.env.STRIPE_PRICE_FOREST_PROD,
+        webhookSecret: process.env.STRIPE_WEBHOOK_SECRET_PROD,
       },
       openai: {
         apiKey: process.env.OPENAI_API_KEY,
@@ -60,6 +62,7 @@ exports.keysBasedOnEnv = () => {
         price_garden: process.env.STRIPE_PRICE_GARDEN,
         price_grove: process.env.STRIPE_PRICE_GROVE,
         price_forest: process.env.STRIPE_PRICE_FOREST,
+        webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
       },
       openai: {
         apiKey: process.env.OPENAI_API_KEY,
