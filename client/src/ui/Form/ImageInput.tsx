@@ -46,7 +46,6 @@ export default function ImageInput({
   }, []);
 
   const fileUrlArr = getValues("fileUrlArr");
-  // console.log("fileUrlArr", fileUrlArr);
   const openCloudinaryWidget = () => {
     if (!cloudinaryWidgetRef?.current && uploadButtonRef?.current) {
       cloudinaryWidgetRef.current = window.cloudinary.createUploadWidget(
@@ -57,18 +56,14 @@ export default function ImageInput({
         },
         (error: UploadApiErrorResponse, result: UploadApiResponse) => {
           if (!error && result && result.event === "success") {
-            // TODO: remove this console.log
-            console.log("Done! Here is the image info: ", result.info);
             // setFileUrlArr((prevFileUrlArr: any) => [
             //   ...prevFileUrlArr,
             //   result.info,
             // ]);
             setValue("fileUrlArr", [...getValues("fileUrlArr"), result.info]); // Update form field
-            console.log("getFileUrlArr", getValues("fileUrlArr"));
             (cloudinaryWidgetRef.current as any).close();
           }
           if (error) {
-            console.log(error);
             toast.error(error.statusText);
             // (cloudinaryWidgetRef.current as any).close();
           }

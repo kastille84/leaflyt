@@ -62,7 +62,6 @@ export default function DeleteFlyerTemplateModal() {
 
     if (selectedTemplate) {
       // delete template
-      console.log("delete template");
       deleteTemplateFn(selectedTemplate, {
         onSuccess: ({ user }) => {
           // update the user

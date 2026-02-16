@@ -55,7 +55,6 @@ export default function PlansModal() {
     data: Plan[];
     error: any;
   }>(["getPlans"]);
-  console.log("plansModal", plansObj);
 
   const customStyles = {
     overlay: {

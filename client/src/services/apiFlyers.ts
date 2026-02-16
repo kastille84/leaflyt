@@ -31,7 +31,6 @@ const getOrCreateBoard = async (selectedPlace: NearbySearchPlaceResult) => {
     };
     try {
       newBoard = await createBoard(boardData);
-      console.log("newBoard", newBoard);
       board = newBoard;
     } catch (error) {
       console.error(error);

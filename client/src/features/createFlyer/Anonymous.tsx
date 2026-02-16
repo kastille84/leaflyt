@@ -116,15 +116,12 @@ export default function Anonymous() {
   const subcategoryWatch = watch("subcategory");
   const fileUrlArrWatch = watch("fileUrlArr");
 
-  console.log("getValues", getValues());
-  console.log("errors", errors);
-
   useEffect(() => {
     if (typeOfUser) {
       unregister(
         ["anonymous", "individual", "business", "organization"].filter(
-          (item) => item !== typeOfUser
-        )
+          (item) => item !== typeOfUser,
+        ),
       );
       // remove attestation
       if (typeOfUser !== "anonymous") {
@@ -143,7 +140,6 @@ export default function Anonymous() {
 
   const onSubmit = async (data: any) => {
     setSubmitError("");
-    console.log("data", data);
     const prepData = {
       ...data,
     };
@@ -208,7 +204,7 @@ export default function Anonymous() {
                     register={register}
                     options={getSubcategoriesForSelect(
                       categoriesObj,
-                      categoryWatch
+                      categoryWatch,
                     )}
                     value={subcategoryWatch}
                     errors={errors}

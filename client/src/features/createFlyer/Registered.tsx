@@ -132,9 +132,6 @@ export default function Registered({
   const templateWatch = watch("template");
   const lifespanWatch = watch("lifespan");
 
-  console.log("errors", errors);
-  console.log("getValues", getValues());
-
   const onSubmit = async (data: any) => {
     setSubmitError("");
     // add default flyer design if none is set
@@ -143,8 +140,6 @@ export default function Registered({
     }
     // add the user to the flyer
     data.user = user?.id;
-
-    console.log("registered data", data);
     setShowSpinner(true);
 
     if (flyerToEdit) {

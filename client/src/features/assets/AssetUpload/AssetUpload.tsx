@@ -43,20 +43,16 @@ export default function AssetUpload({
         },
         (error: UploadApiErrorResponse, result: UploadApiResponse) => {
           if (!error && result && result.event === "success") {
-            // TODO: remove this console.log
-            console.log("Done! Here is the image info: ", result.info);
             // setFileUrlArr((prevFileUrlArr: any) => [
             //   ...prevFileUrlArr,
             //   result.info,
             // ]);
             // setValue("fileUrlArr", [...getValues("fileUrlArr"), result.info]); // Update form field
-            // console.log("getFileUrlArr", getValues("fileUrlArr"));
             onAssetAdded(result.info);
             (cloudinaryWidgetRef.current as any).close();
             cloudinaryWidgetRef.current = null;
           }
           if (error) {
-            console.log(error);
             toast.error(error.statusText);
             // (cloudinaryWidgetRef.current as any).close();
           }

@@ -138,7 +138,6 @@ export default function Board() {
   //   category: categoryWatch,
   //   subcategory: subcategoryWatch,
   // };
-  console.log(filterOnWatch);
   const { isLoadingBoard, board } = useGetBoard(user?.id!);
 
   const originalFlyers = board?.data?.flyers || [];

@@ -76,7 +76,6 @@ export default function TemplateList() {
   } = useGlobalContext();
 
   const flyersBelongingToTemplates = groupFlyersToTemplates(user);
-  console.log("flyersBelongingToTemplates", flyersBelongingToTemplates);
 
   function handleEdit(template: DB_Template) {
     setSelectedTemplate(template);

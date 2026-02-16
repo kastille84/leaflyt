@@ -87,7 +87,6 @@ export default function SingleFlyer() {
     staleTime: 0,
   });
 
-  console.log("user value", user);
   function showGuidedActions() {
     return (
       <small>

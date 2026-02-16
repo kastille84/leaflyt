@@ -82,7 +82,6 @@ export default function CancelSubscriptionModal() {
     setShowSpinner(true);
     try {
       if (cancelSubscriptionModalType === "onPayment") {
-        console.log("cancel signup");
         // must delete the customer in Stripe
         // must delete the customer in Supabase
         deleteCustomerFn(

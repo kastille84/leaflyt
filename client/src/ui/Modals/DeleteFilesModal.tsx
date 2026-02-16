@@ -57,7 +57,6 @@ export default function DeleteFilesModal() {
   async function handleDelete() {
     setShowSpinner(true);
 
-    console.log("delete images", contextImages);
     deleteAssetsFn(contextImages!, {
       onSuccess: ({ user }: any) => {
         // update the user

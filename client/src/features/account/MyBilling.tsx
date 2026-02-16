@@ -89,7 +89,6 @@ export default function MyBilling() {
     setCustomerId,
   } = useGlobalContext();
   const { canUpgrade } = useGetUserLimits();
-  console.log("user", user?.customers);
   const customer = user?.customers[0];
 
   function handleCancelSubscription() {

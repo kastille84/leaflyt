@@ -66,7 +66,6 @@ export default (coords: LatLng) => {
       }
 
       const data = await response.json();
-      console.log("places", data.places);
       if (!data.places || data.places.length === 0) {
         // no places within your search radius
         return [];
@@ -76,7 +75,7 @@ export default (coords: LatLng) => {
     } catch (error: any) {
       throw new Error(
         "Error fetching nearby boards. Please try again. - Reason: " +
-          error.message
+          error.message,
       );
       // return "Error fetching nearby places: " + error2.message;
     }

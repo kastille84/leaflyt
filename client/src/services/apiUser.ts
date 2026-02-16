@@ -38,8 +38,6 @@ export const updateUserProfile = async ({
   typeOfUser: "individual" | "business" | "organization" | string;
   userId: string;
 }) => {
-  console.log("profile", profile);
-  console.log("typeOfUser", typeOfUser);
   let nameObj = {};
   let website = "";
   let phone = "";

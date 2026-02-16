@@ -62,7 +62,6 @@ export default function MainLayout() {
       if (session) {
         autoLogin(session.access_token, {
           onSuccess: (response) => {
-            console.log("response", response);
             // set user in global context
             setUser(response.data);
             // a purposefully thrown error (i.e. user hasn't paid)
@@ -75,7 +74,6 @@ export default function MainLayout() {
             }
           },
           onError: (error) => {
-            console.log("error", error);
             if (error.message === "unpaid") {
               setShowLoginModal(false);
               setIsOpenBottomSlideIn(true);

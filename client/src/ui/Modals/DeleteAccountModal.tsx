@@ -71,7 +71,6 @@ export default function DeleteAccountModal() {
 
   async function performDeleteAccountAction() {
     try {
-      console.log("user", user);
       setShowSpinner(true);
       // delete assets in cloudinary
       const assetsToDeleteVideo = (user?.assets || [])
@@ -81,7 +80,6 @@ export default function DeleteAccountModal() {
         .filter((asset) => asset.asset_info.resource_type === "image")
         .map((asset) => asset.asset_info.public_id);
 
-      console.log("assetsToDelete", assetsToDeleteVideo, assetsToDeleteImages);
       await deleteAllAssetsAsync({
         assetVideos: assetsToDeleteVideo,
         assetImages: assetsToDeleteImages,
