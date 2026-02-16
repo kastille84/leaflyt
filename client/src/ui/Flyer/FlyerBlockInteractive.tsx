@@ -627,10 +627,10 @@ export default function FlyerBlockInteractive({
       <StyledInfoContentContainer>
         <StyledActionSection>
           <StyledBadgeSection>
-            {(flyer?.user as Auth_User_Profile_Response).pioneer && (
+            {(flyer?.user as Auth_User_Profile_Response)?.pioneer && (
               <HiOutlineCheckBadge data-tooltip-id="pioneer" />
             )}
-            {(flyer?.user as Auth_User_Profile_Response).powerUser && (
+            {(flyer?.user as Auth_User_Profile_Response)?.powerUser && (
               <HiOutlineBolt data-tooltip-id="powerUser" />
             )}
             {(flyer?.likes || 0) > 5 && (

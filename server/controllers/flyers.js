@@ -55,7 +55,6 @@ exports.deleteExpiredFlyers = async (req, res, next) => {
   try {
     const flyersToDelete = [];
     const unregisteredFlyerFilesToDelete = [];
-    // select all flyers that are older than 7 days
     const { data, error } = await supabase
       .from("flyers")
       .select("*")
@@ -64,7 +63,7 @@ exports.deleteExpiredFlyers = async (req, res, next) => {
     // .lt("expires_at", dayjs().subtract(10, "days").format("YYYY-MM-DD"));
 
     data.forEach((flyer) => {
-      if (!flyer.user) {
+      if (!flyer.user && flyer.fileUrlArr.length > 0) {
         // unregistered flyer
         unregisteredFlyerFilesToDelete.push({ ...flyer.fileUrlArr[0] });
       }
@@ -79,6 +78,42 @@ exports.deleteExpiredFlyers = async (req, res, next) => {
     }
 
     if (error) throw error;
+    const { data: deleteCountData, error: deleteError } = await supabase.rpc(
+      "delete_flyers_by_ids",
+      {
+        ids: flyersToDelete,
+      },
+    );
+    return data;
+  } catch (err) {
+    console.log("error", err);
+  }
+};
+
+exports.deleteUnregisteredFlyers = async (req, res, next) => {
+  try {
+    const flyersToDelete = [];
+    const unregisteredFlyerFilesToDelete = [];
+    const { data, error } = await supabase
+      .from("flyers")
+      .select("*")
+      .is("user", null)
+      .lt("expires_at", dayjs().format("YYYY-MM-DD HH:mm:ssZZ"));
+    if (error) throw error;
+    console.log("data", data);
+    data.forEach((flyer) => {
+      if (flyer.fileUrlArr.length > 0)
+        unregisteredFlyerFilesToDelete.push({ ...flyer.fileUrlArr[0] });
+      flyersToDelete.push(flyer.id);
+    });
+
+    // delete files from cloudinary
+    if (unregisteredFlyerFilesToDelete.length > 0) {
+      unregisteredFlyerFilesToDelete.forEach(async (file) => {
+        await cloudinary.uploader.destroy(file.public_id);
+      });
+    }
+
     const { data: deleteCountData, error: deleteError } = await supabase.rpc(
       "delete_flyers_by_ids",
       {
