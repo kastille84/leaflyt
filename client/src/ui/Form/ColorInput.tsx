@@ -42,8 +42,7 @@ export default function ColorInput({
   function handleColorChangeComplete(color: any) {
     setValue(registerName, color.hex);
   }
-  console.log("getValues", getValues());
-  console.log("color", getValues(registerName));
+
   return (
     <FormControl testId="color-input-container">
       <StyledLabel htmlFor="color">Select Color</StyledLabel>

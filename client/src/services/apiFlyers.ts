@@ -735,7 +735,6 @@ export const sendFlaggedFlyerEmail = async ({
       },
     );
     const result = await response.json();
-    console.log("result", result);
     if (result.error) {
       throw result.error;
     }

@@ -105,7 +105,6 @@ export default function CancelSubscriptionModal() {
           },
         );
       } else if (cancelSubscriptionModalType === "onAccount") {
-        console.log("cancel onAccount");
         // must delete the customer in Stripe
         // must delete the customer in Supabase
         deleteCustomerFn(

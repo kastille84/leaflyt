@@ -76,7 +76,6 @@ export default function DeleteFlyerTemplateModal() {
       });
     } else if (selectedFlyer) {
       // delete flyer
-      console.log("delete flyer");
       deleteFlyerFn(selectedFlyer, {
         onSuccess: ({ user }) => {
           // update the user
