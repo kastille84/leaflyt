@@ -90,7 +90,6 @@ export default function ResetPassword() {
 
   const onSubmit = async (data: any) => {
     setSubmitError("");
-    console.log("submit - data", data);
     setShowSpinner(true);
 
     try {
@@ -102,7 +101,6 @@ export default function ResetPassword() {
           });
         },
         onError: (error) => {
-          console.log("onError", error.message);
           setSubmitError(error.message);
           // set focus on error
           document.querySelector("#form-error")?.scrollIntoView();
@@ -110,7 +108,6 @@ export default function ResetPassword() {
         },
       });
     } catch (error: any) {
-      console.log("error", error);
       setSubmitError(error.message);
       // set focus on error
       document.querySelector("#form-error")?.scrollIntoView();

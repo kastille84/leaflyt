@@ -50,6 +50,13 @@ const StyledTag = styled.small<{ flyerDesign: FlyerDesign }>`
   color: ${({ flyerDesign }) => flyerDesign.tags.color};
 `;
 
+const StyledContentContainer = styled.div`
+  & ol,
+  & ul {
+    padding-left: 2.5rem;
+  }
+`;
+
 export default function Content({
   flyer,
   flyerStyles,
@@ -73,14 +80,16 @@ export default function Content({
         {determineIsFullFlyer() ? flyer.title : shortenTitle(flyer.title, 33)}
       </StyledHeading>
       {!isReadMore && (
-        <div
+        <StyledContentContainer
           dangerouslySetInnerHTML={{
             __html: shortenTitle(flyer.content, 75),
           }}
-        ></div>
+        ></StyledContentContainer>
       )}
       {isReadMore && (
-        <div dangerouslySetInnerHTML={{ __html: flyer.content }}></div>
+        <StyledContentContainer
+          dangerouslySetInnerHTML={{ __html: flyer.content }}
+        ></StyledContentContainer>
       )}
       {!determineIsFullFlyer() && flyer.content.length > 75 && (
         <StyledReadMore

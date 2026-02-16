@@ -11,7 +11,7 @@ export const getBoards = async () => {
 
 export const getBoard = async (
   placeId: string,
-  profileId?: number
+  profileId?: number,
 ): Promise<{
   data: DB_Board_Response | null;
   error: PostgrestError | null;
@@ -31,7 +31,7 @@ export const getBoard = async (
     .from("boards")
     .select(
       `*,
-        flyers(*, user(id, firstName, lastName, name, email, phone, website, address, typeOfUser))`
+        flyers(*, user(id, firstName, lastName, name, email, phone, website, address, typeOfUser, powerUser, pioneer))`,
     )
     .eq("placeId", placeId)
     .order("created_at", {
@@ -48,7 +48,7 @@ export const getBoard = async (
 };
 
 export const createBoard = async (
-  selectedPlace: DB_Board
+  selectedPlace: DB_Board,
 ): Promise<{
   data: DB_Board_Response | null;
   error: PostgrestError | null;

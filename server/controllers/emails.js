@@ -84,10 +84,21 @@ exports.sendFlaggedFlyerEmail = async (req, res, next) => {
     console.log("req.body", req.body);
     const email = req.body.email;
     const flyer = req.body.flyer;
-    const { reason, place } = flyer.flaggedReason;
+    const { reason, place, timestamp } = flyer.flaggedReason;
     console.log("email", email);
     console.log("flaggedReason", flyer.flaggedReason);
     console.log("flyerData", flyer);
+
+    const variables = {
+      "v:reason": reason,
+      "v:flyerTitle": flyer.title,
+      "v:place": place,
+      "v:timestamp": timestamp,
+    };
+    if (flyer.template) {
+      variables["v:templateName"] = flyer.template.templateName;
+    }
+    // send to user
     const data = await mailgunClient.messages.create(
       keysBasedOnEnv().mailgun.domain,
       {
@@ -95,10 +106,18 @@ exports.sendFlaggedFlyerEmail = async (req, res, next) => {
         to: email,
         subject: "Your Flyer was Flagged",
         template: `FlaggedFlyer`,
-        "v:reason": reason,
-        "v:flyerTitle": flyer.title,
-        "v:place": place,
-        "v:templateName": flyer.template.templateName,
+        ...variables,
+      },
+    );
+    // send to leaflit team
+    const data2 = await mailgunClient.messages.create(
+      keysBasedOnEnv().mailgun.domain,
+      {
+        from: "support@" + keysBasedOnEnv().mailgun.domain,
+        to: "support@" + keysBasedOnEnv().mailgun.domain,
+        subject: "Review - Flagged Flyer - " + flyer.id,
+        template: `FlaggedFlyer`,
+        ...variables,
       },
     );
     return res.status(200).json({ data: data });

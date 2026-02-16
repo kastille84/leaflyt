@@ -84,7 +84,7 @@ export default function Home() {
         "Payment successful! \nImportant: \nVerify Your Email, If it's your first time here. \nThen Login or Re-Login for new plan to take affect.",
         {
           duration: 10000,
-        }
+        },
       );
     }
   }, []);
@@ -105,7 +105,7 @@ export default function Home() {
           Whether you are a business, organization or individual, <br />
           We make it easy for you to view and distribute flyers in your
           community. <br />
-          We are beta testing and looking for early adopters.
+          We are seeding phase and looking for community launch partners.
           <br />
           There's more features to come, but for right now...
         </Heading>

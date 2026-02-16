@@ -89,23 +89,20 @@ export default function ForgotPassword() {
 
   const onSubmit = async (data: any) => {
     setSubmitError("");
-    console.log("submit - data", data);
     setShowSpinner(true);
 
     try {
       forgotPasswordFn(data.email, {
         onSuccess: (response) => {
-          console.log("response", response);
           setShowSpinner(false);
           toast.success(
             "Password reset link sent to your email successfully! \nCheck your inbox.",
             {
               duration: 6000,
-            }
+            },
           );
         },
         onError: (error) => {
-          console.log("onError", error.message);
           setSubmitError(error.message);
           // set focus on error
           document.querySelector("#form-error")?.scrollIntoView();
@@ -113,7 +110,6 @@ export default function ForgotPassword() {
         },
       });
     } catch (error: any) {
-      console.log("error", error);
       setSubmitError(error.message);
       // set focus on error
       document.querySelector("#form-error")?.scrollIntoView();

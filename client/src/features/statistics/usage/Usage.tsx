@@ -26,8 +26,6 @@ export default function Usage() {
   const { user } = useGlobalContext();
   const userLimits = useGetUserLimits();
   const groupedFlyers = groupFlyersBasedOnPostingMethod(user?.flyers || []);
-  console.log("groupedFlyers", groupedFlyers);
-  console.log("userLimits", userLimits.onLocationPosting.limit);
   let likesData = null;
   let totalLikes = totalNumberOfFlyerLikes(user?.flyers || []);
 

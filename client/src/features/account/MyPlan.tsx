@@ -83,7 +83,6 @@ const PlanDatum = styled.div`
 export default function MyPlan() {
   const { user } = useGlobalContext();
   const { canUpgrade } = useGetUserLimits();
-  console.log("plan", user?.plan);
   return (
     <MyPlanContainer>
       {canUpgrade && (

@@ -128,12 +128,8 @@ export default function EditAccountInfo() {
 
   const planLimits = useGetUserLimits();
 
-  console.log("errors", errors);
-  console.log("getValues", getValues());
-
   const onSubmit = async (data: any) => {
     setSubmitError("");
-    console.log("submit - data", data);
     setShowSpinner(true);
 
     try {
@@ -145,7 +141,6 @@ export default function EditAccountInfo() {
         },
         {
           onSuccess: ({ user }: any) => {
-            console.log("response", response);
             // set user in global context
             setUser(user);
             toast.success("Account info updated successfully!", {
@@ -155,16 +150,14 @@ export default function EditAccountInfo() {
             handleCancel();
           },
           onError: (error) => {
-            console.log("onError", error.message);
             setSubmitError(error.message);
             // set focus on error
             document.querySelector("#form-error")?.scrollIntoView();
             setShowSpinner(false);
           },
-        }
+        },
       );
     } catch (error: any) {
-      console.log("error", error);
       setSubmitError(error.message);
       // set focus on error
       document.querySelector("#form-error")?.scrollIntoView();

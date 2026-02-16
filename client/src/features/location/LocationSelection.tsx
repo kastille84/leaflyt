@@ -20,6 +20,11 @@ const StyledOverlay = styled.div`
   justify-content: center;
   align-items: center;
 
+  @media (max-height: 59em) {
+    padding: 2.4rem;
+    overflow-y: auto;
+  }
+
   & .overlay-content {
     width: 80%;
     margin: auto;

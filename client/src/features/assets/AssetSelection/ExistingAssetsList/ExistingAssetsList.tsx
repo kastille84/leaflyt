@@ -50,7 +50,7 @@ export default function ExistingAssetsList({
             enablePreview={enablePreview}
             asset={asset.asset_info}
             preChecked={assetsList.some(
-              (assetItem) => assetItem.public_id === asset.asset_info.public_id
+              (assetItem) => assetItem.public_id === asset.asset_info.public_id,
             )}
             {...onlySafeToDeleteProps}
           ></ExistingAssetListItem>

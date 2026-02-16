@@ -71,6 +71,10 @@ const StyledDatumValue = styled.p<{ selected: boolean }>`
   font-weight: 600;
   color: ${(props) =>
     props.selected ? "var(--color-blue-600)" : "var(--color-brand-600)"};
+
+  &.indented {
+    padding-left: 1.4rem;
+  }
 `;
 const StyledDatumLabel = styled.p`
   color: var(--color-grey-600);
@@ -150,16 +154,16 @@ export default function PlanItem({
       {/* On Location */}
       <StyledPlanItemSection>
         <StyledDatum>
-          <StyledDatumValue selected={selected}>
+          <StyledDatumValue selected={selected} className="indented">
             {plan.onLocationPostingLimit}
           </StyledDatumValue>
-          <StyledDatumLabel>of those posted on location</StyledDatumLabel>
+          <StyledDatumLabel>of those posted "On-Location"</StyledDatumLabel>
         </StyledDatum>
       </StyledPlanItemSection>
       {/* Remote */}
       <StyledPlanItemSection>
         <StyledDatum>
-          <StyledDatumValue selected={selected}>
+          <StyledDatumValue selected={selected} className="indented">
             {plan.remotePostingLimit}
           </StyledDatumValue>
           <StyledDatumLabel>of those posted from home/office</StyledDatumLabel>
@@ -168,11 +172,11 @@ export default function PlanItem({
       {/* Remote Distance */}
       <StyledPlanItemSection>
         <StyledDatum>
-          <StyledDatumLabel>Post up to</StyledDatumLabel>
+          <StyledDatumLabel>"Virtual Posting" up to</StyledDatumLabel>
           <StyledDatumValue selected={selected}>
             {(plan!.virtualPostingDistance! * 100 * 0.621371).toFixed(2)}
           </StyledDatumValue>
-          <StyledDatumLabel>Miles away</StyledDatumLabel>
+          <StyledDatumLabel>miles away</StyledDatumLabel>
         </StyledDatum>
       </StyledPlanItemSection>
       {/* Templates */}
@@ -196,7 +200,19 @@ export default function PlanItem({
         <StyledDatum>
           <StyledDatumLabel>Type</StyledDatumLabel>
           <StyledDatumValue selected={selected}>
-            {plan.level === 1 ? "Images only" : "Images & Videos"}
+            {plan.level <= 2 ? "Images only" : "Images & Videos"}
+          </StyledDatumValue>
+        </StyledDatum>
+        <StyledDatum>
+          <StyledDatumLabel>Max File Size</StyledDatumLabel>
+          <StyledDatumValue selected={selected}>
+            {plan.level === 1
+              ? "20mb"
+              : plan.level === 2
+                ? "50mb"
+                : plan.level === 3
+                  ? "75mb"
+                  : "100mb"}
           </StyledDatumValue>
         </StyledDatum>
       </StyledPlanItemSection>

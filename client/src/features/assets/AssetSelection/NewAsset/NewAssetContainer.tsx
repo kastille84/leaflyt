@@ -45,14 +45,13 @@ export default function NewAssetContainer({
     if (saveOnUpload) {
       addAssetFn(addedAsset, {
         onSuccess: () => {
-          console.log("success");
           toast.success("Asset added to assets library!");
           // this flag, triggers useGetProfileById to get updated user
           setIsAddedToAssets((prev) => !prev);
         },
         onError: () => {
           toast.error(
-            "Could not add asset to assets library. Re-trying again.."
+            "Could not add asset to assets library. Re-trying again..",
           );
         },
       });

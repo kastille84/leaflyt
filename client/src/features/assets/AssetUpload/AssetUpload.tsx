@@ -33,16 +33,6 @@ export default function AssetUpload({
   const uploadButtonRef = useRef(null);
   const cloudinaryWidgetRef = useRef(null);
 
-  // const [fileUrlArr, setFileUrlArr] = useState<any>([]);
-
-  // useEffect(() => {
-  //   if (!getValues("fileUrlArr")?.length) {
-  //     setValue("fileUrlArr", []);
-  //   }
-  // }, []);
-
-  // const fileUrlArr = getValues("fileUrlArr");
-  // console.log("fileUrlArr", fileUrlArr);
   const openCloudinaryWidget = () => {
     if (!cloudinaryWidgetRef?.current && uploadButtonRef?.current) {
       cloudinaryWidgetRef.current = window.cloudinary.createUploadWidget(
@@ -53,24 +43,20 @@ export default function AssetUpload({
         },
         (error: UploadApiErrorResponse, result: UploadApiResponse) => {
           if (!error && result && result.event === "success") {
-            // TODO: remove this console.log
-            console.log("Done! Here is the image info: ", result.info);
             // setFileUrlArr((prevFileUrlArr: any) => [
             //   ...prevFileUrlArr,
             //   result.info,
             // ]);
             // setValue("fileUrlArr", [...getValues("fileUrlArr"), result.info]); // Update form field
-            // console.log("getFileUrlArr", getValues("fileUrlArr"));
             onAssetAdded(result.info);
             (cloudinaryWidgetRef.current as any).close();
             cloudinaryWidgetRef.current = null;
           }
           if (error) {
-            console.log(error);
             toast.error(error.statusText);
-            (cloudinaryWidgetRef.current as any).close();
+            // (cloudinaryWidgetRef.current as any).close();
           }
-        }
+        },
       );
     }
     (cloudinaryWidgetRef.current as any).open();
@@ -84,7 +70,7 @@ export default function AssetUpload({
           htmlFor="title"
           // className={`${errors["fileUrlArr"] && "error"}`}
         >
-          File Upload (max 10mb size)
+          File Upload
         </StyledLabel>
 
         <Button

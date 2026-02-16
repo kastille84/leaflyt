@@ -95,12 +95,12 @@ export default function FlaggedModal() {
           // update the user
           // setUser(user);
           toast.success("Flyer Flagged!");
-          handleCancel();
           // invalidate queries to update the board
           queryClient.invalidateQueries({
             queryKey: ["board", id],
           });
           setShowSpinner(false);
+          handleCancel();
         },
         onError: (error) => {
           toast.error("Flyer flagging failed! Try again.");

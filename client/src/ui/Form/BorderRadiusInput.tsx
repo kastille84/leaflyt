@@ -29,7 +29,6 @@ export default function BorderRadiusInput({
 }) {
   const [borderRadius, setBorderRadius] = useState("borderTopLeftRadius");
   // const [radiusValue, setRadiusValue] = useState(getValues(borderRadius));
-  console.log(borderRadius, getValues(borderRadius));
   return (
     <FormControl className="border-radius" testId="border-radius-container">
       <StyledLabel htmlFor="category">Round/Sharpen Corners</StyledLabel>

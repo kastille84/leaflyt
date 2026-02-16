@@ -23,7 +23,6 @@ export const getPlaceDetails = async (placeId: string) => {
     }
 
     const data = await response.json();
-    console.log("place", data);
     if (!data) {
       // no place id was found
       throw new Error("The requested location was not found.");
@@ -33,7 +32,7 @@ export const getPlaceDetails = async (placeId: string) => {
   } catch (error: any) {
     throw new Error(
       "Error fetching nearby boards. Please try again. - Reason: " +
-        error.message
+        error.message,
     );
     // return "Error fetching nearby place: " + error2.message;
   }

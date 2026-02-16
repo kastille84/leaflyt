@@ -34,6 +34,7 @@ import FlyerDesignerInput from "../../ui/Form/FlyerDesignerInput";
 import FormInfoAlert from "../../ui/Form/FormInfoAlert";
 import { DB_Flyers_Response, DB_Template } from "../../interfaces/DB_Flyers";
 import AssetsPreviewList from "../assets/AssetSelection/AssetsPreview/AssetsPreviewList";
+import OverlaySpinner from "../../ui/OverlaySpinner";
 
 const StyledRegisteredContainer = styled.div``;
 
@@ -131,9 +132,6 @@ export default function Registered({
   const templateWatch = watch("template");
   const lifespanWatch = watch("lifespan");
 
-  console.log("errors", errors);
-  console.log("getValues", getValues());
-
   const onSubmit = async (data: any) => {
     setSubmitError("");
     // add default flyer design if none is set
@@ -142,8 +140,6 @@ export default function Registered({
     }
     // add the user to the flyer
     data.user = user?.id;
-
-    console.log("registered data", data);
     setShowSpinner(true);
 
     if (flyerToEdit) {
@@ -186,6 +182,10 @@ export default function Registered({
             setIsOpenFlyerDrawer(false);
             setDrawerAction(null);
             setSelectedFlyer(null);
+            queryClient.invalidateQueries({
+              queryKey: ["board", selectedPlace?.id],
+              refetchType: "all",
+            });
             // update the user
             setUser(user);
           },
@@ -407,7 +407,7 @@ export default function Registered({
                         errors={errors}
                         textLimit={30}
                       />
-                      <CommentsInput register={register} />
+                      {/* <CommentsInput register={register} /> */}
                     </>
                   )}
                 </FormControl>
@@ -430,6 +430,11 @@ export default function Registered({
           </StyledFormContent>
         </Form>
       </StyledFormContainer>
+      {showSpinner && (
+        <OverlaySpinner
+          message={`${type.includes("edit") ? "Editing..." : "Creating..."}`}
+        />
+      )}
     </StyledRegisteredContainer>
   );
 }

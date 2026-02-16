@@ -34,7 +34,7 @@ export default function ContentInput({
         defaultValue={""}
         render={({ field }) => (
           <ReactQuill
-            className={`${errors["content"] && "error"}`}
+            className={` ${errors["content"] && "error"}`}
             {...field}
             theme="snow"
             placeholder="Spread your message..."

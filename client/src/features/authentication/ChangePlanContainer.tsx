@@ -76,7 +76,6 @@ export default function ChangePlanContainer({
   const [signedUpUser, setSignedUpUser] =
     useState<Auth_User_Signup_Response | null>(user);
   const [pickPlanInfo, setPickPlanInfo] = useState<PickPlanInfo | null>(null);
-  console.log("pickPlanInfo", pickPlanInfo);
   return (
     <StyledUpgradeContainer>
       <WhyUpgrade />

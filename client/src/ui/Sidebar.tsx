@@ -83,7 +83,12 @@ const StyledMenuOpenButton = styled.div`
 `;
 
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(() => {
+    if (location.pathname.includes("fullFlyer")) {
+      return false;
+    }
+    return true;
+  });
 
   return (
     <StyledSidebar

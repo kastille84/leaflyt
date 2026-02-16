@@ -114,9 +114,6 @@ export default function PaymentBillingInfoForm({
     setUser,
   } = useGlobalContext();
 
-  console.log("getValues", getValues());
-  console.log("errors", errors);
-
   function handleClose() {
     setIsOpenBottomSlideIn(false);
     setBottomSlideInType(null);
@@ -142,7 +139,6 @@ export default function PaymentBillingInfoForm({
       handleClose();
     } catch (error) {
       setShowSpinner(false);
-      console.log("error", error);
     }
   }
 
@@ -153,7 +149,6 @@ export default function PaymentBillingInfoForm({
 
   async function onSubmit(data: any) {
     setSubmitError("");
-    console.log("data", data);
     setShowSpinner(true);
     // delete old customer in Stripe if they are trying to update their payment information
     if (updatedPaymentInfo) {
@@ -173,7 +168,6 @@ export default function PaymentBillingInfoForm({
         },
         {
           onSuccess: (customer) => {
-            console.log("customer", customer);
 
             // action
             setPickPlanInfo({
@@ -186,7 +180,6 @@ export default function PaymentBillingInfoForm({
             setShowSpinner(false);
           },
           onError: (error) => {
-            console.log("error", error);
             setShowSpinner(false);
             setSubmitError(error.message);
           },

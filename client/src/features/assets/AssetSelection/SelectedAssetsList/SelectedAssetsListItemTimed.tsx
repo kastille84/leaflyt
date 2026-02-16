@@ -112,7 +112,6 @@ export default function SelectedAssetsListItemTimed({
   async function addAsset(asset: UploadApiResponse) {
     addAssetFn(asset, {
       onSuccess: () => {
-        console.log("success");
         // this flag, triggers useGetProfileById to get updated user
         setIsAddedToAssets((prev) => !prev);
       },

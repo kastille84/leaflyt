@@ -147,7 +147,7 @@ exports.webhook = async (req, res, next) => {
     event = stripe.webhooks.constructEvent(
       req.body,
       req.headers["stripe-signature"],
-      process.env.STRIPE_WEBHOOK_SECRET,
+      keysBasedOnEnv().stripe.webhookSecret,
     );
   } catch (err) {
     console.log(err);

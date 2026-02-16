@@ -63,7 +63,7 @@ const StyledTemplateListItem = styled.div`
   gap: 1.6rem;
   border: 1px dashed var(--color-brand-700);
   border-radius: var(--border-radius-md);
-  padding: 2.4rem;
+  padding: 1.4rem;
   background-color: var(--color-grey-50);
 `;
 export default function TemplateList() {
@@ -76,7 +76,6 @@ export default function TemplateList() {
   } = useGlobalContext();
 
   const flyersBelongingToTemplates = groupFlyersToTemplates(user);
-  console.log("flyersBelongingToTemplates", flyersBelongingToTemplates);
 
   function handleEdit(template: DB_Template) {
     setSelectedTemplate(template);
@@ -114,7 +113,11 @@ export default function TemplateList() {
               Flyer(s)
             </StyledSmall>
           </StyledTemplateHeader>
-          <FlyerBlockStatic key={template.id} flyer={template} />
+          <FlyerBlockStatic
+            key={template.id}
+            flyer={template}
+            redeemable={true}
+          />
         </StyledTemplateListItem>
       ))}
     </StyledTemplateListContainer>

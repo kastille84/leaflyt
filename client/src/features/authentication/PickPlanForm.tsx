@@ -127,9 +127,6 @@ export default function PickPlanForm({
 
   const planWatch = watch("plan");
 
-  console.log("getValues", getValues());
-  console.log("errors", errors);
-
   function handleClose() {
     setIsOpenBottomSlideIn(false);
     setBottomSlideInType(null);
@@ -142,7 +139,7 @@ export default function PickPlanForm({
       "Seed Plan Selected. \nRemember to confirm your email. \nBesides that, you're all set! \nFind Boards Near You and start posting!",
       {
         duration: 10000,
-      }
+      },
     );
   }
 
@@ -153,7 +150,6 @@ export default function PickPlanForm({
 
   function onSubmit(data: any) {
     setSubmitError("");
-    console.log("data", data);
 
     // set full addressObj to address field
     // data[typeOfUser].contact.address = data.addressObjToSave;
@@ -174,8 +170,6 @@ export default function PickPlanForm({
         },
         {
           onSuccess: (customer) => {
-            console.log("customer", customer);
-
             // action
             setPickPlanInfo({
               plan: data.plan,
@@ -187,11 +181,10 @@ export default function PickPlanForm({
             setShowSpinner(false);
           },
           onError: (error) => {
-            console.log("error", error);
             setShowSpinner(false);
             setSubmitError(error.message);
           },
-        }
+        },
       );
     } else {
       // upgrading from paid to higher paid
@@ -204,7 +197,6 @@ export default function PickPlanForm({
         },
         {
           onSuccess: ({ user }) => {
-            console.log("user updated", user);
             setShowSpinner(false);
             setUser(user!);
             toast.success("Plan updated! \nEnjoy your new plan!", {
@@ -214,11 +206,10 @@ export default function PickPlanForm({
             setIsOpenBottomSlideIn(false);
           },
           onError: (error) => {
-            console.log("error", error);
             setShowSpinner(false);
             setSubmitError(error.message);
           },
-        }
+        },
       );
     }
   }

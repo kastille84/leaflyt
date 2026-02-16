@@ -10,7 +10,6 @@ import toast from "react-hot-toast";
 import OverlaySpinner from "../OverlaySpinner";
 import { useState } from "react";
 import useAssetMutations from "../../features/assets/useAssetMutations";
-import { set } from "react-hook-form";
 import useSignup from "../../features/authentication/useSignup";
 
 const StyledSubmitError = styled(Heading)`
@@ -72,7 +71,6 @@ export default function DeleteAccountModal() {
 
   async function performDeleteAccountAction() {
     try {
-      console.log("user", user);
       setShowSpinner(true);
       // delete assets in cloudinary
       const assetsToDeleteVideo = (user?.assets || [])
@@ -82,7 +80,6 @@ export default function DeleteAccountModal() {
         .filter((asset) => asset.asset_info.resource_type === "image")
         .map((asset) => asset.asset_info.public_id);
 
-      console.log("assetsToDelete", assetsToDeleteVideo, assetsToDeleteImages);
       await deleteAllAssetsAsync({
         assetVideos: assetsToDeleteVideo,
         assetImages: assetsToDeleteImages,
@@ -115,6 +112,8 @@ export default function DeleteAccountModal() {
       navigate("/");
     } catch (error) {
       console.error(error);
+      setShowSpinner(false);
+      setSubmitError("Something went wrong. Please try again.");
     }
   }
 

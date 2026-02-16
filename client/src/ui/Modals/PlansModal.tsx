@@ -22,8 +22,13 @@ const StyledPlansItemsContainer = styled.div`
   justify-content: center;
   gap: 1.2rem;
   margin-top: 1.2rem;
+  min-height: 500px;
   max-height: 800px;
   overflow-y: auto;
+  @media (max-height: 59em) {
+    height: 60vh;
+    min-height: unset;
+  }
 `;
 
 const StyledButtonContainer = styled.div`
@@ -50,7 +55,6 @@ export default function PlansModal() {
     data: Plan[];
     error: any;
   }>(["getPlans"]);
-  console.log("plansModal", plansObj);
 
   const customStyles = {
     overlay: {
@@ -67,7 +71,7 @@ export default function PlansModal() {
       boxShadow: "var(--shadow-lg)",
       padding: "3.2rem",
       width: ["s_tablet", "m_tablet", "l_mobile", "s_mobile"].includes(
-        responsiveVal
+        responsiveVal,
       )
         ? "95%"
         : "80%",

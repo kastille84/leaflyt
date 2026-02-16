@@ -60,7 +60,6 @@ export default function PaymentFormContainer({
         },
         {
           onSuccess: (data: any) => {
-            console.log("Checkout Session data", data);
             setClientSecret(data.clientSecret);
           },
           onError: (error: any) => {},
