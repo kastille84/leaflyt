@@ -1,8 +1,7 @@
-const { deleteUser } = require("../controllers/auth");
-const { webhook } = require("../controllers/stripe");
-
 exports.keysBasedOnEnv = () => {
-  if (process.env.NODE_ENV.toLowerCase() === "production") {
+  console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+  if ((process.env.NODE_ENV || "").toLowerCase() === "production") {
+    console.log("production");
     // PRODUCTION
     return {
       clientUrl: "https://leaflit.us",
@@ -36,6 +35,7 @@ exports.keysBasedOnEnv = () => {
       },
     };
   } else {
+    console.log("not production");
     // Non-Prod
     return {
       clientUrl: "https://localhost:5173",

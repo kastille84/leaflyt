@@ -66,7 +66,13 @@ app.use((error, req, res, next) => {
   return res.status(status).json({ error });
 });
 
+app.use(express.static(path.join(__dirname, "./client/dist")));
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./client/dist", "index.html"));
+});
+
 const port = 5000;
 app.listen(process.env.PORT || port, () =>
-  console.log("Server running on port :" + port),
+  console.log("Server running on port :" + (process.env.PORT || port)),
 );
