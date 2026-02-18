@@ -114,6 +114,7 @@ export const getPlansForSelect = (plans: Plan[]) => {
 };
 
 export const keysBasedOnEnv = () => {
+  console.log("import.meta.env.MODE", import.meta.env.MODE);
   if (import.meta.env.MODE.toLowerCase() === "production") {
     // PRODUCTION
     return {
