@@ -1,5 +1,7 @@
 // Load environment variables from .env file
-// require("dotenv").config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 // Import necessary modules
 const Mailgun = require("mailgun.js");
