@@ -26,7 +26,7 @@ const StyledPlansItemsContainer = styled.div`
   max-height: 800px;
   overflow-y: auto;
   @media (max-height: 59em) {
-    height: 60vh;
+    height: 60dvh;
     min-height: unset;
   }
 `;

@@ -13,7 +13,7 @@ const StyledOverlay = styled.div`
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   z-index: 1000;
   background-color: rgba(233, 250, 233, 0.925);
   display: flex;

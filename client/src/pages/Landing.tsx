@@ -12,7 +12,7 @@ import { supabase } from "../services/supabase";
 
 const StyledMainSection = styled.section`
   color: var(--color-blue-200);
-  height: 100vh;
+  height: 100dvh;
   /* display: flex; */
   background-image: linear-gradient(
     to right,

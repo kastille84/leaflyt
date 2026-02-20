@@ -5,7 +5,7 @@ const StyledFigure = styled.figure`
   width: 100%;
   height: 800px;
   @media (max-height: 59em) {
-    height: 100vh;
+    height: 100dvh;
   }
 `;
 

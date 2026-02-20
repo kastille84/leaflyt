@@ -94,7 +94,7 @@ html {
 body {
   font-family: "DM Sans", sans-serif;
   color: var(--color-grey-700);
-  min-height: 100vh;
+  min-height: 100dvh;
   font-size: 1.6rem;
   line-height: 1.5;
   transition: color 0.3s, background-color 0.3s;

@@ -24,7 +24,6 @@ exports.createCustomer = async (req, res, next) => {
       address: req.body.address,
     });
 
-    console.log("createCustomer", customer);
     // create customer in supabase
     const { customerData, error } = await supabase.from("customers").insert([
       {
@@ -46,7 +45,7 @@ exports.deleteCustomer = async (req, res, next) => {
     // This function will permanently delete the customer
     // and immediately cancel any active subscriptions associated with them
     const customer = await stripe.customers.del(customerId);
-    console.log("deleteCustomer", customer);
+
     // delete customer in supabase
     const { customerData, error } = await supabase
       .from("customers")
