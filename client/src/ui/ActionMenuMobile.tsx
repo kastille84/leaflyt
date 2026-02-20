@@ -191,10 +191,6 @@ export default function ActionMenuMobile() {
             <div>
               <p>{selectedPlace?.displayName.text}</p>
               <p>{selectedPlace?.formattedAddress}</p>
-              <VerySmall>
-                Leaflit Virtual Board is not affiliated with this physical
-                location.
-              </VerySmall>
             </div>
             <HiOutlineInformationCircle
               onClick={() => setShowMerchantDisclaimerModal(true)}
