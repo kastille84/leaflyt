@@ -17,7 +17,7 @@ import { useResponsiveWidth } from "../hooks/useResponsiveWidth";
 import FlaggedModal from "../ui/Modals/FlaggedModal";
 
 const StyledMainLayout = styled.main`
-  height: 100vh;
+  height: 100dvh;
   display: grid;
   grid-template-columns: 25rem 1fr;
   grid-template-rows: auto 1fr;

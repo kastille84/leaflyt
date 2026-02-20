@@ -69,7 +69,7 @@ const StyledHeadingContainer = styled.div`
 `;
 const Canvas = styled.div`
   width: 100%;
-  height: 80vh;
+  height: 80dvh;
   /* background-color: var(--color-grey-50); */
   display: flex;
   flex-direction: column;

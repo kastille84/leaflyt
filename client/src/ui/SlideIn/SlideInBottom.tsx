@@ -31,7 +31,7 @@ const StyledContentContainer = styled.div`
   overflow: auto;
 
   @media (max-width: 59em) {
-    height: 100vh;
+    height: 100dvh;
   }
 `;
 
