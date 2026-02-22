@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Heading from "../ui/Heading";
 import Button from "../ui/Button";
@@ -9,10 +9,37 @@ import { useLocalStorageState } from "../hooks/useLocalStorageState";
 import { useNavigate } from "react-router-dom";
 import useLoginWithAccessToken from "../features/authentication/useLoginWithAccessToken";
 import { supabase } from "../services/supabase";
+import LandingItem from "../ui/LandingItem";
 
+const StyledMain = styled.main`
+  background-color: #fff;
+`;
+
+const StyledTopSection = styled.section`
+  display: flex;
+  gap: 3.2rem;
+  width: 100%;
+`;
+
+const StyledLogoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+const StyledLogo = styled.img`
+  width: 4rem;
+  height: auto;
+  @media (max-width: 59em) {
+    width: 2rem;
+  }
+  @media (max-width: 44em) {
+    width: 2rem;
+  }
+`;
 const StyledMainSection = styled.section`
   color: var(--color-blue-200);
-  height: 100dvh;
+  /* height: 100dvh; */
   /* display: flex; */
   background-image: linear-gradient(
     to right,
@@ -21,6 +48,7 @@ const StyledMainSection = styled.section`
   );
   @media (max-width: 59em) {
     /* flex-direction: column-reverse; */
+    height: auto;
   }
 
   & h2 {
@@ -140,7 +168,52 @@ const StyledAuthButtonsContainer = styled.div`
   gap: 2.4rem;
 `;
 
+const StyledExplainerSection = styled.section`
+  background-color: #fff;
+  padding: 4.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3.2rem;
+
+  & h1,
+  & h2 {
+    text-align: center;
+    font-weight: 500;
+  }
+
+  @media (max-width: 59em) {
+    /* flex-direction: column-reverse; */
+  }
+`;
+
+const StyledExplainerSectionIntro = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem;
+`;
+
+const StyledExplainerButtonsContainer = styled.div`
+  display: flex;
+  gap: 2.4rem;
+`;
+
+const StyledExplainerLandingItemsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3.2rem;
+
+  @media (max-width: 59em) {
+    justify-content: center;
+  }
+`;
 export default function Landing() {
+  const [explainerType, setExplainerType] = useState<"viewing" | "posting">(
+    "viewing",
+  );
   const {
     getUserGeo,
     isGettingLocation,
@@ -188,23 +261,31 @@ export default function Landing() {
   }
 
   return (
-    <main>
+    <StyledMain>
       <StyledMainSection>
         <StyledHeroArticle>
-          <StyledButtonContainer>
-            <Button onClick={getUserGeo}>Boards Near You</Button>
-            <StyledAuthButtonsContainer>
-              <Button variation="secondary" onClick={handleSignUpClick}>
-                Signup
-              </Button>
-              <Button
-                variation="secondary-outlined"
-                onClick={() => setShowLoginModal(true)}
-              >
-                Login
-              </Button>
-            </StyledAuthButtonsContainer>
-          </StyledButtonContainer>
+          <StyledTopSection>
+            <StyledLogoContainer>
+              <StyledLogo
+                src="/images\logo\logo_chatgpt_leaf-removebg-preview.png"
+                alt="Leaflit Logo"
+              />
+            </StyledLogoContainer>
+            <StyledButtonContainer>
+              <Button onClick={getUserGeo}>Boards Near You</Button>
+              <StyledAuthButtonsContainer>
+                <Button variation="secondary" onClick={handleSignUpClick}>
+                  Signup
+                </Button>
+                <Button
+                  variation="secondary-outlined"
+                  onClick={() => setShowLoginModal(true)}
+                >
+                  Login
+                </Button>
+              </StyledAuthButtonsContainer>
+            </StyledButtonContainer>
+          </StyledTopSection>
           <StyledHeroSection>
             <StyledHeroContent>
               <div>
@@ -230,10 +311,136 @@ export default function Landing() {
           </StyledHeroSection>
         </StyledHeroArticle>
       </StyledMainSection>
+      <StyledExplainerSection>
+        <StyledExplainerSectionIntro>
+          <StyledHeroH1>What Is Leaflit?</StyledHeroH1>
+          <Heading as="h2">
+            A Digital Flyer Distribution Platform For Your Local Community
+          </Heading>
+          <p>
+            It creates a virtual community board near your location and allows
+            you to post virtual flyers.{" "}
+          </p>
+          <figure>
+            <img
+              src={"/images/Board.png"}
+              height={"100%"}
+              width={"100%"}
+              alt=""
+            />
+          </figure>
+          <figure>
+            <img
+              src={"/images/Map_Virtual.png"}
+              height={"100%"}
+              width={"100%"}
+              alt=""
+            />
+          </figure>
+        </StyledExplainerSectionIntro>
+        <Heading as="h1">Some Current Pain Points When: </Heading>
+        <StyledExplainerButtonsContainer>
+          <Button
+            variation={explainerType === "viewing" ? "primary" : "secondary"}
+            onClick={() => {
+              setExplainerType("viewing");
+            }}
+            size="small"
+          >
+            Viewing Flyers
+          </Button>
+          <Button
+            variation={explainerType === "posting" ? "primary" : "secondary"}
+            onClick={() => {
+              setExplainerType("posting");
+            }}
+            size="small"
+          >
+            Posting Flyers
+          </Button>
+        </StyledExplainerButtonsContainer>
+        {explainerType === "viewing" && (
+          <StyledExplainerLandingItemsContainer>
+            <LandingItem
+              type="warning"
+              title="Messy Boards"
+              description="Flyers are on top of each other fighting for limited space making it hard to read them."
+            />
+            <LandingItem
+              type="warning"
+              title="Rushed Viewing"
+              description="Because Boards are placed near the entrance, you feel rushed and in the way."
+            />
+            <LandingItem
+              type="warning"
+              title="Outdated Flyers"
+              description="You get excited about something only to find out that it's outdated."
+            />
+          </StyledExplainerLandingItemsContainer>
+        )}
+        {explainerType === "posting" && (
+          <StyledExplainerLandingItemsContainer>
+            <LandingItem
+              type="warning"
+              title="Limited Space"
+              description="Flyers are on top of each other. You have to put yours on top of the others."
+            />
+            <LandingItem
+              type="warning"
+              title="Boards are Scarce"
+              description="Limited places where you can place your flyers."
+            />
+            <LandingItem
+              type="warning"
+              title="Huge Effort"
+              description="You have to take time, money, and energy to post flyers across town."
+            />
+          </StyledExplainerLandingItemsContainer>
+        )}
+        <Heading as="h1">Leaflit Solves These Problems and more... </Heading>
+        {explainerType === "viewing" && (
+          <StyledExplainerLandingItemsContainer>
+            <LandingItem
+              type="success"
+              title="Organized Boards"
+              description="Neat and legible flyers with ample space makes it easy to read."
+            />
+            <LandingItem
+              type="success"
+              title="All On Your Device"
+              description="Post, View, Like, Share, and Save Flyers from your device on your own time."
+            />
+            <LandingItem
+              type="success"
+              title="Auto-Delete Old Flyers"
+              description="Flyers have a lifespan and will be deleted automatically."
+            />
+          </StyledExplainerLandingItemsContainer>
+        )}
+        {explainerType === "posting" && (
+          <StyledExplainerLandingItemsContainer>
+            <LandingItem
+              type="success"
+              title="Ample Space"
+              description="Your Flyer will be placed neatly. No flyers covering yours."
+            />
+            <LandingItem
+              type="success"
+              title="Boards are Plenty"
+              description="Don't See a Board? Create One!"
+            />
+            <LandingItem
+              type="success"
+              title="Little Effort"
+              description="Leaflit modernizes flyer distribution to save you time, money, and energy."
+            />
+          </StyledExplainerLandingItemsContainer>
+        )}
+      </StyledExplainerSection>
       {isGettingLocation && (
         <OverlaySpinner message="Getting Your Location based on your device's GPS, mobile or wifi signal" />
       )}
       {coords && <LocationSelection coords={coords} />}
-    </main>
+    </StyledMain>
   );
 }
