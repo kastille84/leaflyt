@@ -5,7 +5,7 @@ import Heading from "../Heading";
 import { useGlobalContext } from "../../context/GlobalContext";
 
 const StyledFlyerFormContainer = styled.div`
-  height: 100vh;
+  height: 100dvh;
   overflow-y: auto;
   display: flex;
   flex-direction: column;

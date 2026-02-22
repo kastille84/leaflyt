@@ -30,7 +30,7 @@ import DeleteAccountModal from "./ui/Modals/DeleteAccountModal";
 import { keysBasedOnEnv } from "./utils/GeneralUtils";
 import SingleFlyer from "./features/single_flyer/SingleFlyer";
 import MerchantDisclaimerModal from "./ui/Modals/MerchantDisclaimerModal";
-import DcmaModal from "./ui/Modals/DCMAModal";
+import DcmaModal from "./ui/Modals/DcmaModal";
 
 const queryClient = new QueryClient({
   defaultOptions: {

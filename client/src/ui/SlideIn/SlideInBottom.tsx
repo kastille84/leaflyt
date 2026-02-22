@@ -31,7 +31,7 @@ const StyledContentContainer = styled.div`
   overflow: auto;
 
   @media (max-width: 59em) {
-    height: 100vh;
+    height: 100dvh;
   }
 `;
 
@@ -100,7 +100,7 @@ export default function SlideInBottom() {
       open={isOpenBottomSlideIn}
       onClose={handleDrawerClose}
       direction="bottom"
-      size={"100vh"}
+      size={"100dvh"}
       // style={{ position: "fixed", top: "auto", bottom: 0, right: 0, left: 0 }}
     >
       <StyledCloseContainer>

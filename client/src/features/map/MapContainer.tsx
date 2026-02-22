@@ -18,7 +18,7 @@ import { keysBasedOnEnv } from "../../utils/GeneralUtils";
 
 const StyledMapContainer = styled.div`
   width: 100%;
-  height: 80vh;
+  height: 80dvh;
   position: relative;
   & .gm-fullscreen-control {
     z-index: 101;

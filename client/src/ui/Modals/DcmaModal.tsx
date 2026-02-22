@@ -8,10 +8,10 @@ import { useResponsiveWidth } from "../../hooks/useResponsiveWidth";
 
 const StyledContentContainer = styled.div`
   /* width: 80%; */
-  height: 80vh;
+  height: 80dvh;
   overflow-y: auto;
   @media (max-height: 59em) {
-    height: 60vh;
+    height: 60dvh;
     min-height: unset;
   }
 `;

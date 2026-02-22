@@ -15,7 +15,7 @@ const StyledContentContainer = styled.div`
   height: 600px;
   overflow-y: auto;
   @media (max-height: 59em) {
-    height: 60vh;
+    height: 60dvh;
     min-height: unset;
   }
 `;
