@@ -2,16 +2,23 @@ import styled from "styled-components";
 import Heading from "./Heading";
 import { HiOutlineExclamationCircle, HiOutlineXMark } from "react-icons/hi2";
 
-const StyledInfoAlertContainer = styled.div`
+const StyledInfoAlertContainer = styled.div<{ type: string }>`
   display: flex;
   gap: 2.4rem;
   align-items: center;
-  background-color: var(--color-orange-200);
+  /* background-color: var(--color-orange-200); */
+  background-color: ${({ type }) =>
+    ["warning", "error"].includes(type)
+      ? "var(--color-orange-200)"
+      : "var(--color-blue-100)"};
   padding: 1.2rem 1.6rem;
   margin-bottom: 1.4rem;
 
   & h4 {
-    color: var(--color-orange-600);
+    color: ${({ type }) =>
+      ["warning", "error"].includes(type)
+        ? "var(--color-orange-600)"
+        : "var(--color-blue-400)"};
     display: flex;
     align-items: center;
     gap: 0.8rem;
@@ -61,7 +68,7 @@ export default function InfoAlert({
   };
 
   return (
-    <StyledInfoAlertContainer>
+    <StyledInfoAlertContainer type={type}>
       <Heading as={"h4"}>
         <span>{determineIcon()}</span>
         <span style={{ textTransform: "capitalize" }}>{type}</span>

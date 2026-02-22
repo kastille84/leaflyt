@@ -425,12 +425,12 @@ export default function Landing() {
             <LandingItem
               type="warning"
               title="Boards are Scarce"
-              description="Limited places where you can place your flyers."
+              description="Limited places where you can place your flyers. Low Exposure."
             />
             <LandingItem
               type="warning"
-              title="Huge Effort"
-              description="You have to take time, money, and energy to post flyers across town."
+              title="No Insights"
+              description="You have no idea if your flyers are getting attention. Or where is the best place to post them."
             />
           </StyledExplainerLandingItemsContainer>
         )}
@@ -464,12 +464,12 @@ export default function Landing() {
             <LandingItem
               type="success"
               title="Boards are Plenty"
-              description="Don't See a Board? Create One!"
+              description="Don't See a Board? Create One! You are in control of where the boards are placed. High Exposure."
             />
             <LandingItem
               type="success"
-              title="Little Effort"
-              description="Leaflit modernizes flyer distribution to save you time, money, and energy."
+              title="Valuable Insights"
+              description="Leaflit give you insights about your flyers so that you can strategically place them."
             />
           </StyledExplainerLandingItemsContainer>
         )}
@@ -483,13 +483,15 @@ export default function Landing() {
               association with the virtual community boards on Leaflit.
             </p>
             <p>Leaflit is an independent platform. </p>
-            <Button
-              size="small"
-              variation="secondary"
-              onClick={() => setShowMerchantDisclaimerModal(true)}
-            >
-              Learn More
-            </Button>
+            <div style={{ textAlign: "center" }}>
+              <Button
+                size="small"
+                variation="secondary"
+                onClick={() => setShowMerchantDisclaimerModal(true)}
+              >
+                Learn More
+              </Button>
+            </div>
           </InfoAlert>
           <Heading as="h2">
             Leaflit has 2 modes to interact with boards and flyers: On-Location
