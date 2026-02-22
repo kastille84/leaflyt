@@ -209,12 +209,12 @@ export default function Landing() {
             <StyledHeroContent>
               <div>
                 <StyledHeroH1>
-                  Let's Make Community Boards Fun, Interactive & Useful Again
+                  Leaflit - Local Digital Community Boards
                 </StyledHeroH1>
                 <Heading as="h2">
-                  Spread Your Message. <br />
-                  See What Others are Posting in Your{" "}
-                  <span>Local Digital Community Board</span>
+                  See What Others Are Posting In Your <span>Community</span>
+                  <br />
+                  Spread Your Message.
                 </Heading>
               </div>
               <Button onClick={getUserGeo}>Find a Board Near You</Button>
