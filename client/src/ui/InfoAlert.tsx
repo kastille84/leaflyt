@@ -42,9 +42,11 @@ const StyledInfoAlertContainer = styled.div`
 export default function InfoAlert({
   type = "info",
   text,
+  children,
 }: {
   type?: "info" | "warning" | "error";
-  text: string;
+  text?: string;
+  children?: React.ReactNode;
 }) {
   const determineIcon = () => {
     switch (type) {
@@ -62,10 +64,11 @@ export default function InfoAlert({
     <StyledInfoAlertContainer>
       <Heading as={"h4"}>
         <span>{determineIcon()}</span>
-        <span>{type}</span>
+        <span style={{ textTransform: "capitalize" }}>{type}</span>
       </Heading>
       <div>
-        <p>{text}</p>
+        {text && <p>{text}</p>}
+        {children && children}
       </div>
     </StyledInfoAlertContainer>
   );

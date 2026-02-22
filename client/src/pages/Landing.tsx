@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import useLoginWithAccessToken from "../features/authentication/useLoginWithAccessToken";
 import { supabase } from "../services/supabase";
 import LandingItem from "../ui/LandingItem";
+import InfoAlert from "../ui/InfoAlert";
+import StepSection from "../ui/StepSection";
 
 const StyledMain = styled.main`
   background-color: #fff;
@@ -187,6 +189,25 @@ const StyledExplainerSection = styled.section`
     /* flex-direction: column-reverse; */
   }
 `;
+const StyledHowToSection = styled.section`
+  background-color: #fff;
+  padding: 4.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3.2rem;
+
+  & h1,
+  & h2 {
+    text-align: center;
+    font-weight: 500;
+  }
+
+  @media (max-width: 59em) {
+    /* flex-direction: column-reverse; */
+  }
+`;
 
 const StyledExplainerSectionIntro = styled.div`
   display: flex;
@@ -210,9 +231,24 @@ const StyledExplainerLandingItemsContainer = styled.div`
     justify-content: center;
   }
 `;
+
+const StepSectionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1rem;
+  width: 40%;
+
+  @media (max-width: 84em) {
+    width: 100%;
+  }
+`;
 export default function Landing() {
   const [explainerType, setExplainerType] = useState<"viewing" | "posting">(
     "viewing",
+  );
+  const [postingType, setPostingType] = useState<"onLocation" | "remote">(
+    "onLocation",
   );
   const {
     getUserGeo,
@@ -222,6 +258,7 @@ export default function Landing() {
     setShowLoginModal,
     setIsOpenBottomSlideIn,
     setBottomSlideInType,
+    setShowMerchantDisclaimerModal,
   } = useGlobalContext();
   const navigate = useNavigate();
   const { autoLogin } = useLoginWithAccessToken();
@@ -338,7 +375,7 @@ export default function Landing() {
             />
           </figure>
         </StyledExplainerSectionIntro>
-        <Heading as="h1">Some Current Pain Points When: </Heading>
+        <Heading as="h1">Some (of many) Current Pain Points When: </Heading>
         <StyledExplainerButtonsContainer>
           <Button
             variation={explainerType === "viewing" ? "primary" : "secondary"}
@@ -437,6 +474,123 @@ export default function Landing() {
           </StyledExplainerLandingItemsContainer>
         )}
       </StyledExplainerSection>
+      <StyledHowToSection>
+        <StyledExplainerSectionIntro>
+          <StyledHeroH1>How To Use Leaflit?</StyledHeroH1>
+          <InfoAlert type="info">
+            <p>
+              Physical establishments do not have a legal or commercial
+              association with the virtual community boards on Leaflit.
+            </p>
+            <p>Leaflit is an independent platform. </p>
+            <Button
+              size="small"
+              variation="secondary"
+              onClick={() => setShowMerchantDisclaimerModal(true)}
+            >
+              Learn More
+            </Button>
+          </InfoAlert>
+          <Heading as="h2">
+            Leaflit has 2 modes to interact with boards and flyers: On-Location
+            & Remote
+          </Heading>
+        </StyledExplainerSectionIntro>
+        <StyledExplainerButtonsContainer>
+          <Button
+            variation={postingType === "onLocation" ? "primary" : "secondary"}
+            onClick={() => {
+              setPostingType("onLocation");
+            }}
+            size="small"
+          >
+            On-Location
+          </Button>
+          <Button
+            variation={postingType === "remote" ? "primary" : "secondary"}
+            onClick={() => {
+              setPostingType("remote");
+            }}
+            size="small"
+          >
+            Remote
+          </Button>
+        </StyledExplainerButtonsContainer>
+        {postingType === "onLocation" && (
+          <StepSectionContainer>
+            <StepSection
+              number="1"
+              description="Go to a physical establishment."
+            />
+            <StepSection
+              number="2"
+              description="Go To Leaflit on Your Device."
+            />
+            <StepSection number="3">
+              <p>
+                Tap on{" "}
+                <Button size="small" onClick={getUserGeo}>
+                  Find a Board Near You
+                </Button>{" "}
+                to get a list of boards.
+              </p>
+            </StepSection>
+            <StepSection
+              number="4"
+              description="Pick the board that closely matches your location."
+            />
+            <StepSection
+              number="5"
+              description="View, Like, Share, and Save Flyers at that location."
+            />
+            <StepSection number="6">
+              <p>Optionally, Post a Flyer</p>
+              <p>
+                You can post without signing up, but when you{" "}
+                <Button size="small" onClick={() => handleSignUpClick()}>
+                  create an account for free
+                </Button>{" "}
+                you get more features.
+              </p>
+            </StepSection>
+          </StepSectionContainer>
+        )}
+        {postingType === "remote" && (
+          <StepSectionContainer>
+            <StepSection number="1">
+              <p>This feature is only available to Regsitered Leaflit users.</p>
+              <p>
+                If you have an account, please sign in, otherwise create an
+                account.
+              </p>
+              <Button size="small" onClick={() => handleSignUpClick()}>
+                create an account for free
+              </Button>
+            </StepSection>
+            <StepSection
+              number="2"
+              description="From the comfort of your home or office, Go to Leaflit on Your Device."
+            />
+            <StepSection
+              number="3"
+              description={
+                'Select "My Area" from the side menu to see a map of your area which has a search bar.'
+              }
+            ></StepSection>
+            <StepSection
+              number="4"
+              description="Search a location that you wish to view flyers."
+            />
+            <StepSection
+              number="5"
+              description="View, Like, Share, and Save Flyers at that location."
+            />
+            <StepSection number="6">
+              <p>Remotely, Post a Flyer to that location</p>
+            </StepSection>
+          </StepSectionContainer>
+        )}
+      </StyledHowToSection>
       {isGettingLocation && (
         <OverlaySpinner message="Getting Your Location based on your device's GPS, mobile or wifi signal" />
       )}
