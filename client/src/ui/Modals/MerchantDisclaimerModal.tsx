@@ -83,10 +83,11 @@ export default function MerchantDisclaimerModal() {
             independent digital service provided by Leaflit. It is not owned,
             operated, endorsed, or monitored by the physical establishment at
             this location. All flyers, offers, and media are user-generated
-            content.{" "}
+            content. Leaflit references Places data from Google Maps and not the
+            physical establishment.{" "}
             <strong>
-              The establishment is not responsible for the accuracy of these
-              flyers or any transactions resulting from them.
+              The physical establishment is not responsible for the accuracy of
+              these flyers or any transactions resulting from them.
             </strong>
           </p>
         </StyledMain>
