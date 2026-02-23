@@ -16,6 +16,7 @@ export type ContextType = {
   coords: LatLng | null;
   setCoords: React.Dispatch<React.SetStateAction<LatLng | null>>;
   setIsGettingLocation: React.Dispatch<React.SetStateAction<boolean | null>>;
+  clearWatch: () => void;
   selectedPlace: NearbySearchPlaceResult | null;
   setSelectedPlace: React.Dispatch<
     React.SetStateAction<NearbySearchPlaceResult | null>
@@ -124,6 +125,7 @@ export type ContextType = {
 const GlobalContext = createContext<ContextType>({
   getUserGeo: () => {},
   isGettingLocation: false,
+  clearWatch: () => {},
   coords: null,
   setCoords: () => {},
   setIsGettingLocation: () => {},
@@ -259,6 +261,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
     coords,
     setCoords,
     setIsGettingLocation,
+    clearWatch,
   } = useGetUserGeo();
 
   const [likedContextSessionFlyers, setLikedContextSessionFlyers] = useState<
@@ -271,6 +274,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         // Location
         getUserGeo,
         isGettingLocation,
+        clearWatch,
         coords,
         setCoords,
         setIsGettingLocation,
