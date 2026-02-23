@@ -97,7 +97,7 @@ const StyledHeroContent = styled.div`
   }
   @media (max-width: 44em) {
     margin-top: 2.4rem;
-
+    text-align: center;
     & h2 {
       font-size: 1.5rem;
     }
@@ -242,6 +242,17 @@ const StepSectionContainer = styled.div`
   @media (max-width: 84em) {
     width: 100%;
   }
+`;
+
+const StyledFooter = styled.footer`
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+  padding: 2.4rem;
+  background-color: var(--color-brand-800);
+  color: #fff;
 `;
 export default function Landing() {
   const [explainerType, setExplainerType] = useState<"viewing" | "posting">(
@@ -459,7 +470,7 @@ export default function Landing() {
             <LandingItem
               type="success"
               title="Ample Space"
-              description="Your Flyer will be placed neatly. No flyers covering yours."
+              description="Your Flyer will be placed neatly. No flyers covering yours. No one taking yours down."
             />
             <LandingItem
               type="success"
@@ -560,7 +571,7 @@ export default function Landing() {
         {postingType === "remote" && (
           <StepSectionContainer>
             <StepSection number="1">
-              <p>This feature is only available to Regsitered Leaflit users.</p>
+              <p>This feature is only available to Registered Leaflit users.</p>
               <p>
                 If you have an account, please sign in, otherwise create an
                 account.
@@ -581,18 +592,33 @@ export default function Landing() {
             ></StepSection>
             <StepSection
               number="4"
-              description="Search a location that you wish to view flyers."
+              description="Search a location to load their board and flyers."
             />
             <StepSection
               number="5"
               description="View, Like, Share, and Save Flyers at that location."
             />
-            <StepSection number="6">
-              <p>Remotely, Post a Flyer to that location</p>
-            </StepSection>
+            <StepSection
+              number="6"
+              description="Remotely, Post a Flyer to that location while being at home or office"
+            ></StepSection>
           </StepSectionContainer>
         )}
       </StyledHowToSection>
+      <StyledFooter>
+        <p>
+          Contact us at{" "}
+          <a
+            href="mailto:support@Leaflit.us"
+            style={{ textDecoration: "underline" }}
+          >
+            support@Leaflit.us
+          </a>
+        </p>
+        <p>
+          Copyright © {new Date().getFullYear()} Leaflit. All rights reserved.
+        </p>
+      </StyledFooter>
       {isGettingLocation && (
         <OverlaySpinner message="Getting Your Location based on your device's GPS, mobile or wifi signal" />
       )}
