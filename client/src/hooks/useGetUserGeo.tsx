@@ -45,6 +45,8 @@ export default () => {
     navigator.geolocation.clearWatch(watchId!);
   };
 
+  const clearWatch = () => navigator.geolocation.clearWatch(watchId!);
+
   // return { isGettingLocation, coords };
   const getUserGeo = () => {
     // if (watchId) {
@@ -69,5 +71,6 @@ export default () => {
     coords,
     setCoords,
     setIsGettingLocation,
+    clearWatch,
   };
 };
