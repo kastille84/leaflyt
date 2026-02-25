@@ -65,7 +65,7 @@ export default function AssetUpload({
   return (
     <>
       {/* <FormControl testId="file-container"> */}
-      <StyledAssetUploadContainer>
+      <StyledAssetUploadContainer data-testid="assetUpload-container">
         <StyledLabel
           htmlFor="title"
           // className={`${errors["fileUrlArr"] && "error"}`}

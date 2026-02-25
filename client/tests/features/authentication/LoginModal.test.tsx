@@ -14,6 +14,7 @@ import { authUserProfileResponse } from "../../fixtures/authentication/login";
 
 // fixtures
 import { mockUseGlobalContextReturnObj } from "../../fixtures/context/globalContext";
+import { expect } from "vitest";
 
 const user = userEvent.setup();
 
@@ -41,11 +42,13 @@ function getPassword() {
 }
 
 describe("LoginModal", () => {
+  const mockSetShowLoginModal = vi.fn();
   describe("Display", () => {
     beforeEach(() => {
       vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
         ...mockUseGlobalContextReturnObj,
         showLoginModal: true,
+        setShowLoginModal: mockSetShowLoginModal,
       }));
     });
     afterEach(() => {
@@ -61,6 +64,16 @@ describe("LoginModal", () => {
       // assert
       const loginModalComp = screen.getByTestId("login-modal");
       expect(loginModalComp).toBeTruthy();
+    });
+    it("should call handleRegister", async () => {
+      render(<LoginModal />, {
+        wrapper: QueryClientProviderWrapperWithBrowserRouter(),
+      });
+      const registerLink = screen.getByRole("link", { name: /register/i });
+      await user.click(registerLink);
+      await waitFor(() => {
+        expect(mockSetShowLoginModal).toHaveBeenCalledWith(false);
+      });
     });
   });
 
@@ -120,6 +133,7 @@ describe("LoginModal", () => {
         ...mockUseGlobalContextReturnObj,
         showLoginModal: true,
         setUser: setUserSpy,
+        selectedPlace: { id: "123" },
       }));
       vi.mocked(useLogin).mockImplementation(() => {
         return {
@@ -131,7 +145,39 @@ describe("LoginModal", () => {
     afterEach(() => {
       vi.clearAllMocks();
     });
-    it("should login the user successfully", async () => {
+    it("should login the user successfully with selectedPlace", async () => {
+      // assemble
+      render(<LoginModal />, {
+        wrapper: QueryClientProviderWrapperWithBrowserRouter(),
+      });
+      // act
+      const { input: emailInput } = getEmail();
+      await user.type(emailInput, "test@email.com");
+      const { input: passwordInput } = getPassword();
+      await user.type(passwordInput, "password1");
+      const { submit } = getActionButtons();
+      await act(async () => {
+        await user.click(submit);
+      });
+      // trigger onSuccess with response
+      await act(async () => {
+        await loginUserMock.mock.calls[0][1].onSuccess({
+          data: authUserProfileResponse,
+          error: null,
+        });
+      });
+      // assert
+      await waitFor(async () => {
+        await expect(setUserSpy).toHaveBeenCalledWith(authUserProfileResponse);
+      });
+    });
+    it("should login the user successfully without selectedPlace", async () => {
+      vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
+        ...mockUseGlobalContextReturnObj,
+        showLoginModal: true,
+        setUser: setUserSpy,
+        selectedPlace: null,
+      }));
       // assemble
       render(<LoginModal />, {
         wrapper: QueryClientProviderWrapperWithBrowserRouter(),
@@ -175,7 +221,7 @@ describe("LoginModal", () => {
       // trigger onError with error
       await act(async () => {
         await loginUserMock.mock.calls[0][1].onError({
-          message: "error has occurred",
+          message: "unpaid",
         });
       });
 
