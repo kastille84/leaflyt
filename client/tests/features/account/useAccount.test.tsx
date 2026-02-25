@@ -25,18 +25,11 @@ import { QueryClientProviderWrapper } from "../../test-utils";
 
 // mocks
 
-const mockUpdateProfile = vi.fn();
-const mockUpdateProfileError = null;
-
 vi.mock("../../../src/features/account/useAccount");
 vi.mock("../../../src/services/apiUser");
 
 describe("useAccount", () => {
   it("should call updateUserProfile when updateProfile is called", async () => {
-    // vi.mocked(useAccount).mockReturnValue({
-    //   updateProfile: mockUpdateProfile,
-    //   updateProfileError: mockUpdateProfileError,
-    // });
     vi.mocked(apiUser.updateUserProfile).mockResolvedValue({
       user: { name: "Elvin" },
       error: null,

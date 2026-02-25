@@ -35,35 +35,35 @@ const StyledUpgradeContainer = styled.div`
   }
 `;
 
-const testSignedUpUser = {
-  id: "ba8eff6f-102b-4d24-afca-eabce2cff9c8",
-  created_at: "2026-01-08T22:28:07.015615+00:00",
-  user: "714bb470-2cd6-42d0-8597-360217718f4a",
-  name: null,
-  firstName: "Edwin",
-  lastName: "Martinez",
-  email: "sereneattraction86@gmail.com",
-  phone: "8454013350",
-  website: "http://www.dwm.com",
-  typeOfUser: "individual",
-  address: {
-    name: "94 Rockwell Ave",
-    geometry: {
-      location: {
-        lat: 41.8202319,
-        lng: -72.7007884,
-      },
-    },
-    place_id: "ChIJs7QfKi9V5okRAPILwKXyoc8",
-    adr_address:
-      '<span class="street-address">94 Rockwell Ave</span>, <span class="locality">Bloomfield</span>, <span class="region">CT</span> <span class="postal-code">06002-3216</span>, <span class="country-name">USA</span>',
-    formatted_address: "94 Rockwell Ave, Bloomfield, CT 06002, USA",
-    html_attributions: [],
-  },
-  avatar: null,
-  plan: 1,
-  termsAccepted: true,
-};
+// const testSignedUpUser = {
+//   id: "ba8eff6f-102b-4d24-afca-eabce2cff9c8",
+//   created_at: "2026-01-08T22:28:07.015615+00:00",
+//   user: "714bb470-2cd6-42d0-8597-360217718f4a",
+//   name: null,
+//   firstName: "Edwin",
+//   lastName: "Martinez",
+//   email: "sereneattraction86@gmail.com",
+//   phone: "8454013350",
+//   website: "http://www.dwm.com",
+//   typeOfUser: "individual",
+//   address: {
+//     name: "94 Rockwell Ave",
+//     geometry: {
+//       location: {
+//         lat: 41.8202319,
+//         lng: -72.7007884,
+//       },
+//     },
+//     place_id: "ChIJs7QfKi9V5okRAPILwKXyoc8",
+//     adr_address:
+//       '<span class="street-address">94 Rockwell Ave</span>, <span class="locality">Bloomfield</span>, <span class="region">CT</span> <span class="postal-code">06002-3216</span>, <span class="country-name">USA</span>',
+//     formatted_address: "94 Rockwell Ave, Bloomfield, CT 06002, USA",
+//     html_attributions: [],
+//   },
+//   avatar: null,
+//   plan: 1,
+//   termsAccepted: true,
+// };
 
 export default function ChangePlanContainer({
   isUpgrade,
