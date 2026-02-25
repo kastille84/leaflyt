@@ -3,6 +3,7 @@ export const mockUseGlobalContextReturnObj = {
   isGettingLocation: false,
   coords: null,
   setCoords: () => {},
+  clearWatch: () => {},
   setIsGettingLocation: () => {},
   selectedPlace: null,
   setSelectedPlace: () => {},

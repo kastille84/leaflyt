@@ -152,7 +152,7 @@ describe("Registered", () => {
       const { label: templateLabel, input: templateInput } =
         getInput("template");
       expect(templateLabel.textContent).toBe(
-        "Create Reusable Template (Encouraged)"
+        "Create Reusable Template (Encouraged)",
       );
       expect(templateInput).toBeTruthy();
       // cancel
@@ -303,7 +303,7 @@ describe("Registered", () => {
           wrapper: QueryClientProviderWrapper(),
         });
         const assetsPreviewList = screen.getByTestId(
-          "container-assets-preview-list"
+          "container-assets-preview-list",
         );
         expect(assetsPreviewList).toBeTruthy();
       });
@@ -316,7 +316,7 @@ describe("Registered", () => {
       await user.keyboard("[Enter]");
       const tags = container.querySelectorAll("span");
       const foundTag = Array.from(tags).find(
-        (tag) => tag.textContent === "hello"
+        (tag) => tag.textContent === "hello",
       );
       await waitFor(() => {
         expect(foundTag).toBeTruthy();
@@ -330,7 +330,7 @@ describe("Registered", () => {
         const { container: freshContainer } = getInput("tags");
         const freshTags = freshContainer.querySelectorAll("span");
         const freshFoundTag = Array.from(freshTags).find(
-          (tag) => tag.textContent === "hello"
+          (tag) => tag.textContent === "hello",
         );
         expect(freshFoundTag).toBeFalsy();
       });
@@ -339,7 +339,7 @@ describe("Registered", () => {
     it("should update cta", async () => {
       render(<Registered />, { wrapper: QueryClientProviderWrapper() });
       const offerRadioInput = screen.getByLabelText(
-        "Offer (BOGO/Coupon/Free Consultation/etc)"
+        "Offer (BOGO/Coupon/Free Consultation/etc)",
       );
       await user.click(offerRadioInput);
       // Headline
@@ -469,7 +469,7 @@ describe("Registered", () => {
         await user.type(tagsInput, "hello-tag");
         await user.keyboard("[Enter]");
         const offerRadioInput = screen.getByLabelText(
-          "Offer (BOGO/Coupon/Free Consultation/etc)"
+          "Offer (BOGO/Coupon/Free Consultation/etc)",
         );
         await user.click(offerRadioInput);
         // Headline
@@ -531,7 +531,7 @@ describe("Registered", () => {
         await user.type(tagsInput, "hello-tag");
         await user.keyboard("[Enter]");
         const offerRadioInput = screen.getByLabelText(
-          "Offer (BOGO/Coupon/Free Consultation/etc)"
+          "Offer (BOGO/Coupon/Free Consultation/etc)",
         );
         await user.click(offerRadioInput);
         // Headline
@@ -632,7 +632,7 @@ describe("Registered", () => {
         await user.type(tagsInput, "hello-tag");
         await user.keyboard("[Enter]");
         const offerRadioInput = screen.getByLabelText(
-          "Offer (BOGO/Coupon/Free Consultation/etc)"
+          "Offer (BOGO/Coupon/Free Consultation/etc)",
         );
         await user.click(offerRadioInput);
         // Headline
@@ -686,7 +686,7 @@ describe("Registered", () => {
         await user.type(tagsInput, "hello-tag");
         await user.keyboard("[Enter]");
         const offerRadioInput = screen.getByLabelText(
-          "Offer (BOGO/Coupon/Free Consultation/etc)"
+          "Offer (BOGO/Coupon/Free Consultation/etc)",
         );
         await user.click(offerRadioInput);
         // Headline
@@ -728,7 +728,7 @@ describe("Registered", () => {
           <Registered templateToEdit={templateMock} type="editTemplate" />,
           {
             wrapper: QueryClientProviderWrapper(),
-          }
+          },
         );
         const { input: titleInput } = getInput("title");
         await user.type(titleInput, "Hello");
@@ -752,7 +752,7 @@ describe("Registered", () => {
           <Registered templateToEdit={templateMock} type="editTemplate" />,
           {
             wrapper: QueryClientProviderWrapper(),
-          }
+          },
         );
         const { input: titleInput } = getInput("title");
         await user.type(titleInput, "Hello");
