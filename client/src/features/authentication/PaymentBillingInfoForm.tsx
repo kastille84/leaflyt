@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 
+import { PickPlanInfo } from "./SignupContainer";
 import Heading from "../../ui/Heading";
 import FormControlRow from "../../ui/Form/FormControlRow";
 import FormControl from "../../ui/Form/FormControl";
@@ -17,7 +18,6 @@ import { Auth_User_Signup_Response } from "../../interfaces/Auth_User";
 import toast from "react-hot-toast";
 
 import { parseAdrAddress } from "../../utils/ServiceUtils";
-import { PickPlanInfo } from "./SignupContainer";
 import useStripe from "../../hooks/useStripe";
 import useSignup from "./useSignup";
 
@@ -94,11 +94,8 @@ export default function PaymentBillingInfoForm({
   const {
     register,
     handleSubmit,
-    watch,
-    getValues,
     setValue,
     formState: { errors },
-    clearErrors,
   } = useForm({
     mode: "all",
     defaultValues: {
@@ -106,13 +103,8 @@ export default function PaymentBillingInfoForm({
     },
   });
 
-  const {
-    setBottomSlideInType,
-    setIsOpenBottomSlideIn,
-    setTermsModalType,
-    setShowTermsModal,
-    setUser,
-  } = useGlobalContext();
+  const { setBottomSlideInType, setIsOpenBottomSlideIn, setUser } =
+    useGlobalContext();
 
   function handleClose() {
     setIsOpenBottomSlideIn(false);
@@ -139,12 +131,8 @@ export default function PaymentBillingInfoForm({
       handleClose();
     } catch (error) {
       setShowSpinner(false);
+      toast.error("Failed to switch to free. Please try again.");
     }
-  }
-
-  function handleLinkClick(type: "terms" | "privacy" | "guidelines" | null) {
-    setShowTermsModal(true);
-    setTermsModalType(type);
   }
 
   async function onSubmit(data: any) {
@@ -152,10 +140,18 @@ export default function PaymentBillingInfoForm({
     setShowSpinner(true);
     // delete old customer in Stripe if they are trying to update their payment information
     if (updatedPaymentInfo) {
-      // delete current customer, which has old subscription, to make way for new one with new payment details
-      await deleteCustomerAsync({
-        customerId: signedUpUser?.customers[0]?.customerId,
-      });
+      try {
+        // delete current customer, which has old subscription, to make way for new one with new payment details
+        await deleteCustomerAsync({
+          customerId: signedUpUser?.customers[0]?.customerId,
+        });
+      } catch (error) {
+        setShowSpinner(false);
+        setSubmitError(
+          "Failed to process payment information. Please try again.",
+        );
+        return;
+      }
       // create new customer in Stripe
       const addressObj = parseAdrAddress(data.addressObjToSave.adr_address);
       createCustomerFn(
@@ -168,7 +164,6 @@ export default function PaymentBillingInfoForm({
         },
         {
           onSuccess: (customer) => {
-
             // action
             setPickPlanInfo({
               plan: currentPlanId.toString(),

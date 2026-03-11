@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   FieldErrors,
@@ -108,6 +108,48 @@ export default function AddressInput({
     return accessNestedProperty(errors, registerName);
   }
 
+  useEffect(() => {
+    if (placePredictions.length > 0 && addressSelected === false) {
+      // event listener for tab button to select address prediction
+      function handleKeyDown(evt: KeyboardEvent) {
+        if (evt.key === "Tab") {
+          evt.preventDefault();
+          handlePlacePredictionClicked(placePredictions[0]);
+        }
+      }
+      document.addEventListener("keydown", handleKeyDown);
+      return () => document.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [placePredictions, addressSelected]);
+
+  function handlePlacePredictionClicked(
+    placePrediction: google.maps.places.AutocompletePrediction,
+  ) {
+    if (shouldSaveAddressObj) {
+      placesService?.getDetails(
+        {
+          placeId: placePrediction.place_id,
+          fields: [
+            //https://developers.google.com/maps/documentation/javascript/reference/places-service#PlaceResult
+            "name",
+            "adr_address",
+            "formatted_address",
+            "geometry.location",
+            "place_id",
+          ],
+        },
+        (placeDetails) => {
+          setValue(registerName, placeDetails?.formatted_address);
+          // also save full addr obj, needed for geo coords of new user
+          if (shouldSaveAddressObj) setValue("addressObjToSave", placeDetails);
+        },
+      );
+    } else {
+      setValue(registerName, placePrediction.description);
+    }
+    setAddressSelected(true);
+  }
+
   const errorObj = getErrorValue(errors);
   return (
     <FormControl testId="address-container">
@@ -146,30 +188,7 @@ export default function AddressInput({
                 data-testid={`address-result-${idx}`}
                 key={placePrediction.place_id}
                 onClick={() => {
-                  if (shouldSaveAddressObj) {
-                    placesService?.getDetails(
-                      {
-                        placeId: placePrediction.place_id,
-                        fields: [
-                          //https://developers.google.com/maps/documentation/javascript/reference/places-service#PlaceResult
-                          "name",
-                          "adr_address",
-                          "formatted_address",
-                          "geometry.location",
-                          "place_id",
-                        ],
-                      },
-                      (placeDetails) => {
-                        setValue(registerName, placeDetails?.formatted_address);
-                        // also save full addr obj, needed for geo coords of new user
-                        if (shouldSaveAddressObj)
-                          setValue("addressObjToSave", placeDetails);
-                      }
-                    );
-                  } else {
-                    setValue(registerName, placePrediction.description);
-                  }
-                  setAddressSelected(true);
+                  handlePlacePredictionClicked(placePrediction);
                 }}
               >
                 {placePrediction.description}

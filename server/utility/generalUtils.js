@@ -29,9 +29,6 @@ exports.keysBasedOnEnv = () => {
         price_forest: process.env.STRIPE_PRICE_FOREST_PROD,
         webhookSecret: process.env.STRIPE_WEBHOOK_SECRET_PROD,
       },
-      openai: {
-        apiKey: process.env.OPENAI_API_KEY,
-      },
     };
   } else {
     console.log("not production");
@@ -62,9 +59,6 @@ exports.keysBasedOnEnv = () => {
         price_grove: process.env.STRIPE_PRICE_GROVE,
         price_forest: process.env.STRIPE_PRICE_FOREST,
         webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
-      },
-      openai: {
-        apiKey: process.env.OPENAI_API_KEY,
       },
     };
   }
