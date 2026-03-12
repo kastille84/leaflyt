@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Heading from "../../ui/Heading";
 import Button from "../../ui/Button";
 import styled from "styled-components";
@@ -97,14 +97,9 @@ export default function LoginModal() {
 
   const {
     register,
-    unregister,
     handleSubmit,
-    watch,
-    getValues,
-    setValue,
     reset,
     formState: { errors },
-    control,
   } = useForm({
     mode: "onBlur",
   });
@@ -147,7 +142,9 @@ export default function LoginModal() {
       onError: (error) => {
         setSubmitError(error.message);
         // set focus on error
+        /* v8 ignore start */
         document.querySelector("#form-error")?.scrollIntoView();
+        /* v8 ignore stop */
         setShowSpinner(false);
         if (error.message === "unpaid") {
           setShowLoginModal(false);

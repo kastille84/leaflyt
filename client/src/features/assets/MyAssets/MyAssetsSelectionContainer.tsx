@@ -1,13 +1,12 @@
 import styled from "styled-components";
-import { useAssetSelectionContext } from "../../../context/AssetSelectionContext";
-import useAssetMutations from "../useAssetMutations";
 import ExistingAssetsList from "../AssetSelection/ExistingAssetsList/ExistingAssetsList";
 import NewAssetContainer from "../AssetSelection/NewAsset/NewAssetContainer";
-import Button from "../../../ui/Button";
-import useGetUserLimits from "../../../hooks/useGetUserLimits";
 import SelectedAssetsList from "../AssetSelection/SelectedAssetsList/SelectedAssetsList";
-import { HiOutlineTrash } from "react-icons/hi2";
+import Button from "../../../ui/Button";
 import { useGlobalContext } from "../../../context/GlobalContext";
+import { useAssetSelectionContext } from "../../../context/AssetSelectionContext";
+import useGetUserLimits from "../../../hooks/useGetUserLimits";
+import { HiOutlineTrash } from "react-icons/hi2";
 import { useEffect } from "react";
 
 const StyledMyAssestsSelectionContainer = styled.div`
@@ -90,11 +89,11 @@ export default function MyAssetsSelectionContainer() {
             (user?.assets?.length || 0) >= userLimits.maxAssets
               ? "disabled"
               : selectedOption === "new"
-              ? "primary"
-              : "secondary"
+                ? "primary"
+                : "secondary"
           }
           onClick={() => setSelectedOption("new")}
-          disabled={(user?.assets?.length || 0) >= userLimits.maxAssets}
+          disabled={!!((user?.assets?.length || 0) >= userLimits.maxAssets)}
         >
           + Add New Asset
         </Button>
