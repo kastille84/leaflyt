@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import * as routerDom from "react-router-dom";
 
-import Landing from "../../src/pages/Landing_orig";
+import Landing from "../../src/pages/Landing";
 import * as GlobalContext from "../../src/context/GlobalContext";
 
 // fixtures
@@ -32,12 +32,12 @@ describe("Landing Page", () => {
 
     const h1 = screen.getByRole("heading", { level: 1 });
     expect(h1.textContent).toBe(
-      "Making Community Boards Fun, Interactive & Useful Again"
+      "Making Community Boards Fun, Interactive & Useful Again",
     );
 
     const h2 = screen.getByRole("heading", { level: 2 });
     expect(h2.textContent).toBe(
-      "Spread Your Message. See What Others are Discussing & Doing in Your Local Digital Community Board"
+      "Spread Your Message. See What Others are Discussing & Doing in Your Local Digital Community Board",
     );
 
     const button = screen.getByRole("button", {
@@ -63,7 +63,7 @@ describe("Landing Page", () => {
     }));
     render(<Landing />, { wrapper: QueryClientProviderWrapper() });
     const overlayMessage = screen.getByText(
-      "Getting Your Location based on your device's GPS, mobile or wifi signal"
+      "Getting Your Location based on your device's GPS, mobile or wifi signal",
     );
     expect(overlayMessage).toBeTruthy();
   });

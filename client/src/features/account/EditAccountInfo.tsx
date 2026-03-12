@@ -152,7 +152,9 @@ export default function EditAccountInfo() {
           onError: (error) => {
             setSubmitError(error.message);
             // set focus on error
+            /* v8 ignore start */
             document.querySelector("#form-error")?.scrollIntoView();
+            /* v8 ignore end */
             setShowSpinner(false);
           },
         },
@@ -160,7 +162,9 @@ export default function EditAccountInfo() {
     } catch (error: any) {
       setSubmitError(error.message);
       // set focus on error
+      /* v8 ignore start */
       document.querySelector("#form-error")?.scrollIntoView();
+      /* v8 ignore end */
       setShowSpinner(false);
     }
   };

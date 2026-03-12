@@ -38,6 +38,7 @@ export const planLimitsGarden = {
   name: "",
   canUpgrade: true,
   level: 0,
+  maxAssets: 10,
 };
 
 export const planLimitsGrove = {
@@ -80,6 +81,7 @@ export const planLimitsGrove = {
   name: "Grove",
   canUpgrade: true,
   level: 3,
+  maxAssets: 20,
 };
 
 export const planLimitsForest = {
@@ -122,4 +124,5 @@ export const planLimitsForest = {
   name: "",
   canUpgrade: true,
   level: 0,
+  maxAssets: 30,
 };

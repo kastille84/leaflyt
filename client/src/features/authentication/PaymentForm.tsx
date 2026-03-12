@@ -107,7 +107,7 @@ export default function PaymentForm({
       return <div>Error: {checkoutState.error.message}</div>;
     case "success":
       return (
-        <StyledForm>
+        <StyledForm data-testid="PaymentFormContainer">
           {/* <pre>
               {JSON.stringify(checkoutState.checkout.lineItems, null, 2)}
               // A formatted total amount Total:{" "}
