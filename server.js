@@ -21,12 +21,22 @@ const {
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "https://www.leaflit.us",
-    credentials: true,
-  }),
-);
+if ((process.env.NODE_ENV || "").toLowerCase() === "production") {
+  const corsOptions = {
+    // Explicitly list both versions of your domain
+    origin: ["https://leaflit.us", "https://www.leaflit.us"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // Set to true if you are using cookies or sessions
+  };
+
+  app.use(cors(corsOptions));
+  // Handle preflight for all routes (important for 'Response to preflight' errors)
+  app.options("*", cors(corsOptions));
+} else {
+  app.use(cors());
+}
+
 // for handling stripe webhooks
 app.use("/webhook", stripeRoutes);
 
