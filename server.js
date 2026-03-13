@@ -21,7 +21,12 @@ const {
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://www.leaflit.us",
+    credentials: true,
+  }),
+);
 // for handling stripe webhooks
 app.use("/webhook", stripeRoutes);
 
