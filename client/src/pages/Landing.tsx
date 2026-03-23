@@ -362,6 +362,21 @@ export default function Landing() {
       <StyledExplainerSection>
         <StyledExplainerSectionIntro>
           <StyledHeroH1>What Is Leaflit?</StyledHeroH1>
+          <div
+            style={{ width: "100%", display: "flex", justifyContent: "center" }}
+          >
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/xxXMfYuF6y4?si=Pke8P79gYmTfhfS7"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+              style={{ maxWidth: "100%" }}
+            ></iframe>
+          </div>
           <Heading as="h2">
             A Digital Flyer Distribution Platform For Your Local Community
           </Heading>
@@ -504,6 +519,21 @@ export default function Landing() {
               </Button>
             </div>
           </InfoAlert>
+          <div
+            style={{ width: "100%", display: "flex", justifyContent: "center" }}
+          >
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/vihocHvjwTI?si=03kKYhKDQjkCI5tS"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+              style={{ maxWidth: "100%" }}
+            ></iframe>
+          </div>
           <Heading as="h2">
             Leaflit has 2 modes to interact with boards and flyers: On-Location
             & Remote
