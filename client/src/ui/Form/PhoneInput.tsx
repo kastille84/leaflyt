@@ -31,17 +31,15 @@ export default function PhoneInput({
   return (
     <FormControl testId="phone-container">
       <StyledLabel htmlFor="phone" className={`${errorObj && "error"}`}>
-        Phone
+        Phone (Optional)
       </StyledLabel>
       <Input
         type="tel"
         id="phone"
-        {...register(registerName, {
-          required: { value: true, message: "Phone is required" },
-        })}
+        {...register(registerName)}
         hasError={Boolean(errorObj)}
       />
-      {errorObj && <FieldInputError message={errorObj?.message as string} />}
+      {/* {errorObj && <FieldInputError message={errorObj?.message as string} />} */}
     </FormControl>
   );
 }

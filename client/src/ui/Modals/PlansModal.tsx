@@ -43,7 +43,6 @@ export default function PlansModal() {
     showPlansModal,
     setShowPlansModal,
     currentFormOptions,
-    setCurrentFormOptions,
     bottomSlideInType,
     user,
   } = useGlobalContext();
