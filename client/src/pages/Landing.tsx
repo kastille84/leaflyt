@@ -167,7 +167,18 @@ const StyledButtonContainer = styled.div`
 
 const StyledAuthButtonsContainer = styled.div`
   display: flex;
+  align-items: center;
   gap: 2.4rem;
+`;
+
+const StyledPricingText = styled.p`
+  color: var(--color-blue-200);
+  font-weight: 500;
+  font-size: 1.6rem;
+  cursor: pointer;
+  @media (max-width: 44em) {
+    font-size: 1.4rem;
+  }
 `;
 
 const StyledExplainerSection = styled.section`
@@ -270,6 +281,7 @@ export default function Landing() {
     setIsOpenBottomSlideIn,
     setBottomSlideInType,
     setShowMerchantDisclaimerModal,
+    setShowPlansModal,
   } = useGlobalContext();
   const navigate = useNavigate();
   const { autoLogin } = useLoginWithAccessToken();
@@ -322,8 +334,15 @@ export default function Landing() {
             <StyledButtonContainer>
               <Button onClick={getUserGeo}>Boards Near You</Button>
               <StyledAuthButtonsContainer>
+                {/* <StyledPricingText
+                  onClick={() => {
+                    setShowPlansModal(true);
+                  }}
+                >
+                  Pricing
+                </StyledPricingText> */}
                 <Button variation="secondary" onClick={handleSignUpClick}>
-                  Signup
+                  Get Started Free
                 </Button>
                 <Button
                   variation="secondary-outlined"

@@ -104,7 +104,6 @@ export default function AccountInfo() {
     setShowDeleteAccountModal,
   } = useGlobalContext();
 
-
   const handleEditClick = () => {
     setIsOpenBottomSlideIn(true);
     setBottomSlideInType("editAccountInfo");
@@ -147,7 +146,7 @@ export default function AccountInfo() {
         </AccountDatum>
         <AccountDatum>
           <span>Phone</span>
-          <span>{user?.phone}</span>
+          <span>{user?.phone ? user.phone : "N/A"}</span>
         </AccountDatum>
         <AccountDatum>
           <span>Address</span>
