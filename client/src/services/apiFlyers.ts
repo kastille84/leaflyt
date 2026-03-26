@@ -65,7 +65,7 @@ export const createUnregisteredFlyer = async (
   selectedPlace: NearbySearchPlaceResult,
 ) => {
   // make sure content is appropriate
-  await moderateContent(flyerData);
+  // await moderateContent(flyerData);
   const board = await getOrCreateBoard(selectedPlace);
   // at this point, board is either the existing board or the newly created board with flyers array that may be empty
   // create the flyer
@@ -103,7 +103,7 @@ export const createRegisteredFlyer = async (
   selectedPlace: NearbySearchPlaceResult,
 ) => {
   // make sure content is appropriate
-  await moderateContent(flyerData);
+  // await moderateContent(flyerData);
 
   const board = await getOrCreateBoard(selectedPlace);
   let createdTemplate;
@@ -228,7 +228,7 @@ export const updateRegisteredFlyer = async (
   initialAssets: UploadApiResponse[],
 ) => {
   // make sure content is appropriate
-  await moderateContent(flyerData);
+  // await moderateContent(flyerData);
 
   const board = await getOrCreateBoard(selectedPlace);
 
@@ -271,7 +271,7 @@ export const createFlyerFromTemplate = async (
   user: Auth_User_Profile_Response,
 ) => {
   // make sure content is appropriate
-  await moderateContent(templateData);
+  // await moderateContent(templateData);
 
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -367,7 +367,7 @@ export const updateTemplate = async (
   initialAssets: UploadApiResponse[],
 ) => {
   // make sure content is appropriate
-  await moderateContent(templateData);
+  // await moderateContent(templateData);
 
   try {
     const { error } = await supabase
@@ -432,7 +432,7 @@ export const updateTemplate = async (
 
 export const createTemplate = async (templateData: DB_Template) => {
   // make sure content is appropriate
-  await moderateContent(templateData);
+  // await moderateContent(templateData);
   try {
     const { data: newTemplate, error } = await supabase
       .from("templates")
