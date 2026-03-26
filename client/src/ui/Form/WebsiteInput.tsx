@@ -31,7 +31,7 @@ export default function WebsiteInput({
   return (
     <FormControl testId="website-container">
       <StyledLabel htmlFor="website" className={`${errorObj && "error"}`}>
-        Website (optional)
+        Website (Optional)
       </StyledLabel>
       <Input
         type="url"

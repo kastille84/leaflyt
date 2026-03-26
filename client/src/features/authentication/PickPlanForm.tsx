@@ -4,25 +4,15 @@ import { get, useForm } from "react-hook-form";
 
 import Heading from "../../ui/Heading";
 import FormControlRow from "../../ui/Form/FormControlRow";
-import EmailInput from "../../ui/Form/EmailInput";
-import PasswordInput from "../../ui/Form/PasswordInput";
-import TypeOfUserInput from "../../ui/Form/TypeOfUserInput";
 import FormControl from "../../ui/Form/FormControl";
-import WebsiteInput from "../../ui/Form/WebsiteInput";
-import PhoneInput from "../../ui/Form/PhoneInput";
 import AddressInput from "../../ui/Form/AddressInput";
-import FullNameInput from "../../ui/Form/FullNameInput";
 import LastNameInput from "../../ui/Form/LastNameInput";
 import FirstNameInput from "../../ui/Form/FirstNameInput";
 import Button from "../../ui/Button";
 import OverlaySpinner from "../../ui/OverlaySpinner";
 
 import { useGlobalContext } from "../../context/GlobalContext";
-import {
-  Auth_User_Profile_Response,
-  Auth_User_Signup_Response,
-  SignupSubmitData,
-} from "../../interfaces/Auth_User";
+import { Auth_User_Signup_Response } from "../../interfaces/Auth_User";
 
 import toast from "react-hot-toast";
 
