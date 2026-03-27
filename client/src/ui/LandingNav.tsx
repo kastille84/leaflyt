@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const StyledNavSection = styled.section`
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 900;
   color: var(--color-blue-200);
   background-color: var(--color-blue-600);
   padding: 2.4rem;
@@ -99,13 +99,13 @@ export default function LandingNav() {
             >
               Price
             </StyledPricingText>
-            {/* <StyledPricingText
+            <StyledPricingText
               onClick={() => {
                 navigate("/faq");
               }}
             >
               FAQ
-            </StyledPricingText> */}
+            </StyledPricingText>
             <Button variation="secondary" onClick={handleSignUpClick}>
               Sign Up
             </Button>

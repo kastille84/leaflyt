@@ -29,11 +29,6 @@ const StyledPlansItemsContainer = styled.div`
   justify-content: center;
   gap: 1.2rem;
   margin-top: 1.2rem;
-
-  /* @media (max-height: 59em) {
-    height: 60dvh;
-    min-height: unset;
-  } */
 `;
 
 export default function Pricing() {
