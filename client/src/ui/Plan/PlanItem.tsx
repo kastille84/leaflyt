@@ -47,6 +47,7 @@ const StyledPlanDescription = styled.p`
   font-style: italic;
   color: var(--color-orange-600);
   text-align: right;
+  letter-spacing: 0.02em;
 `;
 
 const StyledFeatureText = styled.p<{ selected: boolean }>`
@@ -123,7 +124,7 @@ export default function PlanItem({
 }: {
   plan: Plan;
   selected: boolean;
-  action: () => void;
+  action?: () => void;
   disabled?: boolean;
 }) {
   return (
@@ -235,16 +236,18 @@ export default function PlanItem({
           <StyledDatumLabel>weeks lifespan</StyledDatumLabel>
         </StyledDatum>
       </StyledPlanItemSection>
-      <StyledActionContainer>
-        <Button
-          size="large"
-          disabled={disabled}
-          variation={disabled ? "disabled" : "primary"}
-          onClick={action}
-        >
-          Select
-        </Button>
-      </StyledActionContainer>
+      {action && (
+        <StyledActionContainer>
+          <Button
+            size="large"
+            disabled={disabled}
+            variation={disabled ? "disabled" : "primary"}
+            onClick={action}
+          >
+            Select
+          </Button>
+        </StyledActionContainer>
+      )}
     </StyledPlanItem>
   );
 }

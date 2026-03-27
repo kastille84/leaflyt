@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router";
 import { Toaster } from "react-hot-toast";
 
 import GlobalStyles from "./styles/GlobalStyles";
@@ -31,6 +31,7 @@ import { keysBasedOnEnv } from "./utils/GeneralUtils";
 import SingleFlyer from "./features/single_flyer/SingleFlyer";
 import MerchantDisclaimerModal from "./ui/Modals/MerchantDisclaimerModal";
 import DcmaModal from "./ui/Modals/DcmaModal";
+import Pricing from "./pages/Pricing";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,6 +42,15 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+function Layout() {
+  return (
+    <div>
+      {/* This is where the Home OR Pricing component will appear */}
+      <Outlet />
+    </div>
+  );
+}
 
 function App() {
   return (
@@ -57,6 +67,10 @@ function App() {
           >
             <BrowserRouter>
               <Routes>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<Landing />} />
+                  <Route path="pricing" element={<Pricing />} />
+                </Route>
                 <Route path="/dashboard/" element={<MainLayout />}>
                   <Route path="home" element={<Home />} />
                   <Route path="fullFlyer/:id" element={<SingleFlyer />} />
@@ -70,8 +84,6 @@ function App() {
                   <Route path="forgot-password" element={<ForgotPassword />} />
                   <Route path="update-password" element={<ResetPassword />} />
                 </Route>
-
-                <Route path="/" index element={<Landing />} />
                 <Route path="*" element={<div>Page not found</div>} />
               </Routes>
               <LoginModal />

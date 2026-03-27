@@ -69,6 +69,7 @@ export default function SignupContainer() {
   const [signedUpUser, setSignedUpUser] =
     useState<Auth_User_Signup_Response | null>(null);
   const [pickPlanInfo, setPickPlanInfo] = useState<PickPlanInfo | null>(null);
+
   return (
     <StyledRegistrationContainer>
       <WhyRegister />
@@ -88,4 +89,3 @@ export default function SignupContainer() {
     </StyledRegistrationContainer>
   );
 }
-// ('<span class="street-address">754 Broadway</span>, <span class="locality">Albany</span>, <span class="region">NY</span> <span class="postal-code">12207-2331</span>, <span class="country-name">USA</span>');
