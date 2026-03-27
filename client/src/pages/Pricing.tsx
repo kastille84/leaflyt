@@ -24,14 +24,13 @@ const StyledMainSection = styled.section`
 `;
 
 const StyledNavSection = styled.section`
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   color: var(--color-blue-200);
   /* height: 100dvh; */
   /* display: flex; */
-  background-image: linear-gradient(
-    to right,
-    var(--color-blue-600) 5%,
-    var(--color-blue-400) 50%
-  );
+  background-color: var(--color-blue-600);
   padding: 2.4rem;
 `;
 
@@ -85,7 +84,6 @@ export default function Pricing() {
           </StyledPlansItemsContainer>
         )}
       </StyledMainSection>
-      <Footer />
     </StyledMain>
   );
 }
