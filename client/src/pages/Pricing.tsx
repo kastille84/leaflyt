@@ -23,17 +23,6 @@ const StyledMainSection = styled.section`
   min-height: 500px;
 `;
 
-const StyledNavSection = styled.section`
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  color: var(--color-blue-200);
-  /* height: 100dvh; */
-  /* display: flex; */
-  background-color: var(--color-blue-600);
-  padding: 2.4rem;
-`;
-
 const StyledPlansItemsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -59,9 +48,6 @@ export default function Pricing() {
 
   return (
     <StyledMain>
-      <StyledNavSection>
-        <LandingNav />
-      </StyledNavSection>
       <StyledMainSection>
         <Heading as={"h1"}>Plans that fits your needs</Heading>
         <Heading as={"h2"}>

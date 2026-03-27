@@ -101,6 +101,7 @@ export default function SlideInBottom() {
       onClose={handleDrawerClose}
       direction="bottom"
       size={"100dvh"}
+      style={{ zIndex: 1500 }}
       // style={{ position: "fixed", top: "auto", bottom: 0, right: 0, left: 0 }}
     >
       <StyledCloseContainer>
