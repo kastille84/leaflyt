@@ -12,33 +12,13 @@ import { supabase } from "../services/supabase";
 import LandingItem from "../ui/LandingItem";
 import InfoAlert from "../ui/InfoAlert";
 import StepSection from "../ui/StepSection";
+import LandingNav from "../ui/LandingNav";
+import Footer from "../ui/Footer";
 
 const StyledMain = styled.main`
   background-color: #fff;
 `;
 
-const StyledTopSection = styled.section`
-  display: flex;
-  gap: 3.2rem;
-  width: 100%;
-`;
-
-const StyledLogoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-const StyledLogo = styled.img`
-  width: 4rem;
-  height: auto;
-  @media (max-width: 59em) {
-    width: 2rem;
-  }
-  @media (max-width: 44em) {
-    width: 2rem;
-  }
-`;
 const StyledMainSection = styled.section`
   color: var(--color-blue-200);
   /* height: 100dvh; */
@@ -157,30 +137,6 @@ const StyledHeroH1 = styled.h1`
   }
 `;
 
-const StyledButtonContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  gap: 3.2rem;
-  padding-right: 3.2rem;
-`;
-
-const StyledAuthButtonsContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 2.4rem;
-`;
-
-const StyledPricingText = styled.p`
-  color: var(--color-blue-200);
-  font-weight: 500;
-  font-size: 1.6rem;
-  cursor: pointer;
-  @media (max-width: 44em) {
-    font-size: 1.4rem;
-  }
-`;
-
 const StyledExplainerSection = styled.section`
   background-color: #fff;
   padding: 4.8rem;
@@ -255,16 +211,6 @@ const StepSectionContainer = styled.div`
   }
 `;
 
-const StyledFooter = styled.footer`
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: center;
-  padding: 2.4rem;
-  background-color: var(--color-brand-800);
-  color: #fff;
-`;
 export default function Landing() {
   const [explainerType, setExplainerType] = useState<"viewing" | "posting">(
     "viewing",
@@ -281,7 +227,6 @@ export default function Landing() {
     setIsOpenBottomSlideIn,
     setBottomSlideInType,
     setShowMerchantDisclaimerModal,
-    setShowPlansModal,
   } = useGlobalContext();
   const navigate = useNavigate();
   const { autoLogin } = useLoginWithAccessToken();
@@ -324,35 +269,7 @@ export default function Landing() {
     <StyledMain>
       <StyledMainSection>
         <StyledHeroArticle>
-          <StyledTopSection>
-            <StyledLogoContainer>
-              <StyledLogo
-                src="/images\logo\logo_chatgpt_leaf-removebg-preview.png"
-                alt="Leaflit Logo"
-              />
-            </StyledLogoContainer>
-            <StyledButtonContainer>
-              <Button onClick={getUserGeo}>Boards Near You</Button>
-              <StyledAuthButtonsContainer>
-                {/* <StyledPricingText
-                  onClick={() => {
-                    setShowPlansModal(true);
-                  }}
-                >
-                  Pricing
-                </StyledPricingText> */}
-                <Button variation="secondary" onClick={handleSignUpClick}>
-                  Get Started Free
-                </Button>
-                <Button
-                  variation="secondary-outlined"
-                  onClick={() => setShowLoginModal(true)}
-                >
-                  Login
-                </Button>
-              </StyledAuthButtonsContainer>
-            </StyledButtonContainer>
-          </StyledTopSection>
+          <LandingNav />
           <StyledHeroSection>
             <StyledHeroContent>
               <div>
@@ -654,20 +571,7 @@ export default function Landing() {
           </StepSectionContainer>
         )}
       </StyledHowToSection>
-      <StyledFooter>
-        <p>
-          Contact us at{" "}
-          <a
-            href="mailto:support@Leaflit.us"
-            style={{ textDecoration: "underline" }}
-          >
-            support@Leaflit.us
-          </a>
-        </p>
-        <p>
-          Copyright © {new Date().getFullYear()} Leaflit. All rights reserved.
-        </p>
-      </StyledFooter>
+      <Footer />
       {isGettingLocation && (
         <OverlaySpinner message="Getting Your Location based on your device's GPS, mobile or wifi signal" />
       )}

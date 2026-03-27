@@ -168,7 +168,7 @@ export default function SignupForm({
         toast.success(
           `Signup successful! \nImportant: \nYou must verify your email: ${response.data.email} before logging in. \nMake sure to check your SPAM folder.`,
           {
-            duration: 10000,
+            duration: 8000,
           },
         );
         // toast.custom(
