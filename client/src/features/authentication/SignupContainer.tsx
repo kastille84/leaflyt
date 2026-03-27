@@ -69,9 +69,6 @@ export default function SignupContainer() {
   const [signedUpUser, setSignedUpUser] =
     useState<Auth_User_Signup_Response | null>(null);
   const [pickPlanInfo, setPickPlanInfo] = useState<PickPlanInfo | null>(null);
-  // check for plan in the url query params to preselect a plan in the pick plan form
-  // const urlParams = new URLSearchParams(window.location.search);
-  // const planId = Number(urlParams.get("plan"));
 
   return (
     <StyledRegistrationContainer>
@@ -92,4 +89,3 @@ export default function SignupContainer() {
     </StyledRegistrationContainer>
   );
 }
-// ('<span class="street-address">754 Broadway</span>, <span class="locality">Albany</span>, <span class="region">NY</span> <span class="postal-code">12207-2331</span>, <span class="country-name">USA</span>');

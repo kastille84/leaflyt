@@ -124,11 +124,9 @@ export default function PlanItem({
 }: {
   plan: Plan;
   selected: boolean;
-  action: () => void;
+  action?: () => void;
   disabled?: boolean;
 }) {
-  // check if url contains "pricing"
-  const isPricingPage = window.location.href.includes("pricing");
   return (
     <StyledPlanItem selected={selected}>
       {selected && <StyledSelected>Selected</StyledSelected>}
@@ -238,7 +236,7 @@ export default function PlanItem({
           <StyledDatumLabel>weeks lifespan</StyledDatumLabel>
         </StyledDatum>
       </StyledPlanItemSection>
-      {!isPricingPage && (
+      {action && (
         <StyledActionContainer>
           <Button
             size="large"

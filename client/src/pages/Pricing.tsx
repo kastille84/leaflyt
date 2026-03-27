@@ -80,7 +80,6 @@ export default function Pricing() {
                 plan={plan}
                 selected={false}
                 disabled={false}
-                action={() => alert("plan")}
               />
             ))}
           </StyledPlansItemsContainer>
