@@ -3,11 +3,13 @@ import LocationSelection from "../features/location/LocationSelection";
 import { Outlet } from "react-router-dom";
 import OverlaySpinner from "../ui/OverlaySpinner";
 import Footer from "../ui/Footer";
+import LandingNav from "../ui/LandingNav";
 
 export default function AppLayout() {
   const { coords, isGettingLocation } = useGlobalContext();
   return (
     <div>
+      <LandingNav />
       {/* This is where the Home OR Pricing component will appear */}
       <Outlet />
       {isGettingLocation && (
