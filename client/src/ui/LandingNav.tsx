@@ -31,13 +31,19 @@ const StyledButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 3.2rem;
-  padding-right: 3.2rem;
+  @media (max-width: 44em) {
+    gap: 2.4rem;
+  }
+  /* padding-right: 3.2rem; */
 `;
 
 const StyledAuthButtonsContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 2.4rem;
+  @media (max-width: 44em) {
+    gap: 1.4rem;
+  }
 `;
 
 const StyledPricingText = styled.p`
@@ -53,14 +59,9 @@ const StyledPricingText = styled.p`
 export default function LandingNav() {
   const {
     getUserGeo,
-    isGettingLocation,
-    coords,
-    setUser,
     setShowLoginModal,
     setIsOpenBottomSlideIn,
     setBottomSlideInType,
-    setShowMerchantDisclaimerModal,
-    setShowPlansModal,
   } = useGlobalContext();
   const navigate = useNavigate();
 
@@ -86,7 +87,7 @@ export default function LandingNav() {
               navigate("/pricing");
             }}
           >
-            Pricing
+            Price
           </StyledPricingText>
           <Button variation="secondary" onClick={handleSignUpClick}>
             Sign Up
