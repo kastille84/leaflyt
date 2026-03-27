@@ -37,6 +37,7 @@ import DcmaModal from "./ui/Modals/DcmaModal";
 import Pricing from "./pages/Pricing";
 import LocationSelection from "./features/location/LocationSelection";
 import AppLayout from "./pages/AppLayout";
+import Faq from "./pages/Faq";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -66,6 +67,7 @@ function App() {
                 <Route path="/" element={<AppLayout />}>
                   <Route index element={<Landing />} />
                   <Route path="pricing" element={<Pricing />} />
+                  <Route path="faq" element={<Faq />} />
                 </Route>
                 <Route path="/dashboard/" element={<MainLayout />}>
                   <Route path="home" element={<Home />} />
