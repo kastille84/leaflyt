@@ -1,7 +1,6 @@
 // const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const moment = require("moment");
 const { supabase } = require("../../supabase");
 const uuid = require("uuid");
 

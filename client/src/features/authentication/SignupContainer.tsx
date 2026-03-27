@@ -69,6 +69,10 @@ export default function SignupContainer() {
   const [signedUpUser, setSignedUpUser] =
     useState<Auth_User_Signup_Response | null>(null);
   const [pickPlanInfo, setPickPlanInfo] = useState<PickPlanInfo | null>(null);
+  // check for plan in the url query params to preselect a plan in the pick plan form
+  // const urlParams = new URLSearchParams(window.location.search);
+  // const planId = Number(urlParams.get("plan"));
+
   return (
     <StyledRegistrationContainer>
       <WhyRegister />
