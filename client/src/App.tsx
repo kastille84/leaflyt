@@ -4,7 +4,10 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router";
 import { Toaster } from "react-hot-toast";
 
 import GlobalStyles from "./styles/GlobalStyles";
-import { GlobalContextProvider } from "./context/GlobalContext";
+import {
+  GlobalContextProvider,
+  useGlobalContext,
+} from "./context/GlobalContext";
 import { StripeProvider } from "./context/StripeContext";
 
 // pages
@@ -32,6 +35,8 @@ import SingleFlyer from "./features/single_flyer/SingleFlyer";
 import MerchantDisclaimerModal from "./ui/Modals/MerchantDisclaimerModal";
 import DcmaModal from "./ui/Modals/DcmaModal";
 import Pricing from "./pages/Pricing";
+import LocationSelection from "./features/location/LocationSelection";
+import AppLayout from "./pages/AppLayout";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,15 +47,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
-function Layout() {
-  return (
-    <div>
-      {/* This is where the Home OR Pricing component will appear */}
-      <Outlet />
-    </div>
-  );
-}
 
 function App() {
   return (
@@ -67,7 +63,7 @@ function App() {
           >
             <BrowserRouter>
               <Routes>
-                <Route path="/" element={<Layout />}>
+                <Route path="/" element={<AppLayout />}>
                   <Route index element={<Landing />} />
                   <Route path="pricing" element={<Pricing />} />
                 </Route>

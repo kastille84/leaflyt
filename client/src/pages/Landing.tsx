@@ -43,6 +43,22 @@ const StyledMainSection = styled.section`
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
   }
 `;
+const StyledNavSection = styled.section`
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  color: var(--color-blue-200);
+  background-color: var(--color-blue-600);
+
+  /* height: 100dvh; */
+  /* display: flex; */
+  /* background-image: linear-gradient(
+    to right,
+    var(--color-blue-600) 5%,
+    var(--color-blue-400) 50%
+  ); */
+  padding: 2.4rem;
+`;
 
 const StyledHeroArticle = styled.article`
   background-color: var(--color-blue-600);
@@ -267,9 +283,11 @@ export default function Landing() {
 
   return (
     <StyledMain>
+      <StyledNavSection>
+        <LandingNav />
+      </StyledNavSection>
       <StyledMainSection>
         <StyledHeroArticle>
-          <LandingNav />
           <StyledHeroSection>
             <StyledHeroContent>
               <div>
@@ -571,11 +589,6 @@ export default function Landing() {
           </StepSectionContainer>
         )}
       </StyledHowToSection>
-      <Footer />
-      {isGettingLocation && (
-        <OverlaySpinner message="Getting Your Location based on your device's GPS, mobile or wifi signal" />
-      )}
-      {coords && <LocationSelection coords={coords} />}
     </StyledMain>
   );
 }
