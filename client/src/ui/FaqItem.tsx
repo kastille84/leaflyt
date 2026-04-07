@@ -11,8 +11,8 @@ const StyledContainer = styled.div`
 
   border-radius: var(--border-radius-md);
   padding: 2rem;
-  background-color: var(--color-grey-50);
-  color: var(--color-blue-500);
+  background-color: var(--color-grey-100);
+  color: var(--color-blue-600);
   &:hover {
     box-shadow: var(--shadow-md);
   }
