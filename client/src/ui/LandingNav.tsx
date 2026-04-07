@@ -94,17 +94,17 @@ export default function LandingNav() {
           <StyledAuthButtonsContainer>
             <StyledPricingText
               onClick={() => {
-                navigate("/pricing");
-              }}
-            >
-              Price
-            </StyledPricingText>
-            <StyledPricingText
-              onClick={() => {
                 navigate("/faq");
               }}
             >
               FAQ
+            </StyledPricingText>
+            <StyledPricingText
+              onClick={() => {
+                navigate("/pricing");
+              }}
+            >
+              Pricing
             </StyledPricingText>
             <Button variation="secondary" onClick={handleSignUpClick}>
               Sign Up
