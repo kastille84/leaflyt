@@ -204,13 +204,13 @@ const pillStyle = {
   `,
   ctaOutline: css`
     background-color: #fff;
-    color: var(--color-red-600);
-    border: 1px solid var(--color-red-600);
+    color: var(--color-orange-600);
+    border: 1px solid var(--color-orange-600);
   `,
   cta: css`
-    background-color: var(--color-red-600);
+    background-color: var(--color-orange-600);
     color: var(--color-grey-50);
-    border: 1px solid var(--color-red-600);
+    border: 1px solid var(--color-orange-600);
   `,
 };
 const Pill = styled.div<{
