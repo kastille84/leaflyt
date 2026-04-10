@@ -65,18 +65,17 @@ const StyledAddress = styled.div`
 `;
 
 const VerySmall = styled.p`
-  font-size: 0.8rem;
-  color: var(--color-grey-400);
+  font-size: 0.9rem;
+  color: var(--color-orange-800);
   font-style: italic;
   font-weight: 400;
+  letter-spacing: 0.05rem;
 `;
 
 export default function ActionMenu() {
   const {
     selectedPlace,
     setSelectedPlace,
-    setIsOpenFlyerDrawer,
-    setDrawerAction,
     setShowLoginModal,
     setIsOpenBottomSlideIn,
     setBottomSlideInType,

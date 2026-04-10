@@ -82,8 +82,6 @@ export default function ActionMenuMobile() {
   const {
     selectedPlace,
     setSelectedPlace,
-    setIsOpenFlyerDrawer,
-    setDrawerAction,
     setShowLoginModal,
     setIsOpenBottomSlideIn,
     setBottomSlideInType,
