@@ -114,6 +114,7 @@ export default function BoardWelcomeModal() {
             where you can find and share local news, events, and resources.
           </p>
           <br /> */}
+          <p>Welcome, neighbor!</p>
           <p>
             This board is your go-to resource to find local services & events,
             build neighborly connections, and stay up-to-date on everything
@@ -129,12 +130,13 @@ export default function BoardWelcomeModal() {
           </h2>
           <p>
             Post a basic flyer <strong>instantly as a guest</strong> by clicking
-            on the <StyledSpan>"Create Flyer"</StyledSpan> button , or{" "}
+            on the <StyledSpan>"Create Flyer"</StyledSpan> button, or
+            <br />
             <Button size="small" onClick={handleSignUp}>
               Create an Account
             </Button>{" "}
-            to unlock rich media, custom layouts, and advanced tracking for your
-            posts.
+            to unlock rich media and custom layouts to make your flyer stand
+            out, plus advanced tracking for your posts.
           </p>
           {/* <p>
             To post a flyer on this board, simply click the{" "}
