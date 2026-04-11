@@ -120,6 +120,8 @@ export type ContextType = {
   showMerchantDisclaimerModal: boolean;
   setShowDcmaModal: React.Dispatch<React.SetStateAction<boolean>>;
   showDcmaModal: boolean;
+  setShowBoardWelcomeModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showBoardWelcomeModal: boolean;
 };
 
 const GlobalContext = createContext<ContextType>({
@@ -189,6 +191,8 @@ const GlobalContext = createContext<ContextType>({
   showMerchantDisclaimerModal: false,
   setShowDcmaModal: () => {},
   showDcmaModal: false,
+  setShowBoardWelcomeModal: () => {},
+  showBoardWelcomeModal: false,
 });
 
 function GlobalContextProvider({ children }: PropsWithChildren) {
@@ -254,6 +258,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
   const [showMerchantDisclaimerModal, setShowMerchantDisclaimerModal] =
     useState<boolean>(false);
   const [showDcmaModal, setShowDcmaModal] = useState<boolean>(false);
+  const [showBoardWelcomeModal, setShowBoardWelcomeModal] =
+    useState<boolean>(false);
 
   const {
     getUserGeo,
@@ -320,6 +326,8 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
         setShowMerchantDisclaimerModal,
         showDcmaModal,
         setShowDcmaModal,
+        setShowBoardWelcomeModal,
+        showBoardWelcomeModal,
         // Auth
         isLoggedIn,
         setIsLoggedIn,
