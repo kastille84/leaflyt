@@ -8,6 +8,8 @@ import useGetUserLimits from "../../hooks/useGetUserLimits";
 import LimitExceededWarning from "../../ui/LimitExceededWarning";
 import UpgradeText from "../../ui/UpgradeText";
 import { useEffect } from "react";
+import BoardWelcomeModal from "../../ui/Modals/BoardWelcomeModal";
+import { use } from "chai";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -36,7 +38,8 @@ const StyledButtonContainer = styled.div`
   text-align: center;
 `;
 export default function NoFlyers() {
-  const { setSelectedPlace } = useGlobalContext();
+  const { setSelectedPlace, user, setShowBoardWelcomeModal, selectedPlace } =
+    useGlobalContext();
   // // get url query parameters
   const planLimits = useGetUserLimits();
   const [searchParams] = useSearchParams();
@@ -58,6 +61,15 @@ export default function NoFlyers() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!user) {
+      setShowBoardWelcomeModal(true);
+    } else {
+      setShowBoardWelcomeModal(false);
+    }
+  }, [user, selectedPlace]);
+
   return (
     <>
       <StyledContainer data-testid="no-flyers-container">
@@ -91,6 +103,7 @@ export default function NoFlyers() {
             <CreateFlyerButton size="large" disabled={!determineIfCanPost()} />
           </StyledButtonContainer>
         </div>
+        <BoardWelcomeModal />
       </StyledContainer>
     </>
   );

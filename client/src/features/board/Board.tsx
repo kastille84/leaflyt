@@ -24,6 +24,7 @@ import useGetUserLimits from "../../hooks/useGetUserLimits";
 import LimitExceededWarning from "../../ui/LimitExceededWarning";
 import UpgradeText from "../../ui/UpgradeText";
 import { HiOutlineFunnel, HiOutlineInformationCircle } from "react-icons/hi2";
+import BoardWelcomeModal from "../../ui/Modals/BoardWelcomeModal";
 
 const StyledBoardContainer = styled.div`
   position: relative;
@@ -131,6 +132,7 @@ export default function Board() {
     setHasFlyerAtLocation,
     anonUserPostings,
     setShowMerchantDisclaimerModal,
+    setShowBoardWelcomeModal,
   } = useGlobalContext();
   const [shouldGetPlace, setShouldGetPlace] = useState(false);
 
@@ -158,6 +160,14 @@ export default function Board() {
     setShowMerchantDisclaimerModal(true);
   }
   useGetPlaceByPlaceId(id!, shouldGetPlace);
+
+  useEffect(() => {
+    if (!user) {
+      setShowBoardWelcomeModal(true);
+    } else {
+      setShowBoardWelcomeModal(false);
+    }
+  }, [user]);
 
   useEffect(() => {
     setShouldGetPlace(true);
@@ -291,6 +301,7 @@ export default function Board() {
             </>
           )}
         </div>
+        <BoardWelcomeModal />
       </StyledBoardContainer>
     </>
   );
