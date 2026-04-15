@@ -92,10 +92,7 @@ export default function BoardWelcomeModal() {
     >
       <StyledContentContainer>
         <StyledMain>
-          <h1>
-            {selectedPlace?.displayName.text || "This Location"}'s Virtual
-            Community Board
-          </h1>
+          <h1>{selectedPlace?.displayName.text || "This Location"}</h1>
           {/* <p>
             This is a virtual community board for{" "}
             {selectedPlace?.displayName.text || "this location"} where you can
@@ -116,17 +113,13 @@ export default function BoardWelcomeModal() {
           <br /> */}
           <p>Welcome, neighbor!</p>
           <p>
-            This board is your go-to resource to find local services & events,
-            build neighborly connections, and stay up-to-date on everything
-            happening in your area.
+            This Virtual Community board is your go-to resource to find local
+            services & events, build neighborly connections, and stay up-to-date
+            on everything happening in your area.
           </p>
           <br />
-          <StyledSpan>
-            Feel free to explore, post, and engage with your community!
-          </StyledSpan>
-
           <h2>
-            <strong>Want to Post a Flyer?</strong>
+            <strong>Psst! You can post fyers here too!</strong>
           </h2>
           <p>
             Post a basic flyer <strong>instantly as a guest</strong> by clicking
@@ -138,11 +131,10 @@ export default function BoardWelcomeModal() {
             to unlock rich media and custom layouts to make your flyer stand
             out, plus advanced tracking for your posts.
           </p>
-          {/* <p>
-            To post a flyer on this board, simply click the{" "}
-            <StyledSpan>"Create Flyer"</StyledSpan> button and follow the
-            prompts to create and share your flyer with the community.
-          </p> */}
+          <br />
+          <StyledSpan>
+            Explore, post, and engage with your community!
+          </StyledSpan>
         </StyledMain>
       </StyledContentContainer>
       <StyledButtonContainer>
