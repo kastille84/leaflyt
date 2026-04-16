@@ -664,7 +664,7 @@ export default function FlyerBlockInteractive({
                 type="cta"
                 onClick={() => setContentType("cta")}
               >
-                {flyer.callToAction?.ctaType === "offer" ? "deals" : "ask"}
+                {flyer.callToAction?.ctaType === "offer" ? "deals" : "request"}
               </Pill>
             )}
           </PillsContainer>
