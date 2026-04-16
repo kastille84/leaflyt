@@ -27,7 +27,7 @@ const StyledAssestSelectionContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1.6rem;
-    align-items: space-between;
+    height: 85%;
   }
 `;
 
@@ -73,7 +73,7 @@ export default function AssestSelectionContainer() {
 
   async function deleteAllTimedAssets() {
     await Promise.all(
-      timedAssetsList.map((asset) => deleteFileOverTime(asset))
+      timedAssetsList.map((asset) => deleteFileOverTime(asset)),
     );
   }
 
@@ -120,8 +120,8 @@ export default function AssestSelectionContainer() {
             assetsList.length >= userLimits.media.limit
               ? "disabled"
               : selectedOption === "existing"
-              ? "primary"
-              : "secondary"
+                ? "primary"
+                : "secondary"
           }
           onClick={() => setSelectedOption("existing")}
           disabled={assetsList.length >= userLimits.media.limit}
@@ -138,8 +138,8 @@ export default function AssestSelectionContainer() {
               userLimits.maxAssets
               ? "disabled"
               : selectedOption === "new"
-              ? "primary"
-              : "secondary"
+                ? "primary"
+                : "secondary"
           }
           onClick={() => setSelectedOption("new")}
           disabled={

@@ -54,34 +54,6 @@ const StyledFlyerBlock = styled.div<{ flyerDesign: FlyerDesign }>`
     flyerDesign.borderBottomRightRadius}px;
 `;
 
-const StyledImageSection = styled.figure<{ flyerDesign: FlyerDesign }>`
-  width: 100%;
-  height: auto;
-  position: relative;
-  overflow: hidden;
-  border-top-left-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopLeftRadius}px;
-  border-top-right-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopRightRadius}px;
-`;
-
-const StyledTopImageContainer = styled.div<{ flyerDesign: FlyerDesign }>`
-  background-color: ${(props) => props.flyerDesign.top.backgroundColor};
-  position: absolute;
-  top: 0;
-
-  opacity: 0.85;
-  color: ${(props) => props.flyerDesign.top.color};
-  width: 100%;
-  padding: 1rem 2.4rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top-left-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopLeftRadius}px;
-  border-top-right-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopRightRadius}px;
-`;
 const StyledTopTextContainer = styled.div<{ flyerDesign: FlyerDesign }>`
   width: 100%;
   padding: 1rem 2.4rem;
@@ -100,7 +72,7 @@ const StyledTopTextContainer = styled.div<{ flyerDesign: FlyerDesign }>`
 
 const StyledInfoContentContainer = styled.div`
   padding: 1rem 2.4rem;
-  font-size: 1.4rem;
+  /* font-size: 1.4rem; */
   background-color: #fff;
 `;
 
@@ -144,10 +116,10 @@ const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
   justify-content: center;
   align-items: center;
   border-radius: 100%;
-  font-size: 1.4rem;
+  /* font-size: 1.4rem; */
 `;
 const StyledAvatarName = styled.div`
-  font-size: 1.4rem;
+  /* font-size: 1.4rem; */
 `;
 
 const PillsContainer = styled.div`
@@ -230,6 +202,10 @@ const Pill = styled.div<{
         }
       }
     `}
+
+  @media (max-width: 34em) {
+    font-size: 1.2rem;
+  }
 `;
 
 export default function FlyerBlockStatic({

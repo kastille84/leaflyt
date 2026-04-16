@@ -22,6 +22,7 @@ const StyledContainer = styled.div`
   @media (max-width: 59em) {
     width: 100%;
     grid-template-columns: 1fr;
+    overflow: auto;
   }
 `;
 

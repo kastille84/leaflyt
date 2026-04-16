@@ -10,6 +10,9 @@ const StyledNavSection = styled.section`
   color: var(--color-blue-200);
   background-color: var(--color-blue-600);
   padding: 2.4rem;
+  @media screen and (max-width: 34em) {
+    padding: 1.6rem;
+  }
 `;
 
 const StyledTopSection = styled.section`
@@ -90,7 +93,7 @@ export default function LandingNav() {
           />
         </StyledLogoContainer>
         <StyledButtonContainer>
-          <Button onClick={getUserGeo}>Find Boards</Button>
+          <Button onClick={getUserGeo}>Boards</Button>
           <StyledAuthButtonsContainer>
             <StyledPricingText
               onClick={() => {

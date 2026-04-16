@@ -16,6 +16,9 @@ const StyledAnnouncementSection = styled.div`
   justify-content: center;
   padding: 2.4rem;
   margin: 0 3.6rem 3.6rem 3.6rem;
+  @media (max-width: 34em) {
+    padding: 1rem;
+  }
 `;
 const StyledHeadingContainer = styled.div`
   display: flex;
@@ -27,6 +30,9 @@ const StyledHeadingContainer = styled.div`
   /* border: 1px solid var(--color-brand-600); */
   border-radius: var(--border-radius-lg);
   padding: 3.6rem;
+  @media (max-width: 34em) {
+    padding: 2rem;
+  }
 `;
 
 const StyledGreetingsContainer = styled.div`
@@ -94,7 +100,7 @@ export default function Home() {
       <StyledAnnouncementSection>
         <StyledHeadingContainer>
           <Heading as="h1">
-            Welcome to Leaflit
+            Welcome{""}
             {showName()}
           </Heading>
           <p>We're a Flyer Distribution Platform for Your Community</p>
