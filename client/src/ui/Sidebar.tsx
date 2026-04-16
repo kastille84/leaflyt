@@ -46,6 +46,7 @@ const StyledSidebar = styled.aside`
   @media (max-width: 34em) {
     width: 165px;
     left: -165px;
+    padding: 1.2rem;
   }
 `;
 

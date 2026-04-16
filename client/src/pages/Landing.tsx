@@ -53,6 +53,9 @@ const StyledHeroArticle = styled.article`
   flex: 1;
   row-gap: 3.2rem;
   padding: 4.8rem;
+  @media (max-width: 34em) {
+    padding: 2.4rem;
+  }
 `;
 
 const StyledHeroSection = styled.section`
@@ -152,8 +155,8 @@ const StyledExplainerSection = styled.section`
     font-weight: 500;
   }
 
-  @media (max-width: 59em) {
-    /* flex-direction: column-reverse; */
+  @media (max-width: 34em) {
+    padding: 2.4rem;
   }
 `;
 const StyledHowToSection = styled.section`
@@ -171,8 +174,8 @@ const StyledHowToSection = styled.section`
     font-weight: 500;
   }
 
-  @media (max-width: 59em) {
-    /* flex-direction: column-reverse; */
+  @media (max-width: 34em) {
+    padding: 2.4rem;
   }
 `;
 
@@ -439,7 +442,7 @@ export default function Landing() {
       <StyledHowToSection>
         <StyledExplainerSectionIntro>
           <StyledHeroH1>How To Use Leaflit?</StyledHeroH1>
-          <InfoAlert type="info">
+          <InfoAlert type="info" hideIcon>
             <p>
               Physical establishments do not have a legal or commercial
               association with the virtual community boards on Leaflit.

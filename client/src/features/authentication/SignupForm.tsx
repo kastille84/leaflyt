@@ -65,6 +65,9 @@ const StyledFormButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 2.4rem;
+  @media screen and (max-width: 34em) {
+    margin-bottom: 2.4rem;
+  }
 `;
 
 const StyledCheckboxContainer = styled.div`
@@ -88,14 +91,6 @@ const StyledCheckboxLabel = styled.label`
     color: var(--color-brand-500);
     text-decoration: underline;
   }
-`;
-
-const StyledPlanSection = styled.div`
-  margin-top: 2.4rem;
-  margin-bottom: 2.4rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
 `;
 
 export default function SignupForm({
