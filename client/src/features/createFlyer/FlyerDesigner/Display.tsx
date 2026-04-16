@@ -57,7 +57,7 @@ const SlideOpener = styled.div`
   }
 
   @media (max-width: 34em) {
-    left: -50px;
+    left: -65px;
   }
 `;
 

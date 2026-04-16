@@ -116,7 +116,7 @@ const StyledTopTextContainer = styled.div<{
 
 const StyledMainContentContainer = styled.div`
   padding: 2.4rem 2.4rem 1rem 2.4rem;
-  font-size: 1.4rem;
+  /* font-size: 1.4rem; */
 `;
 
 const StyledSubcategory = styled.small<{
@@ -195,7 +195,7 @@ const StyledTag = styled.small<{ flyerDesign: FlyerDesign }>`
   text-transform: capitalize;
   font-weight: 600;
   letter-spacing: 1px;
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: ${({ flyerDesign }) => flyerDesign.tags.color};
 `;
 
@@ -241,11 +241,11 @@ const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
   justify-content: center;
   align-items: center;
   border-radius: 100%;
-  font-size: 1.4rem;
+  /* font-size: 1.4rem; */
 `;
 
 const StyledAvatarName = styled.div<{ selected: boolean }>`
-  font-size: 1.4rem;
+  /* font-size: 1.4rem; */
   ${({ selected }) =>
     selected &&
     css`

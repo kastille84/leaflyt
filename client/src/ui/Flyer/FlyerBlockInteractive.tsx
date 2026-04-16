@@ -101,7 +101,7 @@ const StyledTopTextContainer = styled.div<{ flyerDesign: FlyerDesign }>`
 
 const StyledInfoContentContainer = styled.div`
   padding: 1rem 2.4rem;
-  font-size: 1.4rem;
+  /* font-size: 1.4rem; */
   background-color: #fff;
 `;
 
@@ -148,11 +148,11 @@ const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
   justify-content: center;
   align-items: center;
   border-radius: 100%;
-  font-size: 1.4rem;
+  /* font-size: 1.4rem; */
 `;
 
 const StyledAvatarName = styled.div`
-  font-size: 1.4rem;
+  /* font-size: 1.4rem; */
 `;
 
 const StyledActionSection = styled.div`
@@ -255,6 +255,9 @@ const Pill = styled.div<{
         }
       }
     `}
+  @media (max-width: 34em) {
+    font-size: 1.2rem;
+  }
 `;
 
 export default function FlyerBlockInteractive({

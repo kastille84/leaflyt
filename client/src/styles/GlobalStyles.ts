@@ -89,11 +89,7 @@ const GlobalStyles = createGlobalStyle`
 
 html {
   font-size: 62.5%;
-   @media only screen and (max-width: 768px) {
-    body {
-      font-size: 2rem; /* Increase the font size for mobile devices */
-    }
-  }
+
 }
 
 body {
@@ -103,6 +99,10 @@ body {
   font-size: 1.6rem;
   line-height: 1.5;
   transition: color 0.3s, background-color 0.3s;
+
+  @media (max-width: 34em) {
+    font-size: 1.8rem;
+  }
 }
 
 input,
@@ -162,7 +162,7 @@ img {
 }
 @media (max-width: 34em) {
   html {
-    font-size: 40%;
+    font-size: 50%;
   }
 }
 `;

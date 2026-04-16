@@ -119,7 +119,7 @@ export default function BoardWelcomeModal() {
           </p>
           <br />
           <h2>
-            <strong>Psst! You can post fyers here too!</strong>
+            <strong>Psst! You can post flyers here too!</strong>
           </h2>
           <p>
             Post a basic flyer <strong>instantly as a guest</strong> by clicking

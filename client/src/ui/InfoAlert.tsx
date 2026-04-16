@@ -50,10 +50,12 @@ export default function InfoAlert({
   type = "info",
   text,
   children,
+  hideIcon,
 }: {
   type?: "info" | "warning" | "error";
   text?: string;
   children?: React.ReactNode;
+  hideIcon?: boolean;
 }) {
   const determineIcon = () => {
     switch (type) {
@@ -69,10 +71,12 @@ export default function InfoAlert({
 
   return (
     <StyledInfoAlertContainer type={type}>
-      <Heading as={"h4"}>
-        <span>{determineIcon()}</span>
-        <span style={{ textTransform: "capitalize" }}>{type}</span>
-      </Heading>
+      {!hideIcon && (
+        <Heading as={"h4"}>
+          <span>{determineIcon()}</span>
+          <span style={{ textTransform: "capitalize" }}>{type}</span>
+        </Heading>
+      )}
       <div>
         {text && <p>{text}</p>}
         {children && children}
