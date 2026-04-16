@@ -54,6 +54,7 @@ const StyledLi = styled.li`
   & p {
     font-size: 1.6rem;
     letter-spacing: 0.4px;
+    line-break: anywhere;
   }
 `;
 

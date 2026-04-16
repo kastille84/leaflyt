@@ -7,7 +7,7 @@ const StyledTile = styled.div`
   padding: 2.4rem;
   margin-top: 2.4rem;
   margin-bottom: 2.4rem;
-  background-color: var(--color-red-600);
+  background-color: var(--color-orange-600);
   color: var(--color-grey-50);
   border-radius: var(--border-radius-md);
 `;
