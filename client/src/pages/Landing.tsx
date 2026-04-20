@@ -261,6 +261,13 @@ export default function Landing() {
         });
       }
     });
+
+    // look for url query parameter to get user's geo and if it exists, call getUserGeo
+    const searchParams = new URLSearchParams(location.search);
+    const userGeoParam = searchParams.get("getUserGeo");
+    if (userGeoParam) {
+      getUserGeo();
+    }
   }, []);
 
   function handleSignUpClick() {
@@ -276,7 +283,9 @@ export default function Landing() {
             <StyledHeroContent>
               <div>
                 <StyledHeroH1>
-                  Leaflit - Local Digital Community Boards
+                  Leaflit
+                  <br />
+                  Local Digital Community Boards
                 </StyledHeroH1>
                 <Heading as="h2">
                   See What Others Are Posting In Your <span>Community</span>
