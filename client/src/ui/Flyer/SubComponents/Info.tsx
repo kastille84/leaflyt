@@ -77,7 +77,7 @@ export default function Content({
         {flyer.subcategory}
       </StyledSubcategory>
       <StyledHeading as="h2" flyerDesign={flyerStyles}>
-        {determineIsFullFlyer() ? flyer.title : shortenTitle(flyer.title, 33)}
+        {determineIsFullFlyer() ? flyer.title : shortenTitle(flyer.title, 80)}
       </StyledHeading>
       {!isReadMore && (
         <StyledContentContainer
