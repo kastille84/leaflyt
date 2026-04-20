@@ -5,11 +5,12 @@ import { useGlobalContext } from "../../../context/GlobalContext";
 import { UploadApiResponse } from "cloudinary";
 
 const StyledFigure = styled.figure<{
-  height?: number;
+  height?: number | string;
   backgroundColor?: string;
 }>`
   width: 100%;
-  height: ${(props) => props.height}px;
+  height: ${(props) =>
+    typeof props.height === "number" ? `${props.height}px` : `${props.height}`};
   background-color: ${(props) =>
     props.backgroundColor ? props.backgroundColor : "#fff"};
   /* opacity: 0.85; */
@@ -121,6 +122,7 @@ export default function ImageCarousel({
             key={index}
             onClick={() => handleImageClick(filesToUse!)}
             height={heightToUse}
+            // height={file.height > heightToUse ? "auto" : heightToUse}
             backgroundColor={file.resource_type === "video" ? bgColor : "#fff"}
           >
             {file.resource_type === "video" && (
