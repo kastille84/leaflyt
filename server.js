@@ -60,10 +60,10 @@ cron.schedule("0 5 * * *", () => {
 // TODO: turn this OFF when Leaflit is operational in 3 communities
 // cron jobs - delete old flyers
 // cron.schedule("* * * * *", () => {
-cron.schedule("0 5 * * *", () => {
-  console.log("running delete Unregistered Flyers task at 5am every day");
-  deleteUnregisteredFlyers();
-});
+// cron.schedule("0 5 * * *", () => {
+//   console.log("running delete Unregistered Flyers task at 5am every day");
+//   deleteUnregisteredFlyers();
+// });
 
 // TODO: turn this on once we've seeded a lot of flyers
 // cron jobs - delete old flyers
