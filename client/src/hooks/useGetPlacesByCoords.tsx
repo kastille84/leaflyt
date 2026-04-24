@@ -29,7 +29,7 @@ export default (coords: LatLng) => {
       // https://developers.google.com/maps/documentation/places/web-service/place-types#table-a
       // includedTypes: ["restaurant"], // Example: search for restaurants
       excludedTypes: excludedTypeList,
-      maxResultCount: 4,
+      maxResultCount: 6,
       rankPreference: "DISTANCE",
       locationRestriction: {
         circle: {
