@@ -3,8 +3,6 @@ import Heading from "./Heading";
 import MainNav from "./MainNav";
 import { useState } from "react";
 import {
-  HiOutlineAcademicCap,
-  HiOutlineBars3,
   HiOutlineChevronDoubleLeft,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
@@ -72,6 +70,30 @@ const StyledMenuOpenButton = styled.div`
   padding: 0.8rem 1.2rem;
   border-radius: var(--border-radius-sm);
   cursor: pointer;
+
+  animation: pulse 5s infinite;
+  /* transition: all 1.4s; */
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1) rotate(5deg);
+    }
+    2% {
+      transform: scale(1.2) rotate(-5deg);
+    }
+    4% {
+      transform: scale(1.2) rotate(5deg);
+    }
+    6% {
+      transform: scale(1.2) rotate(-5deg);
+    }
+    8% {
+      transform: scale(1.2) rotate(5deg);
+    }
+    10% {
+      transform: scale(1) rotate(0deg);
+    }
+  }
 
   @media (max-width: 59em) {
     display: inline-block;
