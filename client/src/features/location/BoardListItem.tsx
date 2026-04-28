@@ -6,6 +6,7 @@ import Heading from "../../ui/Heading";
 import Button from "../../ui/Button";
 import { shortenTitle } from "../../utils/GeneralUtils";
 import { useGlobalContext } from "../../context/GlobalContext";
+import { logQrScan } from "../../services/apiQrAnalytics";
 
 type BoardListingItemProps = {
   place: NearbySearchPlaceResult;
@@ -41,7 +42,15 @@ export default function BoardListItem({ place }: BoardListingItemProps) {
   const navigate = useNavigate();
   const { setSelectedPlace, setIsSelectingNewPlace, setHasFlyerAtLocation } =
     useGlobalContext();
-  function onSelectBoard() {
+
+  async function onSelectBoard() {
+    // qr analytics
+    const searchParams = new URLSearchParams(location.search);
+    const userGeoParam = searchParams.get("getUserGeo");
+    if (userGeoParam) {
+      // make note of scan date & location in db
+      await logQrScan(place);
+    }
     setHasFlyerAtLocation((prev) => false);
     setSelectedPlace(place);
     setIsSelectingNewPlace(false);

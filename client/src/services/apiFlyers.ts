@@ -14,7 +14,6 @@ import { assetUsageByFlyer, assetUsageByTemplate } from "./apiAssets";
 import { calculateEndDate, getBaseUrl } from "../utils/ServiceUtils";
 import { prepFlyerDataForAppropriateness } from "../utils/FlyerUtils";
 import dayjs from "dayjs";
-import { use } from "chai";
 
 const getOrCreateBoard = async (selectedPlace: NearbySearchPlaceResult) => {
   // make a call to get the latest board data
