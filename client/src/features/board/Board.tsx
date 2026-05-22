@@ -143,6 +143,18 @@ export default function Board() {
   const { isLoadingBoard, board } = useGetBoard(user?.id!);
 
   const originalFlyers = board?.data?.flyers || [];
+  // find if flyer?.user?.email is same email as "leaflit.flyers@gmail.com", if so, then slice it out of the array and place that flyer at the 0 index of the array. This will be the first flyer in the array, so that it shows up first on the board. If not, then don't do anything.
+  const flyerIdx = originalFlyers.findIndex((flyer) => {
+    if (flyer?.user?.email === "support@leaflit.us") {
+      return true;
+    }
+    return false;
+  });
+  if (flyerIdx !== -1) {
+    const [leafletFlyer] = originalFlyers.splice(flyerIdx, 1);
+    originalFlyers.unshift(leafletFlyer);
+  }
+
   // filter flyers based on categoryWatch and subcategoryWatch
   let filteredFlyers = originalFlyers.filter((flyer) => {
     if (categoryWatch && flyer.category !== categoryWatch) return false;
