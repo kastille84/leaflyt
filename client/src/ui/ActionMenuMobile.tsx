@@ -3,13 +3,14 @@ import { useGlobalContext } from "../context/GlobalContext";
 import Button from "./Button";
 import { useEffect } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import OverlaySpinner from "./OverlaySpinner";
 import LocationSelection from "../features/location/LocationSelection";
 import { supabase } from "../services/supabase";
 import CreateFlyerButton from "./Flyer/CreateFlyerButton";
 import { useSessionStorageState } from "../hooks/useSessionStorageState";
 import { HiOutlineInformationCircle } from "react-icons/hi2";
+import useGetUserLimits from "../hooks/useGetUserLimits";
 
 const StyledActionMenu = styled.div`
   grid-column: 1 / -1;
@@ -98,6 +99,10 @@ export default function ActionMenuMobile() {
   } = useGlobalContext();
 
   const navigate = useNavigate();
+  const planLimits = useGetUserLimits();
+  const [searchParams] = useSearchParams();
+  const ptVal = searchParams.get("pt");
+
   const [likedSessionFlyers, setLikedSessionFlyers] = useSessionStorageState(
     [],
     "likedFlyers",
@@ -122,6 +127,15 @@ export default function ActionMenuMobile() {
       // redirect to home
       navigate("/");
     });
+  }
+
+  function determineIfCanPost() {
+    // if they're trying to do remotePosting, check if allowed
+    if (ptVal === "r") {
+      return planLimits.remotePosting.isAllowed;
+    } else {
+      return planLimits.onLocationPosting.isAllowed;
+    }
   }
 
   function determineAuthActions() {
