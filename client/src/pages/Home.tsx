@@ -15,7 +15,7 @@ const StyledAnnouncementSection = styled.div`
   align-items: center;
   justify-content: center;
   padding: 2.4rem;
-  margin: 0 3.6rem 3.6rem 3.6rem;
+  margin: 0 3.6rem 2.4rem 3.6rem;
   @media (max-width: 34em) {
     padding: 1rem;
   }
@@ -52,6 +52,15 @@ const StyledStepsContainer = styled.ol`
   & small {
     color: var(--color-brand-700);
     font-weight: 600;
+  }
+`;
+
+const StyledContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 3.2rem;
+  @media (max-width: 44em) {
+    padding: 0;
   }
 `;
 
@@ -97,47 +106,77 @@ export default function Home() {
 
   return (
     <StyledHome>
-      <StyledAnnouncementSection>
-        <StyledHeadingContainer>
-          <Heading as="h1">
-            Welcome{""}
-            {showName()}
+      <StyledContainer>
+        <StyledAnnouncementSection>
+          <StyledHeadingContainer>
+            <Heading as="h1">
+              Welcome{""}
+              {showName()}
+            </Heading>
+            <p>Leaflit is a Flyer Distribution Platform for Your Community</p>
+          </StyledHeadingContainer>
+        </StyledAnnouncementSection>
+        <StyledGreetingsContainer>
+          <Heading as="h3">
+            Whether you are a business, organization or individual, <br />
+            We make it easy for you to view and distribute flyers in your
+            community. <br />
+            We are seeding phase and looking for community launch partners.
+            <br />
+            There's more features to come, but for right now...
           </Heading>
-          <p>We're a Flyer Distribution Platform for Your Community</p>
-        </StyledHeadingContainer>
-      </StyledAnnouncementSection>
-      <StyledGreetingsContainer>
-        <Heading as="h3">
-          Whether you are a business, organization or individual, <br />
-          We make it easy for you to view and distribute flyers in your
-          community. <br />
-          We are seeding phase and looking for community launch partners.
-          <br />
-          There's more features to come, but for right now...
-        </Heading>
-      </StyledGreetingsContainer>
-      <StyledStepsContainer>
-        <div>
-          <li>
-            Explore Your Neighborhood. -{" "}
-            <small>(In-person or virtual via "My Area")</small>
-          </li>
-          <li>
-            Find Community Boards. - <small>(Be In the Know)</small>
-          </li>
-          <li>
-            View Flyers. - <small>(Find Something Interesting)</small>
-          </li>
-          <li>
-            Save Flyers For Later. -{" "}
-            <small> (Some Have Coupons or Deals)</small>
-          </li>
-          <li>
-            Best Part... Distribute Your Own Flyers. -{" "}
-            <small>(Spread Your Message)</small>
-          </li>
+        </StyledGreetingsContainer>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "3.6rem",
+          }}
+        >
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/se7Zg0KZ62o?si=WkQabSgzoBVRLCcM"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+            rel="0"
+            style={{ maxWidth: "100%" }}
+          ></iframe>
         </div>
-      </StyledStepsContainer>
+
+        <Heading
+          as="h2"
+          style={{ textAlign: "center", marginBottom: "1.6rem" }}
+        >
+          Start Exploring Your Community in 5 Easy Steps
+        </Heading>
+        <StyledStepsContainer>
+          <div>
+            <li>
+              Explore Your Neighborhood. -{" "}
+              <small>(In-person or virtual via "My Area")</small>
+            </li>
+            <li>
+              Find Community Boards. - <small>(Be In the Know)</small>
+            </li>
+            <li>
+              View Flyers. - <small>(Find Something Interesting)</small>
+            </li>
+            <li>
+              Save Flyers For Later. -{" "}
+              <small> (Some Have Coupons or Deals)</small>
+            </li>
+            <li>
+              Best Part... Distribute Your Own Flyers. -{" "}
+              <small>(Spread Your Message)</small>
+            </li>
+          </div>
+        </StyledStepsContainer>
+      </StyledContainer>
     </StyledHome>
   );
 }
