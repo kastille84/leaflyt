@@ -111,7 +111,7 @@ export default function BoardWelcomeModal() {
             where you can find and share local news, events, and resources.
           </p>
           <br /> */}
-          <p>Welcome, neighbor!</p>
+          <p>Welcome, Neighbor!</p>
           <p>
             This Virtual Community board is your go-to resource to find local
             services & events, build neighborly connections, and stay up-to-date
@@ -121,7 +121,7 @@ export default function BoardWelcomeModal() {
           <h2>
             <strong>Psst! You can post flyers here too!</strong>
           </h2>
-          <p>
+          <p style={{ lineHeight: "1.8" }}>
             Post a basic flyer <strong>instantly as a guest</strong> by clicking
             on the <StyledSpan>"Create Flyer"</StyledSpan> button, or
             <br />
