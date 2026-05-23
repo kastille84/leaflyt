@@ -129,6 +129,12 @@ const StyledHeroH1 = styled.h1`
   letter-spacing: 0.1rem;
   line-height: 1;
 
+  & span {
+    color: var(--color-brand-600);
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.4rem;
+  }
+
   @media (max-width: 84em) {
     font-size: 5rem;
   }
@@ -223,8 +229,6 @@ export default function Landing() {
   );
   const {
     getUserGeo,
-    isGettingLocation,
-    coords,
     setUser,
     setShowLoginModal,
     setIsOpenBottomSlideIn,
@@ -283,14 +287,14 @@ export default function Landing() {
             <StyledHeroContent>
               <div>
                 <StyledHeroH1>
-                  Leaflit
+                  <span>Leaflit</span>
                   <br />
                   Local Digital Community Boards
                 </StyledHeroH1>
                 <Heading as="h2">
                   See What Others Are Posting In Your <span>Community</span>
                   <br />
-                  Spread Your Message.
+                  Spread Your Message
                 </Heading>
               </div>
               <Button onClick={getUserGeo}>Find a Board Near You</Button>
@@ -409,6 +413,26 @@ export default function Landing() {
           </StyledExplainerLandingItemsContainer>
         )}
         <Heading as="h1">Leaflit Solves These Problems and more... </Heading>
+        <StyledExplainerButtonsContainer>
+          <Button
+            variation={explainerType === "viewing" ? "primary" : "secondary"}
+            onClick={() => {
+              setExplainerType("viewing");
+            }}
+            size="small"
+          >
+            Viewing Flyers
+          </Button>
+          <Button
+            variation={explainerType === "posting" ? "primary" : "secondary"}
+            onClick={() => {
+              setExplainerType("posting");
+            }}
+            size="small"
+          >
+            Posting Flyers
+          </Button>
+        </StyledExplainerButtonsContainer>
         {explainerType === "viewing" && (
           <StyledExplainerLandingItemsContainer>
             <LandingItem
@@ -447,6 +471,17 @@ export default function Landing() {
             />
           </StyledExplainerLandingItemsContainer>
         )}
+      </StyledExplainerSection>
+      <StyledExplainerSection>
+        <StyledHeroH1>Anyone Can Post Flyers, Including You!</StyledHeroH1>
+        <StyledFigure>
+          <img
+            src={"/images/Leaflit_Flyer_img.png"}
+            height={"100%"}
+            width={"100%"}
+            alt=""
+          />
+        </StyledFigure>
       </StyledExplainerSection>
       <StyledHowToSection>
         <StyledExplainerSectionIntro>

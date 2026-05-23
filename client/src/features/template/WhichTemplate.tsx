@@ -91,6 +91,16 @@ const StyledScratchOption = styled.p`
   &.selected {
     background-color: var(--color-grey-100);
     border: 2px solid var(--color-orange-700);
+    padding-right: 2.5rem;
+    position: relative;
+    &:before {
+      content: "✓";
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: var(--color-brand-600);
+      font-weight: 600;
+    }
   }
 `;
 

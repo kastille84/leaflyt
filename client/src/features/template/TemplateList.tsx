@@ -26,6 +26,16 @@ const StyledListItem = styled.li`
   &.selected {
     background-color: var(--color-grey-100);
     border: 3px solid var(--color-brand-600);
+    padding-right: 2.5rem;
+    position: relative;
+    &:before {
+      content: "✓";
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: var(--color-brand-600);
+      font-weight: 600;
+    }
   }
 `;
 
