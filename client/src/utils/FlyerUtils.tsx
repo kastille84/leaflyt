@@ -1,4 +1,5 @@
 import { Auth_User_Profile_Response } from "../interfaces/Auth_User";
+import { DB_Board_Response } from "../interfaces/DB_Board";
 import {
   DB_Flyer_Create,
   DB_Flyers_Response,
@@ -7,7 +8,7 @@ import {
 } from "../interfaces/DB_Flyers";
 
 export const groupFlyersToTemplates = (
-  user: Auth_User_Profile_Response | null
+  user: Auth_User_Profile_Response | null,
 ) => {
   const groupedFlyers: any = {};
   user?.flyers.forEach((flyer: any) => {
@@ -23,7 +24,7 @@ export const groupFlyersToTemplates = (
 // check saved_flyers arr to see if current flyer has already been saved
 export const checkIfCurrentFlyerIsSaved = (
   saved_flyers: DB_Saved_Flyer[],
-  currentFlyer: DB_Flyers_Response
+  currentFlyer: DB_Flyers_Response,
 ) => {
   return saved_flyers.some((saved_flyer) => {
     return saved_flyer.flyer.id === currentFlyer.id;
@@ -32,7 +33,7 @@ export const checkIfCurrentFlyerIsSaved = (
 
 export const checkIfCurrentFlyerIsLiked = (
   likedFlyers: string[],
-  currentFlyerId: string
+  currentFlyerId: string,
 ) => {
   return likedFlyers.some((likedFlyerId) => {
     return likedFlyerId === currentFlyerId;
@@ -40,7 +41,7 @@ export const checkIfCurrentFlyerIsLiked = (
 };
 
 export const groupFlyersBasedOnPostingMethod = (
-  flyers: DB_Flyers_Response[]
+  flyers: DB_Flyers_Response[],
 ) => {
   const groupedFlyers: any = {};
   flyers.forEach((flyer: any) => {
@@ -62,7 +63,7 @@ export const totalNumberOfFlyerLikes = (flyers: DB_Flyers_Response[]) => {
 };
 
 export const prepFlyerDataForAppropriateness = (
-  flyerData: DB_Flyer_Create | DB_Template
+  flyerData: DB_Flyer_Create | DB_Template,
 ) => {
   // first check if content is appropriate
   let messageToCheck = `\n${flyerData.title}\n${flyerData.content}`;
@@ -81,4 +82,33 @@ export const prepFlyerDataForAppropriateness = (
     });
   }
   return { messageToCheck, fileUrlsToCheck };
+};
+
+export const makeTopFlyer = (
+  flyers: DB_Board_Response["flyers"],
+  type: "leaflit" | "establishment",
+  boardFormattedAddress?: string,
+) => {
+  const flyerIdx = flyers.findIndex((flyer) => {
+    if (
+      type === "leaflit" &&
+      ["support@leaflit.us", "leaflit.flyers@gmail.com"].includes(
+        (flyer?.user as Auth_User_Profile_Response)?.email,
+      )
+    ) {
+      return true;
+    }
+    if (
+      type === "establishment" &&
+      (flyer?.user as Auth_User_Profile_Response)?.address.formatted_address ===
+        boardFormattedAddress
+    ) {
+      return true;
+    }
+    return false;
+  });
+  if (flyerIdx !== -1) {
+    const [leafletFlyer] = flyers.splice(flyerIdx, 1);
+    flyers.unshift(leafletFlyer);
+  }
 };
