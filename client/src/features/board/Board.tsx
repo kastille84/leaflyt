@@ -26,6 +26,7 @@ import UpgradeText from "../../ui/UpgradeText";
 import { HiOutlineFunnel, HiOutlineInformationCircle } from "react-icons/hi2";
 import BoardWelcomeModal from "../../ui/Modals/BoardWelcomeModal";
 import { makeTopFlyer } from "../../utils/FlyerUtils";
+import { logQrScan } from "../../services/apiQrAnalytics";
 
 const StyledBoardContainer = styled.div`
   position: relative;
@@ -136,6 +137,7 @@ export default function Board() {
     setShowBoardWelcomeModal,
   } = useGlobalContext();
   const [shouldGetPlace, setShouldGetPlace] = useState(false);
+  const [loggedEA, setLoggedEA] = useState(false);
 
   // const filterOptions = {
   //   category: categoryWatch,
@@ -177,6 +179,19 @@ export default function Board() {
 
   useEffect(() => {
     setShouldGetPlace(true);
+    // log qr scan if ea param is present and we haven't already logged an ea scan for this session
+    if (selectedPlace && !loggedEA) {
+      const searchParams = new URLSearchParams(location.search);
+      const establishmentAnalyticsParam = searchParams.get("ea");
+      if (
+        establishmentAnalyticsParam &&
+        JSON.parse(establishmentAnalyticsParam)
+      ) {
+        // make note of scan date & location in db
+        logQrScan(selectedPlace);
+        setLoggedEA(true);
+      }
+    }
   }, [selectedPlace]);
 
   useEffect(() => {
