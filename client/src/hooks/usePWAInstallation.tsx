@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { UAParser } from "ua-parser-js";
 
 // Define types for our custom beforeinstallprompt event
 interface BeforeInstallPromptEvent extends Event {
@@ -49,13 +48,19 @@ export function usePWAInstallation() {
       setIsDismissed(false);
     }
 
-    // 2. Parse user agent strings safely
-    const parser = new UAParser();
-    const result = parser.getResult();
-
-    const isIOS = result.os.name === "iOS";
-    const isChromium = result.engine.name === "Blink";
-    const isIOSSafari = isIOS && result.browser.name === "Safari";
+    // 2. Feature + UA detection (robust across iOS browsers)
+    const ua = navigator.userAgent || navigator.vendor || "";
+    const isIOS =
+      /iPad|iPhone|iPod/.test(ua) ||
+      (navigator.platform === "MacIntel" &&
+        (navigator as any).maxTouchPoints > 1);
+    const isIOSSafari =
+      isIOS &&
+      /Safari/.test(ua) &&
+      !/CriOS|FxiOS|OPiOS|EdgiOS|Chrome|Chromium/.test(ua);
+    const supportsBeforeInstallPrompt =
+      typeof window !== "undefined" && "onbeforeinstallprompt" in window;
+    const isChromium = !!supportsBeforeInstallPrompt;
 
     // Handle legacy standalone checks on iOS safely using type casting
     const isStandalone =
@@ -90,31 +95,26 @@ export function usePWAInstallation() {
     };
   }, []);
 
-  const triggerChromiumInstall = async (): Promise<boolean> => {
-    if (!deferredPrompt) return false;
+  // ... rest of hook unchanged ...
 
-    await deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-
-    setDeferredPrompt(null);
-    setIsInstallable(false);
-    return outcome === "accepted";
-  };
-
-  const dismissPrompt = (): void => {
-    const expireTime =
-      new Date().getTime() + DAYS_TO_HIDE * 24 * 60 * 60 * 1000;
-    localStorage.setItem(STORAGE_KEY, expireTime.toString());
-    setIsDismissed(true);
-  };
-
-  const showUI =
-    isInstallable || (platform.isIOSSafari && !platform.isStandalone);
+  const showUI = isInstallable || (platform.isIOS && !platform.isStandalone);
 
   return {
     isInstallable: showUI && !isDismissed && !platform.isStandalone,
     platform,
-    triggerChromiumInstall,
-    dismissPrompt,
+    triggerChromiumInstall: async (): Promise<boolean> => {
+      if (!deferredPrompt) return false;
+      await deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      setDeferredPrompt(null);
+      setIsInstallable(false);
+      return outcome === "accepted";
+    },
+    dismissPrompt: (): void => {
+      const expireTime =
+        new Date().getTime() + DAYS_TO_HIDE * 24 * 60 * 60 * 1000;
+      localStorage.setItem(STORAGE_KEY, expireTime.toString());
+      setIsDismissed(true);
+    },
   };
 }
