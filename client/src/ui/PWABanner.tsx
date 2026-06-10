@@ -88,7 +88,7 @@ export function PWAInstallBanner(): React.JSX.Element | null {
       </CloseButton>
 
       <BannerText>
-        Install our app for a faster access to Community Boards!
+        Install the app for faster access to Community Boards!
       </BannerText>
 
       {/* Case A: Desktop or Android Chromium Environments */}
@@ -112,7 +112,7 @@ export function PWAInstallBanner(): React.JSX.Element | null {
       {/* Case C: iOS Third Party Browsers (Chrome, Edge, Firefox) */}
       {platform.isIOS && !platform.isIOSSafari && (
         <InstructionText>
-          PWA installation requires Safari on iOS. Please copy this URL and open
+          App installation requires Safari on iOS. Please copy this URL and open
           it inside Apple Safari to install.
         </InstructionText>
       )}
