@@ -14,6 +14,7 @@ import InfoAlert from "../ui/InfoAlert";
 import StepSection from "../ui/StepSection";
 import LandingNav from "../ui/LandingNav";
 import Footer from "../ui/Footer";
+import AppDownloadButton from "../ui/AppDownload/AppDownloadButton";
 
 const StyledMain = styled.main`
   background-color: #fff;
@@ -165,6 +166,26 @@ const StyledExplainerSection = styled.section`
     padding: 2.4rem;
   }
 `;
+const StyledDownloadSection = styled.section`
+  background-color: var(--color-blue-600);
+  color: var(--color-blue-200);
+  padding: 4.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3.2rem;
+
+  & h1,
+  & h2 {
+    text-align: center;
+    font-weight: 500;
+  }
+
+  @media (max-width: 34em) {
+    padding: 2.4rem;
+  }
+`;
 const StyledHowToSection = styled.section`
   background-color: #fff;
   padding: 4.8rem;
@@ -227,6 +248,7 @@ export default function Landing() {
   const [postingType, setPostingType] = useState<"onLocation" | "remote">(
     "onLocation",
   );
+
   const {
     getUserGeo,
     setUser,
@@ -313,6 +335,20 @@ export default function Landing() {
       <StyledExplainerSection>
         <StyledExplainerSectionIntro>
           <StyledHeroH1>What Is Leaflit?</StyledHeroH1>
+          <Heading as="h2">
+            Connect, share, and discover in your neighborhood — instantly.
+          </Heading>
+          <p>
+            Leaflit turns neighborhood bulletin boards into a clean, local
+            digital space. <br />
+            Create eye-catching flyers in seconds, reach people nearby, and see
+            what's happening. <br />
+            All without cluttering physical walls.
+          </p>
+          <p>
+            Promote events, specials, or community news and make an impact where
+            it matters most: right next door.
+          </p>
           <div
             style={{ width: "100%", display: "flex", justifyContent: "center" }}
           >
@@ -329,13 +365,6 @@ export default function Landing() {
               style={{ maxWidth: "100%" }}
             ></iframe>
           </div>
-          <Heading as="h2">
-            A Digital Flyer Distribution Platform For Your Local Community
-          </Heading>
-          <p>
-            It creates a virtual community board near your location and allows
-            you to post virtual flyers.{" "}
-          </p>
           <figure>
             <img
               src={"/images/Board.png"}

@@ -119,7 +119,7 @@ export default function BoardWelcomeModal() {
           </p>
           <br />
           <h2>
-            <strong>Psst! You can post flyers here too!</strong>
+            <strong>Hey, you can post here too!</strong>
           </h2>
           <p style={{ lineHeight: "1.8" }}>
             Post a basic flyer <strong>instantly as a guest</strong> by clicking

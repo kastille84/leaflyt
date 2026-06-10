@@ -1,8 +1,8 @@
-import { loadEnv } from "vite";
-import { defineConfig } from "vitest/config";
+import { loadEnv, defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { configDefaults } from "vitest/config";
 import basicSsl from "@vitejs/plugin-basic-ssl";
+import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
@@ -10,7 +10,21 @@ export default defineConfig(({ mode }) => {
     define: {
       "process.env": env,
     },
-    plugins: [react(), basicSsl()],
+    plugins: [
+      react(),
+      basicSsl(),
+      VitePWA({
+        strategies: "injectManifest",
+        srcDir: "src",
+        filename: "service-worker.ts",
+        injectManifest: {
+          globPatterns: ["**/*.{js,css,html,ico,png,svg,json}"],
+          globIgnores: ["**/images/flyer-hero-2-big.png"],
+        },
+        registerType: "autoUpdate",
+        includeAssets: ["favicon.ico", "robots.txt", "apple-touch-icon.png"],
+      }),
+    ],
     server: {
       https: true, // same as "--https" flag
       host: true, // same as "--host" flag
@@ -57,6 +71,7 @@ export default defineConfig(({ mode }) => {
         ],
       },
     },
+    // PWA plugin configured in `plugins` (injectManifest using src/service-worker.ts)
   };
 });
 
