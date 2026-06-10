@@ -38,6 +38,7 @@ import Pricing from "./pages/Pricing";
 import LocationSelection from "./features/location/LocationSelection";
 import AppLayout from "./pages/AppLayout";
 import Faq from "./pages/Faq";
+import { PWAInstallBanner } from "./ui/PWABanner";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -119,6 +120,7 @@ function App() {
                 },
               }}
             />
+            <PWAInstallBanner />
           </StripeProvider>
         </GlobalContextProvider>
       </QueryClientProvider>
