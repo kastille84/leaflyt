@@ -2,19 +2,13 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Heading from "../ui/Heading";
 import Button from "../ui/Button";
-import OverlaySpinner from "../ui/OverlaySpinner";
 import { useGlobalContext } from "../context/GlobalContext";
-import LocationSelection from "../features/location/LocationSelection";
-import { useLocalStorageState } from "../hooks/useLocalStorageState";
 import { useNavigate } from "react-router-dom";
 import useLoginWithAccessToken from "../features/authentication/useLoginWithAccessToken";
 import { supabase } from "../services/supabase";
 import LandingItem from "../ui/LandingItem";
 import InfoAlert from "../ui/InfoAlert";
 import StepSection from "../ui/StepSection";
-import LandingNav from "../ui/LandingNav";
-import Footer from "../ui/Footer";
-import AppDownloadButton from "../ui/AppDownload/AppDownloadButton";
 
 const StyledMain = styled.main`
   background-color: #fff;
@@ -166,26 +160,7 @@ const StyledExplainerSection = styled.section`
     padding: 2.4rem;
   }
 `;
-const StyledDownloadSection = styled.section`
-  background-color: var(--color-blue-600);
-  color: var(--color-blue-200);
-  padding: 4.8rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3.2rem;
 
-  & h1,
-  & h2 {
-    text-align: center;
-    font-weight: 500;
-  }
-
-  @media (max-width: 34em) {
-    padding: 2.4rem;
-  }
-`;
 const StyledHowToSection = styled.section`
   background-color: #fff;
   padding: 4.8rem;
@@ -256,6 +231,7 @@ export default function Landing() {
     setIsOpenBottomSlideIn,
     setBottomSlideInType,
     setShowMerchantDisclaimerModal,
+    setContextImages,
   } = useGlobalContext();
   const navigate = useNavigate();
   const { autoLogin } = useLoginWithAccessToken();
@@ -365,7 +341,24 @@ export default function Landing() {
               style={{ maxWidth: "100%" }}
             ></iframe>
           </div>
-          <figure>
+          <figure
+            // onClick={() => {
+            //   setContextImages([
+            //     {
+            //       secure_url: "/images/Board.png",
+            //       resource_type: "image",
+            //       height: 601
+            //     },
+            //     {
+            //       secure_url: "/images/Map_Virtual.png",
+            //       resource_type: "image",
+            //       height: 601
+            //     }
+            //   ]);
+            //   setBottomSlideInType("carousel");
+            //   setIsOpenBottomSlideIn(true);
+            // }}
+          >
             <img
               src={"/images/Board.png"}
               height={"100%"}
