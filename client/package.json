@@ -44,13 +44,11 @@
     "react-image-gallery": "^2.1.2",
     "react-modal": "^3.16.3",
     "react-modern-drawer": "^1.4.0",
-    "react-multi-carousel": "^2.8.6",
     "react-quill-new": "^3.4.6",
     "react-responsive-masonry": "^2.7.1",
     "react-router-dom": "^7.6.0",
     "react-tooltip": "^5.30.0",
-    "styled-components": "^6.1.18",
-    "ua-parser-js": "^2.0.10"
+    "styled-components": "^6.1.18"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

@@ -34,6 +34,7 @@ const CarouselContainer = styled.div<{ hide?: boolean }>`
   & .image-gallery-svg {
     width: 25px;
     height: 50px;
+    stroke: 2px;
   }
 
   & .image-gallery-left-nav,
@@ -44,6 +45,13 @@ const CarouselContainer = styled.div<{ hide?: boolean }>`
 
   & .image-gallery-fullscreen-button.hide {
     visibility: hidden;
+  }
+
+  & .image-gallery-icon:hover {
+    color: var(--color-brand-600);
+    // slight grey background for better visibility of icons and slight transparency to not be too harsh on flyers with dark backgrounds
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-md);
   }
 `;
 export default function ImageCarousel({
