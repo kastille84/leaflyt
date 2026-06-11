@@ -42,7 +42,6 @@ import {
 } from "../../utils/FlyerUtils";
 import { useLikeFlyers } from "../../hooks/useLikeFlyers";
 import { determineIsFullFlyer } from "../../utils/GeneralUtils";
-import { calculateEndDate } from "../../utils/ServiceUtils";
 
 const common = {
   style: css`

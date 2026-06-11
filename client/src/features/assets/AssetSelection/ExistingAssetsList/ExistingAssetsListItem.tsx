@@ -52,7 +52,7 @@ export default function ExistingAssetsListItem({
       setAssetsList((prevList) => [...prevList, asset]);
     } else {
       setAssetsList((prevList) =>
-        prevList.filter((prevAsset) => prevAsset.public_id !== asset.public_id)
+        prevList.filter((prevAsset) => prevAsset.public_id !== asset.public_id),
       );
     }
   }
@@ -75,7 +75,9 @@ export default function ExistingAssetsListItem({
       <StyledExistingAssetsListItem data-testid="existing-asset-list-item">
         <img
           src={
-            asset.resource_type === "video" ? asset.thumbnail_url : asset.url
+            asset.resource_type === "video"
+              ? asset.thumbnail_url
+              : asset.secure_url
           }
           alt={asset.original_filename}
           onClick={() => enablePreview && handlePreview()}
