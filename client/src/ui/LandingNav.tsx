@@ -85,15 +85,15 @@ export default function LandingNav() {
   return (
     <StyledNavSection>
       <StyledTopSection>
-        <StyledLogoContainer>
+        {/* <StyledLogoContainer>
           <StyledLogo
             src="/images\logo\logo_chatgpt_leaf-removebg-preview.png"
             alt="Leaflit Logo"
             onClick={() => navigate("/")}
           />
-        </StyledLogoContainer>
+        </StyledLogoContainer> */}
         <StyledButtonContainer>
-          <Button onClick={getUserGeo}>Boards</Button>
+          <Button onClick={getUserGeo}>Find Boards</Button>
           <StyledAuthButtonsContainer>
             <StyledPricingText
               onClick={() => {
