@@ -33,8 +33,8 @@ const CarouselContainer = styled.div<{ hide?: boolean }>`
 
   & .image-gallery-svg {
     width: 25px;
-    height: 50px;
-    stroke: 2px;
+    height: 35px;
+    background-color: rgba(255, 255, 255, 0.4);
   }
 
   & .image-gallery-left-nav,
@@ -43,6 +43,9 @@ const CarouselContainer = styled.div<{ hide?: boolean }>`
     top: 40%;
   }
 
+  & .image-gallery-fullscreen-button {
+    padding: 0px 6px;
+  }
   & .image-gallery-fullscreen-button.hide {
     visibility: hidden;
   }
