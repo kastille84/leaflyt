@@ -18,11 +18,7 @@ const StyledMainSection = styled.section`
   color: var(--color-blue-200);
   /* height: 100dvh; */
   /* display: flex; */
-  background-image: linear-gradient(
-    to right,
-    var(--color-blue-600) 5%,
-    var(--color-blue-400) 50%
-  );
+  background-color: var(--color-blue-600);
   @media (max-width: 59em) {
     /* flex-direction: column-reverse; */
     height: auto;
@@ -88,33 +84,35 @@ const StyledFigure = styled.figure`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 
   /* @media (max-width: 59em) {
   } */
   @media (max-width: 75em) {
     flex: 1;
   }
+
   & img {
     position: relative;
     display: block;
     z-index: -1;
-    width: 80%;
-    height: 80%;
+    width: auto;
+    height: calc(100dvh - 9.6rem);
     margin: auto;
     margin-top: 0;
 
-    @media (max-width: 44em) {
-      width: 30%;
-      height: 30%;
+    @media (max-width: 75em) {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       margin: auto;
     }
-    @media (max-width: 34em) {
+    /* @media (max-width: 34em) {
       width: 50%;
       height: 50%;
       object-fit: cover;
       margin: auto;
-    }
+    } */
   }
 `;
 
@@ -141,6 +139,15 @@ const StyledHeroH1 = styled.h1`
   }
 `;
 
+const StyledGetGeoButtonSection = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  height: 50%;
+  cursor: pointer;
+  /* background-color: rgba(255, 255, 255, 0.8); */
+`;
 const StyledExplainerSection = styled.section`
   background-color: #fff;
   padding: 4.8rem;
@@ -280,7 +287,18 @@ export default function Landing() {
   return (
     <StyledMain>
       <StyledMainSection>
-        <StyledHeroArticle>
+        <StyledFigure>
+          <img
+            src={"/images/New_Hero_QR.png"}
+            height={"100%"}
+            width={"100%"}
+            alt=""
+          />
+          <StyledGetGeoButtonSection
+            onClick={() => getUserGeo()}
+          ></StyledGetGeoButtonSection>
+        </StyledFigure>
+        {/* <StyledHeroArticle>
           <StyledHeroSection>
             <StyledHeroContent>
               <div>
@@ -306,7 +324,7 @@ export default function Landing() {
               />
             </StyledFigure>
           </StyledHeroSection>
-        </StyledHeroArticle>
+        </StyledHeroArticle> */}
       </StyledMainSection>
       <StyledExplainerSection>
         <StyledExplainerSectionIntro>
@@ -342,22 +360,22 @@ export default function Landing() {
             ></iframe>
           </div>
           <figure
-            // onClick={() => {
-            //   setContextImages([
-            //     {
-            //       secure_url: "/images/Board.png",
-            //       resource_type: "image",
-            //       height: 601
-            //     },
-            //     {
-            //       secure_url: "/images/Map_Virtual.png",
-            //       resource_type: "image",
-            //       height: 601
-            //     }
-            //   ]);
-            //   setBottomSlideInType("carousel");
-            //   setIsOpenBottomSlideIn(true);
-            // }}
+          // onClick={() => {
+          //   setContextImages([
+          //     {
+          //       secure_url: "/images/Board.png",
+          //       resource_type: "image",
+          //       height: 601
+          //     },
+          //     {
+          //       secure_url: "/images/Map_Virtual.png",
+          //       resource_type: "image",
+          //       height: 601
+          //     }
+          //   ]);
+          //   setBottomSlideInType("carousel");
+          //   setIsOpenBottomSlideIn(true);
+          // }}
           >
             <img
               src={"/images/Board.png"}
@@ -375,7 +393,7 @@ export default function Landing() {
             />
           </figure>
         </StyledExplainerSectionIntro>
-        <Heading as="h1">Some (of many) Current Pain Points When: </Heading>
+        <Heading as="h1">Some Challenges When: </Heading>
         <StyledExplainerButtonsContainer>
           <Button
             variation={explainerType === "viewing" ? "primary" : "secondary"}
@@ -434,7 +452,7 @@ export default function Landing() {
             />
           </StyledExplainerLandingItemsContainer>
         )}
-        <Heading as="h1">Leaflit Solves These Problems and more... </Heading>
+        <Heading as="h1">Leaflit Solves Those Problems and more... </Heading>
         <StyledExplainerButtonsContainer>
           <Button
             variation={explainerType === "viewing" ? "primary" : "secondary"}
