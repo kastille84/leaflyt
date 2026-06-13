@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import Heading from "../ui/Heading";
 import FaqItem from "../ui/FaqItem";
 
@@ -15,10 +16,23 @@ const StyledMainSection = styled.section`
   min-height: 500px;
 `;
 
+const BackLink = styled(Link)`
+  align-self: flex-start;
+  color: var(--color-brand-600);
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 export default function Faq() {
   return (
     <StyledMain>
       <StyledMainSection>
+        <BackLink to="/">← Back to Home</BackLink>
         <Heading as={"h1"} style={{ textAlign: "center" }}>
           Frequently Asked Questions
         </Heading>

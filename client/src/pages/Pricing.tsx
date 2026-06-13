@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { sortPlansByLevel } from "../utils/GeneralUtils";
 import useGetPlans from "../hooks/useGetPlans";
 import OverlaySpinner from "../ui/OverlaySpinner";
@@ -31,6 +32,18 @@ const StyledPlansItemsContainer = styled.div`
   margin-top: 1.2rem;
 `;
 
+const BackLink = styled(Link)`
+  align-self: flex-start;
+  color: var(--color-brand-600);
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 export default function Pricing() {
   const { isLoading, plans, error } = useGetPlans();
 
@@ -44,6 +57,7 @@ export default function Pricing() {
   return (
     <StyledMain>
       <StyledMainSection>
+        <BackLink to="/">← Back to Home</BackLink>
         <Heading as={"h1"}>Plans that fits your needs</Heading>
         <Heading as={"h2"}>
           All designed to help you spread your message while saving you time and

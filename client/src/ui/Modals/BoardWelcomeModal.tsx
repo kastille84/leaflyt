@@ -113,27 +113,26 @@ export default function BoardWelcomeModal() {
           <br /> */}
           <p>Welcome, Neighbor!</p>
           <p>
-            This Virtual Community board is your go-to resource to find local
-            services & events, build neighborly connections, and stay up-to-date
-            on everything happening in your area.
+            This community board makes it easy to discover local events, find
+            helpful services, and stay connected with people nearby. Explore
+            what's happening around you and support the neighborhoods you love.
           </p>
           <br />
           <h2>
-            <strong>Hey, you can post here too!</strong>
+            <strong>Post as a guest in seconds!</strong>
           </h2>
           <p style={{ lineHeight: "1.8" }}>
-            Post a basic flyer <strong>instantly as a guest</strong> by clicking
-            on the <StyledSpan>"Create Flyer"</StyledSpan> button, or
-            <br />
+            Post a simple flyer <strong>instantly as a Guest</strong> using the{" "}
+            <StyledSpan>"Create Flyer"</StyledSpan> button. Or{" "}
             <Button size="small" onClick={handleSignUp}>
-              Create an Account
+              Create a Free Account
             </Button>{" "}
-            to unlock rich media and custom layouts to make your flyer stand
-            out, plus advanced tracking for your posts.
+            to add images, polished layouts, and analytics so your message
+            reaches more neighbors.
           </p>
           <br />
           <StyledSpan>
-            Explore, post, and engage with your community!
+            Explore, post, and help your neighborhood thrive.
           </StyledSpan>
         </StyledMain>
       </StyledContentContainer>
