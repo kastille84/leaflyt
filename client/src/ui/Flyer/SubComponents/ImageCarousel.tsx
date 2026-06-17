@@ -15,12 +15,15 @@ const CarouselContainer = styled.div<{ hide?: boolean }>`
   /* Normalize and center the image within the frame */
   & .image-gallery-image {
     width: 100%;
-    height: 100%;
+    height: auto;
     object-fit: contain; /* Crops/scales images to fit the 500px box perfectly */
     object-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+    overflow-y:auto;
+    & img {
+      display: block;
+      margin:auto;
+    }
   }
 
   & .video-wrapper {
@@ -86,9 +89,7 @@ export default function ImageCarousel({
     },
   };
 
-  const {
-    contextImages,
-  } = useGlobalContext();
+  const { contextImages } = useGlobalContext();
 
   // either use provided images (from flyer block) or context images (from bottom slide-in)
   const filesToUse = fromFlyerBlock ? images : contextImages;
@@ -138,6 +139,7 @@ export default function ImageCarousel({
           src={item.original}
           alt={item.originalAlt}
           title={item.originalTitle}
+          // style={{ width: "100%", height: "stretch" }}
         />
         {item.description && (
           <span className="image-gallery-description">{item.description}</span>
@@ -147,14 +149,14 @@ export default function ImageCarousel({
   };
 
   function hideFullScreenButtonOnVideoSlide(nextIndex: number) {
-      const fullScreenIcon = document.querySelector(
-        ".image-gallery-fullscreen-button",
-      );
-      // add visibility hidden to full screen button if it's a video slide, otherwise show it
-      fullScreenIcon?.classList.toggle(
-        "hide",
-        defineGalleryItems[nextIndex].isVideo,
-      );
+    const fullScreenIcon = document.querySelector(
+      ".image-gallery-fullscreen-button",
+    );
+    // add visibility hidden to full screen button if it's a video slide, otherwise show it
+    fullScreenIcon?.classList.toggle(
+      "hide",
+      defineGalleryItems[nextIndex].isVideo,
+    );
   }
 
   useEffect(() => {
@@ -170,7 +172,7 @@ export default function ImageCarousel({
         showPlayButton={false}
         showThumbnails={false}
         renderItem={renderGalleryItem}
-        useBrowserFullscreen={true}
+        // useBrowserFullscreen={true}
         onBeforeSlide={(nextIndex) => {
           hideFullScreenButtonOnVideoSlide(nextIndex);
         }}
