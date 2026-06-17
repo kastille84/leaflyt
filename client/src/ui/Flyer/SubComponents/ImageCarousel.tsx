@@ -10,6 +10,7 @@ const CarouselContainer = styled.div<{ hide?: boolean }>`
   /* Force uniform container dimensions */
   & .image-gallery-slide {
     /* height: 250px; Set your desired frame height */
+    z-index: 3;
   }
 
   /* Normalize and center the image within the frame */
@@ -19,10 +20,10 @@ const CarouselContainer = styled.div<{ hide?: boolean }>`
     object-fit: contain; /* Crops/scales images to fit the 500px box perfectly */
     object-position: center;
 
-    overflow-y:auto;
+    overflow-y: auto;
     & img {
       display: block;
-      margin:auto;
+      margin: auto;
     }
   }
 
@@ -53,9 +54,34 @@ const CarouselContainer = styled.div<{ hide?: boolean }>`
     visibility: hidden;
   }
 
-  & .image-gallery-icon:hover {
+  & .image-gallery-icon {
     color: var(--color-brand-600);
-    // slight grey background for better visibility of icons and slight transparency to not be too harsh on flyers with dark backgrounds
+    transition:
+      color 200ms ease,
+      background-color 200ms ease;
+    -webkit-transition:
+      color 200ms ease,
+      background-color 200ms ease;
+  }
+
+  /* Ensure SVG icons use the current color and animate their fill/stroke */
+  & .image-gallery-icon svg,
+  & .image-gallery-icon svg * {
+    fill: currentColor;
+    stroke: currentColor;
+    transition:
+      fill 200ms ease,
+      stroke 200ms ease,
+      color 200ms ease;
+    -webkit-transition:
+      fill 200ms ease,
+      stroke 200ms ease,
+      color 200ms ease;
+  }
+
+  & .image-gallery-icon:hover {
+    color: #fff;
+    /* slight grey background for better visibility of icons and slight transparency to not be too harsh on flyers with dark backgrounds */
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: var(--border-radius-md);
   }
