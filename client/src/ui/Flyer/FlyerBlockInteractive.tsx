@@ -2,6 +2,8 @@ import styled, { css } from "styled-components";
 import { Tooltip } from "react-tooltip";
 
 import {
+  HiOutlineArrowsPointingIn,
+  HiOutlineArrowsPointingOut,
   HiOutlineArrowTopRightOnSquare,
   HiOutlineBolt,
   HiOutlineBookmark,
@@ -80,6 +82,10 @@ const StyledFlyerBlock = styled.div<{
     flyerDesign.borderBottomLeftRadius}px;
   border-bottom-right-radius: ${({ flyerDesign }) =>
     flyerDesign.borderBottomRightRadius}px;
+
+  @media (max-width: 44em) {
+    ${({ isFullFlyer }) => isFullFlyer && "width: 100%;"}
+  }
 `;
 
 const StyledTopTextContainer = styled.div<{ flyerDesign: FlyerDesign }>`
@@ -591,7 +597,7 @@ export default function FlyerBlockInteractive({
         </StyledAvatarContainer>
         <DropdownMenu>
           <li onClick={handleViewFullFlyer}>
-            <HiOutlineArrowTopRightOnSquare /> View Flyer
+            <HiOutlineArrowTopRightOnSquare /> View Full Flyer
           </li>
           {doesFlyerBelongToUser() && (
             <li onClick={handleEditClick}>
@@ -668,6 +674,23 @@ export default function FlyerBlockInteractive({
               >
                 {flyer.callToAction?.ctaType === "offer" ? "deals" : "request"}
               </Pill>
+            )}
+            {determineIsFullFlyer() ? (
+              <HiOutlineArrowsPointingIn
+                style={{
+                  cursor: "pointer",
+                  color: flyerStyles.top.backgroundColor,
+                }}
+                onClick={() => navigate(-1)}
+              />
+            ) : (
+              <HiOutlineArrowsPointingOut
+                style={{
+                  cursor: "pointer",
+                  color: flyerStyles.top.backgroundColor,
+                }}
+                onClick={handleViewFullFlyer}
+              />
             )}
           </PillsContainer>
         </StyledActionSection>
