@@ -65,6 +65,33 @@ const StyledLearnMore = styled.small`
   text-decoration: underline;
 `;
 
+const StyledGuidedActionsContainer = styled.div`
+  padding-bottom: 2.4rem;
+  display: flex;
+  @media (max-width: 44em) {
+    justify-content: center;
+  }
+`;
+
+const StyledGuidedActionsSection = styled.section`
+  display: flex;
+  gap: 1.4rem;
+
+  @media (max-width: 34em) {
+    flex-direction: column;
+  }
+`;
+
+const StyledGuidedActionsArticle = styled.article`
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  border: 1px solid var(--color-brand-600);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 1.4rem;
+`;
+
 export default function SingleFlyer() {
   const { id } = useParams();
   const {
@@ -89,36 +116,38 @@ export default function SingleFlyer() {
 
   function showGuidedActions() {
     return (
-      <small>
-        <section className="point">
-          <article>
+      <StyledGuidedActionsContainer>
+        <StyledGuidedActionsSection>
+          <StyledGuidedActionsArticle>
             <p className="sub-point">Have something to say?</p>
             <p>Post it on Leaflit for Free.</p>
-            <StyledLearnMore
+            <Button
+              variation="primary"
               onClick={() => {
                 setBottomSlideInType("signup");
                 setIsOpenBottomSlideIn(true);
               }}
             >
               Sign up for Free&nbsp; &gt;
-            </StyledLearnMore>
-          </article>
-          <article>
+            </Button>
+          </StyledGuidedActionsArticle>
+          <StyledGuidedActionsArticle>
             <p className="sub-point">See what others are saying.</p>
             <p>Be in the Loop</p>
             <p>
-              <StyledLearnMore
+              <Button
+                variation="primary"
                 onClick={() => {
                   setIsSelectingNewPlace(true);
                   getUserGeo();
                 }}
               >
                 Find a Board Near you&nbsp; &gt;
-              </StyledLearnMore>
+              </Button>
             </p>
-          </article>
-        </section>
-      </small>
+          </StyledGuidedActionsArticle>
+        </StyledGuidedActionsSection>
+      </StyledGuidedActionsContainer>
     );
   }
   if (isLoadingBoard) return <OverlaySpinner message="Getting the flyer" />;
@@ -148,10 +177,12 @@ export default function SingleFlyer() {
           Leaflit is a Digital Community Board where Locals Spread their
           Messages.
         </Heading>
-        {!user && showGuidedActions()}
       </div>
       {/* <StyledFlyerContainer> */}
+
       <FlyerBlockInteractive flyer={flyer!} />
+
+      {!user && showGuidedActions()}
       {/* </StyledFlyerContainer> */}
     </StyledSingleFlyerContainer>
   );
