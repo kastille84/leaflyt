@@ -52,7 +52,6 @@ const common = {
       box-shadow: var(--shadow-lg);
     }
 
-    width: 40rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -68,9 +67,11 @@ const common = {
 const StyledFlyerBlock = styled.div<{
   flyerDesign: FlyerDesign;
   isFullFlyer: boolean;
+  isListView?: boolean;
 }>`
   ${common.style}
-  ${({ isFullFlyer }) => isFullFlyer && "width: 50rem;"}
+  width: ${({ isListView, isFullFlyer }) =>
+    isListView ? "100%" : isFullFlyer ? "50rem" : "40rem"};
   font-family: ${({ flyerDesign }) => flyerDesign.font};
   border: 1px solid var(--color-grey-200);
   /* border: 1px solid ${(props) => props.flyerDesign.outlines.color}; */
@@ -84,7 +85,8 @@ const StyledFlyerBlock = styled.div<{
     flyerDesign.borderBottomRightRadius}px;
 
   @media (max-width: 44em) {
-    ${({ isFullFlyer }) => isFullFlyer && "width: 100%;"}
+    ${({ isFullFlyer, isListView }) =>
+      (isFullFlyer || isListView) && "width: 100%;"}
   }
 `;
 
@@ -267,8 +269,10 @@ const Pill = styled.div<{
 
 export default function FlyerBlockInteractive({
   flyer,
+  listView = false,
 }: {
   flyer: DB_Flyers_Response;
+  listView?: boolean;
 }) {
   const [flyerStyles, setFlyerStyles] = useState(() => {
     if (!flyer.flyerDesign) {
@@ -492,7 +496,7 @@ export default function FlyerBlockInteractive({
           setUser(user);
           toast.success("Flyer saved!");
         },
-        onError: (err) => {
+        onError: () => {
           setIsSaved(false);
           toast.error("Flyer save failed! Try again.");
         },
@@ -632,6 +636,7 @@ export default function FlyerBlockInteractive({
     <StyledFlyerBlock
       flyerDesign={flyerStyles}
       isFullFlyer={determineIsFullFlyer()}
+      isListView={listView}
     >
       <StyledTopTextContainer flyerDesign={flyerStyles}>
         {renderTopContent()}

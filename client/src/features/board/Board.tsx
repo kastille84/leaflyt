@@ -6,6 +6,7 @@ import OverlaySpinner from "../../ui/OverlaySpinner";
 import useGetBoard from "./useGetBoard";
 import NoFlyers from "./NoFlyers";
 import FlyerBlockInteractive from "../../ui/Flyer/FlyerBlockInteractive";
+import FlyerBlockInteractiveList from "../../ui/Flyer/FlyerBlockInteractiveList";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/GlobalContext";
@@ -23,7 +24,12 @@ import Input from "../../ui/Input";
 import useGetUserLimits from "../../hooks/useGetUserLimits";
 import LimitExceededWarning from "../../ui/LimitExceededWarning";
 import UpgradeText from "../../ui/UpgradeText";
-import { HiOutlineFunnel, HiOutlineInformationCircle } from "react-icons/hi2";
+import {
+  HiOutlineFunnel,
+  HiOutlineInformationCircle,
+  HiOutlineListBullet,
+  HiOutlineSquares2X2,
+} from "react-icons/hi2";
 import BoardWelcomeModal from "../../ui/Modals/BoardWelcomeModal";
 import { makeTopFlyer } from "../../utils/FlyerUtils";
 import { logQrScan } from "../../services/apiQrAnalytics";
@@ -33,7 +39,7 @@ const StyledBoardContainer = styled.div`
   & .info-icon {
     position: absolute;
     top: 0;
-    right: 1rem;
+    right: -1rem;
     font-size: 2.4rem;
     cursor: pointer;
     color: var(--color-brand-600);
@@ -52,11 +58,8 @@ const StyledBoardContainer = styled.div`
 
 const StyledForm = styled.form`
   display: flex;
+  flex-wrap: wrap;
   gap: 0.8rem;
-
-  @media (max-width: 59em) {
-    justify-content: center;
-  }
 `;
 
 const StyledFilterContainer = styled.div`
@@ -113,6 +116,22 @@ const StyledSmall = styled.small`
   }
 `;
 
+const StyledViewContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.6rem;
+
+  & label[for="view"] {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-brand-700);
+    cursor: pointer;
+    font-size: 1.6rem;
+  }
+`;
+
 export default function Board() {
   const responsiveVal = useResponsiveWidth();
   const { id } = useParams();
@@ -138,6 +157,7 @@ export default function Board() {
   } = useGlobalContext();
   const [shouldGetPlace, setShouldGetPlace] = useState(false);
   const [loggedEA, setLoggedEA] = useState(false);
+  const [view, setView] = useState<"card" | "list">("card");
 
   // const filterOptions = {
   //   category: categoryWatch,
@@ -303,22 +323,54 @@ export default function Board() {
                     )}
                   </StyledFilterSelectContainer>
                 </StyledFilterContainer>
+                <StyledViewContainer>
+                  {view === "card" ? (
+                    <label htmlFor="view" onClick={() => setView("list")}>
+                      <HiOutlineListBullet />
+                      View
+                    </label>
+                  ) : (
+                    <label htmlFor="view" onClick={() => setView("card")}>
+                      <HiOutlineSquares2X2 />
+                      View
+                    </label>
+                  )}
+                </StyledViewContainer>
               </StyledForm>
-              <ResponsiveMasonry
-                columnsCountBreakPoints={{ 350: 1, 940: 2, 1600: 3 }}
-                // gutterBreakpoints={{ 350: "12px", 750: "16px", 900: "24px" }}
-              >
-                <Masonry columnsCount={3} gutter="1.6rem">
+              {view === "card" && (
+                <ResponsiveMasonry
+                  columnsCountBreakPoints={{ 350: 1, 940: 2, 1600: 3 }}
+                  // gutterBreakpoints={{ 350: "12px", 750: "16px", 900: "24px" }}
+                >
+                  <Masonry columnsCount={3} gutter="1.6rem">
+                    {determineWhichFlyersToUse().length &&
+                      determineWhichFlyersToUse().map((flyer) => (
+                        <FlyerBlockInteractive key={flyer!.id} flyer={flyer} />
+                      ))}
+
+                    {determineWhichFlyersToUse().length === 0 && (
+                      <StyledSmall as="h2">No flyers found</StyledSmall>
+                    )}
+                  </Masonry>
+                </ResponsiveMasonry>
+              )}
+              {view === "list" && (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1.6rem",
+                  }}
+                >
                   {determineWhichFlyersToUse().length &&
                     determineWhichFlyersToUse().map((flyer) => (
-                      <FlyerBlockInteractive key={flyer!.id} flyer={flyer} />
+                      <FlyerBlockInteractiveList
+                        key={flyer!.id}
+                        flyer={flyer}
+                      />
                     ))}
-
-                  {determineWhichFlyersToUse().length === 0 && (
-                    <StyledSmall as="h2">No flyers found</StyledSmall>
-                  )}
-                </Masonry>
-              </ResponsiveMasonry>
+                </div>
+              )}
             </>
           )}
         </div>
