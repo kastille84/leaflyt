@@ -64,30 +64,66 @@ const Sub = styled.div`
   color: var(--color-grey-500);
 `;
 
-const CTABadge = styled.div`
-  padding: 0.2rem 0.6rem;
-  border-radius: var(--border-radius-sm);
-  background-color: var(--color-orange-600);
-  color: var(--color-grey-50);
-  font-size: 1rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 0.6rem;
-
-  @media (max-width: 59em) {
-    padding: 0.15rem 0.4rem;
-    font-size: 0.9rem;
-  }
-`;
-
 const IconWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   padding-left: 0.6rem;
   color: var(--color-brand-600);
+`;
+
+const CTABadge = styled.div`
+  /* text-transform: uppercase; */
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid currentColor;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--cta-bg, var(--color-orange-600));
+  color: var(--cta-fg, var(--color-grey-50));
+  font-size: 1rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.6rem;
+  transform-origin: center;
+  will-change: transform, box-shadow, filter;
+  animation: pulse-cta 2200ms cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+
+  @keyframes pulse-cta {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+      filter: none;
+    }
+    30% {
+      transform: scale(1.06);
+      box-shadow: 0 10px 30px var(--cta-glow, rgba(255, 165, 0, 0.22));
+      filter: brightness(1.06);
+    }
+    60% {
+      transform: scale(1.12);
+      box-shadow: 0 22px 44px var(--cta-glow, rgba(255, 165, 0, 0.28));
+      filter: brightness(1.1)
+        drop-shadow(0 6px 12px var(--cta-glow, rgba(255, 165, 0, 0.18)));
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+      filter: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+
+  @media (max-width: 59em) {
+    padding: 0.15rem 0.4rem;
+    font-size: 0.9rem;
+  }
 `;
 
 const Collapsible = styled.div`
@@ -150,7 +186,35 @@ export default function FlyerBlockInteractiveList({
     flyer.callToAction.ctaType !== "none",
   );
   const ctaLabel =
-    flyer.callToAction?.ctaType === "offer" ? "deals" : "request";
+    flyer.callToAction?.ctaType === "offer" ? "Deals" : "Request";
+
+  function parseColorToRgba(color: string | undefined, alpha = 0.28) {
+    if (!color) return `rgba(255,165,0,${alpha})`;
+    const c = color.trim();
+    if (c.startsWith("#")) {
+      let hex = c.slice(1);
+      if (hex.length === 3)
+        hex = hex
+          .split("")
+          .map((h) => h + h)
+          .join("");
+      const r = parseInt(hex.slice(0, 2), 16);
+      const g = parseInt(hex.slice(2, 4), 16);
+      const b = parseInt(hex.slice(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+    if (c.startsWith("rgb(")) {
+      const inside = c.slice(4, -1);
+      return `rgba(${inside}, ${alpha})`;
+    }
+    // fallback for css vars or unknown formats
+    return `rgba(255,165,0,${alpha})`;
+  }
+
+  const ctaGlow = parseColorToRgba(
+    flyerStyles?.top?.backgroundColor as string,
+    0.28,
+  );
 
   return (
     <StyledListWrapper>
@@ -187,7 +251,14 @@ export default function FlyerBlockInteractiveList({
         </Meta>
 
         {hasCTA && (
-          <CTABadge title={flyer.callToAction?.headline || "Call to action"}>
+          <CTABadge
+            title={flyer.callToAction?.headline || "Call to action"}
+            style={{
+              backgroundColor: flyerStyles?.top?.color,
+              color: flyerStyles?.top?.backgroundColor,
+              ["--cta-glow" as any]: ctaGlow,
+            }}
+          >
             {ctaLabel}
           </CTABadge>
         )}
