@@ -5,11 +5,24 @@ import basicSsl from "@vitejs/plugin-basic-ssl";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), "");
+  // const env = loadEnv(mode, process.cwd(), "");
+  // return {
+  //   define: {
+  //     "process.env": env,
+  //   },
+  const rawEnv = loadEnv(mode, process.cwd(), "VITE_");
+
+  const defineEnv: Record<string, string> = {
+    "process.env.NODE_ENV": JSON.stringify(mode),
+  };
+
+  // If you still use `process.env.VITE_*` in code, map only those VITE_ keys:
+  Object.entries(rawEnv).forEach(([k, v]) => {
+    defineEnv[`process.env.${k}`] = JSON.stringify(v);
+  });
+
   return {
-    define: {
-      "process.env": env,
-    },
+    define: defineEnv,
     plugins: [
       react(),
       basicSsl(),
