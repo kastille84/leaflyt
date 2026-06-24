@@ -11,6 +11,7 @@ import CreateFlyerButton from "./Flyer/CreateFlyerButton";
 import { useSessionStorageState } from "../hooks/useSessionStorageState";
 import { HiOutlineInformationCircle } from "react-icons/hi2";
 import useGetUserLimits from "../hooks/useGetUserLimits";
+import { isBoardOwner } from "../utils/FlyerUtils";
 
 const StyledActionMenu = styled.div`
   grid-column: 1 / -1;
@@ -165,10 +166,15 @@ export default function ActionMenuMobile() {
   }
 
   function determineSelectedPlaceActions() {
-    if (selectedPlace?.id && !hasFlyerAtLocation) {
+    if (
+      isBoardOwner(user, selectedPlace) ||
+      (selectedPlace?.id &&
+        !hasFlyerAtLocation &&
+        !isBoardOwner(user, selectedPlace))
+    ) {
       return (
         <div>
-          <CreateFlyerButton size="small" />
+          <CreateFlyerButton size="small" disabled={!determineIfCanPost()} />
         </div>
       );
     }
