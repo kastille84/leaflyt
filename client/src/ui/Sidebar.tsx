@@ -101,7 +101,7 @@ const StyledMenuOpenButton = styled.div`
     position: absolute;
     top: 5px;
     right: -3.5rem;
-    z-index: 2;
+    /* z-index: 2; */
     padding-bottom: 0;
   }
 `;
