@@ -143,11 +143,16 @@ export default function FlyerBlockInteractiveList({
 
   const flyerStyles = flyer.flyerDesign || UNREGISTERED_FLYER_DESIGN_DEFAULT;
 
-  const thumbnail =
+  const firstFile =
     flyer.fileUrlArr && flyer.fileUrlArr.length > 0
-      ? (flyer.fileUrlArr[0] as any).secure_url ||
-        (flyer.fileUrlArr[0] as any).url
+      ? (flyer.fileUrlArr[0] as any)
       : null;
+
+  const thumbnail = firstFile
+    ? firstFile.resource_type === "video"
+      ? "/images/has_video.png"
+      : firstFile.secure_url || firstFile.url
+    : null;
 
   useEffect(() => {
     const el = contentRef.current;
