@@ -198,7 +198,7 @@ export default function ImageCarousel({
         showPlayButton={false}
         showThumbnails={false}
         renderItem={renderGalleryItem}
-        showBullets
+        showBullets={defineGalleryItems && defineGalleryItems.length > 1}
         maxBullets={3}
         // useBrowserFullscreen={true}
         onBeforeSlide={(nextIndex) => {
