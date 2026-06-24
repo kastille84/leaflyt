@@ -31,7 +31,7 @@ import {
   HiOutlineSquares2X2,
 } from "react-icons/hi2";
 import BoardWelcomeModal from "../../ui/Modals/BoardWelcomeModal";
-import { makeTopFlyer } from "../../utils/FlyerUtils";
+import { isBoardOwner, makeTopFlyer } from "../../utils/FlyerUtils";
 import { logQrScan } from "../../services/apiQrAnalytics";
 
 const StyledBoardContainer = styled.div`
@@ -158,6 +158,7 @@ export default function Board() {
   const [shouldGetPlace, setShouldGetPlace] = useState(false);
   const [loggedEA, setLoggedEA] = useState(false);
   const [view, setView] = useState<"card" | "list">("card");
+  // const [originalFlyers, setOriginalFlyers] = useState<any[]>([]);
 
   // const filterOptions = {
   //   category: categoryWatch,
@@ -165,11 +166,13 @@ export default function Board() {
   // };
   const { isLoadingBoard, board } = useGetBoard(user?.id!);
 
-  const originalFlyers = board?.data?.flyers || [];
-
-  // make top flyer for leaflit and for establishment (if there is a flyer from the establishment, then make that the top flyer instead of the leaflit flyer)
-  makeTopFlyer(originalFlyers, "leaflit");
-  makeTopFlyer(originalFlyers, "establishment", board?.data?.formattedAddress);
+  let originalFlyers = board?.data?.flyers || [];
+  originalFlyers = makeTopFlyer(originalFlyers, "leaflit");
+  originalFlyers = makeTopFlyer(
+    originalFlyers,
+    "establishment",
+    board?.data?.formattedAddress,
+  );
 
   // filter flyers based on categoryWatch and subcategoryWatch
   let filteredFlyers = originalFlyers.filter((flyer) => {
@@ -194,8 +197,21 @@ export default function Board() {
       setShowBoardWelcomeModal(true);
     } else {
       setShowBoardWelcomeModal(false);
+      // setOriginalFlyers(board?.data?.flyers || []);
     }
   }, [user]);
+
+  useEffect(() => {
+    // if (originalFlyers.length > 0) {
+    //   let tempOriginalFlyers = makeTopFlyer(originalFlyers, "leaflit");
+    //   tempOriginalFlyers = makeTopFlyer(
+    //     originalFlyers,
+    //     "establishment",
+    //     board?.data?.formattedAddress,
+    //   );
+    //   setOriginalFlyers(tempOriginalFlyers);
+    // }
+  }, [originalFlyers]);
 
   useEffect(() => {
     setShouldGetPlace(true);
@@ -229,6 +245,17 @@ export default function Board() {
     if (user || anonUserPostings.length > 0) {
       checkIfUserHasFlyerHere();
     }
+    // if (board?.data?.flyers) {
+    //   setOriginalFlyers(board.data.flyers);
+    // }
+    // make top flyer for leaflit and for establishment (if there is a flyer from the establishment, then make that the top flyer instead of the leaflit flyer)
+    // let loriginalFlyers = makeTopFlyer(originalFlyers, "leaflit");
+    // loriginalFlyers = makeTopFlyer(
+    //   originalFlyers,
+    //   "establishment",
+    //   board?.data?.formattedAddress,
+    // );
+    // setOriginalFlyers(loriginalFlyers);
   }, [user, selectedPlace, board, id, anonUserPostings]);
 
   async function checkIfUserHasFlyerHere() {
@@ -276,7 +303,7 @@ export default function Board() {
               />
             </>
           )}
-          {hasFlyerAtLocation && (
+          {hasFlyerAtLocation && !isBoardOwner(user, board!.data) && (
             <InfoAlert text="You already have a flyer posted here" />
           )}
 
