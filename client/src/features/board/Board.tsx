@@ -202,18 +202,6 @@ export default function Board() {
   }, [user]);
 
   useEffect(() => {
-    // if (originalFlyers.length > 0) {
-    //   let tempOriginalFlyers = makeTopFlyer(originalFlyers, "leaflit");
-    //   tempOriginalFlyers = makeTopFlyer(
-    //     originalFlyers,
-    //     "establishment",
-    //     board?.data?.formattedAddress,
-    //   );
-    //   setOriginalFlyers(tempOriginalFlyers);
-    // }
-  }, [originalFlyers]);
-
-  useEffect(() => {
     setShouldGetPlace(true);
     // log qr scan if ea param is present and we haven't already logged an ea scan for this session
     if (selectedPlace && !loggedEA) {
@@ -245,17 +233,6 @@ export default function Board() {
     if (user || anonUserPostings.length > 0) {
       checkIfUserHasFlyerHere();
     }
-    // if (board?.data?.flyers) {
-    //   setOriginalFlyers(board.data.flyers);
-    // }
-    // make top flyer for leaflit and for establishment (if there is a flyer from the establishment, then make that the top flyer instead of the leaflit flyer)
-    // let loriginalFlyers = makeTopFlyer(originalFlyers, "leaflit");
-    // loriginalFlyers = makeTopFlyer(
-    //   originalFlyers,
-    //   "establishment",
-    //   board?.data?.formattedAddress,
-    // );
-    // setOriginalFlyers(loriginalFlyers);
   }, [user, selectedPlace, board, id, anonUserPostings]);
 
   async function checkIfUserHasFlyerHere() {
