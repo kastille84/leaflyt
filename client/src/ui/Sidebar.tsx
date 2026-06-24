@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import Heading from "./Heading";
 import MainNav from "./MainNav";
 import { useState } from "react";
 import {
   HiOutlineChevronDoubleLeft,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
+import { useGlobalContext } from "../context/GlobalContext";
+import { useNavigate } from "react-router-dom";
 
 const StyledSidebar = styled.aside`
   height: 100%;
@@ -113,6 +114,18 @@ export default function Sidebar() {
     return true;
   });
 
+  const { user } = useGlobalContext();
+  const navigate = useNavigate();
+
+  const determineHomeLink = () => {
+    if (user) {
+      setIsOpen(false);
+      navigate("/dashboard/home");
+    } else {
+      navigate("/");
+    }
+  };
+
   return (
     <StyledSidebar
       className={isOpen ? "open" : ""}
@@ -125,7 +138,7 @@ export default function Sidebar() {
           <HiOutlineChevronDoubleRight />
         )}
       </StyledMenuOpenButton>
-      <StyledFigure>
+      <StyledFigure onClick={determineHomeLink}>
         <img
           // src={"/images/logo/logo_removebg-preview.png"}
           // src={"/images/logo/logo_chatgpt.png"}
