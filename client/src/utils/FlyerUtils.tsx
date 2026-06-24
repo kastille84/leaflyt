@@ -6,6 +6,7 @@ import {
   DB_Saved_Flyer,
   DB_Template,
 } from "../interfaces/DB_Flyers";
+import { NearbySearchPlaceResult } from "../interfaces/Geo";
 
 export const groupFlyersToTemplates = (
   user: Auth_User_Profile_Response | null,
@@ -89,26 +90,52 @@ export const makeTopFlyer = (
   type: "leaflit" | "establishment",
   boardFormattedAddress?: string,
 ) => {
-  const flyerIdx = flyers.findIndex((flyer) => {
-    if (
-      type === "leaflit" &&
-      ["support@leaflit.us", "leaflit.flyers@gmail.com"].includes(
-        (flyer?.user as Auth_User_Profile_Response)?.email,
-      )
-    ) {
-      return true;
+  if (!Array.isArray(flyers) || flyers.length === 0) return flyers;
+
+  const matches: typeof flyers = [];
+  const others: typeof flyers = [];
+
+  flyers.forEach((flyer) => {
+    let isMatch = false;
+    const user = flyer?.user as Auth_User_Profile_Response | undefined;
+
+    if (type === "leaflit") {
+      const email = user?.email;
+      if (
+        email &&
+        ["support@leaflit.us", "leaflit.flyers@gmail.com"].includes(email)
+      ) {
+        isMatch = true;
+      }
+    } else if (type === "establishment") {
+      const formatted = user?.address?.formatted_address;
+      if (
+        formatted &&
+        boardFormattedAddress &&
+        formatted === boardFormattedAddress
+      ) {
+        isMatch = true;
+      }
     }
-    if (
-      type === "establishment" &&
-      (flyer?.user as Auth_User_Profile_Response)?.address.formatted_address ===
-        boardFormattedAddress
-    ) {
-      return true;
-    }
-    return false;
+
+    if (isMatch) matches.push(flyer);
+    else others.push(flyer);
   });
-  if (flyerIdx !== -1) {
-    const [leafletFlyer] = flyers.splice(flyerIdx, 1);
-    flyers.unshift(leafletFlyer);
-  }
+
+  if (matches.length === 0) return flyers;
+
+  const reordered = [...matches, ...others];
+  // mutate original array in-place to preserve references
+  flyers.length = 0;
+  reordered.forEach((f) => flyers.push(f));
+  return flyers;
+};
+
+export const isBoardOwner = (
+  user: Auth_User_Profile_Response | null,
+  board: DB_Board_Response | NearbySearchPlaceResult | null,
+) => {
+  if (!user || !board) return false;
+
+  return user.address.formatted_address === board.formattedAddress;
 };
