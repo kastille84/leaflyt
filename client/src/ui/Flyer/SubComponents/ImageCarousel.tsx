@@ -8,7 +8,7 @@ import { useEffect, useRef } from "react";
 
 const CarouselContainer = styled.div<{ hide?: boolean }>`
   /* Force uniform container dimensions */
-  & .image-gallery-slide {
+  & .image-gallery-container {
     /* height: 250px; Set your desired frame height */
     z-index: 3;
   }
@@ -194,10 +194,13 @@ export default function ImageCarousel({
     <CarouselContainer>
       <ImageGallery
         ref={galleryRef}
+        additionalClass="image-gallery-container"
         items={defineGalleryItems ? defineGalleryItems : ([] as GalleryItem[])}
         showPlayButton={false}
         showThumbnails={false}
         renderItem={renderGalleryItem}
+        showBullets
+        maxBullets={3}
         // useBrowserFullscreen={true}
         onBeforeSlide={(nextIndex) => {
           hideFullScreenButtonOnVideoSlide(nextIndex);
