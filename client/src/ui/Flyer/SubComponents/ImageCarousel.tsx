@@ -10,7 +10,7 @@ const CarouselContainer = styled.div<{ hide?: boolean }>`
   /* Force uniform container dimensions */
   & .image-gallery-container {
     /* height: 250px; Set your desired frame height */
-    z-index: 3;
+    z-index: 1000;
   }
 
   /* Normalize and center the image within the frame */
@@ -195,6 +195,7 @@ export default function ImageCarousel({
       <ImageGallery
         ref={galleryRef}
         items={defineGalleryItems ? defineGalleryItems : ([] as GalleryItem[])}
+        additionalClass="image-gallery-container"
         showPlayButton={false}
         showThumbnails={false}
         renderItem={renderGalleryItem}
