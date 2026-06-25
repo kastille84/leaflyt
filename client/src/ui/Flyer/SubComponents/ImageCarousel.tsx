@@ -195,7 +195,7 @@ export default function ImageCarousel({
       <ImageGallery
         ref={galleryRef}
         items={defineGalleryItems ? defineGalleryItems : ([] as GalleryItem[])}
-        additionalClass=""
+        additionalClass="image-gallery-container"
         showPlayButton={false}
         showThumbnails={false}
         renderItem={renderGalleryItem}
