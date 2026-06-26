@@ -460,9 +460,12 @@ export default function FlyerBlockStatic({
         {/* <StyledActionIconContainer flyerDesign={flyerStyles}>
           <HiOutlineHandThumbUp /> <small>Likes</small>
         </StyledActionIconContainer> */}
-        {/* <StyledActionIconContainer flyerDesign={flyerStyles}>
-          <HiOutlineChatBubbleLeftEllipsis />
-        </StyledActionIconContainer> */}
+        {flyer.hasComments && (
+          <StyledActionIconContainer flyerDesign={flyerStyles}>
+            <HiOutlineChatBubbleLeftEllipsis />
+            <small>Comments</small>
+          </StyledActionIconContainer>
+        )}
         <StyledActionIconContainer
           flyerDesign={flyerStyles}
           onClick={handleLinkClick}
