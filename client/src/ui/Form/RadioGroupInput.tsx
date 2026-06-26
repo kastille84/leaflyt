@@ -21,9 +21,26 @@ type option = {
 const StyledRadioGroupContainer = styled.div`
   margin-bottom: 2.4rem;
 `;
+
 const StyledRadioContainer = styled.div`
   display: flex;
   gap: 1.6rem;
+  align-items: center;
+`;
+
+const StyledRadioInput = styled.input`
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--color-brand-600);
+
+  &:checked {
+    accent-color: var(--color-brand-700);
+  }
+
+  &:hover {
+    accent-color: var(--color-brand-700);
+  }
 `;
 
 export default function RadioGroupInput({
@@ -46,7 +63,7 @@ export default function RadioGroupInput({
       <StyledLabel htmlFor={registerName}>{groupLabel}</StyledLabel>
       {options.map((option: option, key: number) => (
         <StyledRadioContainer key={key}>
-          <input
+          <StyledRadioInput
             type="radio"
             id={registerName + key}
             value={option.value}
