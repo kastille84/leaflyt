@@ -183,6 +183,7 @@ export const createRegisteredFlyer = async (
           flyerDesign: flyerData.flyerDesign,
           callToAction: flyerData.callToAction,
           fileUrlArr: flyerData.fileUrlArr || [],
+          hasComments: flyerData.hasComments,
           postingMethod: flyerData.postingMethod || "onLocation",
           lifespan: flyerData.lifespan,
           likes: 0,
@@ -300,9 +301,12 @@ export const createFlyerFromTemplate = async (
   };
 
   delete flyerData.id;
-  delete flyerData.hasComments;
   delete flyerData.templateName;
   delete flyerData.created_at;
+  // Inherit hasComments from template if not explicitly set
+  if (templateData.hasComments && !flyerData.hasComments) {
+    flyerData.hasComments = templateData.hasComments;
+  }
   // posting type
   if (pt) {
     switch (pt) {
@@ -389,6 +393,7 @@ export const updateTemplate = async (
         flyerDesign: templateData.flyerDesign,
         callToAction: templateData.callToAction,
         fileUrlArr: templateData.fileUrlArr || [],
+        hasComments: templateData.hasComments,
         lifespan: templateData.lifespan,
       })
       .eq("template", templateData.id);

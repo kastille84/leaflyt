@@ -16,6 +16,7 @@ import { AssetSelectionContextProvider } from "../../context/AssetSelectionConte
 import EditAccountInfo from "../../features/account/EditAccountInfo";
 import ChangePlanContainer from "../../features/authentication/ChangePlanContainer";
 import UnpaidPlanContainer from "../../features/authentication/UnpaidPlanContainer";
+import CommentsSection from "../Flyer/SubComponents/CommentsSection.tsx";
 
 const StyledCloseContainer = styled.div`
   display: flex;
@@ -72,6 +73,8 @@ export default function SlideInBottom() {
         );
       case "editAccountInfo":
         return <EditAccountInfo />;
+      case "comments":
+        return <CommentsSection />;
       default:
         return null;
     }

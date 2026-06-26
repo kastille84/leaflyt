@@ -47,6 +47,7 @@ export type ContextType = {
     | "chooseAssets"
     | "editAccountInfo"
     | "unpaid"
+    | "comments"
     | null;
   setBottomSlideInType: React.Dispatch<
     React.SetStateAction<
@@ -59,6 +60,7 @@ export type ContextType = {
       | "chooseAssets"
       | "editAccountInfo"
       | "unpaid"
+      | "comments"
       | null
     >
   >;
@@ -218,6 +220,7 @@ function GlobalContextProvider({ children }: PropsWithChildren) {
     | "chooseAssets"
     | "editAccountInfo"
     | "unpaid"
+    | "comments"
     | null
   >(null);
   const [user, setUser] = useState<Auth_User_Profile_Response | null>(null);

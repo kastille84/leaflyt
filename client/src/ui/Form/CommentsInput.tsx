@@ -29,9 +29,8 @@ export default function CommentsInput({
         Add Comments Section (optional)
       </StyledLabel>
       <p>
-        Adding a commennts section increases engagement on your flyer. Users can
-        ask questions, leave comments, and request more information. The
-        comments are all saved to and centralized to the template.
+        Adding a comments section increases engagement on your flyer. Users can
+        ask questions, leave comments, and request more information.
       </p>
       <StyledCheckboxContainer>
         <Input type="checkbox" {...register("hasComments")} /> Check this box to

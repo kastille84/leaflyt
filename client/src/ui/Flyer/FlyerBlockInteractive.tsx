@@ -13,6 +13,7 @@ import {
   HiOutlineFlag,
   HiOutlineHandThumbUp,
   HiOutlineLink,
+  HiOutlineChatBubbleLeftEllipsis,
   HiOutlinePencilSquare,
   HiOutlineShieldCheck,
   HiOutlineTrash,
@@ -585,6 +586,13 @@ export default function FlyerBlockInteractive({
     });
   }
 
+  function handleCommentsClick() {
+    if (!flyer.hasComments) return;
+    setSelectedFlyer(flyer);
+    setBottomSlideInType("comments");
+    setIsOpenBottomSlideIn(true);
+  }
+
   function handleCopyright() {
     setShowDcmaModal(true);
   }
@@ -741,15 +749,15 @@ export default function FlyerBlockInteractive({
           <HiOutlineHandThumbUp />
           <small>{currentLikes! > 0 ? currentLikes : ""} Likes</small>
         </StyledActionIconContainer>
-        {/* <StyledActionIconContainer flyerDesign={flyerStyles}>
-          <HiOutlineChatBubbleLeftEllipsis />
-        </StyledActionIconContainer> */}
-        {/* <StyledActionIconContainer
-          flyerDesign={flyerStyles}
-          onClick={handleEmailClick}
-        >
-          <HiOutlineEnvelope /> <small>Email</small>
-        </StyledActionIconContainer> */}
+        {flyer.hasComments && (
+          <StyledActionIconContainer
+            flyerDesign={flyerStyles}
+            onClick={handleCommentsClick}
+          >
+            <HiOutlineChatBubbleLeftEllipsis />
+            <small>Comments</small>
+          </StyledActionIconContainer>
+        )}
         <StyledActionIconContainer
           flyerDesign={flyerStyles}
           onClick={handleLinkClick}

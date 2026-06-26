@@ -378,8 +378,10 @@ export default function Registered({
                 canUpgrade={!planLimits.paid}
               />
             </FormControlRow>
-            {planLimits.templates.isAllowed && !flyerToEdit && (
-              <FormControlRow>
+            <FormControlRow>
+              <CommentsInput register={register} />
+
+              {planLimits.templates.isAllowed && !flyerToEdit && (
                 <FormControl testId="template-container">
                   <StyledLabel>
                     Create Reusable Template (Encouraged)
@@ -398,22 +400,18 @@ export default function Registered({
                     />{" "}
                     Check this box to create a template
                   </StyledCheckboxContainer>
-                  {(templateWatch || !!type.match(/template/i)) && (
-                    <>
-                      <FullNameInput
-                        register={register}
-                        registerName="templateName"
-                        name="Template"
-                        errors={errors}
-                        textLimit={30}
-                      />
-                      {/* <CommentsInput register={register} /> */}
-                    </>
-                  )}
+                  {templateWatch || !!type.match(/template/i) ? (
+                    <FullNameInput
+                      register={register}
+                      registerName="templateName"
+                      name="Template"
+                      errors={errors}
+                      textLimit={30}
+                    />
+                  ) : null}
                 </FormControl>
-                <FormControl>{/* Empty */}</FormControl>
-              </FormControlRow>
-            )}
+              )}
+            </FormControlRow>
 
             <StyledFormButtonContainer data-testid="form-button-container">
               <Button type="submit">
