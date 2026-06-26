@@ -183,6 +183,7 @@ export const createRegisteredFlyer = async (
           flyerDesign: flyerData.flyerDesign,
           callToAction: flyerData.callToAction,
           fileUrlArr: flyerData.fileUrlArr || [],
+          hasComments: flyerData.hasComments,
           postingMethod: flyerData.postingMethod || "onLocation",
           lifespan: flyerData.lifespan,
           likes: 0,

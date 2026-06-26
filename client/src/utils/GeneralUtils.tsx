@@ -136,6 +136,10 @@ export const keysBasedOnEnv = () => {
       stripe: {
         publishableKey: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD,
       },
+      // Disqus
+      disqus: {
+        shortname: import.meta.env.VITE_DISQUS_SHORTNAME_PROD,
+      },
     };
   } else {
     // Non-Prod
@@ -158,6 +162,10 @@ export const keysBasedOnEnv = () => {
       // Stripe
       stripe: {
         publishableKey: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_TEST,
+      },
+      // Disqus
+      disqus: {
+        shortname: import.meta.env.VITE_DISQUS_SHORTNAME,
       },
     };
   }
