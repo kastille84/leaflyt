@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Before acting on any prompt request, read the `.md` files in the root `/docs` folder (e.g. `docs/PRD.md`) and follow them. If a request conflicts with them, flag it before proceeding.
 
+## Database changes
+
+`Supabase_Schema.md` (repo root) describes the current Supabase schema. When a feature needs a schema change, write the SQL into `Supabase_SQL.sql` for the user to run, and never run SQL against the database yourself. See `docs/PRD.md` §8.2.
+
 ## Overview
 
 Leaflit (repo `leaflyt`) is a virtual flyer distribution system. It is two separate npm projects in one repo:
