@@ -145,6 +145,15 @@ export default function PaymentBillingInfoForm({
         await deleteCustomerAsync({
           customerId: signedUpUser?.customers[0]?.customerId,
         });
+        // The subscription is gone, so the user must not keep paid limits
+        // while checkout is pending (or abandoned). A successful payment
+        // restores the paid plan at login via the subscription webhook.
+        const { user, error: planError } = await updateUserProfilePlanAsyncFn({
+          userId: signedUpUser?.id as string,
+          plan: 1,
+        });
+        if (planError || !user) throw planError ?? new Error("plan reset failed");
+        setUser(user);
       } catch (error) {
         setShowSpinner(false);
         setSubmitError(

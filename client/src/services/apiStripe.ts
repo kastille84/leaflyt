@@ -39,6 +39,9 @@ export async function deleteCustomer({ customerId }: { customerId: string }) {
         customerid: customerId,
       },
     });
+    if (!response.ok) {
+      throw new Error("Could not remove your payment information.");
+    }
     const responseJson = await response.json();
     return responseJson.data;
   } catch (error) {
@@ -69,7 +72,10 @@ export async function updateSubscription({
         }),
       },
     );
-    const responseJson = await response.json();
+    // Stripe must accept the change before the plan is changed in supabase
+    if (!response.ok) {
+      throw new Error("Could not update your subscription. Please try again.");
+    }
     // update the user's plan in supabase
     const { data: updatedUser, error } = await supabase
       .from("profiles")
@@ -77,6 +83,9 @@ export async function updateSubscription({
       .eq("id", userId)
       .select(selectEverythingFromProfile)
       .single();
+    if (error) {
+      throw error;
+    }
     return {
       user: updatedUser,
       error: null,

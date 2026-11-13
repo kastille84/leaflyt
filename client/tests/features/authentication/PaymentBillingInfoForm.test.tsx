@@ -66,6 +66,7 @@ describe("PaymentBillingInfoForm", () => {
       createCustomerFn: createCustomerFnMock,
       deleteCustomerAsync: deleteCustomerFnMock,
     });
+    updateUserProfilePlanMock.mockResolvedValue({ user: { id: "123" } });
     vi.mocked(useSignup as any).mockReturnValue({
       updateUserProfilePlanAsyncFn: updateUserProfilePlanMock,
     });
@@ -175,6 +176,31 @@ describe("PaymentBillingInfoForm", () => {
       await waitFor(() => {
         expect(screen.getByText("Error: Stripe down")).toBeInTheDocument();
       });
+    });
+
+    it("should reset the profile plan to Seed once the old customer is deleted", async () => {
+      await fillAndSubmit();
+      await waitFor(() => expect(createCustomerFnMock).toHaveBeenCalled());
+      expect(updateUserProfilePlanMock).toHaveBeenCalledWith({
+        userId: "123",
+        plan: 1,
+      });
+    });
+
+    it("should stop before creating a customer when the plan reset fails", async () => {
+      updateUserProfilePlanMock.mockResolvedValueOnce({
+        data: null,
+        error: new Error("db"),
+      });
+      await fillAndSubmit();
+      await waitFor(() => {
+        expect(
+          screen.getByText(
+            "Error: Failed to process payment information. Please try again.",
+          ),
+        ).toBeInTheDocument();
+      });
+      expect(createCustomerFnMock).not.toHaveBeenCalled();
     });
 
     it("should show an error when deleting the old customer fails", async () => {
