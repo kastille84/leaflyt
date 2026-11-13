@@ -58,4 +58,78 @@ describe("ExistingAssetsList", () => {
       expect(screen.getAllByTestId("existing-asset-list-item")).toBeDefined();
     });
   });
+
+  describe("list items", () => {
+    const makeAsset = (
+      id: number,
+      info: (typeof mockAssetsList)[number],
+      flyers: number[] = [],
+      templates: number[] = [],
+    ) => ({
+      id,
+      user: 3,
+      asset_info: info,
+      used_by_flyers: flyers,
+      used_by_templates: templates,
+    });
+    const assets = [
+      makeAsset(1, mockAssetsList[0]),
+      makeAsset(2, mockAssetsList[1], [10]),
+      makeAsset(3, mockAssetsList[2], [], [20]),
+    ];
+
+    function mockUser(user: any) {
+      vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
+        ...mockUseGlobalContextReturnObj,
+        user,
+      }));
+    }
+
+    function itemProps() {
+      return vi
+        .mocked(ExistingAssetListItem)
+        .mock.calls.map((call) => call[0]);
+    }
+
+    it("should render nothing when there is no user", () => {
+      mockUser(null);
+      render(<ExistingAssetsList />);
+      expect(screen.queryAllByTestId("existing-asset-list-item")).toHaveLength(
+        0,
+      );
+    });
+
+    it("should render an item per asset and pre-check the selected ones", () => {
+      mockUser({ ...userFromContext, assets });
+      vi.mocked(
+        AssetSelectionContext.useAssetSelectionContext,
+      ).mockImplementation(() => ({
+        ...mockAssetSelectionContextReturnObj,
+        assetsList: [mockAssetsList[1]],
+      }));
+      render(<ExistingAssetsList enablePreview />);
+      const props = itemProps();
+      expect(props).toHaveLength(3);
+      expect(props.map((p) => p.preChecked)).toEqual([false, true, false]);
+      expect(props.every((p) => p.enablePreview)).toBe(true);
+      expect(props[0].asset).toBe(mockAssetsList[0]);
+    });
+
+    it("should not pass usage props by default", () => {
+      mockUser({ ...userFromContext, assets });
+      render(<ExistingAssetsList />);
+      for (const props of itemProps()) {
+        expect(props.showCheckboxOnSafeDelete).toBeUndefined();
+        expect(props.isBeingUsed).toBeUndefined();
+      }
+    });
+
+    it("should flag assets used by flyers or templates when only safe to delete", () => {
+      mockUser({ ...userFromContext, assets });
+      render(<ExistingAssetsList onlySafeToDelete />);
+      const props = itemProps();
+      expect(props.every((p) => p.showCheckboxOnSafeDelete)).toBe(true);
+      expect(props.map((p) => p.isBeingUsed)).toEqual([false, true, true]);
+    });
+  });
 });

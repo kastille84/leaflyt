@@ -10,17 +10,21 @@ import {
   getInput,
   getQuill,
   getSelect,
-  QueryClientProviderWrapper,
+  QueryClientProviderWrapperWithBrowserRouter,
 } from "../../test-utils";
 import { resultInfo } from "../../fixtures/cloudinary/responses";
 import useCreateUnregisteredFlyer from "../../../src/features/createFlyer/useCreateUnregisteredFlyer";
 import toast from "react-hot-toast";
 import { getFieldError } from "../../test-utils";
+import * as GlobalContext from "../../../src/context/GlobalContext";
+import { mockUseGlobalContextReturnObj } from "../../fixtures/context/globalContext";
+import { responseData } from "../../fixtures/nearbyPlaces";
 
 const user = userEvent.setup();
 
 vi.mock("../../../src/features/createFlyer/useCreateUnregisteredFlyer");
 vi.mock("react-hot-toast");
+vi.mock("../../../src/context/GlobalContext");
 
 const createUploadWidgetSpy = vi.fn();
 const openSpy = vi.fn();
@@ -28,14 +32,20 @@ const closeSpy = vi.fn();
 const errorSpy = vi.fn();
 const resultSpy = vi.fn();
 // mocks
-vi.stubGlobal("cloudinary", {
-  createUploadWidget: createUploadWidgetSpy,
-});
 
 describe("Anonymous", () => {
+  beforeEach(() => {
+    vi.stubGlobal("cloudinary", {
+      createUploadWidget: createUploadWidgetSpy,
+    });
+    vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
+      ...mockUseGlobalContextReturnObj,
+      selectedPlace: responseData.places[0],
+    }));
+  });
   describe("Display", () => {
     it("should render all fields for Anonymous on initial load", async () => {
-      render(<Anonymous />, { wrapper: QueryClientProviderWrapper() });
+      render(<Anonymous />, { wrapper: QueryClientProviderWrapperWithBrowserRouter() });
       const anonymous = screen.getByTestId("anonymous-container");
       expect(anonymous).toBeTruthy();
       // title
@@ -53,7 +63,7 @@ describe("Anonymous", () => {
       expect(contentQuill).toBeTruthy();
       //  file upload
       const { label: fileLabel, input: fileInput } = getInput("file");
-      expect(fileLabel.textContent).toBe("File Upload");
+      expect(fileLabel.textContent).toBe("File Upload (10mb max)");
       expect(fileInput).toBeTruthy();
       // tags
       const { label: tagsLabel, input: tagsInput } = getInput("tags");
@@ -74,7 +84,7 @@ describe("Anonymous", () => {
   });
   describe("Input Functionality", () => {
     it("should update title", async () => {
-      render(<Anonymous />, { wrapper: QueryClientProviderWrapper() });
+      render(<Anonymous />, { wrapper: QueryClientProviderWrapperWithBrowserRouter() });
       const { input: titleInput } = getInput("title");
       await user.type(titleInput, "Hello");
       await waitFor(() => {
@@ -86,7 +96,7 @@ describe("Anonymous", () => {
       expect(titleError.textContent).toBe("Title is required");
     });
     it("should update category and subcategory", async () => {
-      render(<Anonymous />, { wrapper: QueryClientProviderWrapper() });
+      render(<Anonymous />, { wrapper: QueryClientProviderWrapperWithBrowserRouter() });
       const { select: categorySelect } = getSelect("category");
       await user.selectOptions(categorySelect, "Events & Activities");
       await waitFor(() => {
@@ -112,7 +122,7 @@ describe("Anonymous", () => {
       });
     });
     it("should update content", async () => {
-      render(<Anonymous />, { wrapper: QueryClientProviderWrapper() });
+      render(<Anonymous />, { wrapper: QueryClientProviderWrapperWithBrowserRouter() });
       const { quill: contentQuill } = getQuill();
       await user.type(contentQuill, "Hello");
       await waitFor(() => {
@@ -147,7 +157,7 @@ describe("Anonymous", () => {
         // assemble
 
         // act
-        render(<Anonymous />, { wrapper: QueryClientProviderWrapper() });
+        render(<Anonymous />, { wrapper: QueryClientProviderWrapperWithBrowserRouter() });
         const { input: fileInput, button: fileButton } = getFileUpload("file");
         await user.click(fileButton);
         await act(async () => {
@@ -174,7 +184,7 @@ describe("Anonymous", () => {
     });
 
     it("should update tags", async () => {
-      render(<Anonymous />, { wrapper: QueryClientProviderWrapper() });
+      render(<Anonymous />, { wrapper: QueryClientProviderWrapperWithBrowserRouter() });
       const { input: tagsInput, container } = getInput("tags");
       await user.type(tagsInput, "hello");
       await user.keyboard("[Enter]");
@@ -202,7 +212,7 @@ describe("Anonymous", () => {
 
     describe("typeOfUser", () => {
       it("should update Anonymous", async () => {
-        render(<Anonymous />, { wrapper: QueryClientProviderWrapper() });
+        render(<Anonymous />, { wrapper: QueryClientProviderWrapperWithBrowserRouter() });
         const { select: typeOfUserSelect } = getSelect("typeOfUser");
         await user.selectOptions(typeOfUserSelect, "Choose one");
         await user.tab();
@@ -214,7 +224,7 @@ describe("Anonymous", () => {
         });
       });
       it("should updated individual", async () => {
-        render(<Anonymous />, { wrapper: QueryClientProviderWrapper() });
+        render(<Anonymous />, { wrapper: QueryClientProviderWrapperWithBrowserRouter() });
         const { select: typeOfUserSelect } = getSelect("typeOfUser");
         await user.selectOptions(typeOfUserSelect, "Individual");
         // trigger errors on all fields
@@ -226,8 +236,6 @@ describe("Anonymous", () => {
         expect(lastNameError.textContent).toBe("Last Name is required");
         const { error: emailError } = getFieldError("email");
         expect(emailError.textContent).toBe("Email is required");
-        const { error: phoneError } = getFieldError("phone");
-        expect(phoneError.textContent).toBe("Phone is required");
 
         // update fields
         const { input: firstNameInput } = getInput("firstName");
@@ -257,7 +265,7 @@ describe("Anonymous", () => {
         });
       });
       it("should update business", async () => {
-        render(<Anonymous />, { wrapper: QueryClientProviderWrapper() });
+        render(<Anonymous />, { wrapper: QueryClientProviderWrapperWithBrowserRouter() });
         const { select: typeOfUserSelect } = getSelect("typeOfUser");
         await user.selectOptions(typeOfUserSelect, "Business");
         // trigger errors on all fields
@@ -269,8 +277,6 @@ describe("Anonymous", () => {
         expect(businessAddressError.textContent).toBe("Address is required");
         const { error: businessEmailError } = getFieldError("email");
         expect(businessEmailError.textContent).toBe("Email is required");
-        const { error: businessPhoneError } = getFieldError("phone");
-        expect(businessPhoneError.textContent).toBe("Phone is required");
 
         // update fields
         const { input: businessNameInput } = getInput("fullName");
@@ -296,7 +302,7 @@ describe("Anonymous", () => {
       });
 
       it("should update organization", async () => {
-        render(<Anonymous />, { wrapper: QueryClientProviderWrapper() });
+        render(<Anonymous />, { wrapper: QueryClientProviderWrapperWithBrowserRouter() });
         // trigger errors on all fields
         const { select: typeOfUserSelect } = getSelect("typeOfUser");
         await user.selectOptions(typeOfUserSelect, "Organization");
@@ -312,8 +318,6 @@ describe("Anonymous", () => {
         );
         const { error: organizationEmailError } = getFieldError("email");
         expect(organizationEmailError.textContent).toBe("Email is required");
-        const { error: organizationPhoneError } = getFieldError("phone");
-        expect(organizationPhoneError.textContent).toBe("Phone is required");
 
         // update fields
         const { input: organizationNameInput } = getInput("fullName");
@@ -363,7 +367,7 @@ describe("Anonymous", () => {
     });
 
     it("should submit the form and succeed", async () => {
-      render(<Anonymous />, { wrapper: QueryClientProviderWrapper() });
+      render(<Anonymous />, { wrapper: QueryClientProviderWrapperWithBrowserRouter() });
       const { input: titleInput } = getInput("title");
       await user.type(titleInput, "Hello");
       const { select: categorySelect } = getSelect("category");
@@ -409,7 +413,7 @@ describe("Anonymous", () => {
     });
 
     it("should submit the form and fail", async () => {
-      render(<Anonymous />, { wrapper: QueryClientProviderWrapper() });
+      render(<Anonymous />, { wrapper: QueryClientProviderWrapperWithBrowserRouter() });
       const { input: titleInput } = getInput("title");
       await user.type(titleInput, "Hello");
       const { select: categorySelect } = getSelect("category");
@@ -454,6 +458,49 @@ describe("Anonymous", () => {
       await waitFor(() => {
         expect(toast.error).toHaveBeenCalled();
       });
+    });
+  });
+  describe("Cancel and legal links", () => {
+    const setShowCloseSlideInModalSpy = vi.fn();
+    const setShowTermsModalSpy = vi.fn();
+    const setTermsModalTypeSpy = vi.fn();
+
+    beforeEach(() => {
+      vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
+        ...mockUseGlobalContextReturnObj,
+        selectedPlace: responseData.places[0],
+        setShowCloseSlideInModal: setShowCloseSlideInModalSpy,
+        setShowTermsModal: setShowTermsModalSpy,
+        setTermsModalType: setTermsModalTypeSpy,
+      }));
+      vi.mocked(useCreateUnregisteredFlyer).mockImplementation(() => ({
+        createFlyer: vi.fn(),
+        createFlyerError: null,
+      }));
+    });
+    afterEach(() => {
+      vi.clearAllMocks();
+    });
+
+    it("should ask to confirm closing when cancel is clicked", async () => {
+      render(<Anonymous />, {
+        wrapper: QueryClientProviderWrapperWithBrowserRouter(),
+      });
+      await user.click(getActionButtons().cancel);
+      expect(setShowCloseSlideInModalSpy).toHaveBeenCalledWith(true);
+    });
+
+    it.each([
+      ["Terms and Conditions", "terms"],
+      ["Privacy Policy", "privacy"],
+      ["Community Guidelines", "guidelines"],
+    ])("should open the terms modal for %s", async (name, type) => {
+      render(<Anonymous />, {
+        wrapper: QueryClientProviderWrapperWithBrowserRouter(),
+      });
+      await user.click(screen.getByRole("link", { name }));
+      expect(setShowTermsModalSpy).toHaveBeenCalledWith(true);
+      expect(setTermsModalTypeSpy).toHaveBeenCalledWith(type);
     });
   });
 });

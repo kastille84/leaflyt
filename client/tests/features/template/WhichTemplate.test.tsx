@@ -74,7 +74,9 @@ describe("WhichTemplate", () => {
     });
     await act(async () => {
       // trigger toast success
-      await createFlyerUsingTemplateSpy.mock.calls[0][1].onSuccess();
+      await createFlyerUsingTemplateSpy.mock.calls[0][1].onSuccess({
+        user: userFromContext,
+      });
     });
 
     await waitFor(() => {
@@ -139,5 +141,40 @@ describe("WhichTemplate", () => {
     await waitFor(() => {
       expect(createFlyerUsingTemplateSpy).not.toHaveBeenCalled();
     });
+  });
+
+  it("should clear the selected template when Create From Scratch is clicked", async () => {
+    render(
+      <WhichTemplate
+        setSelectedTemplate={setSelectedTemplateMock}
+        selectedTemplate={userFromContext.templates[0]}
+      />,
+      {
+        wrapper: QueryClientProviderWrapper(),
+      }
+    );
+    await user.click(screen.getByText("Create From Scratch"));
+    expect(setSelectedTemplateMock).toHaveBeenCalledTimes(1);
+    // the updater ignores the previous value and returns null
+    const updater = setSelectedTemplateMock.mock.calls[0][0];
+    expect(updater(userFromContext.templates[0])).toBeNull();
+  });
+
+  it("should toggle the slide-in open class when the opener is clicked", async () => {
+    render(
+      <WhichTemplate
+        setSelectedTemplate={setSelectedTemplateMock}
+        selectedTemplate={null}
+      />,
+      {
+        wrapper: QueryClientProviderWrapper(),
+      }
+    );
+    const container = screen.getByTestId("which-template-container");
+    const wasOpen = container.className.includes("open");
+    await user.click(container.firstElementChild as HTMLElement);
+    expect(container.className.includes("open")).toBe(!wasOpen);
+    await user.click(container.firstElementChild as HTMLElement);
+    expect(container.className.includes("open")).toBe(wasOpen);
   });
 });

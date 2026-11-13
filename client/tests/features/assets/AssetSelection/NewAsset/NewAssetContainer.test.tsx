@@ -1,5 +1,6 @@
 import { render, screen, waitFor, act } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { QueryClientProviderWrapper } from "../../../../test-utils";
 
 // components
 import NewAssetContainer from "../../../../../src/features/assets/AssetSelection/NewAsset/NewAssetContainer";
@@ -52,7 +53,7 @@ describe("NewAssetContainer", () => {
   it("should render new asset container", async () => {
     // assemble
     // act
-    render(<NewAssetContainer />);
+    render(<NewAssetContainer />, { wrapper: QueryClientProviderWrapper() });
     // assert
     await waitFor(() => {
       expect(screen.getByTestId("new-asset-container")).toBeDefined();
