@@ -176,6 +176,80 @@ describe("apiAuth", () => {
     });
   });
 
+  describe("paid plan without a subscription", () => {
+    const freePlan = { id: 1, name: "Seed" };
+    const paidProfile = () => ({
+      id: "u1",
+      plan: { id: 3, name: "Grove" },
+      customers: [],
+    });
+
+    it.each([
+      [
+        "loginUser",
+        () => {
+          auth.signInWithPassword.mockResolvedValue({ data: {}, error: null });
+          return loginUser("a@b.c", "pw");
+        },
+      ],
+      [
+        "loginUserWithAccessToken",
+        () => {
+          auth.getUser.mockResolvedValue({
+            data: { user: { email: "a@b.c" } },
+            error: null,
+          });
+          return loginUserWithAccessToken();
+        },
+      ],
+    ])("%s resets the plan to Seed", async (_name, run) => {
+      const [, , updateQuery] = queueFrom(
+        from,
+        { data: paidProfile(), error: null },
+        { data: freePlan, error: null },
+        { data: null, error: null },
+      );
+      const result: any = await run();
+      expect(updateQuery.update).toHaveBeenCalledWith({ plan: 1 });
+      expect(updateQuery.eq).toHaveBeenCalledWith("id", "u1");
+      expect(result.data.plan).toEqual(freePlan);
+    });
+
+    it("leaves powerUser accounts alone", async () => {
+      auth.signInWithPassword.mockResolvedValue({ data: {}, error: null });
+      queueFrom(from, {
+        data: { ...paidProfile(), powerUser: true },
+        error: null,
+      });
+      const result: any = await loginUser("a@b.c", "pw");
+      expect(result.data.plan.id).toBe(3);
+      expect(from).toHaveBeenCalledTimes(1);
+    });
+
+    it("keeps the plan when the reset update fails", async () => {
+      auth.signInWithPassword.mockResolvedValue({ data: {}, error: null });
+      queueFrom(
+        from,
+        { data: paidProfile(), error: null },
+        { data: freePlan, error: null },
+        { data: null, error: { message: "db" } },
+      );
+      const result: any = await loginUser("a@b.c", "pw");
+      expect(result.data.plan.id).toBe(3);
+    });
+
+    it("keeps the plan when the free plan cannot be found", async () => {
+      auth.signInWithPassword.mockResolvedValue({ data: {}, error: null });
+      queueFrom(
+        from,
+        { data: paidProfile(), error: null },
+        { data: null, error: null },
+      );
+      const result: any = await loginUser("a@b.c", "pw");
+      expect(result.data.plan.id).toBe(3);
+    });
+  });
+
   describe("signupUser", () => {
     const contact = {
       email: "a@b.c",

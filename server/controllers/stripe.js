@@ -108,15 +108,27 @@ exports.createCheckoutSession = async (req, res, next) => {
 
 exports.updateSubscription = async (req, res, next) => {
   const { subscriptionId, newPlan } = req.body;
+  const newPrice = productsPrice[mapPlanToName[newPlan]];
+  // reject before touching Stripe: only paid plans have a price, and we need a subscription to change
+  if (!subscriptionId || !newPrice) {
+    return res
+      .status(400)
+      .json({ error: { statusCode: 400, message: "Invalid plan or subscription" } });
+  }
   try {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    if (!subscription || subscription.status === "canceled") {
+      return res.status(400).json({
+        error: { statusCode: 400, message: "Subscription is not active" },
+      });
+    }
     const updatedSubscription = await stripe.subscriptions.update(
       subscriptionId,
       {
         items: [
           {
             id: subscription.items.data[0].id, // Get the existing subscription item ID
-            price: productsPrice[mapPlanToName[newPlan]], // Set the new price ID
+            price: newPrice, // Set the new price ID
           },
         ],
         // Configure how to handle prorations (always_invoice, create_prorations, none)
