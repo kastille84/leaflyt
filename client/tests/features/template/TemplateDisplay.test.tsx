@@ -10,6 +10,12 @@ vi.mock("../../../src/context/GlobalContext");
 // fixtures
 import { mockUseGlobalContextReturnObj } from "../../fixtures/context/globalContext";
 
+// the API returns templates with their user joined in (`templates(*, user(*))`)
+const templateWithUser: any = {
+  ...userFromContext.templates[0],
+  user: userFromContext,
+};
+
 describe("TemplateDisplay", () => {
   beforeEach(() => {
     vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => {
@@ -31,7 +37,7 @@ describe("TemplateDisplay", () => {
 
   it("should render with template", () => {
     render(
-      <TemplateDisplay selectedTemplate={userFromContext.templates[0]} />,
+      <TemplateDisplay selectedTemplate={templateWithUser} />,
       {
         wrapper: QueryClientProviderWrapper(),
       }

@@ -23,6 +23,7 @@ import { mockUseGlobalContextReturnObj } from "../../fixtures/context/globalCont
 import { userFromContext } from "../../fixtures/authentication/login";
 import { mockCreatedFlyer } from "../../fixtures/flyer/flyer";
 import { templateMock } from "../../fixtures/template/template";
+import { responseData } from "../../fixtures/nearbyPlaces";
 
 // mocks
 vi.mock("../../../src/context/GlobalContext");
@@ -37,6 +38,9 @@ vi.mock("react-hot-toast");
 // });
 
 const user = userEvent.setup();
+
+// the fixture user is already at their template limit, which hides the template section
+const userWithTemplateRoom = { ...userFromContext, templates: [] };
 
 const createUploadWidgetSpy = vi.fn();
 const openSpy = vi.fn();
@@ -107,6 +111,12 @@ describe("Registered", () => {
   // });
 
   describe("Display", () => {
+    beforeEach(() => {
+      vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
+        ...mockUseGlobalContextReturnObj,
+        user: userWithTemplateRoom,
+      }));
+    });
     it("should render all fields for Register on initial load", async () => {
       render(<Registered />, { wrapper: QueryClientProviderWrapper() });
       const registered = screen.getByTestId("registered-container");
@@ -167,7 +177,7 @@ describe("Registered", () => {
     beforeEach(() => {
       vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
         ...mockUseGlobalContextReturnObj,
-        user: userFromContext,
+        user: userWithTemplateRoom,
         setBottomSlideInType: bottomSlideInTypeMock,
         setShowCloseSlideInModal: setShowCloseslideInModalMock,
       }));
@@ -383,12 +393,9 @@ describe("Registered", () => {
     it("should update create template", async () => {
       render(<Registered />, { wrapper: QueryClientProviderWrapper() });
       const { input: templateCheckbox } = getInput("template");
-      // uncheck it
-      // await user.click(templateCheckbox);
-      // await waitFor(() => {
-      //   expect(templateCheckbox.checked).toBeFalsy();
-      // });
-      // await user.click(templateCheckbox);
+      // unchecked by default
+      expect(templateCheckbox.checked).toBeFalsy();
+      await user.click(templateCheckbox);
       await waitFor(() => {
         expect(templateCheckbox.checked).toBeTruthy();
       });
@@ -412,7 +419,8 @@ describe("Registered", () => {
     beforeEach(() => {
       vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
         ...mockUseGlobalContextReturnObj,
-        user: userFromContext,
+        user: userWithTemplateRoom,
+        selectedPlace: responseData.places[0],
       }));
       createUploadWidgetSpy.mockImplementation(function () {
         return {
@@ -483,6 +491,8 @@ describe("Registered", () => {
         await user.type(ctaContentQuill, "Hello");
         const { select: lifespanSelect } = getSelect("lifespan");
         await user.selectOptions(lifespanSelect, "2 weeks");
+        const { input: templateCheckbox } = getInput("template");
+        await user.click(templateCheckbox);
         const { input: templateInput } = getInput("fullName");
         await user.type(templateInput, "Hello");
         const { input: commentsCheckbox } = getInput("comments-input");
@@ -494,7 +504,9 @@ describe("Registered", () => {
         });
         await act(async () => {
           // trigger toast success
-          await createFlyerSpy.mock.calls[0][1].onSuccess();
+          await createFlyerSpy.mock.calls[0][1].onSuccess({
+            user: userFromContext,
+          });
         });
 
         await waitFor(() => {
@@ -546,6 +558,8 @@ describe("Registered", () => {
         const { select: lifespanSelect } = getSelect("lifespan");
         await user.selectOptions(lifespanSelect, "2 weeks");
 
+        const { input: templateCheckbox } = getInput("template");
+        await user.click(templateCheckbox);
         const { input: templateInput } = getInput("fullName");
         await user.type(templateInput, "Hello");
         const { input: commentsCheckbox } = getInput("comments-input");
@@ -557,6 +571,12 @@ describe("Registered", () => {
         });
         await act(async () => {
           // trigger toast success
+          await createFlyerSpy.mock.calls[0][1].onError({
+            message: "error has occurred",
+          });
+        });
+        // a second failure scrolls to the error that is now rendered
+        await act(async () => {
           await createFlyerSpy.mock.calls[0][1].onError({
             message: "error has occurred",
           });
@@ -583,7 +603,9 @@ describe("Registered", () => {
         });
         await act(async () => {
           // trigger toast success
-          await editFlyerSpy.mock.calls[0][1].onSuccess();
+          await editFlyerSpy.mock.calls[0][1].onSuccess({
+            user: userFromContext,
+          });
         });
         await waitFor(() => {
           expect(editFlyerSpy).toHaveBeenCalled();
@@ -646,6 +668,8 @@ describe("Registered", () => {
         await user.type(ctaContentQuill, "Hello");
         const { select: lifespanSelect } = getSelect("lifespan");
         await user.selectOptions(lifespanSelect, "2 weeks");
+        const { input: templateCheckbox } = getInput("template");
+        await user.click(templateCheckbox);
         const { input: templateInput } = getInput("fullName");
         await user.type(templateInput, "Hello");
         const { input: commentsCheckbox } = getInput("comments-input");
@@ -658,7 +682,7 @@ describe("Registered", () => {
         await act(async () => {
           // trigger toast success
           await createTemplateFnSpy.mock.calls[0][1].onSuccess({
-            user: userFromContext,
+            user: userWithTemplateRoom,
           });
         });
 
@@ -700,6 +724,8 @@ describe("Registered", () => {
         await user.type(ctaContentQuill, "Hello");
         const { select: lifespanSelect } = getSelect("lifespan");
         await user.selectOptions(lifespanSelect, "2 weeks");
+        const { input: templateCheckbox } = getInput("template");
+        await user.click(templateCheckbox);
         const { input: templateInput } = getInput("fullName");
         await user.type(templateInput, "Hello");
         const { input: commentsCheckbox } = getInput("comments-input");
@@ -711,6 +737,12 @@ describe("Registered", () => {
         });
         await act(async () => {
           // trigger toast success
+          await createTemplateFnSpy.mock.calls[0][1].onError({
+            message: "error has occurred",
+          });
+        });
+        // a second failure scrolls to the error that is now rendered
+        await act(async () => {
           await createTemplateFnSpy.mock.calls[0][1].onError({
             message: "error has occurred",
           });
@@ -771,6 +803,98 @@ describe("Registered", () => {
           // expect(toast.error).toHaveBeenCalledWith("error has occurred");
           expect(editTemplateSpy).toHaveBeenCalled();
         });
+      });
+    });
+  });
+  describe("with a selected place", () => {
+    const editFlyerSpy = vi.fn();
+    const editTemplateSpy = vi.fn();
+    const createTemplateFnSpy = vi.fn();
+
+    beforeEach(() => {
+      vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
+        ...mockUseGlobalContextReturnObj,
+        user: userWithTemplateRoom,
+        selectedPlace: responseData.places[0],
+      }));
+      vi.mocked(useRegisteredFlyer).mockImplementation(() => ({
+        createFlyer: vi.fn(),
+        createFlyerError: null,
+        createFlyerUsingTemplate: vi.fn(),
+        createFlyerUsingTemplateError: null,
+        editFlyer: editFlyerSpy,
+        editFlyerError: null,
+        editTemplate: editTemplateSpy,
+        createTemplateFn: createTemplateFnSpy,
+        createTemplateFnError: null,
+      }));
+    });
+    afterEach(() => {
+      vi.clearAllMocks();
+    });
+
+    async function submitEdit(spy: typeof editFlyerSpy) {
+      const { input: titleInput } = getInput("title");
+      await user.type(titleInput, "Hello");
+      await user.click(getActionButtons().submit);
+      await waitFor(() => expect(spy).toHaveBeenCalled());
+    }
+
+    it("should refresh the board and update the user after editing a flyer", async () => {
+      render(<Registered flyerToEdit={mockCreatedFlyer} type="edit" />, {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      await submitEdit(editFlyerSpy);
+      await act(async () => {
+        await editFlyerSpy.mock.calls[0][1].onSuccess({ user: userFromContext });
+      });
+      expect(screen.queryByTestId("overlay-spinner")).toBeNull();
+    });
+
+    it("should refresh the board and update the user after editing a template", async () => {
+      render(<Registered templateToEdit={templateMock} type="editTemplate" />, {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      await submitEdit(editTemplateSpy);
+      await act(async () => {
+        await editTemplateSpy.mock.calls[0][1].onSuccess({
+          user: userFromContext,
+        });
+      });
+      expect(screen.queryByTestId("overlay-spinner")).toBeNull();
+    });
+
+    it("should show the error message after a failed edit", async () => {
+      render(<Registered flyerToEdit={mockCreatedFlyer} type="edit" />, {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      await submitEdit(editFlyerSpy);
+      await act(async () => {
+        await editFlyerSpy.mock.calls[0][1].onError({
+          message: "error has occurred",
+        });
+      });
+      expect(await screen.findByText("Error: error has occurred")).toBeTruthy();
+      // a second failure scrolls to the error that is now rendered
+      await act(async () => {
+        await editFlyerSpy.mock.calls[0][1].onError({ message: "error has occurred" });
+      });
+    });
+
+    it("should show the error message after a failed template edit", async () => {
+      render(<Registered templateToEdit={templateMock} type="editTemplate" />, {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      await submitEdit(editTemplateSpy);
+      await act(async () => {
+        await editTemplateSpy.mock.calls[0][1].onError({
+          message: "template error",
+        });
+      });
+      expect(await screen.findByText("Error: template error")).toBeTruthy();
+      // a second failure scrolls to the error that is now rendered
+      await act(async () => {
+        await editTemplateSpy.mock.calls[0][1].onError({ message: "template error" });
       });
     });
   });
