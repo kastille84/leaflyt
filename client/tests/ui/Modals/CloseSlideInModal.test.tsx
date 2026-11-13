@@ -65,6 +65,63 @@ describe("CloseSlideInModal", () => {
       expect(setDrawerActionMockFn).toHaveBeenCalledWith(null);
     });
   });
+  describe("leaving with different state", () => {
+    const setSelectedFlyerMockFn = vi.fn();
+    const setSelectedTemplateMockFn = vi.fn();
+    function mockContext(overrides: Record<string, unknown>) {
+      vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
+        ...mockUseGlobalContextReturnObj,
+        setIsOpenFlyerDrawer: setIsOpenFlyerDrawerMockFn,
+        setDrawerAction: setDrawerActionMockFn,
+        setShowCloseSlideInModal: setShowCloseSlideInModalMockFn,
+        setSelectedFlyer: setSelectedFlyerMockFn,
+        setSelectedTemplate: setSelectedTemplateMockFn,
+        showCloseSlideInModal: true,
+        currentFormOptions: { getValues: getValuesMockFn },
+        selectedFlyer: null,
+        selectedTemplate: null,
+        ...overrides,
+      }));
+    }
+    beforeEach(() => {
+      getValuesMockFn.mockReturnValue([]);
+    });
+
+    it("should clear the selected flyer and template", async () => {
+      mockContext({
+        selectedFlyer: mockCreatedFlyer,
+        selectedTemplate: { id: 1 },
+      });
+      render(<CloseSlideInModal />);
+      await user.click(screen.getByRole("button", { name: "Leave" }));
+      await waitFor(() => {
+        expect(setSelectedFlyerMockFn).toHaveBeenCalledWith(null);
+      });
+      expect(setSelectedTemplateMockFn).toHaveBeenCalledWith(null);
+    });
+
+    it("should not clear the selection when nothing is selected", async () => {
+      mockContext({});
+      render(<CloseSlideInModal />);
+      await user.click(screen.getByRole("button", { name: "Leave" }));
+      await waitFor(() => {
+        expect(setShowCloseSlideInModalMockFn).toHaveBeenCalledWith(false);
+      });
+      expect(setSelectedFlyerMockFn).not.toHaveBeenCalled();
+      expect(setSelectedTemplateMockFn).not.toHaveBeenCalled();
+    });
+
+    it("should keep uploaded assets when the user is logged in", async () => {
+      getValuesMockFn.mockReturnValue(["https://google.com"]);
+      mockContext({ user: { id: "u1" } });
+      render(<CloseSlideInModal />);
+      await user.click(screen.getByRole("button", { name: "Leave" }));
+      await waitFor(() => {
+        expect(setShowCloseSlideInModalMockFn).toHaveBeenCalledWith(false);
+      });
+      expect(cloudinary.deleteFileOverTime).not.toHaveBeenCalled();
+    });
+  });
   it("should delete any assets that were uploaded while not logged in", async () => {
     getValuesMockFn.mockReturnValue(["https://google.com"]);
     render(<CloseSlideInModal />);

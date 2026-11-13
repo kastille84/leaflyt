@@ -131,6 +131,120 @@ describe("AssetSelectionContainer", () => {
     });
   });
 
+  describe("Selection limits", () => {
+    const existingButton = () =>
+      screen.getByRole("button", {
+        name: "Select From Existing",
+      }) as HTMLButtonElement;
+    const newButton = () =>
+      screen.getByRole("button", {
+        name: "+ Add New Asset",
+      }) as HTMLButtonElement;
+
+    it("should enable both buttons when under the limits", () => {
+      vi.mocked(useGetUserLimits).mockReturnValue({
+        ...planLimitsGarden,
+        media: { limit: 5 },
+        maxAssets: 10,
+      });
+      render(<AssestSelectionContainer />, {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      expect(existingButton().disabled).toBe(false);
+      expect(newButton().disabled).toBe(false);
+      expect(screen.getByText("5 remaining per flyer")).toBeTruthy();
+    });
+
+    it("should disable both buttons when the flyer media limit is reached", () => {
+      vi.mocked(useGetUserLimits).mockReturnValue({
+        ...planLimitsGarden,
+        media: { limit: 2 },
+        maxAssets: 10,
+      });
+      vi.mocked(
+        AssetSelectionContext.useAssetSelectionContext,
+      ).mockImplementation(() => ({
+        ...mockAssetSelectionContextReturnObj,
+        assetsList: mockAssetsList.slice(0, 2),
+      }));
+      render(<AssestSelectionContainer />, {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      expect(existingButton().disabled).toBe(true);
+      expect(newButton().disabled).toBe(true);
+      expect(screen.getByText("0 remaining per flyer")).toBeTruthy();
+    });
+
+    it("should only disable adding a new asset when the user's asset library is full", () => {
+      vi.mocked(useGetUserLimits).mockReturnValue({
+        ...planLimitsGarden,
+        media: { limit: 5 },
+        maxAssets: 2,
+      });
+      vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
+        ...mockUseGlobalContextReturnObj,
+        user: { ...userFromContext, assets: [{}, {}] as any },
+        currentFormOptions: {
+          getValues: getValuesMock,
+          setValue: setValueMock,
+        },
+      }));
+      render(<AssestSelectionContainer />, {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      expect(existingButton().disabled).toBe(false);
+      expect(newButton().disabled).toBe(true);
+    });
+
+    it("should count timed assets towards the asset library limit", () => {
+      vi.mocked(useGetUserLimits).mockReturnValue({
+        ...planLimitsGarden,
+        media: { limit: 5 },
+        maxAssets: 1,
+      });
+      vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
+        ...mockUseGlobalContextReturnObj,
+        user: { ...userFromContext, assets: undefined as any },
+        currentFormOptions: {
+          getValues: getValuesMock,
+          setValue: setValueMock,
+        },
+      }));
+      vi.mocked(
+        AssetSelectionContext.useAssetSelectionContext,
+      ).mockImplementation(() => ({
+        ...mockAssetSelectionContextReturnObj,
+        timedAssetsList: mockTimedAssetsList,
+      }));
+      render(<AssestSelectionContainer />, {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      expect(newButton().disabled).toBe(true);
+    });
+
+    it("should switch to the selected option when a button is clicked", async () => {
+      const setSelectedOptionMock = vi.fn();
+      vi.mocked(useGetUserLimits).mockReturnValue({
+        ...planLimitsGarden,
+        media: { limit: 5 },
+        maxAssets: 10,
+      });
+      vi.mocked(
+        AssetSelectionContext.useAssetSelectionContext,
+      ).mockImplementation(() => ({
+        ...mockAssetSelectionContextReturnObj,
+        setSelectedOption: setSelectedOptionMock,
+      }));
+      render(<AssestSelectionContainer />, {
+        wrapper: QueryClientProviderWrapper(),
+      });
+      await user.click(newButton());
+      expect(setSelectedOptionMock).toHaveBeenCalledWith("new");
+      await user.click(existingButton());
+      expect(setSelectedOptionMock).toHaveBeenCalledWith("existing");
+    });
+  });
+
   describe("AssetsList and TimedAssetsList", () => {
     beforeEach(() => {
       getValuesMock.mockReturnValue(mockFileUrlArr);

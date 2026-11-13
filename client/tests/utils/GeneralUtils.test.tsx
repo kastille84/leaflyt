@@ -5,6 +5,11 @@ import {
   getCategoriesForSelect,
   getSubcategories,
   getSubcategoriesForSelect,
+  debounce,
+  sortPlansByLevel,
+  getPlansForSelect,
+  keysBasedOnEnv,
+  determineIsFullFlyer,
 } from "../../src/utils/GeneralUtils";
 
 const shortCategoriesList = [
@@ -85,5 +90,91 @@ describe("GeneralUtils", () => {
       },
       { value: "Automotive Services", label: "Automotive Services" },
     ]);
+  });
+
+  it("should strip html tags when shortening a title", () => {
+    expect(shortenTitle("<b>Hello</b> <i>World</i>", 5)).toBe("Hello...");
+  });
+
+  it("should return the object for an empty path", () => {
+    const obj = { a: 1 };
+    expect(accessNestedProperty(obj, "")).toBe(obj);
+  });
+
+  it("should return undefined for a missing nested path", () => {
+    expect(accessNestedProperty({ a: { b: 1 } }, "a.c")).toBeUndefined();
+    expect(accessNestedProperty({ a: 1 }, "a.b")).toBeUndefined();
+    expect(accessNestedProperty({ a: null }, "a.b")).toBeUndefined();
+  });
+
+  it("should use custom default texts in the select options", () => {
+    expect(
+      getCategoriesForSelect(shortCategoriesList, "Pick one")[0],
+    ).toEqual({ value: "", label: "Pick one" });
+    expect(
+      getSubcategoriesForSelect(shortCategoriesList, "Services", "Pick sub")[0],
+    ).toEqual({ value: "", label: "Pick sub" });
+  });
+
+  describe("debounce", () => {
+    beforeEach(() => vi.useFakeTimers());
+    afterEach(() => vi.useRealTimers());
+
+    it("should call the function once with the last arguments", () => {
+      const fn = vi.fn();
+      const debounced = debounce(fn, 100);
+      debounced("a");
+      debounced("b");
+      vi.advanceTimersByTime(99);
+      expect(fn).not.toHaveBeenCalled();
+      vi.advanceTimersByTime(1);
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(fn).toHaveBeenCalledWith("b");
+    });
+  });
+
+  describe("plans", () => {
+    const plans: any[] = [
+      { id: 3, name: "Pro", level: 3 },
+      { id: 1, name: "Seed", level: 1 },
+      { id: 2, name: "Sprout", level: 2 },
+    ];
+
+    it("should sort plans by level", () => {
+      expect(sortPlansByLevel([...plans]).map((p) => p.id)).toEqual([1, 2, 3]);
+    });
+
+    it("should map plans to select options", () => {
+      expect(getPlansForSelect([...plans])).toEqual([
+        { value: "1", label: "Seed" },
+        { value: "2", label: "Sprout" },
+        { value: "3", label: "Pro" },
+      ]);
+    });
+  });
+
+  // The production branch is untestable: Vite `define` inlines import.meta.env.MODE.
+  it("should return the keys for each service", () => {
+    const keys = keysBasedOnEnv();
+    expect(Object.keys(keys).sort()).toEqual(
+      ["cloudinary", "disqus", "google", "stripe", "supabase"].sort(),
+    );
+    expect(keys.supabase).toHaveProperty("url");
+    expect(keys.supabase).toHaveProperty("apiKey");
+    expect(keys.google).toHaveProperty("mapsApiKey");
+  });
+
+  describe("determineIsFullFlyer", () => {
+    afterEach(() => window.history.pushState({}, "", "/"));
+
+    it("should be true on a full flyer path", () => {
+      window.history.pushState({}, "", "/fullFlyer/1");
+      expect(determineIsFullFlyer()).toBe(true);
+    });
+
+    it("should be false elsewhere", () => {
+      window.history.pushState({}, "", "/home");
+      expect(determineIsFullFlyer()).toBe(false);
+    });
   });
 });

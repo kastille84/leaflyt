@@ -295,6 +295,7 @@ export default function Landing() {
             alt=""
           />
           <StyledGetGeoButtonSection
+            data-testid="get-geo-button-section"
             onClick={() => getUserGeo()}
           ></StyledGetGeoButtonSection>
         </StyledFigure>

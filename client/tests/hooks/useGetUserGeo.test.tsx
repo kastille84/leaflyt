@@ -83,7 +83,7 @@ describe("useGetUserGeo", () => {
         expect(result.current).toBeDefined();
         // grab toast
         expect(toast.error).toHaveBeenCalledWith(
-          "We weren't able to get your location. Make sure to select 'Allow' on the pop-up to enable location sharing."
+          "We weren't able to get your location. \nMake sure to select 'Allow' on the pop-up to enable location sharing."
         );
       });
       it("should call getUserGeo and trigger onReject: POSITION_UNAVAILABLE", () => {
@@ -111,7 +111,7 @@ describe("useGetUserGeo", () => {
         // assert
         expect(result.current).toBeDefined();
         expect(toast.error).toHaveBeenCalledWith(
-          "We weren't able to get your location. It seems to be unavailable. Please check your internet connection or move to another location."
+          "We weren't able to get your location. \nIt seems to be unavailable. \nPlease check your internet connection or move to another location."
         );
       });
       it("should call getUserGeo and trigger onReject: TIMEOUT", () => {
@@ -139,7 +139,7 @@ describe("useGetUserGeo", () => {
         // assert
         expect(result.current).toBeDefined();
         expect(toast.error).toHaveBeenCalledWith(
-          "We weren't able to get your location. The request timed out. Please check your internet connection or move to another location."
+          "We weren't able to get your location. \nThe request timed out. \nPlease check your internet connection or move to another location."
         );
       });
     });

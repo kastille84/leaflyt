@@ -8,7 +8,7 @@ import {
   getFieldError,
   getInput,
   getSelect,
-  QueryClientProviderWrapper,
+  QueryClientProviderWrapperWithBrowserRouter,
 } from "../../test-utils";
 import * as GlobalContext from "../../../src/context/GlobalContext";
 import useSignup from "../../../src/features/authentication/useSignup";
@@ -34,9 +34,11 @@ vi.mock("../../../src/features/authentication/useSignup");
 vi.mock("react-google-autocomplete/lib/usePlacesAutocompleteService");
 vi.mock("react-hot-toast");
 
+const setSignedUpUserSpy = vi.fn();
+
 // helper funcs
 async function prepareForm(type: string) {
-  render(<SignupForm />, { wrapper: QueryClientProviderWrapper() });
+  render(<SignupForm setSignedUpUser={setSignedUpUserSpy} />, { wrapper: QueryClientProviderWrapperWithBrowserRouter() });
   const { select: typeOfUserSelect } = getSelect("typeOfUser");
   await act(async () => {
     await user.selectOptions(typeOfUserSelect, type);
@@ -46,8 +48,8 @@ async function prepareForm(type: string) {
 describe("SignupForm", () => {
   describe("Display", () => {
     it("should render all fields on initial load", () => {
-      const { container } = render(<SignupForm />, {
-        wrapper: QueryClientProviderWrapper(),
+      const { container } = render(<SignupForm setSignedUpUser={setSignedUpUserSpy} />, {
+        wrapper: QueryClientProviderWrapperWithBrowserRouter(),
       });
       expect(container).toBeTruthy();
       const { select: typeOfUserSelect } = getSelect("typeOfUser");
@@ -56,7 +58,7 @@ describe("SignupForm", () => {
   });
   describe("Input Functionality", () => {
     it("should update typeOfUser", async () => {
-      render(<SignupForm />, { wrapper: QueryClientProviderWrapper() });
+      render(<SignupForm setSignedUpUser={setSignedUpUserSpy} />, { wrapper: QueryClientProviderWrapperWithBrowserRouter() });
       const { select: typeOfUserSelect } = getSelect("typeOfUser");
       await user.selectOptions(typeOfUserSelect, "Choose one");
       await user.tab();
@@ -104,8 +106,8 @@ describe("SignupForm", () => {
         });
         await user.clear(phoneInput);
         await user.tab();
-        const { error: phoneError } = getFieldError("phone");
-        expect(phoneError.textContent).toBe("Phone is required");
+        // phone is optional, so clearing it raises no error
+        expect(getFieldError("phone").error).toBeNull();
       });
 
       it("should update address", async () => {
@@ -189,8 +191,8 @@ describe("SignupForm", () => {
         });
         await user.clear(phoneInput);
         await user.tab();
-        const { error: phoneError } = getFieldError("phone");
-        expect(phoneError.textContent).toBe("Phone is required");
+        // phone is optional, so clearing it raises no error
+        expect(getFieldError("phone").error).toBeNull();
       });
       it("should update website", async () => {
         await prepareForm("Business");
@@ -237,8 +239,8 @@ describe("SignupForm", () => {
         });
         await user.clear(phoneInput);
         await user.tab();
-        const { error: phoneError } = getFieldError("phone");
-        expect(phoneError.textContent).toBe("Phone is required");
+        // phone is optional, so clearing it raises no error
+        expect(getFieldError("phone").error).toBeNull();
       });
       it("should update website", async () => {
         await prepareForm("Organization");
@@ -319,6 +321,8 @@ describe("SignupForm", () => {
       await user.type(emailInput, "me@gmail.com");
       const { input: passwordInput } = getInput("password");
       await user.type(passwordInput, "password");
+      // terms must be accepted to submit
+      await user.click(screen.getByRole("checkbox"));
       const { submit } = getActionButtons();
       await waitFor(async () => {
         await expect(getAddressResults().container).toBeTruthy();
@@ -333,7 +337,6 @@ describe("SignupForm", () => {
       });
       // act
       await act(async () => {
-        screen.debug(undefined, Infinity);
         await user.click(submit);
       });
 
@@ -365,6 +368,8 @@ describe("SignupForm", () => {
       await user.type(emailInput, "me@gmail.com");
       const { input: passwordInput } = getInput("password");
       await user.type(passwordInput, "password");
+      // terms must be accepted to submit
+      await user.click(screen.getByRole("checkbox"));
       const { submit } = getActionButtons();
       await waitFor(async () => {
         await expect(getAddressResults().container).toBeTruthy();
@@ -379,7 +384,6 @@ describe("SignupForm", () => {
       });
       // act
       await act(async () => {
-        screen.debug(undefined, Infinity);
         await user.click(submit);
       });
 
@@ -394,6 +398,46 @@ describe("SignupForm", () => {
       await waitFor(async () => {
         expect(toast.success).not.toHaveBeenCalled();
       });
+    });
+  });
+
+  describe("Cancel and legal links", () => {
+    const setBottomSlideInTypeSpy = vi.fn();
+    const setIsOpenBottomSlideInSpy = vi.fn();
+    const setShowTermsModalSpy = vi.fn();
+    const setTermsModalTypeSpy = vi.fn();
+    beforeEach(() => {
+      vi.mocked(GlobalContext.useGlobalContext).mockImplementation(() => ({
+        ...mockUseGlobalContextReturnObj,
+        setBottomSlideInType: setBottomSlideInTypeSpy,
+        setIsOpenBottomSlideIn: setIsOpenBottomSlideInSpy,
+        setShowTermsModal: setShowTermsModalSpy,
+        setTermsModalType: setTermsModalTypeSpy,
+      }));
+      vi.mocked(useSignup).mockImplementation(
+        () => ({ signup: vi.fn(), signupError: null }) as any,
+      );
+    });
+    afterEach(() => {
+      vi.clearAllMocks();
+    });
+
+    it("should close the slide-in when cancel is clicked", async () => {
+      await prepareForm("Business");
+      await user.click(screen.getByRole("button", { name: "Cancel" }));
+      expect(setIsOpenBottomSlideInSpy).toHaveBeenCalledWith(false);
+      expect(setBottomSlideInTypeSpy).toHaveBeenCalledWith(null);
+    });
+
+    it.each([
+      ["Terms and Conditions", "terms"],
+      ["Privacy Policy", "privacy"],
+      ["Community Guidelines", "guidelines"],
+    ])("should open the %s modal", async (linkText, type) => {
+      await prepareForm("Business");
+      await user.click(screen.getByText(linkText));
+      expect(setShowTermsModalSpy).toHaveBeenCalledWith(true);
+      expect(setTermsModalTypeSpy).toHaveBeenCalledWith(type);
     });
   });
 });
