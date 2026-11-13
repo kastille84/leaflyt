@@ -71,7 +71,34 @@ Notes:
 - **Anonymous defaults:** 1 media, up to 10 on-location flyers, no remote posting, no templates.
 - The "Why upgrade" prompt sells: more templates, more posting from home, a larger posting distance, more image/video uploads, bulk posting and longer flyer lifespan.
 
-**[Open]** Prices and the exact per-plan numbers (flyer limits, template limits, distance, asset limits) live in the `plans` table, not in the repo. Confirm and record the authoritative values here before using this document for pricing or sales material.
+### Plan data (from `plans_rows.sql`, repo root)
+
+Snapshot of the `plans` table rows. The database is the source of truth; if prices or limits change there, update this table.
+
+| | **Seed** (L1) | **Garden** (L2) | **Grove** (L3) | **Forest** (L4) |
+|---|---|---|---|---|
+| **Price** | 0 (free) | 7 | 12 | 18 |
+| **Tagline** | "Get to know Leaflyt and post flyers with our generous free plan" | "For Enthusiasts who have something to say or sell" | "For Businesses and Orgs who want greater visibility" | "For those who want to leave a lasting mark beyond their community" |
+| **Price tagline** | "Post Flyers For Free!" | "Less Than a Ream of Paper" | "Less Than an Ink Cartridge" | "Save Time & Gas Spent Posting" |
+| **Max flyer lifespan** | 1 week | 2 weeks | 2 weeks | 4 weeks |
+| **Media per flyer** | 2 | 4 | 6 | 10 |
+| **On-location flyers** | 10 | 20 | 40 | 80 |
+| **Remote flyers** | 4 | 10 | 20 | 40 |
+| **Max flyers at any moment** (on-location + remote) | 14 | 30 | 60 | 120 |
+| **Templates** | 1 | 2 | 4 | 8 |
+| **Saved assets** | 4 | 10 | 20 | 30 |
+| **Virtual posting distance** (stored value → miles shown in the UI) | 0.05 → ~3.1 mi | 0.05 → ~3.1 mi | 0.1 → ~6.2 mi | 0.25 → ~15.5 mi |
+| **Bulk posting** | No | No | Yes | Yes |
+| **Analytics** | None | Lite | Full | Full |
+| **Stripe product ID** | none | redacted | redacted | redacted |
+
+Notes:
+- The distance in miles is how `PlanItem.tsx` displays the stored value (`value × 100 × 0.621371`); the stored value is not itself a unit of miles.
+- Anonymous users are not in the table. They use a client-side default (see above).
+- Bulk posting is only a plan flag today; the feature itself is stubbed **[Roadmap]**. Analytics tiers are also ahead of the product: only likes and QR scans exist (see 6.5).
+- The seed tagline spells the product "Leaflyt"; the brand is Leaflit.
+
+**[Open]** The file stores `price` as a bare number. Confirm the currency and billing period (presumably USD per month) against the Stripe products before using this in sales material.
 
 ## 5.1 Core User Flows
 
@@ -232,7 +259,7 @@ Enums: `posting_method` (`onLocation`, `remote`, `remoteBulk`), `type_of_analyti
 | Location trust: on-site posting is not verified | Confirmed: no client or server check that a poster is at the place. **[Open]** Decide whether to verify proximity for on-site flyers |
 | Open database policies expose user and billing data | See section 10, item 11 |
 | Third-party dependency cost and lock-in (OpenAI, Cloudinary, Google Maps, Stripe) | Monitor unit costs per flyer |
-| Authoritative plan prices and limits are in the database, not the repo | Record them here once confirmed |
+| Plan prices and limits are authoritative in the database, with a snapshot in section 5 | Keep the snapshot in sync; confirm currency and billing period |
 | Establishment owner involvement (claiming/curating a board) | **[Open]** Not currently supported |
 
 ## 12. Release and Process
