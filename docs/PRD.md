@@ -2,7 +2,8 @@
 
 | | |
 |---|---|
-| **Product** | Leaflit (repo: `leaflyt`, domain: leaflit.us) |
+| **Product** | Leaflit (repo: `leaflyt`) |
+| **Website** | https://www.leaflit.us |
 | **Status** | Living document, reflects the product as built plus known roadmap items |
 | **Last updated** | 2026-11-12 |
 
@@ -16,7 +17,7 @@
 
 Leaflit is a virtual flyer distribution platform. Instead of printing flyers and pinning them to physical bulletin boards, users design a flyer once and post it to a **virtual community board** tied to a real-world establishment (café, library, gym, shop, etc.). People at or near that location browse the board on their phone and interact with flyers.
 
-Leaflit ships as a Progressive Web App (PWA) so it works as an installable, mobile-first experience.
+Leaflit ships as a Progressive Web App (PWA) so it works as an installable, mobile-first experience. The live product is at **https://www.leaflit.us**, where the landing page, pricing, FAQ and the app itself are served.
 
 ## 2. Problem Statement
 

@@ -2,6 +2,33 @@ import { SignupSubmitData } from "../interfaces/Auth_User";
 import { getBaseUrl } from "../utils/ServiceUtils";
 import { supabase } from "./supabase";
 
+// A paid plan with no Stripe customer row has no subscription behind it
+// (e.g. an abandoned re-payment after a failed charge). Drop it to Seed.
+// powerUser / pioneer accounts are granted plans outside of Stripe, so skip them.
+async function resetPlanIfNoSubscription(userProfile: any) {
+  const customers = userProfile?.customers ?? [];
+  if (
+    customers.length > 0 ||
+    !userProfile?.plan ||
+    userProfile.plan.id === 1 ||
+    userProfile.powerUser ||
+    userProfile.pioneer
+  ) {
+    return;
+  }
+  const { data: freePlan } = await supabase
+    .from("plans")
+    .select("*")
+    .eq("id", 1)
+    .single();
+  if (!freePlan) return;
+  const { error } = await supabase
+    .from("profiles")
+    .update({ plan: freePlan.id })
+    .eq("id", userProfile.id);
+  if (!error) userProfile.plan = freePlan;
+}
+
 export const loginUser = async (email: string, password: string) => {
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -64,6 +91,7 @@ export const loginUser = async (email: string, password: string) => {
       // update userProfile's plan
       userProfile.plan = newPlan;
     }
+    await resetPlanIfNoSubscription(userProfile);
     return {
       data: userProfile,
       error: null,
@@ -128,6 +156,7 @@ export const loginUserWithAccessToken = async () => {
         },
       };
     }
+    await resetPlanIfNoSubscription(userProfile);
     return {
       data: userProfile,
       error: null,

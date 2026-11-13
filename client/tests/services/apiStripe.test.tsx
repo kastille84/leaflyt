@@ -52,7 +52,10 @@ describe("apiStripe", () => {
 
   describe("deleteCustomer", () => {
     it("deletes the customer and returns the data", async () => {
-      fetchMock.mockResolvedValue({ json: async () => ({ data: "gone" }) });
+      fetchMock.mockResolvedValue({
+        ok: true,
+        json: async () => ({ data: "gone" }),
+      });
       expect(await deleteCustomer({ customerId: "c1" })).toBe("gone");
       const [url, options] = fetchMock.mock.calls[0];
       expect(url).toMatch(/\/api\/stripe\/delete-customer$/);
@@ -68,13 +71,20 @@ describe("apiStripe", () => {
         error,
       });
     });
+
+    it("returns an error when the server responds with a failure", async () => {
+      fetchMock.mockResolvedValue({ ok: false, json: async () => ({}) });
+      const result: any = await deleteCustomer({ customerId: "c1" });
+      expect(result.data).toBeNull();
+      expect(result.error).toBeInstanceOf(Error);
+    });
   });
 
   describe("updateSubscription", () => {
     const args = { subscriptionId: "s1", plan: "2", userId: "u1" };
 
     it("updates the subscription and the user plan", async () => {
-      fetchMock.mockResolvedValue({ json: async () => ({}) });
+      fetchMock.mockResolvedValue({ ok: true, json: async () => ({}) });
       const [query] = queueFrom(from, { data: { id: "u1" }, error: null });
       expect(await updateSubscription(args)).toEqual({
         user: { id: "u1" },
@@ -94,6 +104,24 @@ describe("apiStripe", () => {
       const error = new Error("network");
       fetchMock.mockRejectedValue(error);
       expect(await updateSubscription(args)).toEqual({ data: null, error });
+    });
+
+    it("does not touch the user plan when Stripe rejects the change", async () => {
+      fetchMock.mockResolvedValue({ ok: false, json: async () => ({}) });
+      const result: any = await updateSubscription(args);
+      expect(result.data).toBeNull();
+      expect(result.error).toBeInstanceOf(Error);
+      expect(from).not.toHaveBeenCalled();
+    });
+
+    it("returns the error when saving the plan in supabase fails", async () => {
+      fetchMock.mockResolvedValue({ ok: true, json: async () => ({}) });
+      const dbError = { message: "db" };
+      queueFrom(from, { data: null, error: dbError });
+      expect(await updateSubscription(args)).toEqual({
+        data: null,
+        error: dbError,
+      });
     });
   });
 

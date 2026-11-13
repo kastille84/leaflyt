@@ -14,18 +14,27 @@ export default function useStripe() {
       mutationFn: (prepData: any) => createCustomer(prepData),
     });
 
+  // the services swallow failures into { error }, which would count as a
+  // success for react-query. Rethrow so onError / rejected promises fire.
+  const throwOnError = async (promise: Promise<any>) => {
+    const result = await promise;
+    if (result?.error) throw result.error;
+    return result;
+  };
+
   const { mutate: deleteCustomerFn, error: deleteCustomerFnError } =
     useMutation({
-      mutationFn: (prepData: any) => deleteCustomer(prepData),
+      mutationFn: (prepData: any) => throwOnError(deleteCustomer(prepData)),
     });
   const { mutateAsync: deleteCustomerAsync, error: deleteCustomerAsyncError } =
     useMutation({
-      mutationFn: (prepData: any) => deleteCustomer(prepData),
+      mutationFn: (prepData: any) => throwOnError(deleteCustomer(prepData)),
     });
 
   const { mutate: updateSubscriptionFn, error: updateSubscriptionFnError } =
     useMutation({
-      mutationFn: (prepData: any) => updateSubscription(prepData),
+      mutationFn: (prepData: any) =>
+        throwOnError(updateSubscription(prepData)),
     });
 
   // const {

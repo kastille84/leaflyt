@@ -44,6 +44,18 @@ describe("useStripe", () => {
     expect(value).toBe("ok");
   });
 
+  it("treats a service { error } result as a failed mutation", async () => {
+    mocked.updateSubscription.mockResolvedValue({
+      data: null,
+      error: new Error("stripe"),
+    });
+    const { result } = setup();
+    act(() => result.current.updateSubscriptionFn({}));
+    await waitFor(() =>
+      expect(result.current.updateSubscriptionFnError).toBeTruthy(),
+    );
+  });
+
   it("updateUserPlanFn passes userId and plan", async () => {
     mocked.updateUserPlan.mockResolvedValue({});
     const { result } = setup();
