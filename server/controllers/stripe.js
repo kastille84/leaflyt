@@ -70,6 +70,10 @@ exports.createCheckoutSession = async (req, res, next) => {
       ui_mode: "custom",
       payment_method_types: ["card"],
       customer: req.body.customerId,
+      // lets the payment step accept a promotion code (e.g. early-adopter offer).
+      // Don't restrict codes to first-time customers in Stripe: the customer is
+      // created before the session, so those codes would be rejected as invalid.
+      allow_promotion_codes: true,
       line_items: [
         {
           price: productsPrice[mapPlanToName[req.body.plan]],

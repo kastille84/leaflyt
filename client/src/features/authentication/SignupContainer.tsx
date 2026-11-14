@@ -84,6 +84,7 @@ export default function SignupContainer() {
         <PaymentFormContainer
           signedUpUser={signedUpUser}
           pickPlanInfo={pickPlanInfo}
+          onBack={() => setPickPlanInfo(null)}
         />
       )}
     </StyledRegistrationContainer>

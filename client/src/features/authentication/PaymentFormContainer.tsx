@@ -39,11 +39,13 @@ export default function PaymentFormContainer({
   pickPlanInfo,
   hideCancel,
   updatePaymentInfo,
+  onBack,
 }: {
   signedUpUser: Auth_User_Signup_Response | null;
   pickPlanInfo: PickPlanInfo;
   hideCancel?: boolean;
   updatePaymentInfo?: boolean;
+  onBack?: () => void;
 }) {
   const { stripe, loading } = useStripeContext();
   const [clientSecret, setClientSecret] = useState(null);
@@ -80,6 +82,7 @@ export default function PaymentFormContainer({
           pickPlanInfo={pickPlanInfo}
           hideCancel={hideCancel}
           updatePaymentInfo={updatePaymentInfo}
+          onBack={onBack}
         />
       </StyledFormContainer>
     </CheckoutProvider>

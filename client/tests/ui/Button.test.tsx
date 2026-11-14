@@ -43,6 +43,7 @@ describe("Button", () => {
     "primary",
     "secondary",
     "secondary-outlined",
+    "brand-outlined",
     "danger",
     "disabled",
   ] as const)("should render the %s variation", (variation) => {
