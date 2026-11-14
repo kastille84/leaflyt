@@ -52,7 +52,7 @@ export const loginUser = async (email: string, password: string) => {
         customers(*)
         `,
       )
-      .eq("email", email)
+      .eq("user", data.user.id)
       .single();
     if (userProfileError) {
       throw userProfileError;
@@ -138,7 +138,7 @@ export const loginUserWithAccessToken = async () => {
         customers(*)
         `,
       )
-      .eq("email", data.user.email)
+      .eq("user", data.user.id)
       .single();
 
     if (userProfileError) {
@@ -219,7 +219,7 @@ export const signupUser = async (prepData: SignupSubmitData) => {
       name: typeof name === "string" ? name : null,
       firstName: typeof name === "object" ? name.firstName : null,
       lastName: typeof name === "object" ? name.lastName : null,
-      email: contact.email,
+      email: contact.email?.trim().toLowerCase(),
       phone: contact.phone,
       website: contact.website,
       address: prepData.addressObjToSave,

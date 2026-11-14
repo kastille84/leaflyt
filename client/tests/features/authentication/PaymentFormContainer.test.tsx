@@ -10,6 +10,9 @@ vi.mock("../../../src/features/authentication/PaymentForm", () => ({
   default: (props: any) => (
     <div data-testid="payment-form">
       {String(props.hideCancel)}-{String(props.updatePaymentInfo)}
+      <button type="button" onClick={props.onBack}>
+        forwarded-back
+      </button>
     </div>
   ),
 }));
@@ -104,7 +107,25 @@ describe("PaymentFormContainer", () => {
     expect(screen.getByTestId("checkout-provider").dataset.secret).toBe(
       "secret_1",
     );
-    expect(screen.getByTestId("payment-form").textContent).toBe("true-true");
+    expect(screen.getByTestId("payment-form").textContent).toContain(
+      "true-true",
+    );
+  });
+
+  it("forwards onBack to the payment form", () => {
+    const onBack = vi.fn();
+    createCheckoutSessionFn.mockImplementation((_data, { onSuccess }) =>
+      onSuccess({ clientSecret: "secret_1" }),
+    );
+    render(
+      <PaymentFormContainer
+        signedUpUser={signedUpUser}
+        pickPlanInfo={pickPlanInfo}
+        onBack={onBack}
+      />,
+    );
+    screen.getByText("forwarded-back").click();
+    expect(onBack).toHaveBeenCalled();
   });
 
   it("keeps the spinner when creating the checkout session fails", () => {

@@ -49,6 +49,16 @@ const variations = {
       color: var(--color-grey-600);
     }
   `,
+  // readable outlined button (brand text and border) for secondary actions
+  "brand-outlined": css`
+    color: var(--color-brand-600);
+    background-color: var(--color-grey-0);
+    border: 1px solid var(--color-brand-600);
+
+    &:hover {
+      background-color: var(--color-brand-50);
+    }
+  `,
   danger: css`
     color: var(--color-red-100);
     background-color: var(--color-red-600);
@@ -69,6 +79,7 @@ const Button = styled.button<{
     | "primary"
     | "secondary"
     | "secondary-outlined"
+    | "brand-outlined"
     | "danger"
     | "disabled";
 }>`

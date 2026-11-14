@@ -273,7 +273,8 @@ export default function PickPlanForm({
           )}
         <StyledFormButtonContainer data-testid="form-button-container">
           {/* Signup */}
-          {!(!isUpgrade || !isAnyPaidPlan) &&
+          {!isUpgrade &&
+            !isAnyPaidPlan &&
             planWatch &&
             planWatch !== "1" && <Button type="submit">Continue to Pay</Button>}
           {!isUpgrade && !isAnyPaidPlan && planWatch && planWatch === "1" && (

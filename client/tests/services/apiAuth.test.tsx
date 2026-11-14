@@ -43,7 +43,10 @@ describe("apiAuth", () => {
 
   describe("loginUser", () => {
     beforeEach(() => {
-      auth.signInWithPassword.mockResolvedValue({ data: {}, error: null });
+      auth.signInWithPassword.mockResolvedValue({
+        data: { user: { id: "auth1" } },
+        error: null,
+      });
     });
 
     it("returns the profile when the user has no customers", async () => {
@@ -54,7 +57,7 @@ describe("apiAuth", () => {
         email: "a@b.c",
         password: "pw",
       });
-      expect(query.eq).toHaveBeenCalledWith("email", "a@b.c");
+      expect(query.eq).toHaveBeenCalledWith("user", "auth1");
       expect(result).toEqual({ data: profile, error: null });
     });
 
@@ -138,7 +141,7 @@ describe("apiAuth", () => {
   describe("loginUserWithAccessToken", () => {
     beforeEach(() => {
       auth.getUser.mockResolvedValue({
-        data: { user: { email: "a@b.c" } },
+        data: { user: { id: "auth1" } },
         error: null,
       });
     });
@@ -147,7 +150,7 @@ describe("apiAuth", () => {
       const profile = { id: 1, customers: [] };
       const [query] = queueFrom(from, { data: profile, error: null });
       const result = await loginUserWithAccessToken();
-      expect(query.eq).toHaveBeenCalledWith("email", "a@b.c");
+      expect(query.eq).toHaveBeenCalledWith("user", "auth1");
       expect(result).toEqual({ data: profile, error: null });
     });
 
@@ -188,7 +191,10 @@ describe("apiAuth", () => {
       [
         "loginUser",
         () => {
-          auth.signInWithPassword.mockResolvedValue({ data: {}, error: null });
+          auth.signInWithPassword.mockResolvedValue({
+            data: { user: { id: "auth1" } },
+            error: null,
+          });
           return loginUser("a@b.c", "pw");
         },
       ],
@@ -196,7 +202,7 @@ describe("apiAuth", () => {
         "loginUserWithAccessToken",
         () => {
           auth.getUser.mockResolvedValue({
-            data: { user: { email: "a@b.c" } },
+            data: { user: { id: "auth1" } },
             error: null,
           });
           return loginUserWithAccessToken();
@@ -216,7 +222,10 @@ describe("apiAuth", () => {
     });
 
     it("leaves powerUser accounts alone", async () => {
-      auth.signInWithPassword.mockResolvedValue({ data: {}, error: null });
+      auth.signInWithPassword.mockResolvedValue({
+        data: { user: { id: "auth1" } },
+        error: null,
+      });
       queueFrom(from, {
         data: { ...paidProfile(), powerUser: true },
         error: null,
@@ -227,7 +236,10 @@ describe("apiAuth", () => {
     });
 
     it("keeps the plan when the reset update fails", async () => {
-      auth.signInWithPassword.mockResolvedValue({ data: {}, error: null });
+      auth.signInWithPassword.mockResolvedValue({
+        data: { user: { id: "auth1" } },
+        error: null,
+      });
       queueFrom(
         from,
         { data: paidProfile(), error: null },
@@ -239,7 +251,10 @@ describe("apiAuth", () => {
     });
 
     it("keeps the plan when the free plan cannot be found", async () => {
-      auth.signInWithPassword.mockResolvedValue({ data: {}, error: null });
+      auth.signInWithPassword.mockResolvedValue({
+        data: { user: { id: "auth1" } },
+        error: null,
+      });
       queueFrom(
         from,
         { data: paidProfile(), error: null },

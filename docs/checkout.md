@@ -53,8 +53,13 @@ No Stripe call. Toast, slide-in closes. `profiles.plan = 1` (sign-up always star
 
 `profiles.plan` is **not** changed by the checkout itself; step 6 activates it.
 
+**Promo codes.** The session is created with `allow_promotion_codes: true`, and `PaymentForm` has a "Promo code" field that calls `checkout.applyPromotionCode()` / `removePromotionCode()`; the Pay button total reflects the discount. Coupons and promotion codes live only in Stripe (no Supabase columns). For the early-adopter offer: a 100%-off, `repeating` coupon with a promotion code. The card is still collected, so Stripe bills it automatically when the free months end; a failure there follows scenario 7. Do **not** set "first-time customers only" on a code: the customer is created before the session, so Stripe rejects it as invalid. Codes apply at this step only, not in paid → paid plan changes (scenarios 4–5).
+
 ### 3. Cancel at the payment step
 `PaymentForm` Cancel → modal `onPayment` → `DELETE /delete-customer` removes the customer in Stripe and in `customers`. User stays on Seed.
+
+### 3b. Back at the payment step
+`PaymentForm` shows a **Back** button when its container passes `onBack` (sign-up and upgrade/change-plan do; the unpaid flow does not). Back runs `DELETE /delete-customer` for the pending customer, then `setPickPlanInfo(null)` returns to the plan picker. Deleting first matters: `create-customer` has no duplicate check, so keeping the old customer would leave two `customers` rows for the user (login reads `customers[0]`). The next "Continue to Pay" creates a fresh customer, and the billing form is re-entered. If the delete fails, the error shows and the user stays on the payment step. `profiles.plan` is untouched.
 
 ### 4. Upgrade paid → higher paid (`upgrade`)
 ### 5. Change / downgrade paid → paid (`changePlan`)
