@@ -133,6 +133,22 @@ describe("PickPlanForm", () => {
     expect(screen.queryByText("Try Seed Plan for Free")).toBeNull();
   });
 
+  it("shows Continue to Pay (not only Cancel) when a paid plan is picked at signup", async () => {
+    renderForm();
+    expect(screen.queryByText("Continue to Pay")).toBeNull();
+    await user.click(screen.getByText("pick-paid"));
+    expect(await screen.findByText("Continue to Pay")).toBeTruthy();
+    expect(screen.getByText("Cancel")).toBeTruthy();
+    expect(screen.queryByText("Finalize New Plan")).toBeNull();
+  });
+
+  it("shows only Finalize New Plan when changing between paid plans", async () => {
+    renderForm({ isAnyPaidPlan: true, currentPlanId: 2 });
+    await user.click(screen.getByText("pick-paid"));
+    expect(await screen.findByText("Finalize New Plan")).toBeTruthy();
+    expect(screen.queryByText("Continue to Pay")).toBeNull();
+  });
+
   it("hides the account holder fields when switching back to the free plan", async () => {
     renderForm();
     await user.click(screen.getByText("pick-paid"));

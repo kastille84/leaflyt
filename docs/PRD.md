@@ -155,6 +155,7 @@ A flyer's **posting method** is one of `onLocation`, `remote` or `remoteBulk`, s
 ### 6.6 Payments and Billing
 - Stripe subscriptions: plan checkout, billing info, payment form, plan changes, cancellation.
 - Paid plans are Garden, Grove and Forest; their Stripe price IDs come from environment variables.
+- Stripe promotion codes can be entered at the payment step (e.g. early-adopter offers for storefront owners). Coupons are managed in Stripe only; see `docs/checkout.md`.
 - Stripe webhook updates subscription state server-side (handles invoice paid and payment failed → `unpaid`, plus subscription created, updated, paused, resumed and deleted). It is mounted before the JSON body parser so the raw body is available for signature verification.
 - "My Billing" and "My Plan" views (under `/dashboard/account`).
 
