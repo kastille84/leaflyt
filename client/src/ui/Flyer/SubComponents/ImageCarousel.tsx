@@ -7,35 +7,38 @@ import type { GalleryItem, ImageGalleryRef } from "react-image-gallery";
 import { useEffect, useRef } from "react";
 
 const CarouselContainer = styled.div<{ hide?: boolean }>`
-  /* Force uniform container dimensions */
-  & .image-gallery-container {
-    /* height: 250px; Set your desired frame height */
+  /* Fullscreen modal must sit above the sidebar (z-index 100) and drawers (1000) */
+  & .image-gallery.fullscreen-modal {
+    z-index: 1100;
   }
 
-  & .image-gallery-content.fullscreen {
-    z-index: 1000;
-  }
-
-  /* Normalize and center the image within the frame */
-  & .image-gallery-image {
+  /* Uniform 4:3 frame for every slide (image or video), letterboxed */
+  & .slide-frame {
+    position: relative;
     width: 100%;
-    height: auto;
-    object-fit: contain; /* Crops/scales images to fit the 500px box perfectly */
-    object-position: center;
-
-    overflow-y: auto;
-    & img {
-      display: block;
-      margin: auto;
-    }
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+    overflow: hidden;
   }
 
-  & .video-wrapper {
+  & .slide-frame img,
+  & .slide-frame video {
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    max-height: none;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+  }
+
+  /* Fullscreen: frame fills the viewport, media stays contained */
+  & .image-gallery.fullscreen-modal .slide-frame {
+    aspect-ratio: auto;
+    width: 100vw;
+    height: 100dvh;
   }
 
   & .image-gallery-svg {
@@ -98,26 +101,6 @@ export default function ImageCarousel({
   fromFlyerBlock?: boolean;
   bgColor?: string;
 }) {
-  const responsive = {
-    superLargeDesktop: {
-      // the naming can be any, depends on you.
-      breakpoint: { max: 4000, min: 3000 },
-      items: 1,
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 1,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 1,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-    },
-  };
-
   const { contextImages } = useGlobalContext();
 
   // either use provided images (from flyer block) or context images (from bottom slide-in)
@@ -134,41 +117,18 @@ export default function ImageCarousel({
   const renderGalleryItem = (item) => {
     if (item.isVideo) {
       return (
-        <div
-          className="video-wrapper"
-          style={{
-            // position: "relative",
-            paddingBottom: "56.25%",
-            height: 0,
-            overflow: "hidden",
-          }}
-        >
-          <video
-            src={item.original}
-            controls
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-              objectPosition: "center",
-            }}
-            // poster={item.original} // Fallback background image before play
-          />
+        <div className="slide-frame">
+          <video src={item.original} controls />
         </div>
       );
     }
 
-    // Default return for standard images fallback
     return (
-      <div className="image-gallery-image">
+      <div className="slide-frame">
         <img
           src={item.original}
           alt={item.originalAlt}
           title={item.originalTitle}
-          // style={{ width: "100%", height: "stretch" }}
         />
         {item.description && (
           <span className="image-gallery-description">{item.description}</span>
@@ -206,12 +166,6 @@ export default function ImageCarousel({
         // useBrowserFullscreen={true}
         onBeforeSlide={(nextIndex) => {
           hideFullScreenButtonOnVideoSlide(nextIndex);
-        }}
-        onImageLoad={(event) => {
-          const imgElement = event.target as HTMLImageElement;
-          console.log("imgElement:", imgElement);
-          // imgElement.style.objectFit = "contain";
-          // imgElement.style.objectPosition = "center";
         }}
       />
     </CarouselContainer>
