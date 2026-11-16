@@ -1,121 +1,172 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import styled, { keyframes } from "styled-components";
+import { HiXMark } from "react-icons/hi2";
 import { usePWAInstallation } from "../hooks/usePWAInstallation";
+import Button from "./Button";
 
-/* Styled Components Definitions */
+// Wait before showing so the prompt never competes with a first visit.
+export const PWA_BANNER_DELAY_MS = 8000;
 
-const BannerContainer = styled.div`
+const slideUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(1.6rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const StyledBanner = styled.div`
   position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #222222;
-  color: #ffffff;
-  padding: 24px 16px 16px 16px;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-  z-index: 999;
-  width: 90%;
-  max-width: 420px;
-  text-align: center;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-`;
+  right: 1.6rem;
+  bottom: max(1.6rem, env(safe-area-inset-bottom));
+  z-index: 900;
+  width: min(40rem, calc(100% - 3.2rem));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1.2rem;
+  padding: 0.8rem 0.8rem 0.8rem 1.6rem;
+  background-color: #fff;
+  color: var(--color-grey-700);
+  border: 1px solid var(--color-brand-200);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  animation: ${slideUp} 0.3s ease-out;
 
-const CloseButton = styled.button`
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  background-color: transparent;
-  color: #aaaaaa;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  padding: 4px;
-  transition: color 0.2s ease;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 
-  &:hover {
-    color: #ffffff;
+  @media (max-width: 34em) {
+    right: 0.8rem;
+    left: 0.8rem;
+    bottom: max(0.8rem, env(safe-area-inset-bottom));
+    width: auto;
   }
 `;
 
-const BannerText = styled.p`
-  margin: 0 0 16px 0;
-  font-size: 14px;
-  padding-right: 12px;
-  line-height: 1.4;
+const StyledBannerText = styled.p`
+  flex: 1 1 0;
+  min-width: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-grey-700);
 `;
 
-const InstallButton = styled.button`
-  background-color: #0070f3;
-  color: #ffffff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  width: 100%;
-  font-size: 14px;
-  transition: background-color 0.2s ease;
+const StyledActions = styled.div`
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+`;
+
+const StyledActionButton = styled(Button)`
+  min-height: 4.4rem;
+  white-space: nowrap;
+`;
+
+const StyledCloseButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 4.4rem;
+  width: 4.4rem;
+  height: 4.4rem;
+  font-size: 2.2rem;
+  color: var(--color-grey-700);
+  background-color: var(--color-grey-50);
+  border: 1px solid var(--color-grey-200);
+  border-radius: 50%;
 
   &:hover {
-    background-color: #0051b3;
+    background-color: var(--color-grey-200);
   }
 `;
 
-const InstructionText = styled.div`
-  font-size: 13px;
-  color: #cccccc;
+const StyledInstructions = styled.p`
+  flex: 1 0 100%;
+  padding: 0.4rem 0.8rem 0.8rem 0;
+  font-size: 1.4rem;
   line-height: 1.5;
+  color: var(--color-grey-600);
 
   strong {
-    color: #ffffff;
+    color: var(--color-grey-700);
   }
 `;
 
-export function PWAInstallBanner(): React.JSX.Element | null {
+export function PWAInstallBanner({
+  delayMs = PWA_BANNER_DELAY_MS,
+}: {
+  delayMs?: number;
+}): React.JSX.Element | null {
   const { isInstallable, platform, triggerChromiumInstall, dismissPrompt } =
     usePWAInstallation();
+  const [isReady, setIsReady] = useState(false);
+  const [showSteps, setShowSteps] = useState(false);
 
-  if (!isInstallable) {
+  useEffect(() => {
+    if (!isInstallable) return;
+    const timer = setTimeout(() => setIsReady(true), delayMs);
+    return () => clearTimeout(timer);
+  }, [isInstallable, delayMs]);
+
+  if (!isInstallable || !isReady) {
     return null;
   }
 
+  const isIOSOtherBrowser = platform.isIOS && !platform.isIOSSafari;
+
   return (
-    <BannerContainer>
-      <CloseButton onClick={dismissPrompt} aria-label="Dismiss">
-        ✕
-      </CloseButton>
+    <StyledBanner role="region" aria-label="Install Leaflit">
+      <StyledBannerText>
+        {isIOSOtherBrowser
+          ? "Install Leaflit from Safari"
+          : "Install Leaflit for faster access"}
+      </StyledBannerText>
 
-      <BannerText>
-        Install the app for faster access to Community Boards!
-      </BannerText>
+      <StyledActions>
+        {/* Case A: Desktop or Android Chromium environments */}
+        {platform.isChromium && (
+          <StyledActionButton onClick={triggerChromiumInstall}>
+            Install Now
+          </StyledActionButton>
+        )}
 
-      {/* Case A: Desktop or Android Chromium Environments */}
-      {platform.isChromium && (
-        <InstallButton onClick={triggerChromiumInstall}>
-          Install Now
-        </InstallButton>
+        {/* Case B: Native iOS Safari */}
+        {platform.isIOSSafari && (
+          <StyledActionButton
+            variation="brand-outlined"
+            aria-expanded={showSteps}
+            onClick={() => setShowSteps((open) => !open)}
+          >
+            How
+          </StyledActionButton>
+        )}
+
+        <StyledCloseButton onClick={dismissPrompt} aria-label="Dismiss">
+          <HiXMark />
+        </StyledCloseButton>
+      </StyledActions>
+
+      {platform.isIOSSafari && showSteps && (
+        <StyledInstructions>
+          Tap the <strong>Share icon</strong> in Safari's toolbar, then choose{" "}
+          <strong>"Add to Home Screen"</strong>.
+        </StyledInstructions>
       )}
 
-      {/* Case B: Native iOS Apple Safari */}
-      {platform.isIOSSafari && (
-        <InstructionText>
-          To install, tap the <strong>Share icon</strong> (
-          <span role="img" aria-label="share">
-            ⎋
-          </span>
-          ) below, then choose <strong>"Add to Home Screen"</strong>.
-        </InstructionText>
-      )}
-
-      {/* Case C: iOS Third Party Browsers (Chrome, Edge, Firefox) */}
-      {platform.isIOS && !platform.isIOSSafari && (
-        <InstructionText>
+      {/* Case C: iOS third-party browsers (Chrome, Edge, Firefox) */}
+      {isIOSOtherBrowser && (
+        <StyledInstructions>
           App installation requires Safari on iOS. Please copy this URL and open
           it inside Apple Safari to install.
-        </InstructionText>
+        </StyledInstructions>
       )}
-    </BannerContainer>
+    </StyledBanner>
   );
 }

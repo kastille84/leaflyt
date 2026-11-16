@@ -68,19 +68,28 @@ describe("Landing Page", () => {
   it("should render the intro sections", async () => {
     await renderLanding();
     expect(
-      screen.getByRole("heading", { level: 1, name: "What Is Leaflit?" })
+      screen.getByRole("heading", {
+        level: 1,
+        name: "What's happening around you.",
+      })
+    ).toBeTruthy();
+    expect(
+      screen.getByRole("heading", { level: 2, name: "What is Leaflit?" })
+    ).toBeTruthy();
+    expect(
+      screen.getByRole("heading", { level: 2, name: "How to use Leaflit" })
     ).toBeTruthy();
     expect(
       screen.getByRole("heading", {
-        level: 1,
-        name: "How To Use Leaflit?",
+        level: 2,
+        name: "Turn your storefront into a community hub",
       })
     ).toBeTruthy();
     expect(screen.getByTestId("get-geo-button-section")).toBeTruthy();
   });
 
   describe("getUserGeo", () => {
-    it("should be called when the hero is clicked", async () => {
+    it("should be called when the hero button is clicked", async () => {
       await renderLanding();
       await user.click(screen.getByTestId("get-geo-button-section"));
       expect(getUserGeoSpy).toHaveBeenCalled();
@@ -112,13 +121,16 @@ describe("Landing Page", () => {
       expect(screen.getByText("Messy Boards")).toBeTruthy();
       expect(screen.getByText("Organized Boards")).toBeTruthy();
       expect(screen.queryByText("Limited Space")).toBeNull();
+      expect(
+        screen.getByRole("button", { name: "Viewing Flyers" }).getAttribute("aria-pressed")
+      ).toBe("true");
 
-      await user.click(screen.getAllByRole("button", { name: "Posting Flyers" })[0]);
+      await user.click(screen.getByRole("button", { name: "Posting Flyers" }));
       expect(screen.getByText("Limited Space")).toBeTruthy();
       expect(screen.getByText("Ample Space")).toBeTruthy();
       expect(screen.queryByText("Messy Boards")).toBeNull();
 
-      await user.click(screen.getAllByRole("button", { name: "Viewing Flyers" })[0]);
+      await user.click(screen.getByRole("button", { name: "Viewing Flyers" }));
       expect(screen.getByText("Messy Boards")).toBeTruthy();
     });
 
@@ -230,29 +242,25 @@ describe("Landing Page", () => {
     });
   });
 
-  describe("Explainer toggles", () => {
-    beforeEach(() => {
-      mockSession(null);
-    });
-
-    it("should switch the solution items between viewing and posting", async () => {
+  describe("community hub", () => {
+    it("should open the signup slide in from the storefront button", async () => {
       await renderLanding();
-      // the solution section is the second set of toggle buttons
-      expect(screen.getByText("Organized Boards")).toBeTruthy();
-      await user.click(screen.getAllByText("Posting Flyers")[1]);
-      expect(screen.queryByText("Organized Boards")).toBeNull();
-      expect(screen.getByText("Ample Space")).toBeTruthy();
-      await user.click(screen.getAllByText("Viewing Flyers")[1]);
-      expect(screen.getByText("Organized Boards")).toBeTruthy();
+      await user.click(
+        screen.getByRole("button", { name: "Create your storefront board" })
+      );
+      expect(setIsOpenBottomSlideInSpy).toHaveBeenCalledWith(true);
+      expect(setBottomSlideInTypeSpy).toHaveBeenCalledWith("signup");
     });
+  });
 
-    it("should switch the problem items between viewing and posting", async () => {
-      await renderLanding();
-      expect(screen.getByText("Messy Boards")).toBeTruthy();
-      await user.click(screen.getAllByText("Posting Flyers")[0]);
-      expect(screen.queryByText("Messy Boards")).toBeNull();
-      await user.click(screen.getAllByText("Viewing Flyers")[0]);
-      expect(screen.getByText("Messy Boards")).toBeTruthy();
-    });
+  describe("sign up buttons", () => {
+    it.each(["Sign up free", "Post your first flyer"])(
+      "should open the signup slide in from '%s'",
+      async (name) => {
+        await renderLanding();
+        await user.click(screen.getByRole("button", { name }));
+        expect(setBottomSlideInTypeSpy).toHaveBeenCalledWith("signup");
+      }
+    );
   });
 });
