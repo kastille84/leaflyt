@@ -4,8 +4,18 @@ import ImageCarousel from "./SubComponents/ImageCarousel";
 const StyledFigure = styled.figure`
   width: 100%;
   height: 800px;
+
+  /* In the bottom drawer, frames fill the container (media stays contained) */
+  & .slide-frame {
+    aspect-ratio: auto;
+    height: 800px;
+  }
+
   @media (max-height: 59em) {
     height: 100dvh;
+    & .slide-frame {
+      height: 100dvh;
+    }
   }
 `;
 
