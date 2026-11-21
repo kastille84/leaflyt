@@ -15,33 +15,26 @@ import { useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { useFlyerDesignerContext } from "../../context/FlyerDesignerContext";
 
-const common = {
-  style: css`
-    box-shadow: var(--shadow-sm);
-    &:hover {
-      box-shadow: var(--shadow-lg);
-    }
-
-    width: 40rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  `,
-};
+import {
+  cardStyle,
+  cardRadius,
+  StyledTopTextContainer as BaseTopTextContainer,
+  StyledActionContainer,
+  StyledActionIconContainer as BaseActionIconContainer,
+  StyledAvatarContainer,
+  StyledAvatar,
+  StyledAvatarName as BaseAvatarName,
+} from "./flyerBlockStyles";
 
 const StyledFlyerBlock = styled.div<{ flyerDesign: FlyerDesign }>`
-  ${common.style}
+  ${cardStyle}
+  ${cardRadius}
+  width: 40rem;
   font-family: ${({ flyerDesign }) => flyerDesign.font};
-  border: 1px solid var(--color-grey-200);
-  /* border: 1px solid ${(props) => props.flyerDesign.outlines.color}; */
-  border-top-left-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopLeftRadius}px;
-  border-top-right-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopRightRadius}px;
-  border-bottom-left-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderBottomLeftRadius}px;
-  border-bottom-right-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderBottomRightRadius}px;
+
+  @media (max-width: 34em) {
+    width: 100%;
+  }
 `;
 
 const StyledFigure = styled.figure<{ flyerDesign: FlyerDesign }>`
@@ -85,38 +78,26 @@ const StyledTopImageContainer = styled.div<{
     `}
 `;
 
-const StyledTopTextContainer = styled.div<{
-  flyerDesign: FlyerDesign;
+const StyledTopTextContainer = styled(BaseTopTextContainer)<{
   selected: boolean;
 }>`
-  width: 100%;
-  padding: 1rem 2.4rem;
-  background-color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
-  color: ${({ flyerDesign }) => flyerDesign.top.color};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   cursor: pointer;
-  border-top-left-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopLeftRadius}px;
-  border-top-right-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopRightRadius}px;
   &:hover {
     border: 2px dashed var(--color-red-800);
   }
   ${({ selected }) =>
-    selected
-      ? css`
-          border: 2px dashed var(--color-red-800);
-        `
-      : css`
-          border-bottom: 1px solid var(--color-grey-200);
-        `}
+    selected &&
+    css`
+      border: 2px dashed var(--color-red-800);
+    `}
 `;
 
 const StyledMainContentContainer = styled.div`
-  padding: 2.4rem 2.4rem 1rem 2.4rem;
-  /* font-size: 1.4rem; */
+  padding: 1.6rem 2rem;
+
+  @media (max-width: 34em) {
+    padding: 1.4rem 1.6rem;
+  }
 `;
 
 const StyledSubcategory = styled.small<{
@@ -199,53 +180,18 @@ const StyledTag = styled.small<{ flyerDesign: FlyerDesign }>`
   color: ${({ flyerDesign }) => flyerDesign.tags.color};
 `;
 
-const StyledActionContainer = styled.section`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 2.4rem;
-  padding: 1rem 2.4rem;
-  border-top: 1px solid var(--color-grey-200);
-`;
-
-const StyledActionIconContainer = styled.div<{
-  flyerDesign: FlyerDesign;
+const StyledActionIconContainer = styled(BaseActionIconContainer)<{
   selected: boolean;
 }>`
-  display: flex;
-  align-items: center;
   ${({ selected }) =>
     selected &&
     css`
       border: 2px dashed var(--color-red-800);
     `}
-
-  & svg {
-    color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
-  }
 `;
 
-const StyledAvatarContainer = styled.div`
-  display: flex;
-  gap: 1.2rem;
-  align-items: center;
-`;
-const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
-  background-color: ${({ flyerDesign }) => flyerDesign.top.color};
-  /* opacity: 0.65; */
-  color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
-  width: 30px;
-  height: 30px;
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 100%;
-  /* font-size: 1.4rem; */
-`;
-
-const StyledAvatarName = styled.div<{ selected: boolean }>`
-  /* font-size: 1.4rem; */
+const StyledAvatarName = styled(BaseAvatarName)<{ selected: boolean }>`
+  border-radius: var(--border-radius-sm);
   ${({ selected }) =>
     selected &&
     css`
@@ -417,7 +363,7 @@ export default function FlyerBlockConfigurable({ flyer }: { flyer: any }) {
             ))}
         </StyledTagContainer>
       </StyledMainContentContainer>
-      <StyledActionContainer>
+      <StyledActionContainer flyerDesign={flyerDesign}>
         <StyledActionIconContainer
           flyerDesign={flyerDesign}
           selected={selectedSection === "top_backgroundColor"}

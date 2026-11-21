@@ -109,8 +109,15 @@ export default function Configuration() {
   const fontWatch = watch("font");
 
   useEffect(() => {
-    setSelectedFlyer({ ...selectedFlyer, flyerDesign: getValues() });
-  }, [formValuesWatch, getValues, setSelectedFlyer, selectedFlyer]);
+    setSelectedFlyer((prev: any) => {
+      const next = getValues();
+      // bail out when unchanged to avoid an infinite update loop
+      if (prev && JSON.stringify(prev.flyerDesign) === JSON.stringify(next)) {
+        return prev;
+      }
+      return { ...prev, flyerDesign: next };
+    });
+  }, [formValuesWatch, getValues, setSelectedFlyer]);
 
   function handleReset() {
     reset(REGISTERED_FLYER_DESIGN_DEFAULT);
