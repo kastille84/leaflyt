@@ -96,10 +96,9 @@ describe("FlyerBlockInteractive", () => {
   }
 
   async function openMenu() {
-    // the dropdown icon is the first svg in the top bar
-    const bars = document.querySelectorAll("svg");
-    const icon = Array.from(bars).find((svg) => !svg.closest("[data-tooltip-id]"));
-    await userEvent.click(icon!);
+    await userEvent.click(
+      screen.getByRole("button", { name: /flyer options/i }),
+    );
   }
 
   beforeEach(() => {
