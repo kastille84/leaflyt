@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Tooltip } from "react-tooltip";
 
 import {
@@ -33,7 +33,10 @@ import {
 } from "../../interfaces/DB_Flyers";
 import ImageCarousel from "./SubComponents/ImageCarousel";
 import { Auth_User_Profile_Response } from "../../interfaces/Auth_User";
-import DropdownMenu from "../DropdownMenu";
+import DropdownMenu, {
+  DropdownMenuDivider,
+  DropdownMenuItem,
+} from "../DropdownMenu";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { useNavigate } from "react-router-dom";
 import useRegisteredFlyer from "../../features/createFlyer/useRegisteredFlyer";
@@ -46,121 +49,47 @@ import {
 import { useLikeFlyers } from "../../hooks/useLikeFlyers";
 import { determineIsFullFlyer } from "../../utils/GeneralUtils";
 
-const common = {
-  style: css`
-    box-shadow: var(--shadow-sm);
-    &:hover {
-      box-shadow: var(--shadow-lg);
-    }
+import {
+  cardStyle,
+  cardRadius,
+  StyledTopTextContainer,
+  StyledInfoContentContainer,
+  StyledActionContainer,
+  StyledActionIconContainer,
+  StyledAvatarContainer as BaseAvatarContainer,
+  StyledAvatar,
+  StyledAvatarName,
+  PillsContainer,
+  Pill,
+} from "./flyerBlockStyles";
 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-bottom: 2.4rem;
-
-    @media (max-width: 59em) {
-      /* margin: auto; */
-      margin: 0 auto 2.4rem auto;
-    }
-  `,
-};
+const StyledAvatarContainer = styled(BaseAvatarContainer)`
+  & svg {
+    cursor: pointer;
+  }
+`;
 
 const StyledFlyerBlock = styled.div<{
   flyerDesign: FlyerDesign;
   isFullFlyer: boolean;
   isListView?: boolean;
 }>`
-  ${common.style}
+  ${cardStyle}
+  ${cardRadius}
   width: ${({ isListView, isFullFlyer }) =>
     isListView ? "100%" : isFullFlyer ? "50rem" : "40rem"};
+  max-width: 100%;
   font-family: ${({ flyerDesign }) => flyerDesign.font};
-  border: 1px solid var(--color-grey-200);
-  /* border: 1px solid ${(props) => props.flyerDesign.outlines.color}; */
-  border-top-left-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopLeftRadius}px;
-  border-top-right-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopRightRadius}px;
-  border-bottom-left-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderBottomLeftRadius}px;
-  border-bottom-right-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderBottomRightRadius}px;
+  margin-bottom: 2.4rem;
+
+  @media (max-width: 59em) {
+    margin: 0 auto 2.4rem auto;
+  }
 
   @media (max-width: 44em) {
     ${({ isFullFlyer, isListView }) =>
       (isFullFlyer || isListView) && "width: 100%;"}
   }
-`;
-
-const StyledTopTextContainer = styled.div<{ flyerDesign: FlyerDesign }>`
-  width: 100%;
-  padding: 1rem 2.4rem;
-  background-color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
-  color: ${({ flyerDesign }) => flyerDesign.top.color};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  border-bottom: 1px solid var(--color-grey-200);
-  border-top-left-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopLeftRadius}px;
-  border-top-right-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderTopRightRadius}px;
-`;
-
-const StyledInfoContentContainer = styled.div`
-  padding: 1rem 2.4rem;
-  /* font-size: 1.4rem; */
-  background-color: #fff;
-`;
-
-const StyledActionContainer = styled.section<{ flyerDesign: FlyerDesign }>`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 2.4rem;
-  padding: 1rem 2.4rem;
-  background-color: #fff;
-  border-top: 1px solid var(--color-grey-200);
-  border-bottom-left-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderBottomLeftRadius}px;
-  border-bottom-right-radius: ${({ flyerDesign }) =>
-    flyerDesign.borderBottomRightRadius}px;
-`;
-
-const StyledActionIconContainer = styled.div<{ flyerDesign: FlyerDesign }>`
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  cursor: pointer;
-  & svg {
-    color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
-  }
-`;
-
-const StyledAvatarContainer = styled.div`
-  display: flex;
-  gap: 1.2rem;
-  align-items: center;
-  & svg {
-    cursor: pointer;
-  }
-`;
-const StyledAvatar = styled.div<{ flyerDesign: FlyerDesign }>`
-  background-color: ${({ flyerDesign }) => flyerDesign.top.color};
-  /* opacity: 0.65; */
-  color: ${({ flyerDesign }) => flyerDesign.top.backgroundColor};
-  width: 30px;
-  height: 30px;
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 100%;
-  /* font-size: 1.4rem; */
-`;
-
-const StyledAvatarName = styled.div`
-  /* font-size: 1.4rem; */
 `;
 
 const StyledActionSection = styled.div`
@@ -170,101 +99,22 @@ const StyledActionSection = styled.div`
 
 const StyledBadgeSection = styled.div`
   display: flex;
-  gap: 0.8rem;
+  align-items: flex-start;
+  gap: 0.6rem;
   margin-bottom: 1.2rem;
 
   & svg {
     font-size: 1.8rem;
+    padding: 0.3rem;
+    box-sizing: content-box;
+    border-radius: 100%;
+    background-color: var(--color-brand-0);
     color: var(--color-brand-600);
     cursor: pointer;
   }
   & .fire {
-    color: var(--color-orange-500);
-  }
-`;
-
-const PillsContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.8rem;
-  margin-bottom: 1.2rem;
-`;
-const pillStyle = {
-  infoOutline: css`
-    background-color: #fff;
-    color: var(--color-brand-600);
-    border: 1px solid var(--color-brand-600);
-  `,
-  info: css`
-    background-color: var(--color-brand-600);
-    color: var(--color-grey-50);
-    border: 1px solid var(--color-brand-600);
-  `,
-  contactOutline: css`
-    background-color: #fff;
-    color: var(--color-brand-600);
-    border: 1px solid var(--color-brand-600);
-  `,
-  contact: css`
-    background-color: var(--color-brand-600);
-    color: var(--color-grey-50);
-    border: 1px solid var(--color-brand-600);
-  `,
-  ctaOutline: css`
-    background-color: #fff;
+    background-color: var(--color-orange-100);
     color: var(--color-orange-600);
-    border: 1px solid var(--color-orange-600);
-  `,
-  cta: css`
-    background-color: var(--color-orange-600);
-    color: var(--color-grey-50);
-    border: 1px solid var(--color-orange-600);
-  `,
-};
-const Pill = styled.div<{
-  contentType: "info" | "contact" | "cta";
-  type: "info" | "contact" | "cta";
-}>`
-  ${({ contentType, type }) =>
-    contentType === type ? pillStyle[type] : pillStyle[`${type}Outline`]}
-  padding: 0.05rem 0.8rem;
-  border-radius: 5px;
-  letter-spacing: 1.2px;
-  text-transform: capitalize;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  ${({ type }) =>
-    type === "cta" &&
-    css`
-      animation: pulse 5s infinite;
-      /* transition: all 1.4s; */
-
-      @keyframes pulse {
-        0% {
-          transform: scale(1) rotate(3deg);
-        }
-        2% {
-          transform: scale(1.1) rotate(-3deg);
-
-          ${pillStyle[type]}
-        }
-        4% {
-          transform: scale(1.1) rotate(3deg);
-        }
-        6% {
-          transform: scale(1.1) rotate(-3deg);
-        }
-        8% {
-          transform: scale(1.1) rotate(3deg);
-        }
-        10% {
-          transform: scale(1) rotate(0deg);
-        }
-      }
-    `}
-  @media (max-width: 34em) {
-    font-size: 1.2rem;
   }
 `;
 
@@ -608,32 +458,37 @@ export default function FlyerBlockInteractive({
           {determineAvatarAndName()}
         </StyledAvatarContainer>
         <DropdownMenu>
-          <li onClick={handleViewFullFlyer}>
+          <DropdownMenuItem onClick={handleViewFullFlyer}>
             <HiOutlineArrowTopRightOnSquare /> View Full Flyer
-          </li>
+          </DropdownMenuItem>
           {doesFlyerBelongToUser() && (
-            <li onClick={handleEditClick}>
+            <DropdownMenuItem onClick={handleEditClick}>
               <HiOutlinePencilSquare /> Edit
-            </li>
+            </DropdownMenuItem>
           )}
           {doesFlyerBelongToUser() && flyer.template && (
-            <li onClick={() => navigate(`/dashboard/templates`)}>
+            <DropdownMenuItem onClick={() => navigate(`/dashboard/templates`)}>
               <HiOutlineArrowTopRightOnSquare /> View Template
-            </li>
+            </DropdownMenuItem>
           )}
           {doesFlyerBelongToUser() && (
-            <li onClick={handleDelete}>
-              <HiOutlineTrash /> Delete
-            </li>
-          )}
-          {!doesFlyerBelongToUser() && <hr />}
-          {!doesFlyerBelongToUser() && (
-            <li onClick={handleInappropriate}>
-              <HiOutlineFlag /> Inappropriate
-            </li>
+            <>
+              <DropdownMenuDivider />
+              <DropdownMenuItem $danger onClick={handleDelete}>
+                <HiOutlineTrash /> Delete
+              </DropdownMenuItem>
+            </>
           )}
           {!doesFlyerBelongToUser() && (
-            <li onClick={handleCopyright}>&copy; &nbsp; Copyright</li>
+            <>
+              <DropdownMenuDivider />
+              <DropdownMenuItem onClick={handleInappropriate}>
+                <HiOutlineFlag /> Inappropriate
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleCopyright}>
+                &copy; &nbsp; Copyright
+              </DropdownMenuItem>
+            </>
           )}
         </DropdownMenu>
       </>
